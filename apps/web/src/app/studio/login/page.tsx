@@ -20,7 +20,7 @@ export default function ArtistLogin() {
     try {
       const result = await loginArtist(identifier, password);
       if (result.success) {
-        router.push('/studio');
+        window.location.href = '/studio';
       } else {
         setError(result.error || 'Invalid credentials');
       }
