@@ -1,0 +1,22 @@
+﻿<USER_REQUEST>
+# NEW RELEASE HUB â€” COMPLETE MASTER BUILD PROMPT
+# Everything from today's full session â€” one document
+# Built by: New Release Hub LLC Â· Omaha, Nebraska
+#
+# ============================================================
+# HOW TO USE THIS WITH YOUR AI BUILDER
+# ============================================================
+# Feed section by section IN ORDER â€” do not skip ahead.
+# Run `npm run build` after each section completes.
+# Fix all errors before moving to the next section.
+# Commit with the message shown at the end of each section.
+# Wait for Vercel deployment to confirm before continuing.
+# Tech stack: Next.js, TypeScript, Tailwind, Prisma, Stripe,
+#             Pusher, Supabase/Vercel Storage, Resend email.
+# ============================================================
+
+================================================================
+SECTION 0 â€” IMMEDIATE SITE FIXES (DO THIS FIRST)
+================================================================
+
+<truncated 77758 bytes>
