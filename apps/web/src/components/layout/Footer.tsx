@@ -27,7 +27,7 @@ export default function Footer() {
                <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">
                   © 2026 New Release Hub Institutional.
                </p>
-               <p className="text-[9px] text-gray-700 font-bold uppercase tracking-[0.4em]">Protocol V2.4 Active</p>
+               <p className="text-[9px] text-gray-700 font-bold uppercase tracking-[0.4em]">Protocol V2.4.1 Hardened</p>
             </div>
           </div>
 
