@@ -205,12 +205,16 @@ function CollabCard({ request, type, onAccept }: any) {
              </div>
 
              {request.demoUrl && (
-               <button className="flex items-center gap-3 text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors group">
+               <Link 
+                 href={request.demoUrl} 
+                 target="_blank"
+                 className="flex items-center gap-3 text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors group"
+               >
                   <div className="w-8 h-8 rounded-full bg-[#00D2FF]/10 flex items-center justify-center group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
                      <Play className="w-4 h-4 fill-current ml-0.5" />
                   </div>
                   Listen to Demo
-               </button>
+               </Link>
              )}
 
              {type === 'incoming' && (
