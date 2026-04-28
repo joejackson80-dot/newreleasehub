@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus } from 'lucide-react';
+import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { useAudio } from '@/context/AudioContext';
 
