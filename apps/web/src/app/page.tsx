@@ -199,7 +199,11 @@ export default async function HomePage() {
                  </div>
                ))}
             </div>
-            <div className="mt-12 text-center">
+            <div className="mt-12 text-center flex flex-col sm:flex-row items-center justify-center gap-6">
+               <Link href="/how-it-works" className="text-white font-bold text-xs uppercase tracking-widest hover:text-[#00D2FF] transition-colors">
+                  Learn more about the platform
+               </Link>
+               <span className="hidden sm:inline text-white/10">|</span>
                <Link href="/pricing" className="text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:underline">
                   See how the money works
                </Link>
