@@ -101,9 +101,9 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
         console.info(`[NETWORK_PULSE] Listener joined: ${key}`);
       })
-      .on('broadcast', { event: 'reaction' }, (payload) => {
+      .on('broadcast', { event: 'reaction' }, ({ payload }) => {
         // Handle real-time floating reactions
-        if (payload.type === 'FIRE') setStats(prev => ({ ...prev, fire: prev.fire + 1 }));
+        if (payload?.type === 'FIRE') setStats(prev => ({ ...prev, fire: prev.fire + 1 }));
       })
       .on('postgres_changes', {
         event: 'INSERT',
