@@ -98,7 +98,6 @@ export default function SubscribePage() {
   };
 
   return (
-  return (
     <div className="min-h-screen bg-[#020202] text-white py-32 selection:bg-[#00D2FF] selection:text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
