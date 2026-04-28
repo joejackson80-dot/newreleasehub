@@ -5,6 +5,6 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "cd apps/web && npx prisma generate && next build"
+    "build": "cd apps/web && npx prisma generate && npx next build"
   }
 }
