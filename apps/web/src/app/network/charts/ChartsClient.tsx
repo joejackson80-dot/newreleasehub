@@ -21,7 +21,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-12 pb-32">
       
-      {/* INSTITUTIONAL HEADER */}
+      {/* PAGE HEADER */}
       <header className="pt-12 pb-24 px-4 md:px-10 max-w-7xl mx-auto space-y-12">
          
          {/* LOGO */}
@@ -33,14 +33,14 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
             <div className="space-y-6">
                <div className="flex items-center space-x-3 text-[#00D2FF]">
                   <BarChart3 className="w-4 h-4 fill-current" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Market Intelligence</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Live Trending Analytics</span>
                </div>
                <h1 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-[0.8] italic">
-                  Network<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Rankings.</span>
+                  Top<br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Artists.</span>
                </h1>
                <p className="text-gray-500 max-w-xl font-medium leading-relaxed italic">
-                  "Real-time performance analytics for the NRH professional collective — tracking velocity, yield, and global listener participation."
+                  "Real-time trending charts for the NRH community — tracking streams, fan growth, and listener engagement across the network."
                </p>
             </div>
          </div>

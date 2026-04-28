@@ -30,7 +30,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-bold italic uppercase tracking-tighter text-[#00D2FF]">The NRH Manifesto.</h2>
             <div className="prose prose-invert prose-p:text-gray-300 max-w-none text-sm leading-relaxed italic">
               <p>
-                We believe the current music economy is structurally flawed. By participating in New Release Hub, you acknowledge and support our mission to dismantle predatory royalty structures and replace them with institutional-grade, direct-to-artist participation. We prioritize sovereignty over convenience, and integrity over mass-market normalization.
+                We believe the current music economy is structurally flawed. By participating in New Release Hub, you acknowledge and support our mission to dismantle predatory royalty structures and replace them with fair, direct-to-artist payouts. We prioritize sovereignty over convenience, and integrity over mass-market normalization.
               </p>
             </div>
           </section>

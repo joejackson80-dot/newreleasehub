@@ -15,7 +15,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: {
-    default: 'New Release Hub — Your Music. Your Growth.',
+    default: 'New Release Hub — Your Music. Your Fans. Your Money.',
     template: '%s | New Release Hub',
   },
   description:
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'New Release Hub',
-    title: 'New Release Hub — Your Music. Your Growth.',
+    title: 'New Release Hub — Your Music. Your Fans. Your Money.',
     description: 'The platform for independent artists to release music, build fan patronage, and earn more per stream — without signing away their rights.',
     url: 'https://www.newreleasehub.com',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'New Release Hub — Your Music. Your Growth.',
+    title: 'New Release Hub — Your Music. Your Fans. Your Money.',
     description: 'The platform for independent artists to release music, build fan patronage, and earn more per stream — without signing away their rights.',
   },
   robots: { index: true, follow: true },

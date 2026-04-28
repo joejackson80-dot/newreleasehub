@@ -17,17 +17,15 @@ export default function Footer() {
                <div className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</div>
                <div className="space-y-1">
                   <span className="text-lg font-bold tracking-tighter uppercase text-white italic leading-none">New Release Hub<span className="text-[#00D2FF]">.</span></span>
-                  <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em]">Professional Network</p>
                </div>
             </Link>
-            <p className="text-gray-500 text-xs font-medium leading-relaxed max-w-xs italic">
-               "The institutional destination for sovereign music. Forensic streaming analysis, non-dilutive participation, and professional artist governance."
+            <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-xs italic">
+               "Your Music. Your Fans. Your Money."
             </p>
             <div className="space-y-2">
                <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-                  © 2026 New Release Hub Institutional.
+                  © 2025 New Release Hub LLC. All rights reserved.
                </p>
-               <p className="text-[9px] text-gray-700 font-bold uppercase tracking-[0.4em]">Protocol V2.4.1 Hardened</p>
             </div>
           </div>
 
@@ -35,10 +33,11 @@ export default function Footer() {
           <div className="space-y-8">
             <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">Platform</h4>
             <ul className="space-y-4">
-              <li><Link href="/" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Discover</Link></li>
+              <li><Link href="/discover" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Discover</Link></li>
               <li><Link href="/network/charts" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Charts</Link></li>
               <li><Link href="/network/board" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Opportunities</Link></li>
-              <li><Link href="/#how-it-works" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">How It Works</Link></li>
+              <li><Link href="/pricing" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Pricing</Link></li>
+              <li><Link href="/how-it-works" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">How It Works</Link></li>
             </ul>
           </div>
 
@@ -47,7 +46,7 @@ export default function Footer() {
             <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">Artists</h4>
             <ul className="space-y-4">
               <li><Link href="/studio/login" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Artist Sign Up</Link></li>
-              <li><Link href="/pricing" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Pricing</Link></li>
+              <li><Link href="/studio/login" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Studio Login</Link></li>
             </ul>
           </div>
 
@@ -59,6 +58,7 @@ export default function Footer() {
               <li><Link href="/blog" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Blog</Link></li>
               <li><Link href="/press" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Press</Link></li>
               <li><Link href="/careers" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Careers</Link></li>
+              <li><Link href="/contact" className="text-xs text-gray-500 hover:text-white transition-colors font-medium">Contact</Link></li>
             </ul>
           </div>
 
@@ -96,14 +96,9 @@ export default function Footer() {
             <span>|</span>
             <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
           </div>
-          <div className="flex items-center space-x-8">
-             <div className="flex items-center space-x-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Global Network Status: Optimal</span>
-             </div>
-             <a href="https://reactionsandreviews.com" target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
-                <img src="/rr-logo.jpg" alt="Reactions And Reviews" className="h-6 object-contain grayscale invert" />
-             </a>
+          <div className="flex items-center space-x-4">
+             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+             <span className="text-[9px] text-gray-600 font-bold uppercase tracking-widest">All Systems Operational</span>
           </div>
         </div>
       </div>

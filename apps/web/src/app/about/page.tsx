@@ -24,7 +24,7 @@ export default function AboutPage() {
            <div className="space-y-8">
               <div className="inline-flex items-center space-x-3 text-[#00D2FF]">
                  <Star className="w-4 h-4 fill-current" />
-                 <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The Institutional Major Platform</span>
+                 <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The New Major Platform</span>
               </div>
               <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.8] uppercase italic">
                  No Label.<br />
@@ -32,7 +32,7 @@ export default function AboutPage() {
               </h1>
            </div>
            <p className="text-2xl text-gray-500 font-medium leading-relaxed italic max-w-2xl">
-              "Distribution is a commodity. Ownership is the revolution. We didn't build a tool to get you on Spotify; we built the destination where you don't need them."
+              "Distribution is a commodity. Ownership is the revolution. We didn't build a tool to get you on Spotify; we built the home where you don't need them."
            </p>
         </div>
       </section>
@@ -44,13 +44,13 @@ export default function AboutPage() {
                <div className="space-y-4">
                   <div className="flex items-center space-x-3 text-[#00D2FF]">
                      <ShieldCheck className="w-5 h-5" />
-                     <span className="text-xs font-bold uppercase tracking-widest">Protocol Integrity</span>
+                     <span className="text-xs font-bold uppercase tracking-widest">Artist First Protocol</span>
                   </div>
                   <h2 className="text-5xl md:text-7xl font-bold tracking-tighter italic uppercase leading-[0.9]">The NRH<br />Manifesto.</h2>
                </div>
                <div className="prose prose-invert prose-p:text-gray-400 max-w-none space-y-6 text-lg font-medium italic leading-relaxed">
                   <p>
-                     "We believe the current music economy is structurally flawed. By participating in New Release Hub, you acknowledge and support our mission to dismantle predatory royalty structures and replace them with institutional-grade, direct-to-artist participation."
+                     "We believe the current music economy is structurally flawed. By participating in New Release Hub, you acknowledge and support our mission to dismantle predatory royalty structures and replace them with fair, direct-to-artist payouts."
                   </p>
                   <p>
                      We prioritize sovereignty over convenience, and integrity over mass-market normalization. Every master on this network is owned, managed, and authorized directly by the creator.
@@ -59,9 +59,9 @@ export default function AboutPage() {
             </div>
             <div className="bg-white/5 border border-white/10 rounded-[3rem] p-12 space-y-12">
                <div className="space-y-6">
-                  <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-[#00D2FF]">Institutional Integrity.</h3>
+                  <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-[#00D2FF]">Verified Integrity.</h3>
                   <p className="text-gray-400 text-sm leading-relaxed font-medium">
-                     Our privacy model is built on the principle of verifiable integrity. We analyze behavioral data to protect the financial interests of artists. This includes rigorous forensic analysis of streaming patterns to ensure that every cent of master participation royalty is paid out to legitimate human listeners and authenticated patrons.
+                     Our model is built on the principle of verifiable integrity. We use advanced analytics to protect the financial interests of artists. This includes rigorous analysis of streaming patterns to ensure that every cent of royalty is paid out to legitimate human listeners and authenticated fans.
                   </p>
                </div>
                <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/5">

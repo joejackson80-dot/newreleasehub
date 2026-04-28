@@ -14,6 +14,7 @@ const ARTIST_IMAGE_POOL = [
 
 export default async function HomePage() {
   const hubs = await prisma.organization.findMany({
+    where: { isPublic: true },
     orderBy: { totalStreams: 'desc' },
     take: 10,
     include: {
@@ -29,13 +30,13 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white">
 
-      {/* HERO SECTION - INSTITUTIONAL CINEMATIC STYLE */}
+      {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center bg-black overflow-hidden pt-32 pb-20">
          <div className="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-[3000ms]">
             <img
               src="/reverb_hero_artist_1776975832109.png"
               className="w-full h-full object-cover scale-110"
-              alt="Institutional Artist"
+              alt="Independent artist performing"
             />
          </div>
          <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-[#020202]/60 to-transparent"></div>
@@ -44,7 +45,7 @@ export default async function HomePage() {
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
             <div className="space-y-16 animate-in fade-in slide-in-from-bottom-12 duration-1000">
                
-               {/* INSTITUTIONAL LOGO */}
+               {/* BRAND LOGO */}
                <div className="flex">
                   <Link href="/" className="w-16 h-16 rounded-[2rem] bg-white text-black flex items-center justify-center font-bold text-3xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
                </div>
@@ -59,7 +60,7 @@ export default async function HomePage() {
                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Masters.</span>
                   </h1>
                   <p className="text-gray-500 text-xl font-medium max-w-lg leading-relaxed italic">
-                     "The institutional-grade platform where independent artists secure decentralized patronage without signing away their rights."
+                      "One platform. Streaming, patron income, collab deals, opportunities, and AI tools — all built for independent artists."
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
@@ -67,33 +68,22 @@ export default async function HomePage() {
                   <Link href="/fan/login" className="px-12 py-5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Public Discovery</Link>
                </div>
                
-               {/* NETWORK PULSE STRIP */}
-               <div className="pt-16 border-t border-white/5">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-                     <div className="space-y-2">
-                        <p className="text-white text-2xl font-bold uppercase italic tracking-tighter">1.2M+</p>
-                        <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-none">Verified Hubs</p>
-                     </div>
-                     <div className="space-y-2">
-                        <p className="text-[#00D2FF] text-2xl font-bold uppercase italic tracking-tighter">450K</p>
-                        <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-none">Stakeholders</p>
-                     </div>
-                     <div className="space-y-2">
-                        <p className="text-white text-2xl font-bold uppercase italic tracking-tighter">$12.4M</p>
-                        <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-none">Yield Payouts</p>
-                     </div>
-                     <div className="space-y-2">
-                        <p className="text-green-500 text-2xl font-bold uppercase italic tracking-tighter">100%</p>
-                        <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-none">Rights Retained</p>
-                     </div>
-                  </div>
-               </div>
+               {/* MISSION BLOCK */}
+                <div className="pt-16 border-t border-white/5">
+                   <p className="text-gray-400 text-sm font-medium leading-relaxed max-w-lg italic">
+                     "Built by artists who got tired of earning $0.004 per stream. NRH pays more, takes less, and gives artists the tools to build a real music business — without a label."
+                   </p>
+                   <div className="mt-8 flex items-center space-x-3">
+                     <p className="text-green-500 text-2xl font-bold uppercase italic tracking-tighter">100%</p>
+                     <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-tight">of your masters,<br />always.</p>
+                   </div>
+                </div>
             </div>
          </div>
       </section>
 
       {/* DISCOVERY FEED */}
-      <section className="section-container">
+      <section className="section-container py-32">
          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="space-y-4">
                <div className="flex items-center space-x-3 text-[#00D2FF]">
@@ -118,65 +108,63 @@ export default async function HomePage() {
             {validHubs.map((hub, index) => {
               const imageUrl = hub.profileImageUrl || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
               const isLive = hub.SessionDeck?.isPlaying;
-              const patronCount = (hub as any).patronCount ?? hub.ParticipationLicenses.length;
 
               return (
-                <Link key={hub.id} href={`/${hub.slug}`} className="group artist-card">
-                   <div className="relative">
-                      <img
-                        src={imageUrl}
-                        alt={hub.name}
-                        className="w-full aspect-square object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                         <div className="w-16 h-16 rounded-full bg-[#00D2FF] flex items-center justify-center text-white transform scale-50 group-hover:scale-100 transition-transform">
-                            <Play className="w-8 h-8 fill-current ml-1" />
-                         </div>
-                      </div>
-                   </div>
-                   <div className="p-8 space-y-4">
-                      <div className="flex justify-between items-start">
-                         <div>
-                            <h3 className="text-2xl mb-1 text-white">{hub.name ?? 'Independent Artist'}</h3>
-                            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">
-                              {hub.city || 'Global'} &middot; {patronCount.toLocaleString()} patrons
-                            </p>
-                         </div>
-                      </div>
-                      <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                         {isLive && hub.liveListenerCount > 0 ? (
-                           <div className="flex items-center space-x-2">
-                              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Live Now</span>
-                           </div>
-                         ) : (
-                           <div className="flex items-center space-x-2 bg-white/5 px-2 py-1 rounded-md">
-                              <Disc className="w-3 h-3 text-[#00D2FF]" />
-                              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{hub.genres?.[0] || 'Independent'}</span>
-                           </div>
-                         )}
-                         <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-[#00D2FF] transition-colors" />
-                      </div>
-                   </div>
+                <Link 
+                  href={`/fan/${hub.slug}`} 
+                  key={hub.id} 
+                  className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#00D2FF]/30 transition-all duration-500 hover:-translate-y-2 shadow-2xl"
+                >
+                  <div className="aspect-[4/5] relative overflow-hidden">
+                     <img 
+                       src={imageUrl} 
+                       alt={hub.name} 
+                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+                     />
+                     <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-60"></div>
+                     
+                     {isLive && (
+                       <div className="absolute top-6 left-6 flex items-center space-x-2 bg-red-600 text-white text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full animate-pulse">
+                         <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                         <span>Live Session</span>
+                       </div>
+                     )}
+                  </div>
+                  
+                  <div className="p-8 space-y-6">
+                     <div className="flex justify-between items-start">
+                        <div>
+                           <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-white">{hub.name}</h3>
+                           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
+                        </div>
+                        <div className="flex flex-col items-end">
+                           <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.patronCount || 0).toLocaleString()}</p>
+                           <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">Patrons</p>
+                        </div>
+                     </div>
+                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                           <Play className="w-3.5 h-3.5 text-gray-500" />
+                           <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{(hub.totalStreams || 0).toLocaleString()} streams</span>
+                        </div>
+                        <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#00D2FF] transition-colors">
+                           View Hub
+                        </div>
+                     </div>
+                  </div>
                 </Link>
               );
             })}
          </div>
-         <div className="mt-12 text-center">
-            <Link href="/discover" className="btn-outline border-white text-white hover:bg-white hover:text-black">
-               Discover More Artists
-            </Link>
-         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="py-32 border-t border-white/5 bg-[var(--color-studio-base)] relative overflow-hidden">
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-accent-primary)]/5 rounded-full blur-[120px] -z-0"></div>
-         <div className="section-container">
-            <div className="text-center space-y-4 mb-20">
+      {/* HOW IT WORKS */}
+      <section className="py-32 bg-[#050505] border-y border-white/5">
+         <div className="section-container space-y-24">
+            <div className="text-center space-y-4">
                <div className="flex items-center justify-center space-x-3 text-[#00D2FF]">
-                  <Disc className="w-5 h-5" />
-                  <span className="text-xs font-bold uppercase tracking-widest">How it works</span>
+                  <Disc className="w-5 h-5 animate-spin-slow" />
+                  <span className="text-xs font-bold uppercase tracking-widest">The Independent Cycle</span>
                </div>
                <h2 className="text-5xl uppercase leading-none">How It Works.</h2>
             </div>
@@ -212,15 +200,15 @@ export default async function HomePage() {
                ))}
             </div>
             <div className="mt-12 text-center">
-               <Link href="/how-it-works/revenue-sharing" className="text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:underline">
-                  See how the money works →
+               <Link href="/pricing" className="text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:underline">
+                  See how the money works
                </Link>
             </div>
          </div>
       </section>
 
       {/* INDUSTRY TOOLS */}
-      <section className="bg-[var(--color-studio-elevated)] py-32 border-y border-white/5">
+      <section className="bg-[#020202] py-32 border-b border-white/5">
          <div className="section-container grid grid-cols-1 lg:grid-cols-4 gap-12">
             <div className="lg:col-span-1 space-y-6">
                <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Industry tools</p>
@@ -231,9 +219,9 @@ export default async function HomePage() {
                </Link>
             </div>
             {[
-              { title: 'The New Major Platform', desc: 'Why distribute elsewhere when you can dominate here? NRH is where the industry happens. Your music, your data, your revenue — all in one professional network.', icon: Globe },
+              { title: 'The Hub Ecosystem', desc: 'Why distribute elsewhere when you can dominate here? NRH is where the industry happens. Your music, your data, your revenue — all in one professional network.', icon: Globe },
               { title: 'Fans become investors', desc: 'Set custom patron tiers. Offer revenue participation to your biggest supporters. Your community funds your next release — and shares in your success.', icon: Award },
-              { title: 'Certified by ReactionsAndReviews', desc: 'Every release gets an independent audit score from the ReactionsAndReviews team. Build credibility with sync buyers, booking agents, and labels without compromising your independence.', icon: ShieldCheck }
+              { title: 'Independent Growth', desc: 'Build credibility with sync buyers, booking agents, and venues using our verified performance metrics without compromising your independence.', icon: ShieldCheck }
             ].map((service, i) => (
               <div key={i} className="p-10 border border-white/5 rounded-3xl space-y-6 hover:bg-white/5 transition-colors group">
                  <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
@@ -256,19 +244,19 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                {[
                  {
-                   quote: "NRH helped me earn more from 10,000 patrons than I ever made from 10 million streams on Spotify.",
+                   quote: "NRH helped me earn more from 1,000 fans than I ever made from 10 million streams on other platforms.",
                    author: "Marcus Webb",
-                   meta: "R&B Artist · Atlanta, GA"
+                   meta: "R&B Artist | Atlanta, GA"
                  },
                  {
                    quote: "The opportunity board landed me a sync deal with a Netflix docuseries in my second month on the platform. Nothing like this existed for independent artists before.",
                    author: "DJ Solarize",
-                   meta: "Electronic Producer · London, UK"
+                   meta: "Electronic Producer | London, UK"
                  },
                  {
                    quote: "I kept 100% of my masters and still grew my reach to 40 countries. That's unheard of for an indie artist. NRH changed the math for me.",
                    author: "Lena Khari",
-                   meta: "Afrobeats Artist · Lagos, Nigeria"
+                   meta: "Afrobeats Artist | Lagos, Nigeria"
                  }
                ].map((test, i) => (
                  <div key={i} className="space-y-6">
@@ -287,7 +275,7 @@ export default async function HomePage() {
       </section>
 
       {/* CALL TO ACTION */}
-      <section className="bg-[var(--color-studio-surface)] py-40 text-center space-y-12 overflow-hidden relative">
+      <section className="bg-[#111] py-40 text-center space-y-12 overflow-hidden relative">
          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00D2FF]/10 rounded-full blur-[150px] -z-0"></div>
          <div className="relative z-10 space-y-10">
             <h2 className="text-white text-7xl md:text-8xl leading-[0.9] uppercase max-w-4xl mx-auto">
@@ -299,7 +287,7 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
                <Link href="/studio/login" className="btn-primary">Get Started Free</Link>
-               <Link href="mailto:info@newreleasehub.com" className="text-white/60 hover:text-white font-bold text-xs uppercase tracking-[0.3em] transition-all">Schedule a Demo</Link>
+               <Link href="mailto:info@newreleasehub.com" className="text-white/60 hover:text-white font-bold text-xs uppercase tracking-[0.3em] transition-all">Contact Us</Link>
             </div>
          </div>
       </section>

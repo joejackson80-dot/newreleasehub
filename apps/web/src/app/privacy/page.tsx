@@ -27,10 +27,10 @@ export default function PrivacyPage() {
           </header>
 
           <section className="bg-white/5 border border-white/10 rounded-[2rem] p-10 space-y-6">
-            <h2 className="text-xl font-bold italic uppercase tracking-tighter text-green-500">Institutional Integrity.</h2>
+            <h2 className="text-xl font-bold italic uppercase tracking-tighter text-green-500">Verified Integrity.</h2>
             <div className="prose prose-invert prose-p:text-gray-300 max-w-none text-sm leading-relaxed italic">
               <p>
-                Our privacy model is built on the principle of verifiable integrity. We analyze behavioral data to protect the financial interests of artists. This includes rigorous forensic analysis of streaming patterns to ensure that every cent of master participation royalty is paid out to legitimate human listeners and authenticated patrons.
+                Our privacy model is built on the principle of verifiable integrity. We analyze data to protect the financial interests of artists. This includes analysis of streaming patterns to ensure that every cent of royalty is paid out to legitimate human listeners and authenticated fans.
               </p>
             </div>
           </section>

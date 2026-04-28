@@ -3,7 +3,6 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import NetworkStatusBar from "./NetworkStatusBar";
 
 export default function MainLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,7 +15,6 @@ export default function MainLayoutWrapper({ children }: { children: React.ReactN
 
   return (
     <>
-      {!hideGlobalLayout && <NetworkStatusBar />}
       {!hideGlobalLayout && <Navbar />}
       <main className={`flex-1 ${(!hideGlobalLayout && !isHome) ? 'pt-20 md:pt-24' : ''}`}>
         {children}

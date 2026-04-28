@@ -3,26 +3,24 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, Radio, ShieldCheck, FileText, Search, Menu, X, Award, User, Settings, Globe, Zap, Music } from 'lucide-react';
+import { Search, Menu, X, Award, Zap, Radio, DollarSign } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 const NAV_ITEMS = [
   { label: 'Discover', href: '/discover', icon: Zap },
   { label: 'Charts', href: '/network/charts', icon: Radio },
   { label: 'Opportunities', href: '/network/board', icon: Award },
-  { label: 'Library', href: '/fan/login', icon: Music },
+  { label: 'Pricing', href: '/pricing', icon: DollarSign },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [user, setUser] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    setUser(localStorage.getItem('nrh_user'));
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -41,12 +39,11 @@ export default function Navbar() {
         {/* DESKTOP NAV */}
         <div className="hidden lg:flex items-center space-x-12">
             {NAV_ITEMS.map((item) => {
-               const href = item.label === 'Library' && user ? `/fan/me/library` : item.href;
-               const isActive = pathname === href;
+               const isActive = pathname === item.href;
                return (
                  <Link 
                    key={item.label} 
-                   href={href}
+                   href={item.href}
                    className={`text-[10px] font-bold uppercase tracking-widest transition-all ${isActive ? 'text-[#00D2FF]' : 'text-gray-400 hover:text-white'}`}
                  >
                    {item.label}
@@ -56,7 +53,7 @@ export default function Navbar() {
         </div>
 
         {/* ACTIONS */}
-        <div className="hidden lg:flex items-center space-x-8">
+        <div className="hidden lg:flex items-center space-x-6">
            <form action="/search" method="GET" className="relative group">
               <input 
                 type="text" 
@@ -66,18 +63,10 @@ export default function Navbar() {
               />
               <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700" />
            </form>
-           {user ? (
-             <Link href={`/fan/${user}`} className="flex items-center space-x-3 group">
-                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#00D2FF] transition-colors">
-                   <User className="w-4 h-4 text-gray-500 group-hover:text-white" />
-                </div>
-             </Link>
-           ) : (
-             <div className="flex items-center space-x-4">
-                <Link href="/login" className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#00D2FF] transition-colors">Sign In</Link>
-                <Link href="/register" className="btn-primary py-2.5 px-8 text-[10px] tracking-[0.2em]">Join Free</Link>
-             </div>
-           )}
+           <div className="flex items-center space-x-4">
+              <Link href="/login" className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#00D2FF] transition-colors">Sign In</Link>
+              <Link href="/register" className="btn-primary py-2.5 px-8 text-[10px] tracking-[0.2em]">Join Free</Link>
+           </div>
         </div>
 
         {/* MOBILE MENU TOGGLE */}
@@ -101,22 +90,19 @@ export default function Navbar() {
                 <button onClick={() => setIsOpen(false)}><X className="w-8 h-8 text-white" /></button>
              </div>
              <div className="space-y-10 flex-1 overflow-y-auto">
-                {NAV_ITEMS.map((item) => {
-                  const href = item.label === 'Library' && user ? `/fan/me/library` : item.href;
-                  return (
-                    <Link 
-                      key={item.label} 
-                      href={href} 
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center space-x-6 group"
-                    >
-                        <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
-                           <item.icon className="w-6 h-6" />
-                        </div>
-                        <span className="text-2xl font-bold uppercase tracking-tighter text-white">{item.label}</span>
-                    </Link>
-                  );
-                })}
+                {NAV_ITEMS.map((item) => (
+                  <Link 
+                    key={item.label} 
+                    href={item.href} 
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-6 group"
+                  >
+                      <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
+                         <item.icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-2xl font-bold uppercase tracking-tighter text-white">{item.label}</span>
+                  </Link>
+                ))}
              </div>
              <div className="pt-10 border-t border-white/5 space-y-4">
                 <Link href="/login" onClick={() => setIsOpen(false)} className="btn-outline w-full text-center block py-3 border-white/20 hover:bg-white hover:text-black">Sign In</Link>
