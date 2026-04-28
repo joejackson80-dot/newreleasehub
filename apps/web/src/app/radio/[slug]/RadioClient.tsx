@@ -1,0 +1,229 @@
+'use client';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { 
+  Radio, Users, Heart, Disc, Play, Pause, 
+  Volume2, Share2, ArrowLeft, Zap, Info, ShieldCheck, Star
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+export default function StationPage({ slug }: { slug: string }) {
+  const [station, setStation] = useState<any>(null);
+  const [nowPlaying, setNowPlaying] = useState<any>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [recentlyPlayed, setRecentlyPlayed] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchStationData = async () => {
+      try {
+        const res = await fetch(`/api/radio/now-playing/${slug}`);
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        
+        setStation(data);
+        if (data.nowPlaying && (!nowPlaying || data.nowPlaying.id !== nowPlaying.id)) {
+          setNowPlaying(data.nowPlaying);
+          // Add to recently played if it's a new track
+          if (nowPlaying) {
+            setRecentlyPlayed(prev => [nowPlaying, ...prev].slice(0, 10));
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStationData();
+    const interval = setInterval(fetchStationData, 5000); // Poll every 5s
+    return () => clearInterval(interval);
+  }, [slug, nowPlaying]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#010A14] flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-[#00D2FF]/20 border-t-[#00D2FF] rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#010A14] text-white">
+      {/* ── TOP NAV ── */}
+      <div className="max-w-7xl mx-auto px-8 py-8 flex items-center justify-between">
+        <Link href="/discover" className="flex items-center gap-2 text-gray-500 hover:text-white transition-all group font-bold text-[10px] uppercase tracking-widest">
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          Back to Network
+        </Link>
+        <div className="flex items-center gap-4">
+          <button className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-all">
+            <Share2 className="w-4 h-4" />
+          </button>
+          <div className="px-4 py-2 rounded-xl bg-[#00D2FF]/10 border border-[#00D2FF]/20 flex items-center gap-2">
+            <Users className="w-4 h-4 text-[#00D2FF]" />
+            <span className="text-xs font-bold text-[#00D2FF]">1,420 listening</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-8 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-16 pb-32">
+        
+        {/* ── LEFT: PLAYER ── */}
+        <div className="lg:col-span-7 space-y-12">
+          
+          {/* STATION INFO */}
+          <div className="space-y-4">
+             <div className="flex items-center gap-3">
+               <div className={`w-3 h-3 rounded-full ${station?.isLive ? 'bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-gray-600'}`} />
+               <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${station?.isLive ? 'text-red-500' : 'text-gray-500'}`}>
+                 {station?.isLive ? 'Live Stream Active' : 'Station Offline'}
+               </span>
+             </div>
+             <h1 className="text-6xl font-bold uppercase tracking-tighter leading-none italic">
+               NRH {slug?.toString().replace('-', ' ')} <span className="text-[#00D2FF]">Radio.</span>
+             </h1>
+             <p className="text-gray-500 text-lg font-medium max-w-xl leading-relaxed">
+               Broadcasting the finest independent {slug} artists from the NRH network directly to your ears. 100% master rights retained by artists.
+             </p>
+          </div>
+
+          {/* NOW PLAYING CARD */}
+          <div className="relative group">
+            <div className="absolute inset-0 bg-[#00D2FF]/10 blur-3xl opacity-20 -z-10 group-hover:opacity-40 transition-opacity" />
+            <div className="bg-[#021220] border border-white/5 rounded-[3rem] p-10 flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
+              
+              {/* Cover Art */}
+              <div className="w-64 h-64 rounded-[2rem] overflow-hidden shadow-2xl relative shrink-0">
+                {nowPlaying?.imageUrl ? (
+                  <img src={nowPlaying.imageUrl} alt={nowPlaying.title} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-[#031B2E] flex items-center justify-center">
+                    <Disc className="w-20 h-20 text-[#00D2FF]/20" />
+                  </div>
+                )}
+                {isPlaying && (
+                  <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-2xl">
+                    <div className="flex items-end gap-1 h-4">
+                      <div className="w-1 bg-[#00D2FF] animate-[bounce_1s_infinite_0.1s]" style={{ height: '60%' }} />
+                      <div className="w-1 bg-[#00D2FF] animate-[bounce_1s_infinite_0.3s]" style={{ height: '100%' }} />
+                      <div className="w-1 bg-[#00D2FF] animate-[bounce_1s_infinite_0.2s]" style={{ height: '80%' }} />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Track Info */}
+              <div className="flex-1 space-y-8 text-center md:text-left">
+                <div className="space-y-3">
+                  <h2 className="text-4xl font-bold text-white tracking-tight">
+                    {nowPlaying?.title || 'Waiting for signal...'}
+                  </h2>
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                    <Link href={`/${nowPlaying?.artistSlug}`} className="text-[#00D2FF] text-xl font-bold hover:underline">
+                      {nowPlaying?.artist || 'Unknown Artist'}
+                    </Link>
+                    <span className="w-1.5 h-1.5 bg-white/20 rounded-full" />
+                    <span className="text-gray-500 text-sm font-bold uppercase tracking-widest">NRH Verified</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                  <button 
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-xl"
+                  >
+                    {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
+                  </button>
+                  <button className="px-8 py-4 rounded-full bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all">
+                    Become a Patron
+                  </button>
+                  <button className="px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
+                    Follow
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* PLAYER CONTROLS MINI */}
+          <div className="bg-[#031B2E]/50 border border-white/5 rounded-3xl p-6 flex items-center justify-between gap-8">
+             <div className="flex items-center gap-4 flex-1">
+                <Volume2 className="w-5 h-5 text-gray-500" />
+                <div className="h-1 bg-white/5 rounded-full flex-1 relative overflow-hidden">
+                   <div className="absolute inset-0 bg-[#00D2FF] w-[70%]" />
+                </div>
+             </div>
+             <div className="flex items-center gap-6">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                   Streaming: <span className="text-white">HQ 320kbps</span>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
+                   <Zap className="w-4 h-4" />
+                </div>
+             </div>
+          </div>
+
+        </div>
+
+        {/* ── RIGHT: SIDEBAR ── */}
+        <div className="lg:col-span-5 space-y-10">
+          
+          {/* RECENTLY PLAYED */}
+          <section className="space-y-6">
+            <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-gray-500 border-b border-white/5 pb-4">Recently Played</h3>
+            <div className="space-y-4">
+              {recentlyPlayed.length > 0 ? (
+                recentlyPlayed.map((track, i) => (
+                  <div key={`${track.id}-${i}`} className="flex items-center gap-4 group">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-white/10">
+                       <img src={track.imageUrl} alt={track.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="flex-1 overflow-hidden">
+                      <p className="text-sm font-bold text-white truncate">{track.title}</p>
+                      <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{track.artist}</p>
+                    </div>
+                    <button className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-[#00D2FF] hover:text-white">
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="py-8 text-center border border-dashed border-white/5 rounded-2xl">
+                   <Disc className="w-8 h-8 text-white/5 mx-auto mb-2" />
+                   <p className="text-xs text-gray-600 font-medium italic">Signal starting...</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* STATION PERKS */}
+          <section className="bg-gradient-to-br from-[#021220] to-[#010A14] border border-[#00D2FF]/20 rounded-[2.5rem] p-8 space-y-6">
+             <div className="flex items-center gap-3">
+               <ShieldCheck className="w-6 h-6 text-[#00D2FF]" />
+               <h4 className="text-sm font-bold uppercase tracking-widest text-white">Radio Governance</h4>
+             </div>
+             <p className="text-xs text-gray-400 leading-relaxed font-medium">
+               This station is governed by the NRH Network protocol. 100% of the tracks you hear are authorized directly by the artists. Support them instantly by becoming a patron or following their journey.
+             </p>
+             <ul className="space-y-4">
+               {[
+                 { label: 'Zero Middleman Royalties', icon: Star },
+                 { label: 'High Fidelity Stream', icon: Zap },
+                 { label: 'Network Integrity Verified', icon: Info }
+               ].map((item, i) => (
+                 <li key={i} className="flex items-center gap-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                   <item.icon className="w-3.5 h-3.5 text-[#00D2FF]" />
+                   {item.label}
+                 </li>
+               ))}
+             </ul>
+          </section>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}

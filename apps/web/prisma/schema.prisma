@@ -1,0 +1,754 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Organization {
+  id                     String                 @id @default(cuid())
+  slug                   String                 @unique
+  name                   String
+  bio                    String?
+  profileImageUrl        String?
+  planTier               OrganizationPlan       @default(FREE)
+  stripeAccountId        String?
+  officialBio            String?
+  pressKitJson           String?
+  youtubeStreamKey       String?
+  twitterStreamKey       String?
+  twitchStreamKey        String?
+  printfulApiKey         String?
+  kunakiUserId           String?
+  headerImageUrl         String?
+  genres                 String[]               @default([])
+  city                   String?
+  country                String?
+  socialLinksJson        String?
+  isVerified             Boolean                @default(false)
+  isLive                 Boolean                @default(false)
+  liveListenerCount      Int                    @default(0)
+  patronCount            Int                    @default(0)
+  totalStreams           Int                    @default(0)
+  monthlyListeners       Int                    @default(0)
+  artistTier             String                 @default("rising")
+  createdAt              DateTime               @default(now())
+  balanceCents           Int                    @default(0)
+  email                  String?                @unique
+  isActive               Boolean                @default(true)
+  passwordHash           String?
+  subscriptionTier       String                 @default("FREE")
+  username               String?                @unique
+  ArtistRoyalties        ArtistRoyalty[]
+  ChatMessages           ChatMessage[]
+  CollabDealsAsReceiver  CollabDeal[]           @relation("CollabDealReceiver")
+  CollabDealsAsRequester CollabDeal[]           @relation("CollabDealRequester")
+  CollabRequestsReceived CollabRequest[]        @relation("CollabReceiver")
+  CollabRequestsSent     CollabRequest[]        @relation("CollabRequester")
+  FanRoyaltyShares       FanRoyaltyShare[]
+  Followers              Follower[]
+  FoundingSlot           FoundingArtistSlot?
+  FraudIncidents         FraudIncident[]
+  GiftEvents             GiftEvent[]
+  MerchProducts          Merch[]
+  MusicAssets            MusicAsset[]
+  MusicReviews           MusicReview[]
+  ParticipationLicenses  ParticipationLicense[]
+  PatronSubscriptions    PatronSubscription[]
+  PatronTiers            PatronTier[]
+  Releases               Release[]
+  ServiceOrdersBought    ServiceOrder[]         @relation("ServiceBuyer")
+  ServiceProvider        ServiceProvider?
+  Sessions               Session[]
+  SessionArchives        SessionArchive[]
+  SessionDeck            SessionDeck?
+  StreamPlays            StreamPlay[]
+}
+
+model SessionArchive {
+  id                String       @id @default(cuid())
+  organizationId    String
+  title             String
+  externalVodId     String?
+  vodPlatform       String?
+  chatLogJson       String?
+  finalFireCount    Int          @default(0)
+  totalFundingCents Int          @default(0)
+  createdAt         DateTime     @default(now())
+  Organization      Organization @relation(fields: [organizationId], references: [id])
+}
+
+model MusicAsset {
+  id                    String                 @id @default(cuid())
+  organizationId        String
+  title                 String
+  audioUrl              String                 @default("")
+  imageUrl              String?
+  isLive                Boolean                @default(false)
+  allocatedLicenseBps   Int                    @default(0)
+  createdAt             DateTime               @default(now())
+  releaseId             String?
+  duration              Int                    @default(0)
+  bpm                   Int?
+  key                   String?
+  mood                  String[]               @default([])
+  lyrics                String?
+  playCount             Int                    @default(0)
+  isrc                  String?
+  BidOffers             BidOffer[]
+  Organization          Organization           @relation(fields: [organizationId], references: [id])
+  Release               Release?               @relation(fields: [releaseId], references: [id])
+  ParticipationLicenses ParticipationLicense[]
+  QueueItems            QueueItem[]
+  SessionDecks          SessionDeck[]
+  StationNowPlaying     Station[]              @relation("NowPlaying")
+  StreamPlays           StreamPlay[]
+}
+
+model Release {
+  id                     String       @id @default(cuid())
+  organizationId         String
+  title                  String
+  type                   String       @default("single")
+  coverArtUrl            String?
+  releaseDate            DateTime     @default(now())
+  isScheduled            Boolean      @default(false)
+  totalPlays             Int          @default(0)
+  isPatronOnly           Boolean      @default(false)
+  earlyAccessWindowHours Int          @default(48)
+  createdAt              DateTime     @default(now())
+  trackCount             Int          @default(1)
+  authorizedForRadio     Boolean      @default(false)
+  CollabDeals            CollabDeal[]
+  Tracks                 MusicAsset[]
+  Organization           Organization @relation(fields: [organizationId], references: [id])
+}
+
+model User {
+  id                  String               @id @default(cuid())
+  displayName         String
+  email               String               @unique
+  avatarUrl           String?
+  badges              String[]             @default([])
+  crate               String[]             @default([])
+  createdAt           DateTime             @default(now())
+  balanceCents        Int                  @default(0)
+  subscriptionStatus  String               @default("free")
+  isActive            Boolean              @default(true)
+  passwordHash        String?
+  role                String               @default("fan")
+  tier                String               @default("LISTENER")
+  username            String?              @unique
+  AdImpressions       AdImpression[]
+  FanRoyaltyShares    FanRoyaltyShare[]
+  FanSubscriptions    FanSubscription[]
+  Following           Follow[]
+  PatronSubscriptions   PatronSubscription[]
+  StreamPlays           StreamPlay[]
+  ParticipationLicenses ParticipationLicense[]
+}
+
+model PatronSubscription {
+  id                  String       @id @default(cuid())
+  fanId               String
+  artistId            String
+  tierId              String
+  patronNumber        Int          @default(0)
+  priceCents          Int
+  revenueSharePercent Float        @default(0.0)
+  status              String       @default("ACTIVE")
+  startedAt           DateTime     @default(now())
+  createdAt           DateTime     @default(now())
+  Organization        Organization @relation(fields: [artistId], references: [id])
+  User                User         @relation(fields: [fanId], references: [id])
+  Tier                PatronTier   @relation(fields: [tierId], references: [id])
+}
+
+model PatronTier {
+  id                  String               @id @default(cuid())
+  organizationId      String
+  name                String
+  revenueSharePercent Float                @default(0.0)
+  maxSlots            Int?
+  createdAt           DateTime             @default(now())
+  description         String?              @db.VarChar(500)
+  isActive            Boolean              @default(true)
+  priceCents          Int
+  sortOrder           Int                  @default(0)
+  Subscriptions       PatronSubscription[]
+  Organization        Organization         @relation(fields: [organizationId], references: [id])
+}
+
+model FoundingCounter {
+  id       String  @id @default("singleton")
+  count    Int     @default(0)
+  maxSlots Int     @default(1000)
+  isOpen   Boolean @default(true)
+}
+
+model FoundingArtistSlot {
+  id             String       @id @default(cuid())
+  artistId       String       @unique
+  slotNumber     Int
+  freeYearEndsAt DateTime
+  status         String       @default("ACTIVE_FREE")
+  createdAt      DateTime     @default(now())
+  Organization   Organization @relation(fields: [artistId], references: [id])
+}
+
+model Follow {
+  id            String   @id @default(cuid())
+  followerId    String
+  followerType  String
+  followingId   String
+  followingType String
+  createdAt     DateTime @default(now())
+  User          User     @relation(fields: [followerId], references: [id])
+
+  @@unique([followerId, followerType, followingId, followingType])
+}
+
+model Station {
+  id           String      @id @default(cuid())
+  name         String      @unique
+  slug         String      @unique
+  description  String
+  genres       String[]
+  playlistId   String?     @unique
+  nowPlayingId String?
+  isLive       Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  NowPlaying   MusicAsset? @relation("NowPlaying", fields: [nowPlayingId], references: [id])
+  Playlist     Playlist?   @relation(fields: [playlistId], references: [id])
+
+  @@index([slug])
+}
+
+model Playlist {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String?
+  genres         String[]
+  trackIds       String[]
+  currentIndex   Int      @default(0)
+  loopMode       LoopMode @default(LOOP)
+  isLocked       Boolean  @default(true)
+  authorizedOnly Boolean  @default(true)
+  Station        Station?
+
+  @@index([slug])
+}
+
+model SessionDeck {
+  id               String       @id @default(cuid())
+  organizationId   String       @unique
+  activeTrackId    String?
+  activeTrackTitle String       @default("Untitled Track")
+  isPlaying        Boolean      @default(false)
+  backgroundUrl    String?
+  sceneType        String       @default("NEON_DISTRICT")
+  fireCount        Int          @default(0)
+  coolCount        Int          @default(0)
+  trashCount       Int          @default(0)
+  Queue            QueueItem[]
+  ActiveTrack      MusicAsset?  @relation(fields: [activeTrackId], references: [id])
+  Organization     Organization @relation(fields: [organizationId], references: [id])
+}
+
+model QueueItem {
+  id           String      @id @default(cuid())
+  deckId       String
+  musicAssetId String
+  position     Int
+  SessionDeck  SessionDeck @relation(fields: [deckId], references: [id])
+  MusicAsset   MusicAsset  @relation(fields: [musicAssetId], references: [id])
+}
+
+model ChatMessage {
+  id              String       @id @default(cuid())
+  organizationId  String
+  user            String
+  text            String
+  platform        String       @default("NRH")
+  platformIconUrl String?
+  badge           String?
+  createdAt       DateTime     @default(now())
+  Organization    Organization @relation(fields: [organizationId], references: [id])
+}
+
+model ParticipationLicense {
+  id             String       @id @default(cuid())
+  organizationId String
+  musicAssetId   String?
+  userId         String
+  allocatedBps   Int
+  feeCents       Int
+  status         String       @default("PENDING")
+  createdAt      DateTime     @default(now())
+  MusicAsset     MusicAsset?  @relation(fields: [musicAssetId], references: [id])
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  User           User         @relation(fields: [userId], references: [id])
+}
+
+model Merch {
+  id             String       @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  priceCents     Int
+  imageUrl       String?
+  stockCount     Int?
+  isLiveDrop     Boolean      @default(false)
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Follower {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  createdAt      DateTime     @default(now())
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([organizationId, userId])
+}
+
+model BidOffer {
+  id               String      @id @default(cuid())
+  organizationId   String
+  musicAssetId     String?
+  userId           String
+  offerAmountCents Int
+  requestedBps     Int
+  note             String?
+  status           String      @default("PENDING")
+  createdAt        DateTime    @default(now())
+  MusicAsset       MusicAsset? @relation(fields: [musicAssetId], references: [id])
+}
+
+model GiftEvent {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  giftType       String
+  valueCents     Int
+  message        String?
+  createdAt      DateTime     @default(now())
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Badge {
+  id             String   @id @default(cuid())
+  userId         String
+  type           String
+  awardedAt      DateTime @default(now())
+  organizationId String?
+
+  @@unique([userId, type, organizationId])
+}
+
+model Opportunity {
+  id               String    @id @default(cuid())
+  posterId         String
+  posterName       String?
+  posterIsVerified Boolean   @default(false)
+  title            String
+  description      String
+  rewardCents      Int?
+  budget           String?
+  type             String
+  status           String    @default("OPEN")
+  deadline         DateTime?
+  genreTargets     String[]  @default([])
+  applicantCount   Int       @default(0)
+  createdAt        DateTime  @default(now())
+  targetOrgId      String?
+}
+
+model MusicReview {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  type           String
+  rating         Int
+  content        String
+  status         String       @default("PUBLISHED")
+  paymentId      String?
+  createdAt      DateTime     @default(now())
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+model FanSubscription {
+  id                   String    @id @default(cuid())
+  fanId                String
+  status               String    @default("active")
+  monthlyAmountCents   Int       @default(999)
+  stripeSubscriptionId String?
+  stripeCustomerId     String?
+  startDate            DateTime  @default(now())
+  nextBillingDate      DateTime?
+  cancelledAt          DateTime?
+  createdAt            DateTime  @default(now())
+  User                 User      @relation(fields: [fanId], references: [id])
+}
+
+model StreamPlay {
+  id                  String       @id @default(cuid())
+  trackId             String
+  artistId            String
+  countedAsStream     Boolean      @default(false)
+  poolSource          PoolSource?
+  deviceId            String       @default("")
+  flagReason          String?
+  fraudScore          Float        @default(1.0)
+  hadKeyboardInput    Boolean      @default(false)
+  hadMouseMovement    Boolean      @default(false)
+  ipAddress           String       @default("")
+  ipCountry           String?
+  ipIsDatacenter      Boolean      @default(false)
+  isExcludedFromPool  Boolean      @default(false)
+  listenerId          String?
+  listenerType        String?
+  playDurationSeconds Int?
+  startedAt           DateTime     @default(now())
+  userAgent           String       @default("") @db.VarChar(500)
+  wasAudioMuted       Boolean      @default(false)
+  wasTabVisible       Boolean      @default(false)
+  Organization        Organization @relation(fields: [artistId], references: [id])
+  User                User?        @relation(fields: [listenerId], references: [id])
+  MusicAsset          MusicAsset   @relation(fields: [trackId], references: [id])
+
+  @@index([deviceId, startedAt])
+  @@index([ipAddress, startedAt])
+  @@index([artistId, isExcludedFromPool])
+  @@index([fraudScore])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  userType  String
+  type      String
+  title     String
+  body      String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model MonthlyPool {
+  id               String     @id @default(cuid())
+  month            Int
+  year             Int
+  poolATotal       Int        @default(0)
+  poolCTotal       Int        @default(0)
+  totalPaidStreams Int        @default(0)
+  totalFreeStreams Int        @default(0)
+  status           PoolStatus @default(PENDING)
+  calculatedAt     DateTime?
+  paidAt           DateTime?
+  createdAt        DateTime   @default(now())
+
+  @@unique([month, year], name: "month_year")
+}
+
+model ArtistRoyalty {
+  id                     String        @id @default(cuid())
+  artistId               String
+  month                  Int
+  year                   Int
+  poolAStreams           Int           @default(0)
+  poolAEarnings          Int           @default(0)
+  poolCStreams           Int           @default(0)
+  poolCEarnings          Int           @default(0)
+  patronMultiplier       Float         @default(1.0)
+  totalEarnings          Int           @default(0)
+  patronShareDistributed Int           @default(0)
+  netPayout              Int           @default(0)
+  status                 RoyaltyStatus @default(PENDING)
+  createdAt              DateTime      @default(now())
+  Organization           Organization  @relation(fields: [artistId], references: [id])
+}
+
+model FanRoyaltyShare {
+  id                   String       @id @default(cuid())
+  fanId                String
+  artistId             String
+  patronageId          String?
+  month                Int
+  year                 Int
+  artistStreamEarnings Int          @default(0)
+  revenueSharePercent  Float        @default(0.0)
+  amountEarned         Int          @default(0)
+  status               ShareStatus  @default(PENDING)
+  createdAt            DateTime     @default(now())
+  Organization         Organization @relation(fields: [artistId], references: [id])
+  User                 User         @relation(fields: [fanId], references: [id])
+}
+
+model AdImpression {
+  id                    String   @id @default(cuid())
+  fanId                 String?
+  timestamp             DateTime @default(now())
+  adDurationSeconds     Int
+  completed             Boolean  @default(false)
+  estimatedRevenueCents Int      @default(0)
+  User                  User?    @relation(fields: [fanId], references: [id])
+}
+
+model CollabRequest {
+  id                    String                     @id @default(cuid())
+  requesterId           String
+  receiverId            String
+  dealType              CollabDealType
+  requesterSplitPercent Float?
+  receiverSplitPercent  Float?
+  splitCovers           String[]
+  feeAmountCents        Int?
+  feePaymentStatus      FeePaymentStatus?
+  stripePaymentIntentId String?
+  collabType            CollabType
+  projectTitle          String?
+  message               String                     @db.VarChar(500)
+  demoUrl               String?
+  proposedDeadline      DateTime?
+  status                CollabRequestStatus        @default(PENDING)
+  counterCount          Int                        @default(0)
+  currentVersion        Int                        @default(1)
+  expiresAt             DateTime
+  createdAt             DateTime                   @default(now())
+  updatedAt             DateTime                   @updatedAt
+  acceptedAt            DateTime?
+  deal                  CollabDeal?
+  history               CollabNegotiationHistory[]
+  receiver              Organization               @relation("CollabReceiver", fields: [receiverId], references: [id])
+  requester             Organization               @relation("CollabRequester", fields: [requesterId], references: [id])
+}
+
+model CollabNegotiationHistory {
+  id                    String         @id @default(cuid())
+  collabRequestId       String
+  proposedById          String
+  version               Int
+  dealType              CollabDealType
+  requesterSplitPercent Float?
+  receiverSplitPercent  Float?
+  feeAmountCents        Int?
+  message               String?        @db.VarChar(200)
+  createdAt             DateTime       @default(now())
+  collabRequest         CollabRequest  @relation(fields: [collabRequestId], references: [id])
+}
+
+model CollabDeal {
+  id                    String           @id @default(cuid())
+  collabRequestId       String           @unique
+  requesterId           String
+  receiverId            String
+  dealType              CollabDealType
+  requesterSplitPercent Float?
+  receiverSplitPercent  Float?
+  feeAmountCents        Int?
+  feePaidAt             DateTime?
+  agreedTermsSummary    String           @db.VarChar(1000)
+  releaseId             String?
+  status                CollabDealStatus @default(ACTIVE)
+  createdAt             DateTime         @default(now())
+  collabRequest         CollabRequest    @relation(fields: [collabRequestId], references: [id])
+  receiver              Organization     @relation("CollabDealReceiver", fields: [receiverId], references: [id])
+  release               Release?         @relation(fields: [releaseId], references: [id])
+  requester             Organization     @relation("CollabDealRequester", fields: [requesterId], references: [id])
+}
+
+model FraudIncident {
+  id                  String       @id @default(cuid())
+  artistId            String
+  type                String
+  details             String?      @db.VarChar(1000)
+  month               DateTime
+  excludedStreamCount Int          @default(0)
+  status              String       @default("PENDING")
+  createdAt           DateTime     @default(now())
+  Organization        Organization @relation(fields: [artistId], references: [id])
+}
+
+model Session {
+  id           String       @id @default(cuid())
+  userId       String
+  deviceId     String       @default("")
+  ipAddress    String       @default("")
+  userAgent    String?
+  createdAt    DateTime     @default(now())
+  expiresAt    DateTime
+  Organization Organization @relation(fields: [userId], references: [id])
+}
+
+model ServiceProvider {
+  id             String           @id @default(cuid())
+  organizationId String           @unique
+  slug           String           @unique
+  bio            String           @db.VarChar(1000)
+  tagline        String           @db.VarChar(100)
+  avgRating      Float            @default(0)
+  reviewCount    Int              @default(0)
+  isFeatured     Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  AudioSamples   AudioSample[]
+  Orders         ServiceOrder[]
+  Packages       ServicePackage[]
+  Organization   Organization     @relation(fields: [organizationId], references: [id])
+  Reviews        ServiceReview[]
+}
+
+model ServicePackage {
+  id           String          @id @default(cuid())
+  providerId   String
+  name         String
+  description  String          @db.VarChar(500)
+  priceCents   Int
+  deliveryDays Int
+  revisions    Int             @default(1)
+  category     ServiceCategory
+  features     String[]
+  isActive     Boolean         @default(true)
+  Orders       ServiceOrder[]
+  Provider     ServiceProvider @relation(fields: [providerId], references: [id])
+}
+
+model AudioSample {
+  id              String          @id @default(cuid())
+  providerId      String
+  title           String
+  audioUrl        String
+  durationSeconds Int
+  Provider        ServiceProvider @relation(fields: [providerId], references: [id])
+}
+
+model ServiceOrder {
+  id                    String             @id @default(cuid())
+  packageId             String
+  buyerId               String
+  providerId            String
+  status                ServiceOrderStatus @default(PENDING)
+  totalAmountCents      Int
+  requirements          String?            @db.VarChar(1000)
+  fileUrl               String?
+  deliveryUrl           String?
+  stripePaymentIntentId String?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  Buyer                 Organization       @relation("ServiceBuyer", fields: [buyerId], references: [id])
+  Package               ServicePackage     @relation(fields: [packageId], references: [id])
+  Provider              ServiceProvider    @relation(fields: [providerId], references: [id])
+  Review                ServiceReview?
+}
+
+model ServiceReview {
+  id         String          @id @default(cuid())
+  orderId    String          @unique
+  providerId String
+  rating     Int
+  comment    String?         @db.VarChar(500)
+  createdAt  DateTime        @default(now())
+  Order      ServiceOrder    @relation(fields: [orderId], references: [id])
+  Provider   ServiceProvider @relation(fields: [providerId], references: [id])
+}
+
+enum LoopMode {
+  LOOP
+  SHUFFLE
+  AUTOPLAY
+}
+
+enum OrganizationPlan {
+  FREE
+  PRO
+  ELITE
+}
+
+enum FanType {
+  GUEST
+  FREE
+  SUBSCRIBER
+  PATRON
+}
+
+enum PoolSource {
+  A
+  C
+}
+
+enum PoolStatus {
+  PENDING
+  CALCULATED
+  PAID
+}
+
+enum RoyaltyStatus {
+  PENDING
+  PAID
+}
+
+enum ShareStatus {
+  PENDING
+  CREDITED
+}
+
+enum CollabDealType {
+  FREE
+  FIFTY_FIFTY
+  CUSTOM_SPLIT
+  PAID_FLAT
+  HYBRID
+}
+
+enum CollabType {
+  FEATURE
+  PRODUCTION
+  CO_WRITE
+  REMIX
+  OTHER
+}
+
+enum CollabRequestStatus {
+  PENDING
+  COUNTERED
+  ACCEPTED
+  DECLINED
+  EXPIRED
+  COMPLETED
+}
+
+enum FeePaymentStatus {
+  UNPAID
+  ESCROWED
+  RELEASED
+  REFUNDED
+}
+
+enum CollabDealStatus {
+  ACTIVE
+  RELEASED
+  DISPUTED
+  CANCELLED
+}
+
+enum ServiceCategory {
+  MIXING
+  MASTERING
+  VOCALS
+  PRODUCTION
+  GRAPHIC_DESIGN
+  MARKETING
+  OTHER
+}
+
+enum ServiceOrderStatus {
+  PENDING
+  IN_PROGRESS
+  DELIVERED
+  COMPLETED
+  DISPUTED
+  CANCELLED
+}

@@ -1,0 +1,26 @@
+import React from 'react';
+import { getSessionFan } from '@/lib/session';
+import DashboardClient from './DashboardClient';
+import { prisma } from '@/lib/prisma';
+
+export const metadata = {
+  title: 'Fan Dashboard | New Release Hub',
+  description: 'Manage your library, follow artists, and track your patronages.',
+};
+
+export default async function FanDashboardPage() {
+  const user = await getSessionFan();
+
+  // Fetch initial library count or other server-side data if needed
+  const libraryCount = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { _count: { select: { ParticipationLicenses: true } } }
+  });
+
+  return (
+    <DashboardClient 
+      user={user} 
+      initialLibraryCount={libraryCount?._count.ParticipationLicenses || 0}
+    />
+  );
+}
