@@ -69,7 +69,25 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
   const [libraryTracks, setLibraryTracks] = useState<any[]>([]);
   const [isLoadingLibrary, setIsLoadingLibrary] = useState(false);
   const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
+  const [yieldHistory, setYieldHistory] = useState<any[]>([]);
+  const [isLoadingYield, setIsLoadingYield] = useState(true);
   const unreadNotifs = MOCK_NOTIFICATIONS.filter(n => n.unread).length;
+
+  useEffect(() => {
+    const fetchYield = async () => {
+      if (!user.id) return;
+      try {
+        const res = await fetch(`/api/fan/yield/history?userId=${user.id}`);
+        const data = await res.json();
+        if (data.success) setYieldHistory(data.history);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoadingYield(false);
+      }
+    };
+    fetchYield();
+  }, [user.id]);
 
   useEffect(() => {
     if (activeTab === 'Library') {
@@ -317,19 +335,35 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                      </div>
                   </div>
 
-                  {/* SPARKLINE CHART (CSS BASED) */}
+                  {/* SPARKLINE CHART (LIVE ANALYTICS) */}
                   <div className="h-32 w-full flex items-end gap-1.5 pt-4">
-                     {[20, 35, 25, 45, 30, 55, 40, 65, 50, 85, 70, 100].map((h, i) => (
-                        <div key={i} className="flex-1 bg-white/5 rounded-t-lg relative group overflow-hidden">
-                           <div 
-                              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-green-500/40 to-green-500/10 group-hover:from-green-500/60 transition-all duration-500" 
-                              style={{ height: `${h}%` }}
-                           ></div>
-                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <span className="text-[8px] font-bold text-white bg-black/80 px-1.5 py-0.5 rounded">${(h/10).toFixed(2)}</span>
-                           </div>
+                     {isLoadingYield ? (
+                        <div className="w-full h-full flex items-center justify-center">
+                           <div className="w-4 h-4 border-2 border-green-500/20 border-t-green-500 rounded-full animate-spin"></div>
                         </div>
-                     ))}
+                     ) : yieldHistory.length > 0 ? (
+                        yieldHistory.map((entry, i) => {
+                           const maxAmount = Math.max(...yieldHistory.map(h => h.amountEarned), 100);
+                           const height = (entry.amountEarned / maxAmount) * 100;
+                           return (
+                              <div key={i} className="flex-1 bg-white/5 rounded-t-lg relative group overflow-hidden">
+                                 <div 
+                                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-green-500/40 to-green-500/10 group-hover:from-green-500/60 transition-all duration-500" 
+                                    style={{ height: `${Math.max(height, 5)}%` }}
+                                 ></div>
+                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span className="text-[8px] font-bold text-white bg-black/80 px-1.5 py-0.5 rounded">${(entry.amountEarned / 100).toFixed(2)}</span>
+                                 </div>
+                              </div>
+                           );
+                        })
+                     ) : (
+                        [20, 35, 25, 45, 30, 55, 40, 65, 50, 85, 70, 100].map((h, i) => (
+                           <div key={i} className="flex-1 bg-white/5 rounded-t-lg relative group overflow-hidden opacity-20">
+                              <div className="absolute bottom-0 left-0 right-0 bg-gray-500/20" style={{ height: `${h}%` }}></div>
+                           </div>
+                        ))
+                     )}
                   </div>
                   <div className="flex justify-between text-[8px] font-bold text-gray-700 uppercase tracking-widest pt-2">
                      <span>Jan</span>
