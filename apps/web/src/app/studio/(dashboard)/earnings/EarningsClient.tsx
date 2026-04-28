@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { DollarSign, TrendingUp, Calendar, ArrowUpRight, ShieldCheck, Download, History, Zap, Loader2, AlertCircle, Star, Users, Music, Clock, CreditCard, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { createStripeOnboardingLink, getStripeAccountStatus } from '@/app/actions/stripe';
 
 export default function EarningsPage({ artist }: { artist: any }) {
