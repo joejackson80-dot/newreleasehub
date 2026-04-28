@@ -55,6 +55,7 @@ model Organization {
   MusicAssets            MusicAsset[]
   MusicReviews           MusicReview[]
   ParticipationLicenses  ParticipationLicense[]
+  Proposals              Proposal[]
   PatronSubscriptions    PatronSubscription[]
   PatronTiers            PatronTier[]
   Releases               Release[]
@@ -147,6 +148,7 @@ model User {
   PatronSubscriptions   PatronSubscription[]
   StreamPlays           StreamPlay[]
   ParticipationLicenses ParticipationLicense[]
+  Votes                 Vote[]
 }
 
 model PatronSubscription {
@@ -287,6 +289,7 @@ model ParticipationLicense {
   allocatedBps   Int
   feeCents       Int
   status         String       @default("PENDING")
+  ledgerHash     String?      // Forensic on-chain bridge
   createdAt      DateTime     @default(now())
   MusicAsset     MusicAsset?  @relation(fields: [musicAssetId], references: [id])
   Organization   Organization @relation(fields: [organizationId], references: [id])
@@ -436,6 +439,33 @@ model Notification {
   link      String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model Proposal {
+  id              String   @id @default(cuid())
+  organizationId  String
+  title           String
+  description     String
+  status          String   @default("ACTIVE") // ACTIVE, PASSED, REJECTED
+  ledgerHash      String?  // Forensic on-chain bridge
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime
+  Votes           Vote[]
+  Organization    Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Vote {
+  id              String   @id @default(cuid())
+  proposalId      String
+  userId          String
+  voteType        String   // YES, NO, ABSTAIN
+  weight          Int      @default(1)
+  ledgerHash      String?  // Forensic on-chain bridge
+  createdAt       DateTime @default(now())
+  Proposal        Proposal @relation(fields: [proposalId], references: [id])
+  User            User     @relation(fields: [userId], references: [id])
+
+  @@unique([proposalId, userId])
 }
 
 model MonthlyPool {
