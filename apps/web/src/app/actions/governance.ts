@@ -1,11 +1,11 @@
 'use server';
 import { prisma } from '@/lib/prisma';
-import { getSessionUser } from '@/lib/session';
+import { getSessionFan } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 
 export async function voteOnProposal(proposalId: string, voteType: 'YES' | 'NO') {
   try {
-    const user = await getSessionUser();
+    const user = await getSessionFan();
     if (!user) return { success: false, error: 'Unauthorized' };
 
     // Check if already voted

@@ -38,6 +38,7 @@ export const metadata: Metadata = {
 };
 
 
+import { Toaster } from 'react-hot-toast';
 import MainLayoutWrapper from "@/components/layout/MainLayoutWrapper";
 import GlobalAudioPlayer from "@/components/layout/GlobalAudioPlayer";
 import { AudioProvider } from "@/context/AudioContext";
@@ -55,6 +56,16 @@ export default function RootLayout({
       data-deployment-id="v2-stable-layout"
     >
       <body className="min-h-full flex flex-col bg-[#020202] font-sans selection:bg-[#00D2FF] selection:text-white">
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            style: {
+              background: '#1D1D1B',
+              color: '#F4F3EF',
+              border: '1px solid rgba(255,255,255,0.08)',
+            },
+          }}
+        />
         <AudioProvider>
           <MainLayoutWrapper>
             {children}

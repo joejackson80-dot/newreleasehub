@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Share2, Link as LinkIcon, Twitter, Instagram, Facebook, Download, Copy, CheckCircle2, Music } from 'lucide-react';
+import { Share2, Link as LinkIcon, Download, Copy, CheckCircle2, Music, ExternalLink } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import { toast } from 'react-hot-toast';
 
@@ -138,10 +138,10 @@ export default function ShareClient({ org }: { org: any }) {
                         <p className="text-xs text-gray-400">Instantly share this release to your connected network.</p>
                         <div className="flex gap-2">
                           <button className="flex-1 py-2 bg-[#1DA1F2]/10 text-[#1DA1F2] hover:bg-[#1DA1F2]/20 border border-[#1DA1F2]/20 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
-                            <Twitter className="w-3 h-3" /> Tweet
+                            <span className="text-xs font-bold">𝕏</span> Tweet
                           </button>
                           <button className="flex-1 py-2 bg-[#E1306C]/10 text-[#E1306C] hover:bg-[#E1306C]/20 border border-[#E1306C]/20 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
-                            <Instagram className="w-3 h-3" /> Story
+                            <ExternalLink size={12} /> Story
                           </button>
                         </div>
                       </div>

@@ -11,7 +11,6 @@ export async function GET(req: Request) {
     const sortBy = searchParams.get('sortBy') || 'relevance'; // relevance, growth, equity, streams
 
     const where: any = {
-      isArtist: true,
       isPublic: true,
       name: { contains: query, mode: 'insensitive' },
       supporterCount: { gte: minSupporters },

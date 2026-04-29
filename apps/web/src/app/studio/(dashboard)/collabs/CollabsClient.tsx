@@ -261,7 +261,3 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
     </div>
   );
 }
-
-}
-
-

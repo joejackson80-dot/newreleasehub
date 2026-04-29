@@ -7,19 +7,19 @@ export async function GET(req: Request) {
     const limit = parseInt(searchParams.get('limit') || '20');
 
     // Fetch Milestones
-    const milestones = await prisma.milestone.findMany({
+    const milestones = await prisma.artistMilestone.findMany({
       take: limit,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { achievedAt: 'desc' },
       include: {
-        Organization: {
+        artist: {
           select: { name: true, slug: true, profileImageUrl: true }
         }
       }
     });
 
     // Fetch New Releases
-    const releases = await prisma.asset.findMany({
-      where: { status: 'PUBLISHED' },
+    const releases = await prisma.musicAsset.findMany({
+      where: { isLive: true },
       take: limit,
       orderBy: { createdAt: 'desc' },
       include: {
@@ -31,7 +31,7 @@ export async function GET(req: Request) {
 
     // Fetch Active Collabs
     const collabs = await prisma.collabRequest.findMany({
-      where: { status: 'ACTIVE' },
+      where: { status: 'ACCEPTED' },
       take: limit,
       orderBy: { createdAt: 'desc' },
       include: {
@@ -45,10 +45,10 @@ export async function GET(req: Request) {
       ...milestones.map(m => ({
         id: `milestone-${m.id}`,
         type: 'MILESTONE',
-        title: m.title,
-        description: m.description,
-        timestamp: m.createdAt,
-        artist: m.Organization,
+        title: `${m.artist.name} achieved ${m.type.replace('_', ' ')}`,
+        description: `New institutional milestone verified: ${m.type.replace('_', ' ')} protocol.`,
+        timestamp: m.achievedAt,
+        artist: m.artist,
         metadata: { type: m.type, icon: '🏆' }
       })),
       ...releases.map(r => ({

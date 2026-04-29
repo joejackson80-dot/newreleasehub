@@ -8,10 +8,10 @@ export async function acceptCollabDeal(collabId: string) {
     const artist = await getSessionArtist();
     if (!artist) return { success: false, error: 'Unauthorized' };
 
-    // Update collab status to ACTIVE
+    // Update collab status to ACCEPTED
     const collab = await prisma.collabRequest.update({
       where: { id: collabId, receiverId: artist.id },
-      data: { status: 'ACTIVE' }
+      data: { status: 'ACCEPTED' }
     });
 
     // We might also create a Collaboration record or split agreement here

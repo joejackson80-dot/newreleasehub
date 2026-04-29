@@ -7,5 +7,5 @@ export default async function ArtistMessagesPage() {
   const org = await getSessionArtist();
   const res = await getMessages({ orgId: org.id });
 
-  return <MessagesClient initialMessages={res.success ? res.messages : []} org={org} />;
+  return <MessagesClient initialMessages={(res.success && res.messages) ? (res.messages as any[]) : []} org={org} />;
 }

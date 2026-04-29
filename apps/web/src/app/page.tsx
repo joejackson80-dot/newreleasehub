@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3 } from 'lucide-react';
+import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap } from 'lucide-react';
 
 const ARTIST_IMAGE_POOL = [
   'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
@@ -175,7 +175,6 @@ export default async function HomePage() {
                <NetworkFeed />
             </div>
          </div>
-      </section>
       </section>
 
       {/* HOW IT WORKS */}

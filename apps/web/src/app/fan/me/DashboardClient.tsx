@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus, Clock } from 'lucide-react';
+import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus, Clock, Radio } from 'lucide-react';
 import Link from 'next/link';
 import { useAudio } from '@/context/AudioContext';
 
@@ -485,7 +485,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                       </div>
 
                       <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                         <Link href={`/${p.artistSlug}`} className="text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
+                         <Link href={`/${sub.Organization?.slug}`} className="text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
                             Manage Seat →
                          </Link>
                          <ShieldCheck className="w-4 h-4 text-white/10" />

@@ -12,7 +12,7 @@ export async function GET(req: Request) {
     if (genre === 'Top Artists') {
       ranking = await prisma.organization.findMany({
         where: {
-          isArtist: true,
+          isPublic: true,
         },
         orderBy: [
           { supporterCount: 'desc' },
@@ -34,7 +34,7 @@ export async function GET(req: Request) {
       // For now, sort by recent streams or just a subset of artists with lower total streams but growing
       ranking = await prisma.organization.findMany({
         where: {
-          isArtist: true,
+          isPublic: true,
           totalStreams: { gt: 0 }
         },
         orderBy: {
@@ -74,7 +74,7 @@ export async function GET(req: Request) {
       // Specific genre
       ranking = await prisma.organization.findMany({
         where: {
-          isArtist: true,
+          isPublic: true,
           genres: {
             has: genre
           }

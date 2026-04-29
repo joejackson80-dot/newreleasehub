@@ -231,10 +231,16 @@ export async function getVaultContent(userId: string) {
 export async function logListeningSession(userId: string, trackId: string) {
   try {
     // 1. Record the stream play
+    const track = await prisma.musicAsset.findUnique({
+      where: { id: trackId },
+      select: { organizationId: true }
+    });
+
     await prisma.streamPlay.create({
       data: {
-        userId,
-        releaseId: trackId
+        listenerId: userId,
+        trackId: trackId,
+        artistId: track?.organizationId || ''
       }
     });
 

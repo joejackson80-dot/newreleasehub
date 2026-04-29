@@ -225,6 +225,7 @@ model FanListeningStats {
   longestStreak         Int      @default(0)
   uniqueArtistsAllTime  Int      @default(0)
   uniqueArtists30d      Int      @default(0)
+  lastListeningDate     DateTime @default(now())
   topGenre              String?
   topArtistId           String?
   totalSupportPaidCents Int      @default(0)
@@ -1014,4 +1015,3 @@ model StationPlayHistory {
   Station     Station    @relation(fields: [stationId], references: [id])
   Asset       MusicAsset @relation(fields: [assetId], references: [id])
 }
-
