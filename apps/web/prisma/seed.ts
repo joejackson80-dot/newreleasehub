@@ -242,7 +242,7 @@ async function main() {
       id: 'nrh-official', slug: 'newreleasehub', name: 'New Release Hub',
       bio: 'The Institutional Destination for Sovereign Music. Forensic streaming analysis, non-dilutive participation, and professional artist governance. Designed for the founding collective. newreleasehub.com',
       isVerified: true, genres: ['Institutional', 'Network'], city: 'Global', country: 'Global',
-      profileImageUrl: '/nrh_logo_options_1776976931607.png',
+      profileImageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80',
     }
   });
 

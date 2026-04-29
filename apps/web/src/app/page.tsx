@@ -34,7 +34,7 @@ export default async function HomePage() {
       <section className="relative min-h-screen flex items-center bg-black overflow-hidden pt-32 pb-20">
          <div className="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-[3000ms]">
             <img
-              src="/reverb_hero_artist_1776975832109.png"
+              src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1600&q=80"
               className="w-full h-full object-cover scale-110"
               alt="Independent artist performing"
             />
