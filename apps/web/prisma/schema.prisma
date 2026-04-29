@@ -126,6 +126,7 @@ model MusicAsset {
   SessionDecks          SessionDeck[]
   StationNowPlaying     Station[]              @relation("NowPlaying")
   StreamPlays           StreamPlay[]
+  StationPlayHistory    StationPlayHistory[]
 }
 
 model Release {
