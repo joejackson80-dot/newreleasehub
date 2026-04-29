@@ -44,7 +44,7 @@ export default function AnalyticsClient() {
           </div>
           <div className="flex space-x-2 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800">
             <button onClick={() => setActiveTab('overview')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'overview' ? 'bg-[#00D2FF] text-black' : 'text-zinc-500 hover:text-white'}`}>Overview</button>
-            <button onClick={() => setActiveTab('charts')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'charts' ? 'bg-[#1D9E75] text-white' : 'text-zinc-500 hover:text-white'}`}>Charts</button>
+            <button onClick={() => setActiveTab('charts')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'charts' ? 'bg-purple-600 text-white' : 'text-zinc-500 hover:text-white'}`}>Charts</button>
           </div>
         </div>
       </header>
@@ -59,7 +59,7 @@ export default function AnalyticsClient() {
             <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
               <Users className="w-6 h-6" />
             </div>
-            <span className="text-[10px] font-bold text-green-500 uppercase tracking-widest">+12.4%</span>
+            <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">+12.4%</span>
           </div>
           <div>
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Listener Retention</h3>
@@ -82,10 +82,10 @@ export default function AnalyticsClient() {
 
         <div className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
           <div className="flex items-center justify-between">
-            <div className="w-12 h-12 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
               <Activity className="w-6 h-6" />
             </div>
-            <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">Live Now</span>
+            <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Live Now</span>
           </div>
           <div>
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Stream Velocity</h3>
@@ -104,7 +104,7 @@ export default function AnalyticsClient() {
               </div>
               <div className="flex gap-4">
                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[#00D2FF]"></div>
+                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
                     <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Listeners</span>
                  </div>
               </div>
@@ -114,7 +114,7 @@ export default function AnalyticsClient() {
               {retentionData.map((d, i) => (
                 <div 
                   key={i} 
-                  className="flex-1 bg-[#00D2FF]/10 rounded-t-lg hover:bg-[#00D2FF] transition-all relative group/bar"
+                  className="flex-1 bg-purple-500/10 rounded-t-lg hover:bg-purple-500 transition-all relative group/bar"
                   style={{ height: `${d.value}%` }}
                 >
                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black px-2 py-1 rounded text-[8px] font-bold opacity-0 group-hover/bar:opacity-100 transition-opacity">
@@ -149,7 +149,7 @@ export default function AnalyticsClient() {
                       <span className="text-sm font-black italic">{device.share}%</span>
                    </div>
                    <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                      <div className={`h-full ${device.color} transition-all duration-1000`} style={{ width: `${device.share}%` }}></div>
+                      <div className={`h-full ${device.type === 'Mobile' ? 'bg-[#00D2FF]' : 'bg-purple-600'} transition-all duration-1000`} style={{ width: `${device.share}%` }}></div>
                    </div>
                 </div>
               ))}
@@ -200,36 +200,38 @@ export default function AnalyticsClient() {
         <div className="space-y-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {['Global Rank', 'Genre Rank', 'City Rank', 'Rising Rank'].map((title, i) => (
-              <div key={i} className="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
-                <h3 className="text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">{title}</h3>
+              <div key={i} className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2rem] shadow-xl">
+                <h3 className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] mb-2">{title}</h3>
                 <div className="flex items-end justify-between">
-                  <p className="text-3xl font-bold">#24</p>
-                  <span className="text-emerald-400 text-sm font-bold">▲ +2</span>
+                  <p className="text-3xl font-black italic text-white">#24</p>
+                  <span className="text-[#00D2FF] text-xs font-bold uppercase tracking-widest">▲ +2</span>
                 </div>
               </div>
             ))}
           </div>
           
-          <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
-            <h2 className="text-2xl font-bold mb-8">What's Helping Your Rank</h2>
-            <div className="space-y-6">
+          <div className="bg-[#0A0A0A] border border-white/5 p-10 rounded-[3rem] shadow-2xl">
+            <h2 className="text-2xl font-bold uppercase italic tracking-tighter mb-8">Equity Score Factors</h2>
+            <div className="space-y-8">
               {[
-                { name: 'Streaming Activity', score: 82, msg: 'Your streams are strong — keep releasing music' },
-                { name: 'Patron Community', score: 61, msg: '43 patrons. Each new patron adds points.' },
-                { name: 'Fan Growth', score: 41, msg: '+12 new followers this month' },
-                { name: 'Fan Engagement', score: 89, msg: '2 tips received, 8 comments — great!' },
-                { name: 'Release Consistency', score: 32, msg: '1 release in 90 days. Release more consistently.' },
-                { name: 'Profile Completeness', score: 100, msg: 'Profile fully set up ✓' },
+                { name: 'Streaming Activity', score: 82, msg: 'Your streams are strong — keep releasing music', color: 'bg-[#00D2FF]' },
+                { name: 'Patron Community', score: 61, msg: '43 patrons. Each new patron adds points.', color: 'bg-purple-500' },
+                { name: 'Fan Growth', score: 41, msg: '+12 new followers this month', color: 'bg-[#00D2FF]' },
+                { name: 'Fan Engagement', score: 89, msg: '2 tips received, 8 comments — great!', color: 'bg-purple-500' },
+                { name: 'Release Consistency', score: 32, msg: '1 release in 90 days. Release more consistently.', color: 'bg-orange-500' },
+                { name: 'Profile Completeness', score: 100, msg: 'Profile fully set up ✓', color: 'bg-[#00D2FF]' },
               ].map(factor => (
-                <div key={factor.name}>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-bold">{factor.name}</span>
-                    <span className="text-zinc-500">{factor.score}/100</span>
+                <div key={factor.name} className="group">
+                  <div className="flex justify-between mb-3 items-end">
+                    <div>
+                       <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">{factor.name}</span>
+                       <p className="text-[10px] text-gray-600 font-medium mt-1">{factor.msg}</p>
+                    </div>
+                    <span className="text-sm font-black italic text-white">{factor.score}/100</span>
                   </div>
-                  <div className="h-2 bg-zinc-800 rounded-full overflow-hidden mb-2">
-                    <div className="h-full bg-[#1D9E75]" style={{ width: `${factor.score}%` }}></div>
+                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div className={`h-full ${factor.color} transition-all duration-1000 shadow-[0_0_10px_rgba(0,210,255,0.3)]`} style={{ width: `${factor.score}%` }}></div>
                   </div>
-                  <p className="text-sm text-zinc-500">{factor.msg}</p>
                 </div>
               ))}
             </div>

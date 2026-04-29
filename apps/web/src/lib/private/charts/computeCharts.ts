@@ -91,16 +91,31 @@ export const computeWeeklyCharts = inngest.createFunction(
       .sort((a, b) => b.score - a.score)
       .map((s, i) => ({ ...s, globalRank: i + 1 }))
 
-    // Step 4: Rank by genre
-    const genreGroups = groupBy(artists, (a: any) =>
-      Array.isArray(a.genre) && a.genre.length > 0 ? a.genre[0] : 'Other'
-    )
-    const genreRanks: Record<string, number> = {}
-    for (const [genre, genreArtists] of Object.entries(genreGroups)) {
+    // Step 4: Rank by genre (inclusive of all genres tagged)
+    const allGenres = Array.from(new Set(artists.flatMap(a => Array.isArray(a.genre) ? a.genre : [a.genre ?? 'Other'])))
+    const genreRanks: Record<string, number> = {} // Only stores the "primary" genre rank for the Org model
+    const genreChartData: Record<string, { artistId: string, rank: number }[]> = {}
+
+    for (const genre of allGenres) {
+      const genreArtists = artists.filter(a => 
+        (Array.isArray(a.genre) && a.genre.includes(genre)) || a.genre === genre
+      )
+      if (genreArtists.length === 0) continue
+
       const genreScores = scores
-        .filter(s => (genreArtists as any[]).find((a: any) => a.id === s.artistId))
+        .filter(s => genreArtists.some(a => a.id === s.artistId))
         .sort((a, b) => b.score - a.score)
-      genreScores.forEach((s, i) => { genreRanks[s.artistId] = i + 1 })
+      
+      genreChartData[genre] = genreScores.map((s, i) => ({ artistId: s.artistId, rank: i + 1 }))
+      
+      // For the Organization model, we store the rank of their FIRST genre as primary
+      genreScores.forEach((s, i) => {
+        const artist = artists.find(a => a.id === s.artistId)
+        const primaryGenre = Array.isArray(artist?.genre) ? artist.genre[0] : artist?.genre
+        if (primaryGenre === genre) {
+          genreRanks[s.artistId] = i + 1
+        }
+      })
     }
 
     // Step 5: Rank by city

@@ -1,63 +1,217 @@
+'use client';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { BarChart3, Users, TrendingUp, Search, ChevronRight } from 'lucide-react';
+
+const GENRES = [
+  'Top Artists', 'Rising', 'Hip-Hop', 'R&B', 'Pop', 'Electronic', 
+  'Afrobeats', 'Reggaeton', 'Indie', 'Rock', 'Country', 'Jazz', 'Classical',
+  'Lo-Fi', 'Metal', 'Folk', 'Blues', 'World', 'Latin', 'Ambient'
+];
 
 export default function ChartsPage() {
+  const [activeGenre, setActiveGenre] = useState('Top Artists');
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
-    <div className="min-h-screen bg-[#070707] text-white p-8">
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
-            NRH Charts
-          </h1>
-          <p className="text-zinc-400 text-xl">The pulse of independent music on New Release Hub. Updated every Monday.</p>
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-black">
+      {/* BACKGROUND DECOR */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full animate-pulse"></div>
+         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#00D2FF]/5 blur-[120px] rounded-full"></div>
+      </div>
+
+      <div className="relative z-10 p-8 md:p-16 max-w-7xl mx-auto space-y-16">
+        {/* HEADER SECTION */}
+        <header className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 text-[#00D2FF]">
+               <BarChart3 className="w-6 h-6" />
+               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Network Authority</span>
+            </div>
+            <div>
+              <h1 className="text-7xl md:text-8xl font-black mb-4 uppercase italic tracking-tighter leading-none">
+                The <span className="text-[#00D2FF]">Charts.</span>
+              </h1>
+              <p className="text-zinc-500 text-lg md:text-xl font-medium max-w-2xl leading-relaxed">
+                The definitive measurement of independent music equity. <br />
+                Updated every Monday at <span className="text-white italic">6AM Central.</span>
+              </p>
+            </div>
+          </div>
+          
+          <div className="relative group min-w-[300px]">
+             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-[#00D2FF] transition-colors" />
+             <input 
+               type="text" 
+               placeholder="SEARCH ARTISTS..."
+               value={searchQuery}
+               onChange={(e) => setSearchQuery(e.target.value)}
+               className="w-full bg-[#0A0A0A] border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-[10px] font-bold uppercase tracking-widest focus:outline-none focus:border-[#00D2FF]/50 focus:ring-1 focus:ring-[#00D2FF]/20 transition-all shadow-2xl"
+             />
+          </div>
         </header>
 
-        <nav className="flex space-x-4 mb-12 overflow-x-auto pb-4 scrollbar-hide">
-          <Link href="/network/charts" className="px-6 py-2 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 whitespace-nowrap">Top Artists</Link>
-          <Link href="/network/charts/rising" className="px-6 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 whitespace-nowrap">Rising</Link>
-          <Link href="/network/charts/hip-hop" className="px-6 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 whitespace-nowrap">Hip-Hop</Link>
-          <Link href="/network/charts/pop" className="px-6 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 whitespace-nowrap">Pop</Link>
-          <Link href="/network/charts/electronic" className="px-6 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 whitespace-nowrap">Electronic</Link>
-          <Link href="/network/charts/indie" className="px-6 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 whitespace-nowrap">Indie</Link>
-          <Link href="/network/charts/patrons" className="px-6 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 whitespace-nowrap">Patrons</Link>
-        </nav>
-
-        <div className="mb-12 bg-zinc-900/50 rounded-2xl border border-zinc-800 p-8 flex items-center justify-between">
-          <div>
-            <span className="text-emerald-400 font-bold tracking-widest uppercase text-sm mb-2 block">#1 This Week</span>
-            <h2 className="text-4xl font-bold mb-2">To Be Computed</h2>
-            <p className="text-zinc-400">Hip-Hop • Omaha, NE</p>
-          </div>
+        {/* GENRE NAVIGATION - COVER ALL GENRES */}
+        <div className="space-y-4">
+           <div className="flex items-center justify-between">
+              <span className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.3em]">Filter By Genre</span>
+              <span className="text-[9px] font-black text-[#00D2FF] uppercase tracking-[0.3em]">{GENRES.length} Categories</span>
+           </div>
+           <nav className="flex flex-wrap gap-2">
+             {GENRES.map((genre) => (
+               <button 
+                 key={genre}
+                 onClick={() => setActiveGenre(genre)}
+                 className={`px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeGenre === genre ? 'bg-[#00D2FF] text-black shadow-[0_0_30px_rgba(0,210,255,0.2)]' : 'bg-[#0A0A0A] border border-white/5 text-zinc-500 hover:text-white hover:border-white/20'}`}
+               >
+                 {genre}
+               </button>
+             ))}
+           </nav>
         </div>
 
-        <div className="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
-          <table className="w-full text-left">
-            <thead className="bg-zinc-800/50 text-zinc-400 text-sm">
-              <tr>
-                <th className="p-4 font-medium">Rank</th>
-                <th className="p-4 font-medium">Trend</th>
-                <th className="p-4 font-medium">Artist</th>
-                <th className="p-4 font-medium">Genre</th>
-                <th className="p-4 font-medium">City</th>
-                <th className="p-4 font-medium text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800">
-              <tr className="hover:bg-zinc-800/50 transition-colors">
-                <td className="p-4 text-2xl font-bold text-zinc-500">2</td>
-                <td className="p-4 text-emerald-400">▲ +1</td>
-                <td className="p-4 font-bold">Waiting for Chart Run...</td>
-                <td className="p-4 text-zinc-400">R&B</td>
-                <td className="p-4 text-zinc-400">Atlanta, GA</td>
-                <td className="p-4 text-right">
-                  <button className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-black font-bold rounded-lg text-sm">
-                    Follow
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        {/* FEATURED SPOTLIGHT */}
+        <div className="relative group cursor-pointer overflow-hidden rounded-[3.5rem] border border-white/10 bg-[#0A0A0A] shadow-2xl">
+           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-[#00D2FF]/20 opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
+           <div className="relative p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12">
+              <div className="flex items-center gap-10">
+                 <div className="relative">
+                    <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] bg-zinc-900 border-2 border-white/10 flex items-center justify-center relative z-10 shadow-2xl">
+                       <Users className="w-16 h-16 text-zinc-800" />
+                    </div>
+                    <div className="absolute -top-4 -left-4 w-12 h-12 bg-white text-black font-black italic text-xl flex items-center justify-center rounded-2xl z-20 shadow-xl">#1</div>
+                 </div>
+                 <div className="space-y-4">
+                   <div className="flex items-center gap-2">
+                      <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Global Authority</span>
+                      <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
+                   </div>
+                   <h2 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-none">Calculating...</h2>
+                   <div className="flex items-center gap-6 text-zinc-500 font-bold uppercase tracking-[0.2em] text-[10px]">
+                      <span>{activeGenre}</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-800"></span>
+                      <span>Omaha, NE</span>
+                   </div>
+                 </div>
+              </div>
+              <div className="w-full md:w-auto">
+                 <button className="group/btn relative w-full md:w-auto overflow-hidden rounded-2xl bg-white px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-105 active:scale-95 shadow-2xl">
+                    <span className="relative z-10 flex items-center gap-2">
+                       View Authority Profile
+                       <ChevronRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                    </span>
+                 </button>
+              </div>
+           </div>
         </div>
+
+        {/* RANKING TABLE */}
+        <div className="space-y-8">
+           <div className="flex items-center justify-between px-8">
+              <h3 className="text-xl font-black italic uppercase tracking-tighter text-white">Full Rankings <span className="text-zinc-700 ml-2">/ {activeGenre}</span></h3>
+              <div className="flex gap-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                 <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> Rising</span>
+                 <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500"></div> Falling</span>
+              </div>
+           </div>
+
+           <div className="bg-[#0A0A0A] rounded-[3.5rem] border border-white/5 overflow-hidden shadow-2xl relative">
+             <table className="w-full text-left border-collapse">
+               <thead className="bg-white/5 text-zinc-600 text-[10px] font-black uppercase tracking-[0.3em]">
+                 <tr>
+                   <th className="p-10"># Rank</th>
+                   <th className="p-10">Trend</th>
+                   <th className="p-10">Authority Entity</th>
+                   <th className="p-10">Primary Discipline</th>
+                   <th className="p-10">Equity Score</th>
+                   <th className="p-10 text-right">Action</th>
+                 </tr>
+               </thead>
+               <tbody className="divide-y divide-white/5">
+                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                   <tr key={i} className="hover:bg-white/[0.02] transition-all group relative">
+                     <td className="p-10 text-5xl font-black italic text-zinc-900 group-hover:text-zinc-600 transition-all duration-500">{i + 1}</td>
+                     <td className="p-10">
+                        <div className="flex flex-col items-start gap-1">
+                           <span className="flex items-center gap-1 text-[#00D2FF] font-black text-[11px] uppercase tracking-widest italic">
+                              <TrendingUp className="w-3.5 h-3.5" />
+                              +{Math.floor(Math.random() * 5) + 1}
+                           </span>
+                           <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">New Entry</span>
+                        </div>
+                     </td>
+                     <td className="p-10">
+                        <div className="flex items-center gap-6">
+                           <div className="relative group/avatar">
+                              <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF]/40 transition-colors shadow-lg">
+                                 <Users className="w-8 h-8" />
+                              </div>
+                              <div className="absolute inset-0 bg-[#00D2FF]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                           </div>
+                           <div className="space-y-1">
+                              <p className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">Waiting for Data...</p>
+                              <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] italic">Omaha Network</p>
+                           </div>
+                        </div>
+                     </td>
+                     <td className="p-10">
+                        <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                           {activeGenre}
+                        </span>
+                     </td>
+                     <td className="p-10">
+                        <div className="space-y-3">
+                           <div className="flex justify-between items-end">
+                              <span className="text-white font-black italic text-lg">{(80 - i * 4.2).toFixed(1)}</span>
+                              <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Institutional</span>
+                           </div>
+                           <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                              <div 
+                                 className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000" 
+                                 style={{ width: `${80 - i * 5}%` }}
+                              ></div>
+                           </div>
+                        </div>
+                     </td>
+                     <td className="p-10 text-right">
+                       <button className="group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF]/50 transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
+                         <span className="relative z-10 group-hover/follow:text-white">Connect</span>
+                         <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
+                       </button>
+                     </td>
+                   </tr>
+                 ))}
+               </tbody>
+             </table>
+             
+             {/* EMPTY STATE MOCK */}
+             <div className="p-20 text-center space-y-4 border-t border-white/5 bg-zinc-950/20">
+                <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-zinc-700 animate-pulse">
+                   <Activity className="w-8 h-8" />
+                </div>
+                <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em]">Awaiting Final Network Synchronization</p>
+             </div>
+           </div>
+        </div>
+
+        {/* FOOTER CALLOUT */}
+        <footer className="pt-20 border-t border-white/5 flex flex-col items-center text-center space-y-8">
+           <div className="max-w-xl space-y-4">
+              <h4 className="text-3xl font-black italic uppercase tracking-tighter">Scale Your Network Equity.</h4>
+              <p className="text-zinc-500 font-medium text-sm leading-relaxed uppercase tracking-widest">
+                 The NRH Authority score is calculated using 12 forensic data points. <br />
+                 Release music, grow your patrons, and dominate the charts.
+              </p>
+           </div>
+           <Link href="/studio" className="px-12 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(0,210,255,0.2)]">
+              Join the Network
+           </Link>
+        </footer>
       </div>
     </div>
   );
 }
+
+// Reuse some icons
+import { Activity } from 'lucide-react';
