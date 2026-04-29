@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ShieldCheck, Lock, CreditCard, Award, ArrowRight, CheckCircle2, Zap, Loader2, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { processFanCheckout } from '@/app/actions/fan';
+import { toast } from 'react-hot-toast';
 
 interface Tier {
   id: string;
@@ -30,6 +32,7 @@ export default function CheckoutClient() {
   const [selectedTier, setSelectedTier] = useState<Tier | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState(1);
+  const [supporterNumber, setSupporterNumber] = useState<number>(0);
 
   useEffect(() => {
     if (!artistId) {
@@ -40,9 +43,8 @@ export default function CheckoutClient() {
 
     const fetchArtist = async () => {
       try {
-        // In a real app, we'd fetch by ID, but for now we'll fetch the first artist 
-        // to ensure the demo works if IDs are mismatched
-        const res = await fetch(`/api/org?slug=hellz-flame`);
+        // Fetch by artist ID instead of hardcoded slug
+        const res = await fetch(`/api/org?id=${artistId}`);
         if (!res.ok) throw new Error('Artist not found');
         const data = await res.json();
         setArtist(data);
@@ -54,13 +56,7 @@ export default function CheckoutClient() {
            setArtist(prev => prev ? { ...prev, tiers } : null);
            if (tiers.length > 0) setSelectedTier(tiers[0]);
         } else {
-           // Fallback tiers if API fails
-           const fallbackTiers: Tier[] = [
-             { id: '1', name: 'True Fan', priceMonthlyCents: 1500, revenueSharePercent: 0.5, perks: ['Early Access', 'Private Chat'] },
-             { id: '2', name: 'Inner Circle', priceMonthlyCents: 5000, revenueSharePercent: 2.0, perks: ['Everything in True Fan', 'Monthly Video Call', 'Vinyl Record'] }
-           ];
-           setArtist(prev => prev ? { ...prev, tiers: fallbackTiers } : null);
-           setSelectedTier(fallbackTiers[0]);
+           throw new Error("Could not load tiers");
         }
       } catch (err: any) {
         setError(err.message);
@@ -73,11 +69,19 @@ export default function CheckoutClient() {
   }, [artistId]);
 
   const handleComplete = async () => {
+    if (!artist || !selectedTier) return;
     setIsProcessing(true);
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setStep(2);
+    
+    const result = await processFanCheckout(artist.id, selectedTier.id);
+    
     setIsProcessing(false);
+    
+    if (result.success) {
+      setSupporterNumber(result.supporterNumber || 0);
+      setStep(2);
+    } else {
+      toast.error(result.error || "Checkout failed");
+    }
   };
 
   if (loading) {
@@ -184,11 +188,11 @@ export default function CheckoutClient() {
                 </div>
                 <div className="space-y-4">
                    <h1 className="text-4xl md:text-3xl font-bold tracking-tighter italic uppercase">Welcome, SUPPORTER.</h1>
-                   <p className="text-gray-500 text-lg max-w-md mx-auto">Your participation in {artist?.name}'s revenue is now secured. You are now SUPPORTER #742.</p>
+                   <p className="text-gray-500 text-lg max-w-md mx-auto">Your participation in {artist?.name}'s revenue is now secured. You are now SUPPORTER #{supporterNumber}.</p>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                    <button onClick={() => router.push(`/${artist?.slug}`)} className="px-10 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">Return to Hub</button>
-                   <button onClick={() => router.push('/fan/me/library')} className="px-10 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">View Asset Library</button>
+                   <button onClick={() => router.push('/fan/me')} className="px-10 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Go to Dashboard</button>
                 </div>
               </motion.div>
             )}

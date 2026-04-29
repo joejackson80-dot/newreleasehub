@@ -17,10 +17,21 @@ export default async function FanDashboardPage() {
     select: { _count: { select: { ParticipationLicenses: true } } }
   });
 
+  // Fetch real Support Stakes (Subscriptions)
+  const subscriptions = await prisma.supporterSubscription.findMany({
+    where: { fanId: user.id, status: 'ACTIVE' },
+    include: {
+      Organization: true,
+      Tier: true
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+
   return (
     <DashboardClient 
       user={user} 
       initialLibraryCount={libraryCount?._count.ParticipationLicenses || 0}
+      subscriptions={subscriptions}
     />
   );
 }

@@ -64,7 +64,7 @@ const REACTION_EMOJI = [
   { key: 'bolt', emoji: '⚡', label: 'Bolt' },
 ];
 
-export default function FanDashboard({ user, initialLibraryCount }: { user: any, initialLibraryCount: number }) {
+export default function FanDashboard({ user, initialLibraryCount, subscriptions = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[] }) {
   const [activeTab, setActiveTab] = useState('Feed');
   const [libraryTracks, setLibraryTracks] = useState<any[]>([]);
   const [isLoadingLibrary, setIsLoadingLibrary] = useState(false);
@@ -389,12 +389,14 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                   <div className="space-y-6">
                      <div className="space-y-1">
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Stakes</p>
-                        <p className="text-5xl font-bold text-white">{MOCK_SUPPORTERAGES.length}</p>
+                        <p className="text-5xl font-bold text-white">{subscriptions.length}</p>
                      </div>
                      <div className="space-y-4 pt-4 border-t border-white/5">
                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
                            <span className="text-gray-500 italic">Participation BPS</span>
-                           <span className="text-white">60 BPS</span>
+                           <span className="text-white">
+                             {subscriptions.reduce((acc, sub) => acc + (sub.revenueSharePercent * 100), 0).toFixed(0)} BPS
+                           </span>
                         </div>
                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
                            <span className="text-gray-500 italic">Network Rank</span>
@@ -410,40 +412,45 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {MOCK_SUPPORTERAGES.map(p => (
-                <div key={p.id} className="relative group">
+              {subscriptions.length === 0 ? (
+                <div className="col-span-full text-center py-20 bg-white/5 border border-dashed border-white/10 rounded-3xl">
+                   <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px] mb-2">No Active Stakes</p>
+                   <Link href="/discover" className="text-[#00D2FF] hover:text-white transition-colors font-bold text-xs">Explore Artists</Link>
+                </div>
+              ) : subscriptions.map(sub => (
+                <div key={sub.id} className="relative group">
                    <div className="absolute inset-0 bg-gradient-to-tr from-[#00D2FF]/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                    <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 hover:border-white/20 transition-all relative z-10 space-y-8">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center gap-4">
-                            <img src={p.artistPhoto} alt={p.artistName} className="w-12 h-12 rounded-2xl object-cover border border-white/10" />
+                            <img src={sub.Organization?.profileImageUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt={sub.Organization?.name} className="w-12 h-12 rounded-2xl object-cover border border-white/10" />
                             <div>
                                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Asset Manager</p>
-                               <p className="text-lg font-bold text-white italic uppercase">{p.artistName}</p>
+                               <p className="text-lg font-bold text-white italic uppercase">{sub.Organization?.name}</p>
                             </div>
                          </div>
-                         <div className="bg-green-500/10 px-3 py-1 rounded-lg text-green-500 text-[9px] font-bold uppercase tracking-widest italic">Active</div>
+                         <div className="bg-green-500/10 px-3 py-1 rounded-lg text-green-500 text-[9px] font-bold uppercase tracking-widest italic">{sub.status}</div>
                       </div>
 
                       <div className="space-y-4">
                          <div className="grid grid-cols-2 gap-6">
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Tier</p>
-                               <p className="text-sm font-bold text-white uppercase italic">{p.tier}</p>
+                               <p className="text-sm font-bold text-white uppercase italic">{sub.Tier?.name}</p>
                             </div>
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Monthly Cost</p>
-                               <p className="text-sm font-bold text-white">${p.amount.toFixed(2)}</p>
+                               <p className="text-sm font-bold text-white">${(sub.priceCents / 100).toFixed(2)}</p>
                             </div>
                          </div>
                          <div className="grid grid-cols-2 gap-6">
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Revenue Share</p>
-                               <p className="text-sm font-bold text-[#00D2FF]">{p.revenueShare}%</p>
+                               <p className="text-sm font-bold text-[#00D2FF]">{sub.revenueSharePercent * 100}%</p>
                             </div>
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Yield (Est.)</p>
-                               <p className="text-sm font-bold text-green-400">+${p.earnedThisMonth.toFixed(2)}</p>
+                               <p className="text-sm font-bold text-green-400">+$0.00</p>
                             </div>
                          </div>
                       </div>
