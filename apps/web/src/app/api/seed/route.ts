@@ -13,7 +13,7 @@ export async function GET() {
       {
         slug: 'vibe-master',
         name: 'Vibe Master',
-        bio: 'Chill beats and visual journeys. Join the SUPPORTERage movement.',
+        bio: 'Chill beats and visual journeys. Join the support movement.',
       }
     ];
 

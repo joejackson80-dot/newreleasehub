@@ -43,7 +43,7 @@ const BANNED_FIELDS = new Set([
 const FIELD_ALIASES: Record<string, string> = {
   netPayout: 'monthlyEarnings',
   totalEarnings: 'grossEarnings',
-  SUPPORTERMultiplier: 'earningsLevel',
+  supporterMultiplier: 'earningsLevel',
   poolAEarnings: 'subscriberEarnings',
   poolCEarnings: 'radioEarnings',
   paidStreams: 'premiumPlays',

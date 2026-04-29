@@ -191,7 +191,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                <div className="space-y-4">
                   <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Protocol & Profile</h3>
                   <p className="text-sm text-gray-400 leading-relaxed font-medium italic">
-                     "Operating on New Release Hub. Scaled through decentralized SUPPORTERage and fan revenue shares."
+                     "Operating on New Release Hub. Scaled through decentralized support and fan revenue shares."
                   </p>
                </div>
                <div className="space-y-6 pt-10 border-t border-white/5">
@@ -383,7 +383,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                     <Crown className="w-10 h-10" />
                                  </div>
                                  <div className="space-y-1">
-                                    <h3 className="text-4xl font-bold uppercase italic tracking-tighter">SUPPORTERage Hub.</h3>
+                                    <h3 className="text-4xl font-bold uppercase italic tracking-tighter">support Hub.</h3>
                                     <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Revenue Participation</p>
                                  </div>
                               </div>

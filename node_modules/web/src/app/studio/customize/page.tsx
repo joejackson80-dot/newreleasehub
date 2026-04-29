@@ -229,7 +229,7 @@ export default function CustomizePage() {
                 <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-1">Stripe Connect required for earnings</p>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                To receive streaming royalties and SUPPORTERage payouts, you must connect a Stripe account. This allows for instant, transparent payouts to your local bank.
+                To receive streaming royalties and support payouts, you must connect a Stripe account. This allows for instant, transparent payouts to your local bank.
               </p>
               <button 
                 onClick={() => window.location.href = '/studio/stripe-mock'}

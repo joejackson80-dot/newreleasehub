@@ -33,7 +33,7 @@ export const DISCOVERY_WEIGHTS = {
   SUPPORTERGrowth7Day:  Number(process.env.DISC_W_SUPPORTER_GROWTH ?? '0.35'),
   totalStreams:      Number(process.env.DISC_W_TOTAL_STREAMS ?? '0.25'),
   recentActivity:    Number(process.env.DISC_W_ACTIVITY      ?? '0.20'),
-  SUPPORTERCount:       Number(process.env.DISC_W_SUPPORTER_COUNT  ?? '0.15'),
+  supporterCount:       Number(process.env.DISC_W_SUPPORTER_COUNT  ?? '0.15'),
   profileComplete:   Number(process.env.DISC_W_PROFILE       ?? '0.05'),
 } as const
 

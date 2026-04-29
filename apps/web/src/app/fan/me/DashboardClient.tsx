@@ -14,7 +14,7 @@ const MOCK_FEED = [
     content: 'New single just dropped — "Worth It (feat. Nova Rae)" is out now. This one means everything to me.',
     coverArt: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
     releaseTitle: 'Worth It (feat. Nova Rae)', releaseType: 'single',
-    isSUPPORTEROnly: false,
+    isisSupporterOnly: false,
     reactions: { fire: 284, heart: 192, crown: 47, bolt: 103 },
     comments: 38,
   },
@@ -23,7 +23,7 @@ const MOCK_FEED = [
     artistPhoto: 'https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?w=200&q=80',
     isVerified: true, time: '5h ago', type: 'post',
     content: 'Just finished mixing the Lagos to London deluxe edition. 4 bonus tracks. SUPPORTER-only preview dropping tomorrow 🎵',
-    isSUPPORTEROnly: false,
+    isisSupporterOnly: false,
     reactions: { fire: 512, heart: 341, crown: 88, bolt: 220 },
     comments: 64,
   },
@@ -32,7 +32,7 @@ const MOCK_FEED = [
     artistPhoto: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80',
     isVerified: true, time: '1d ago', type: 'post',
     content: '🔒 Behind-the-scenes studio session — phase 3 of Solar Frequencies is almost done.',
-    isSUPPORTEROnly: true,
+    isisSupporterOnly: true,
     reactions: { fire: 180, heart: 95, crown: 32, bolt: 78 },
     comments: 22,
   },
@@ -224,7 +224,7 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                         {post.artistName}
                       </Link>
                       {post.isVerified && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
-                      {post.isSUPPORTEROnly && (
+                      {post.isisSupporterOnly && (
                         <span className="text-[9px] font-bold text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
                           SUPPORTER Only
                         </span>
@@ -235,7 +235,7 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                 </div>
 
                 {/* Post body */}
-                {post.isSUPPORTEROnly ? (
+                {post.isisSupporterOnly ? (
                   <div className="mx-5 mt-4 rounded-xl bg-purple-500/5 border border-purple-500/10 p-6 text-center space-y-3">
                     <Lock className="w-6 h-6 text-purple-400 mx-auto" />
                     <p className="text-sm text-gray-400 italic">"{post.content}"</p>

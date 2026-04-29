@@ -87,7 +87,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
                               </Link>
                               <div className="flex items-center gap-2">
                                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate">{artist.genres?.[0] || 'Independent'}</p>
-                                 <span className="text-[9px] font-bold text-[#00D2FF] uppercase tracking-widest bg-[#00D2FF]/10 px-1.5 py-0.5 rounded">{artist.SUPPORTERCount} SUPPORTERs</span>
+                                 <span className="text-[9px] font-bold text-[#00D2FF] uppercase tracking-widest bg-[#00D2FF]/10 px-1.5 py-0.5 rounded">{artist.supporterCount} SUPPORTERs</span>
                               </div>
                            </div>
                         </div>

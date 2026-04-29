@@ -133,7 +133,7 @@ export default function HowItWorksPage() {
                 { title: 'Set Up Your Hub', desc: 'Create your digital storefront in minutes. Customize your branding and set your SUPPORTER tiers.', icon: Globe },
                 { title: 'Release & Distribute', desc: 'Upload your masters. Choose whether to release to the whole network or just your SUPPORTERs first.', icon: Upload },
                 { title: 'Engage with Fans', desc: 'Use the Session Deck to host live listening parties and interact with your community in real-time.', icon: Heart },
-                { title: 'Monetize Everything', desc: 'From streams to SUPPORTERage to merch, track every dollar through your real-time analytics dashboard.', icon: BarChart3 },
+                { title: 'Monetize Everything', desc: 'From streams to support to merch, track every dollar through your real-time analytics dashboard.', icon: BarChart3 },
               ].map((step, i) => (
                 <div key={i} className="flex space-x-6">
                   <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] font-bold text-sm">

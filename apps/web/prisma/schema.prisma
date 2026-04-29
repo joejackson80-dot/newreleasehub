@@ -185,6 +185,7 @@ model SupporterSubscription {
   Organization        Organization @relation(fields: [artistId], references: [id])
   User                User         @relation(fields: [fanId], references: [id])
   Tier                SupporterTier @relation(fields: [tierId], references: [id])
+  FanRoyaltyShares    FanRoyaltyShare[]
 }
 
 model SupporterTier {
@@ -594,6 +595,7 @@ model FanRoyaltyShare {
   fanId                String
   artistId             String
   supporterTierId      String?
+  supportId          String?
   month                Int
   year                 Int
   artistStreamEarnings Int          @default(0)
@@ -603,6 +605,7 @@ model FanRoyaltyShare {
   createdAt            DateTime     @default(now())
   Organization         Organization @relation(fields: [artistId], references: [id])
   User                 User         @relation(fields: [fanId], references: [id])
+  Support              SupporterSubscription? @relation(fields: [supportId], references: [id])
 }
 
 model AdImpression {

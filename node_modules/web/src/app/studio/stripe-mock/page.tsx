@@ -38,7 +38,7 @@ export default function StripeMockSuccess() {
             <div className="space-y-4">
               <h2 className="text-3xl font-bold uppercase italic tracking-tighter text-green-500">Connected<br />Successfully.</h2>
               <p className="text-gray-500 text-sm font-medium leading-relaxed">
-                Your artist account is now linked to Stripe. You can now accept SUPPORTERage and receive streaming royalties.
+                Your artist account is now linked to Stripe. You can now accept support and receive streaming royalties.
               </p>
             </div>
             <button 

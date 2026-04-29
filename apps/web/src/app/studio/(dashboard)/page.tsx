@@ -4,10 +4,10 @@ import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Ac
 import Link from 'next/link';
 
 export default async function StudioOverviewPage() {
-  const org = await getSessionArtist({ includeReleases: true, includeSUPPORTERs: true });
+  const org = await getSessionArtist({ includeReleases: true, includeSupporters: true });
 
-  const currentRevenue = (org.SUPPORTERSubscriptions || []).reduce((sum: number, p: any) => sum + p.priceCents, 0) / 100;
-  const SUPPORTERCount = (org.SUPPORTERSubscriptions || []).length;
+  const currentRevenue = (org.SupporterSubscriptions || []).reduce((sum: number, p: any) => sum + p.priceCents, 0) / 100;
+  const supporterCount = (org.SupporterSubscriptions || []).length;
   const releaseCount = (org.Releases || []).length;
 
   return (
@@ -100,7 +100,7 @@ export default async function StudioOverviewPage() {
             <Users className="w-4 h-4 text-purple-400" />
           </div>
           <div>
-            <p className="text-3xl font-bold text-white">{SUPPORTERCount}</p>
+            <p className="text-3xl font-bold text-white">{supporterCount}</p>
             <p className="text-xs text-green-500 mt-2 font-medium flex items-center"><TrendingUp className="w-3 h-3 mr-1" /> +4 this week</p>
           </div>
         </div>

@@ -57,7 +57,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold uppercase tracking-widest">3. FAN SUPPORTERAGE & REVENUE SHARING</h2>
             <div className="prose prose-invert prose-p:text-gray-400 max-w-none">
               <p>
-                Fans who become SUPPORTERs do so voluntarily to support artists. Revenue sharing payouts are variable and depend on actual streaming performance. NRH does not guarantee any specific return on SUPPORTERage. All SUPPORTERage fees are non-refundable unless required by law.
+                Fans who become SUPPORTERs do so voluntarily to support artists. Revenue sharing payouts are variable and depend on actual streaming performance. NRH does not guarantee any specific return on support. All support fees are non-refundable unless required by law.
               </p>
             </div>
           </section>

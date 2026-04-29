@@ -156,7 +156,7 @@ function CollabCard({ request, type, onAccept }: any) {
                 <div className="flex items-center gap-2 text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1">
                    <span>{otherArtist.genres?.[0] || 'Independent'}</span>
                    <span>•</span>
-                   <span className="text-[#00D2FF]">{otherArtist.SUPPORTERCount} SUPPORTERs</span>
+                   <span className="text-[#00D2FF]">{otherArtist.supporterCount} SUPPORTERs</span>
                 </div>
              </div>
              <div className="flex items-center gap-3">

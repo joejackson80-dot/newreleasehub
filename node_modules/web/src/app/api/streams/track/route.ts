@@ -18,13 +18,13 @@ export async function POST(req: Request) {
     if (userId) {
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        include: { SUPPORTERSubscriptions: { where: { artistId: artistId, status: 'ACTIVE' } } }
+        include: { SupporterSubscriptions: { where: { artistId: artistId, status: 'ACTIVE' } } }
       });
 
       if (user) {
         let type = 'free';
-        if (user.SUPPORTERSubscriptions.length > 0) type = 'SUPPORTER';
-        else if (user.subscriptionStatus === 'subscriber' || user.subscriptionStatus === 'SUPPORTER') type = 'subscriber';
+        if (user.SupporterSubscriptions.length > 0) type = 'SUPPORTER';
+        else if (user.subscriptionStatus === 'subscriber' || user.subscriptionStatus === 'supporter') type = 'subscriber';
         
         fanData = { id: user.id, type };
       }

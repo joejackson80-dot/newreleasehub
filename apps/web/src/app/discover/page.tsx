@@ -10,7 +10,7 @@ export const metadata = {
 export default async function DiscoverPage() {
   const featuredArtists = await prisma.organization.findMany({
     take: 12,
-    orderBy: { SUPPORTERCount: 'desc' },
+    orderBy: { supporterCount: 'desc' },
     include: { Releases: { take: 1, orderBy: { createdAt: 'desc' } } }
   });
 

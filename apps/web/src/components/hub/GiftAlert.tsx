@@ -44,7 +44,7 @@ export default function GiftAlert({ orgId }: { orgId: string }) {
                <Award className="w-6 h-6 text-orange-500" />
             </div>
             <div className="flex flex-col">
-               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">New SUPPORTERage License</span>
+               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">New support License</span>
                <h4 className="text-xl font-bold tracking-tighter italic">
                   {alert.user} <span className="text-gray-400 font-medium tracking-normal text-sm">secured</span> ${(alert.amount / 100).toLocaleString()}
                </h4>

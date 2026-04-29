@@ -138,7 +138,7 @@ export default async function HomePage() {
                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
                         </div>
                         <div className="flex flex-col items-end">
-                           <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.SUPPORTERCount || 0).toLocaleString()}</p>
+                           <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.supporterCount || 0).toLocaleString()}</p>
                            <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
                         </div>
                      </div>

@@ -14,7 +14,7 @@ export async function GET(req: Request) {
           orderBy: { createdAt: 'desc' },
           take: 6
         },
-        SUPPORTERSubscriptions: {
+        SupporterSubscriptions: {
           where: { status: 'ACTIVE' }
         }
       }
@@ -33,15 +33,15 @@ export async function GET(req: Request) {
       type: 'Direct Settlement'
     }));
 
-    // Calculate current month's projected SUPPORTERage
-    const activeSUPPORTERageCents = org.SUPPORTERSubscriptions.reduce((sum, p) => sum + p.priceCents, 0);
+    // Calculate current month's projected support
+    const activesupportCents = org.SupporterSubscriptions.reduce((sum, p) => sum + p.priceCents, 0);
 
     const responseData = {
       balance: org.balanceCents / 100,
       payouts,
       stats: {
-        activeSUPPORTERageCents,
-        SUPPORTERCount: org.SUPPORTERCount,
+        activesupportCents,
+        supporterCount: org.supporterCount,
         totalEarningsCents: org.ArtistRoyalties.reduce((sum, r) => sum + r.totalEarnings, 0)
       }
     };

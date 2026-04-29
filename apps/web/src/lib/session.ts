@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
  * Reads the `nrh_artist_id` cookie set during login.
  * Redirects to /studio/login if no valid session exists.
  */
-export async function getSessionArtist(opts?: { includeReleases?: boolean; includeSUPPORTERs?: boolean }) {
+export async function getSessionArtist(opts?: { includeReleases?: boolean; includeSupporters?: boolean }) {
   const cookieStore = await cookies();
   const artistId = cookieStore.get('nrh_artist_id')?.value;
 
@@ -19,8 +19,8 @@ export async function getSessionArtist(opts?: { includeReleases?: boolean; inclu
     where: { id: artistId },
     include: {
       Releases: opts?.includeReleases ? { orderBy: { createdAt: 'desc' } } : false,
-      SUPPORTERSubscriptions: opts?.includeSUPPORTERs ? { where: { status: 'ACTIVE' } } : false,
-      SUPPORTERTiers: opts?.includeSUPPORTERs ? { orderBy: { priceCents: 'asc' } } : false,
+      SupporterSubscriptions: opts?.includeSupporters ? { where: { status: 'ACTIVE' } } : false,
+      SupporterTiers: opts?.includeSupporters ? { orderBy: { priceCents: 'asc' } } : false,
     }
   });
 

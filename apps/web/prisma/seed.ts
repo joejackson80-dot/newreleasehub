@@ -12,12 +12,12 @@ const prisma = new PrismaClient({ adapter });
 const SEED_ARTISTS = [
   {
     id: 'artist-001', slug: 'marcus-webb', name: 'Marcus Webb',
-    bio: 'Marcus Webb is an Atlanta-born R&B and soul artist whose music sits at the intersection of vintage Motown and contemporary neo-soul. Known for his rich vocal texture and deeply personal songwriting, Marcus has built a fiercely loyal fanbase of over 2,000 patrons entirely independent of any label.',
+    bio: 'Marcus Webb is an Atlanta-born R&B and soul artist whose music sits at the intersection of vintage Motown and contemporary neo-soul. Known for his rich vocal texture and deeply personal songwriting, Marcus has built a fiercely loyal fanbase of over 2,000 supporters entirely independent of any label.',
     profilePhoto: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
     headerPhoto: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80',
     genres: ['R&B', 'Soul', 'Neo-Soul'], city: 'Atlanta', country: 'US',
     socialLinks: { instagram: 'marcuswebb', twitter: 'marcuswebb', spotify: 'marcuswebb' },
-    isVerified: true, isLive: true, liveListenerCount: 342, patronCount: 2140, totalStreams: 1820000, monthlyListeners: 48200, tier: 'established',
+    isVerified: true, isLive: true, liveListenerCount: 342, supporterCount: 2140, totalStreams: 1820000, monthlyListeners: 48200, tier: 'established',
     releases: [
       { title: 'Midnight in Atlanta', type: 'album', cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=800&q=80' },
       { title: 'Worth It (feat. Nova Rae)', type: 'single', cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80' },
@@ -31,7 +31,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80',
     genres: ['Electronic', 'House', 'Ambient'], city: 'London', country: 'UK',
     socialLinks: { instagram: 'djsolarize', tiktok: 'djsolarize' },
-    isVerified: true, isLive: false, liveListenerCount: 0, patronCount: 1820, totalStreams: 980000, monthlyListeners: 31400, tier: 'established',
+    isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 1820, totalStreams: 980000, monthlyListeners: 31400, tier: 'established',
     releases: [
       { title: 'Solar Frequencies', type: 'album', cover: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80' },
       { title: 'Midnight Protocol', type: 'single', cover: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80' },
@@ -45,7 +45,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80',
     genres: ['Afrobeats', 'Highlife', 'Afropop'], city: 'Lagos', country: 'NG',
     socialLinks: { instagram: 'lenakhari', twitter: 'lenakhari', youtube: 'lenakhari' },
-    isVerified: true, isLive: false, liveListenerCount: 0, patronCount: 3420, totalStreams: 4200000, monthlyListeners: 112000, tier: 'legend',
+    isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 3420, totalStreams: 4200000, monthlyListeners: 112000, tier: 'legend',
     releases: [
       { title: 'Lagos to London', type: 'album', cover: 'https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?w=800&q=80' },
       { title: 'Afro Nation', type: 'single', cover: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80' },
@@ -59,7 +59,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
     genres: ['Hip-Hop', 'Trap', 'Conscious Rap'], city: 'Chicago', country: 'US',
     socialLinks: { instagram: 'hellzflame', twitter: 'hellzflame', tiktok: 'hellzflame' },
-    isVerified: true, isLive: false, liveListenerCount: 0, patronCount: 980, totalStreams: 560000, monthlyListeners: 22000, tier: 'rising',
+    isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 980, totalStreams: 560000, monthlyListeners: 22000, tier: 'rising',
     releases: [
       { title: 'Fire & Ice', type: 'album', cover: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80' },
       { title: 'Chi Town Stand Up', type: 'single', cover: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80' },
@@ -73,7 +73,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
     genres: ['Indie Pop', 'Folk', 'Singer-Songwriter'], city: 'Nashville', country: 'US',
     socialLinks: { instagram: 'novarae', youtube: 'novarae', spotify: 'novarae' },
-    isVerified: false, isLive: false, liveListenerCount: 0, patronCount: 1240, totalStreams: 340000, monthlyListeners: 18600, tier: 'rising',
+    isVerified: false, isLive: false, liveListenerCount: 0, supporterCount: 1240, totalStreams: 340000, monthlyListeners: 18600, tier: 'rising',
     releases: [
       { title: 'Wildflower', type: 'album', cover: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80' },
       { title: 'Tennessee Rain', type: 'single', cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80' },
@@ -87,7 +87,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80',
     genres: ['Reggaeton', 'Latin Trap', 'Afro-Caribbean'], city: 'Miami', country: 'US',
     socialLinks: { instagram: 'vibemaster', tiktok: 'vibemaster' },
-    isVerified: false, isLive: false, liveListenerCount: 0, patronCount: 760, totalStreams: 290000, monthlyListeners: 15400, tier: 'rising',
+    isVerified: false, isLive: false, liveListenerCount: 0, supporterCount: 760, totalStreams: 290000, monthlyListeners: 15400, tier: 'rising',
     releases: [
       { title: 'Calor Eterno', type: 'album', cover: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80' },
       { title: 'Fuego Lento', type: 'single', cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80' },
@@ -101,7 +101,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80',
     genres: ['Jazz', 'Contemporary Classical', 'Instrumental'], city: 'Brooklyn', country: 'US',
     socialLinks: { instagram: 'kesslerduo', youtube: 'kesslerduo', website: 'kesslerduo.com' },
-    isVerified: true, isLive: false, liveListenerCount: 0, patronCount: 890, totalStreams: 180000, monthlyListeners: 12200, tier: 'rising',
+    isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 890, totalStreams: 180000, monthlyListeners: 12200, tier: 'rising',
     releases: [
       { title: 'Blue Standards', type: 'album', cover: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80' },
       { title: 'Late Night Sessions', type: 'single', cover: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80' },
@@ -115,7 +115,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80',
     genres: ['K-Indie', 'Dream Pop', 'Shoegaze'], city: 'Los Angeles', country: 'US',
     socialLinks: { instagram: 'solarisbloom', tiktok: 'solarisbloom', youtube: 'solarisbloom' },
-    isVerified: false, isLive: false, liveListenerCount: 0, patronCount: 1640, totalStreams: 720000, monthlyListeners: 34800, tier: 'established',
+    isVerified: false, isLive: false, liveListenerCount: 0, supporterCount: 1640, totalStreams: 720000, monthlyListeners: 34800, tier: 'established',
     releases: [
       { title: 'Petal Drift', type: 'album', cover: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80' },
       { title: 'Neon Haze', type: 'single', cover: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80' },
@@ -130,7 +130,7 @@ const SEED_ARTISTS = [
     headerPhoto: 'https://images.unsplash.com/photo-1514525253361-bee87184919a?w=800&q=80',
     genres: ['Electronic', 'Synthwave'], city: 'Digital', country: 'NRH',
     socialLinks: { twitter: 'iamjoejack' },
-    isVerified: true, isLive: false, liveListenerCount: 0, patronCount: 42, totalStreams: 15000, monthlyListeners: 1200, tier: 'rising',
+    isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 42, totalStreams: 15000, monthlyListeners: 1200, tier: 'rising',
     releases: [
       { title: 'Demo Set 01', type: 'ep', cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=800&q=80' },
     ],
@@ -141,12 +141,12 @@ function getTiersForArtist(artistName: string) {
   return [
     {
       name: 'Day One', priceCents: 500,
-      perks: ['48-hour early access to every new release', `Exclusive monthly update from ${artistName}`, 'Patron badge on your fan profile'],
+      perks: ['48-hour early access to every new release', `Exclusive monthly update from ${artistName}`, 'Supporter badge on your fan profile'],
       revenueSharePercent: 0.1, maxSlots: null, currentSlots: 0, isPopular: false, sortOrder: 1,
     },
     {
       name: 'True Fan', priceCents: 1500,
-      perks: ['Everything in Day One', 'Access to patron-only tracks and demos', 'Monthly live Q&A session', 'Name in album liner notes', '20% merch discount'],
+      perks: ['Everything in Day One', 'Access to supporter-only tracks and demos', 'Monthly live Q&A session', 'Name in album liner notes', '20% merch discount'],
       revenueSharePercent: 0.5, maxSlots: null, currentSlots: 0, isPopular: true, sortOrder: 2,
     },
     {
@@ -222,8 +222,8 @@ async function main() {
   await prisma.participationLicense.deleteMany({});
   await prisma.musicAsset.deleteMany({});
   await prisma.release.deleteMany({});
-  await prisma.patronSubscription.deleteMany({});
-  await prisma.patronTier.deleteMany({});
+  await prisma.supporterSubscription.deleteMany({});
+  await prisma.supporterTier.deleteMany({});
   await prisma.chatMessage.deleteMany({});
   await prisma.follower.deleteMany({});
   await prisma.sessionArchive.deleteMany({});
@@ -258,7 +258,7 @@ async function main() {
         profileImageUrl: data.profilePhoto, headerImageUrl: data.headerPhoto,
         genres: data.genres, city: data.city, country: data.country,
         isVerified: data.isVerified, isLive: data.isLive,
-        liveListenerCount: data.liveListenerCount, patronCount: data.patronCount,
+        liveListenerCount: data.liveListenerCount, supporterCount: data.supporterCount,
         totalStreams: data.totalStreams, monthlyListeners: data.monthlyListeners,
         artistTier: data.tier, socialLinksJson: JSON.stringify(data.socialLinks),
       }
@@ -271,7 +271,7 @@ async function main() {
         data: {
           organizationId: org.id, title: rel.title, type: rel.type,
           coverArtUrl: rel.cover, totalPlays: Math.floor(data.totalStreams / 4),
-          isPatronOnly: r === 2,
+          isSupporterOnly: r === 2,
         }
       });
       const trackCount = rel.type === 'album' ? 5 : rel.type === 'ep' ? 4 : 1;
@@ -298,15 +298,15 @@ async function main() {
       }
     }
 
-    // Create 3 patron tiers for each artist
+    // Create 3 supporter tiers for each artist
     const tiers = getTiersForArtist(data.name);
     const slotDistribution = [
-      Math.floor(data.patronCount * 0.55),
-      Math.floor(data.patronCount * 0.35),
-      Math.min(Math.floor(data.patronCount * 0.10), 100),
+      Math.floor(data.supporterCount * 0.55),
+      Math.floor(data.supporterCount * 0.35),
+      Math.min(Math.floor(data.supporterCount * 0.10), 100),
     ];
     for (let i = 0; i < tiers.length; i++) {
-      await prisma.patronTier.create({
+      await prisma.supporterTier.create({
         data: {
           organizationId: org.id, name: tiers[i].name,
           priceCents: tiers[i].priceCents, description: tiers[i].perks.join(', '),
@@ -374,7 +374,7 @@ async function main() {
         slug: slug,
         username: slug,
         email: `${slug}@founding.nrh.com`,
-        bio: `${artistName} is one of the first 100 artists to join the New Release Hub network. Stay tuned for their upcoming releases and exclusive patronage tiers.`,
+        bio: `${artistName} is one of the first 100 artists to join the New Release Hub network. Stay tuned for their upcoming releases and exclusive support tiers.`,
         isVerified: true,
         artistTier: 'rising',
         balanceCents: 0,
@@ -385,7 +385,7 @@ async function main() {
     });
   }
 
-  console.log('Seed completed successfully — 20 artists, 24 releases, 40 patron tiers, 5 opportunities, @newreleasehub account, and Official NRH Radio.');
+  console.log('Seed completed successfully — 20 artists, 24 releases, 40 supporter tiers, 5 opportunities, @newreleasehub account, and Official NRH Radio.');
 }
 
 main()

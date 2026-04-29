@@ -270,7 +270,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                   <span className="text-[10px] font-bold uppercase tracking-widest font-mono">Verified Stream</span>
                </div>
                <p className="text-xs text-gray-500 leading-relaxed font-medium">
-                  Your broadcast is being distributed via the NRH High-Fidelity Network. All reactions and SUPPORTERage during this set are settled instantly.
+                  Your broadcast is being distributed via the NRH High-Fidelity Network. All reactions and support during this set are settled instantly.
                </p>
                <button className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#00D2FF] transition-colors group">
                   <Share2 className="w-4 h-4 group-hover:rotate-12 transition-transform" />

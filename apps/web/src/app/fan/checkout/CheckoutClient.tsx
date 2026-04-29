@@ -126,7 +126,7 @@ export default function CheckoutClient() {
                 </div>
 
                 <div className="space-y-6">
-                  <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select SUPPORTERage Tier</h3>
+                  <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select support Tier</h3>
                   <div className="space-y-4">
                     {artist?.tiers?.map((tier: any) => (
                       <button 

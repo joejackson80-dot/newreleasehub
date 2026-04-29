@@ -82,9 +82,9 @@ export default function AboutPage() {
       <section className="py-32 px-10">
          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
-               { icon: Globe, title: "Global Reach", body: "Artists in 40+ countries use NRH to bypass local gatekeepers and connect with a global SUPPORTERage network." },
+               { icon: Globe, title: "Global Reach", body: "Artists in 40+ countries use NRH to bypass local gatekeepers and connect with a global support network." },
                { icon: ShieldCheck, title: "Secure Ownership", body: "You keep 100% of your masters. We only take a platform fee when you get paid. No hidden clauses." },
-               { icon: Heart, title: "Direct Funding", body: "SUPPORTERage tiers allow your biggest fans to fund your next release directly in exchange for revenue sharing." }
+               { icon: Heart, title: "Direct Funding", body: "support tiers allow your biggest fans to fund your next release directly in exchange for revenue sharing." }
             ].map((item, i) => (
                <div key={i} className="p-10 bg-white/5 border border-white/5 rounded-[2.5rem] space-y-6">
                   <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">

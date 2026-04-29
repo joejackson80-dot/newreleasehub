@@ -41,7 +41,7 @@ async function main() {
       bio:              'Independent Hip-Hop artist from Omaha, Nebraska. Owner of Game Spittin Entertainment. Making real music for real people.',
       isVerified:       true,
       isActive:         true,
-      patronCount:      2140,
+      supporterCount:      2140,
       totalStreams:     1820000,
     }
   })
@@ -110,8 +110,8 @@ async function main() {
 
   console.log(`✓ Releases created: ${album.title}, ${single.title}, ${ep.title}`)
 
-  // Create patron tiers
-  const tier1 = await prisma.patronTier.create({
+  // Create supporter tiers
+  const tier1 = await prisma.supporterTier.create({
     data: {
       organizationId:       artist.id,
       name:                 'Day One',
@@ -123,12 +123,12 @@ async function main() {
     }
   })
 
-  const tier2 = await prisma.patronTier.create({
+  const tier2 = await prisma.supporterTier.create({
     data: {
       organizationId:       artist.id,
       name:                 'Inner Circle',
       priceCents:           1500,
-      description:          'Direct message access, patron-only content, and revenue sharing from streams',
+      description:          'Direct message access, supporter-only content, and revenue sharing from streams',
       revenueSharePercent:  0.5,
       maxSlots:             100,
       isActive:             true,
@@ -136,7 +136,7 @@ async function main() {
     }
   })
 
-  console.log(`✓ Patron tiers created: ${tier1.name}, ${tier2.name}`)
+  console.log(`✓ Supporter tiers created: ${tier1.name}, ${tier2.name}`)
 
   // ============================================================
   // FAN: John Doe (Mapped to User)
@@ -178,20 +178,20 @@ async function main() {
 
   console.log(`✓ John Doe is now following I Am Joe Jack`)
 
-  // John Doe patrons I Am Joe Jack — Day One tier
-  await prisma.patronSubscription.create({
+  // John Doe supporters I Am Joe Jack — Day One tier
+  await prisma.supporterSubscription.create({
     data: {
       fanId:        fan.id,
       artistId:     artist.id,
       tierId:       tier1.id,
-      patronNumber: 1,
+      supporterNumber: 1,
       priceCents:   500,
       status:       'ACTIVE',
       startedAt:    new Date(),
     }
   })
 
-  console.log(`✓ John Doe is Patron #1 of I Am Joe Jack (Day One tier)`)
+  console.log(`✓ John Doe is Supporter #1 of I Am Joe Jack (Day One tier)`)
 
   // ============================================================
   // SUMMARY

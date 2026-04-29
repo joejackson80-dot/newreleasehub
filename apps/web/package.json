@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "npm install @tailwindcss/oxide-linux-x64-gnu --no-save || echo skipped"
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^5.2.0",
@@ -49,6 +50,10 @@
     "typescript": "^5"
   },
   "optionalDependencies": {
-    "lightningcss-linux-x64-gnu": "*"
+    "lightningcss-linux-x64-gnu": "*",
+    "@tailwindcss/oxide-linux-x64-gnu": "*",
+    "@tailwindcss/oxide-darwin-arm64": "*",
+    "@tailwindcss/oxide-darwin-x64": "*",
+    "@tailwindcss/oxide-win32-x64-msvc": "*"
   }
 }

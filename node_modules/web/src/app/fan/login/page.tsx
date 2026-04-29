@@ -78,7 +78,7 @@ export default function FanAuthPage() {
                      <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
                   </div>
                   <div>
-                     <h3 className="font-bold text-sm uppercase tracking-widest">True SUPPORTERage</h3>
+                     <h3 className="font-bold text-sm uppercase tracking-widest">True support</h3>
                      <p className="text-gray-500 text-sm mt-1 leading-relaxed">Your subscription directly funds the artists you love, completely bypassing major label cuts.</p>
                   </div>
                </div>

@@ -20,7 +20,7 @@ async function main() {
   const marcus = await prisma.organization.update({
     where: { slug: 'marcus-webb' },
     data: {
-      SUPPORTERCount: 2140,
+      supporterCount: 2140,
     }
   });
 

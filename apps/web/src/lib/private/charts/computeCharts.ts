@@ -60,7 +60,7 @@ export const computeWeeklyCharts = inngest.createFunction(
         select: {
           id: true, slug: true, genres: true, city: true,
           country: true, createdAt: true,
-          SUPPORTERCount: true, totalStreams: true,
+          supporterCount: true, totalStreams: true,
           nrhEquityScore: true,
           _count: {
             select: { Followers: true }
@@ -88,29 +88,29 @@ export const computeWeeklyCharts = inngest.createFunction(
 
     // Step 3: Rank globally
     const globalRanked = scores
-      .sort((a, b) => b.score - a.score)
-      .map((s, i) => ({ ...s, globalRank: i + 1 }))
+      .sort((a: any, b: any) => b.score - a.score)
+      .map((s: any, i: number) => ({ ...s, globalRank: i + 1 }))
 
     // Step 4: Rank by genre (inclusive of all genres tagged)
-    const allGenres = Array.from(new Set(artists.flatMap(a => Array.isArray(a.genre) ? a.genre : [a.genre ?? 'Other'])))
+    const allGenres = Array.from(new Set(artists.flatMap((a: any) => Array.isArray(a.genre) ? a.genre : [a.genre ?? 'Other'])))
     const genreRanks: Record<string, number> = {} // Only stores the "primary" genre rank for the Org model
     const genreChartData: Record<string, { artistId: string, rank: number }[]> = {}
 
-    for (const genre of allGenres) {
-      const genreArtists = artists.filter(a => 
+    for (const genre of allGenres as string[]) {
+      const genreArtists = artists.filter((a: any) => 
         (Array.isArray(a.genre) && a.genre.includes(genre)) || a.genre === genre
       )
       if (genreArtists.length === 0) continue
 
       const genreScores = scores
-        .filter(s => genreArtists.some(a => a.id === s.artistId))
-        .sort((a, b) => b.score - a.score)
+        .filter((s: any) => genreArtists.some((a: any) => a.id === s.artistId))
+        .sort((a: any, b: any) => b.score - a.score)
       
       genreChartData[genre] = genreScores.map((s, i) => ({ artistId: s.artistId, rank: i + 1 }))
       
       // For the Organization model, we store the rank of their FIRST genre as primary
-      genreScores.forEach((s, i) => {
-        const artist = artists.find(a => a.id === s.artistId)
+      genreScores.forEach((s: any, i: number) => {
+        const artist = artists.find((a: any) => a.id === s.artistId)
         const primaryGenre = Array.isArray(artist?.genre) ? artist.genre[0] : artist?.genre
         if (primaryGenre === genre) {
           genreRanks[s.artistId] = i + 1
@@ -124,19 +124,19 @@ export const computeWeeklyCharts = inngest.createFunction(
     for (const [city, cityArtists] of Object.entries(cityGroups)) {
       if (cityArtists.length < 3) continue // need at least 3 for a city chart
       const cityScores = scores
-        .filter(s => (cityArtists as any[]).find((a: any) => a.id === s.artistId))
-        .sort((a, b) => b.score - a.score)
-      cityScores.forEach((s, i) => { cityRanks[s.artistId] = i + 1 })
+        .filter((s: any) => (cityArtists as any[]).find((a: any) => a.id === s.artistId))
+        .sort((a: any, b: any) => b.score - a.score)
+      cityScores.forEach((s: any, i: number) => { cityRanks[s.artistId] = i + 1 })
     }
 
     // Step 6: Rising artists (fastest growing in last 30 days)
     const risingScores = scores
-      .filter(s => {
+      .filter((s: any) => {
         const artist = artists.find((a: any) => a.id === s.artistId)!
         const ageMonths = monthsSince((artist as any).createdAt)
         return ageMonths <= 12 || s.components.fanVelocity > 20
       })
-      .sort((a, b) => b.components.fanVelocity - a.components.fanVelocity)
+      .sort((a: any, b: any) => b.components.fanVelocity - a.components.fanVelocity)
       .slice(0, 50)
       .map((s, i) => ({ ...s, risingRank: i + 1 }))
 
@@ -182,7 +182,7 @@ export const computeWeeklyCharts = inngest.createFunction(
             risingRank:   risingEntry?.risingRank ?? null,
             equityScore:  scored.score,
             streamCount:  artists.find((a: any) => a.id === scored.artistId)?.streamCount ?? 0,
-            SUPPORTERCount:  artists.find((a: any) => a.id === scored.artistId)?.SUPPORTERCount ?? 0,
+            supporterCount:  artists.find((a: any) => a.id === scored.artistId)?.supporterCount ?? 0,
             followerCount: artists.find((a: any) => a.id === scored.artistId)?.followerCount ?? 0,
           }
         })
@@ -234,12 +234,12 @@ async function computeArtistScore(artist: any) {
 
   // SUPPORTER data
   const [SUPPORTERData, SUPPORTERChurn] = await Promise.all([
-    prisma.SUPPORTERSubscription.aggregate({
+    prisma.supporterSubscription.aggregate({
       where: { artistId: artist.id, status: 'ACTIVE' },
       _count: true,
       _avg: { priceCents: true }
     }),
-    prisma.SUPPORTERSubscription.count({
+    prisma.supporterSubscription.count({
       where: { artistId: artist.id,
                status: { in: ['CANCELLED', 'EXPIRED'] },
                createdAt: { gte: day30 } } // Note: using createdAt instead of updatedAt due to schema limitations
@@ -284,7 +284,7 @@ async function computeArtistScore(artist: any) {
     !!artist.bio, !!artist.profileImageUrl, !!artist.headerImageUrl,
     !!artist.genre, !!artist.city,
     artist.streamCount > 0,
-    artist.SUPPORTERCount > 0,
+    artist.supporterCount > 0,
     true, // proAffiliation mock
   ].filter(Boolean).length
 
@@ -298,7 +298,7 @@ async function computeArtistScore(artist: any) {
       10000
     ),
     SUPPORTERDepth: normalize(
-      (artist.SUPPORTERCount * 10) +
+      (artist.supporterCount * 10) +
       ((SUPPORTERData._avg.priceCents ?? 0) * 0.5) -
       (SUPPORTERChurn * 3),
       5000
