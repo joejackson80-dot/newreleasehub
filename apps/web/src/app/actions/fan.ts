@@ -127,3 +127,56 @@ export async function reactToRadio(stationSlug: string, reactionType: string) {
     return { success: false, error: error.message };
   }
 }
+
+export async function sendDM(data: {
+  text: string,
+  senderUserId?: string,
+  senderOrgId?: string,
+  receiverUserId?: string,
+  receiverOrgId?: string
+}) {
+  try {
+    const message = await prisma.directMessage.create({
+      data: {
+        text: data.text,
+        senderUserId: data.senderUserId,
+        senderOrgId: data.senderOrgId,
+        receiverUserId: data.receiverUserId,
+        receiverOrgId: data.receiverOrgId
+      }
+    });
+    return { success: true, message };
+  } catch (error: any) {
+    console.error('Send DM error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getMessages(params: {
+  userId?: string,
+  orgId?: string
+}) {
+  try {
+    const messages = await prisma.directMessage.findMany({
+      where: {
+        OR: [
+          { senderUserId: params.userId },
+          { receiverUserId: params.userId },
+          { senderOrgId: params.orgId },
+          { receiverOrgId: params.orgId }
+        ]
+      },
+      include: {
+        senderUser: true,
+        senderOrg: true,
+        receiverUser: true,
+        receiverOrg: true
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    return { success: true, messages };
+  } catch (error: any) {
+    console.error('Get messages error:', error);
+    return { success: false, error: error.message };
+  }
+}

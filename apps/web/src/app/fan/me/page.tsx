@@ -8,7 +8,7 @@ export const metadata = {
   description: 'Manage your library, follow artists, and track your Support.',
 };
 
-import { getFanFeed } from '@/app/actions/fan';
+import { getFanFeed, getMessages } from '@/app/actions/fan';
 
 export default async function FanDashboardPage() {
   const user = await getSessionFan();
@@ -31,6 +31,9 @@ export default async function FanDashboardPage() {
 
   // Fetch Feed
   const feedResult = await getFanFeed(user.id);
+  
+  // Fetch Messages
+  const messagesResult = await getMessages({ userId: user.id });
 
   return (
     <DashboardClient 
@@ -38,6 +41,7 @@ export default async function FanDashboardPage() {
       initialLibraryCount={libraryCount?._count.ParticipationLicenses || 0}
       subscriptions={subscriptions}
       initialFeed={feedResult.success ? feedResult.feed : []}
+      initialMessages={messagesResult.success ? messagesResult.messages : []}
     />
   );
 }

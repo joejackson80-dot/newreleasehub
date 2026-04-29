@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
-import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Activity, Star, Award } from 'lucide-react';
+import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Activity, Star, Award, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function StudioOverviewPage() {
@@ -149,6 +149,12 @@ export default async function StudioOverviewPage() {
               <Briefcase className="w-5 h-5" />
             </div>
             <span className="text-xs font-bold uppercase tracking-widest">Opportunities</span>
+          </Link>
+          <Link href="/studio/messages" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
+            <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors">
+              <MessageCircle className="w-5 h-5" />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-widest">Direct Messages</span>
           </Link>
           <Link href="/studio/supporters" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors">

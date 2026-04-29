@@ -65,9 +65,12 @@ model Organization {
   ServiceProvider        ServiceProvider?
   Sessions               Session[]
   SessionArchives        SessionArchive[]
+  SentDMs                DirectMessage[]        @relation("SentOrgDMs")
+  ReceivedDMs            DirectMessage[]        @relation("ReceivedOrgDMs")
   SessionDeck            SessionDeck?
   StreamPlays            StreamPlay[]
   Milestones             ArtistMilestone[]
+  OpportunityApplications OpportunityApplication[]
 
   // NRH Chart System Fields
   nrhEquityScore        Float     @default(0)
@@ -169,6 +172,8 @@ model User {
   ParticipationLicenses ParticipationLicense[]
   Votes                 Vote[]
   Reactions             Reaction[]
+  SentDMs               DirectMessage[]        @relation("SentDMs")
+  ReceivedDMs           DirectMessage[]        @relation("ReceivedDMs")
   FanListeningStats     FanListeningStats?
   FanArtistRelations    FanArtistRelation[]
   FanChartPositions     FanChartPosition[]
@@ -459,6 +464,7 @@ model Opportunity {
   applicantCount   Int       @default(0)
   createdAt        DateTime  @default(now())
   targetOrgId      String?
+  Applications     OpportunityApplication[]
 }
 
 model MusicReview {
@@ -966,4 +972,32 @@ model Reaction {
 
   @@unique([userId, postId, type])
   @@unique([userId, releaseId, type])
+}
+
+model DirectMessage {
+  id              String       @id @default(cuid())
+  text            String       @db.VarChar(2000)
+  createdAt       DateTime     @default(now())
+  
+  senderUserId    String?
+  senderOrgId     String?
+  receiverUserId  String?
+  receiverOrgId   String?
+
+  senderUser      User?         @relation("SentDMs", fields: [senderUserId], references: [id])
+  senderOrg       Organization? @relation("SentOrgDMs", fields: [senderOrgId], references: [id])
+  receiverUser    User?         @relation("ReceivedDMs", fields: [receiverUserId], references: [id])
+  receiverOrg     Organization? @relation("ReceivedOrgDMs", fields: [receiverOrgId], references: [id])
+}
+
+model OpportunityApplication {
+  id              String      @id @default(cuid())
+  opportunityId   String
+  artistId        String
+  pitch           String?     @db.VarChar(2000)
+  status          String      @default("PENDING")
+  createdAt       DateTime    @default(now())
+
+  Opportunity     Opportunity @relation(fields: [opportunityId], references: [id])
+  Artist          Organization @relation(fields: [artistId], references: [id])
 }

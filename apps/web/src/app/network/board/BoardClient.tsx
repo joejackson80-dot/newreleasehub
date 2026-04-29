@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Briefcase, Search, Filter, Plus, Clock, Users, ArrowRight, ShieldCheck, Music, Mic, DollarSign } from 'lucide-react';
 import Link from 'next/link';
+import { applyForOpportunity, voteOnProposal } from '@/app/actions/artist';
 
 function NotifyForm({ type }: { type: string }) {
   const [email, setEmail] = useState('');
@@ -74,20 +75,20 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
 
     try {
        if (selectedOpp.type === 'PROPOSAL') {
-          const res = await fetch('/api/network/vote', {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({
-                oppId: selectedOpp.id,
-                voteType: selectedOpp.voteType,
-                comment: (e.target as any).elements[0]?.value, // Assuming comment is first textarea
-                userId: 'session-user'
-             })
+          const res = await voteOnProposal({
+             oppId: selectedOpp.id,
+             voteType: selectedOpp.voteType,
+             comment: (e.target as any).elements[0]?.value,
+             userId: 'session-user'
           });
-          if (!res.ok) throw new Error('Vote failed');
+          if (!res.success) throw new Error('Vote failed');
        } else {
-          // Standard application logic
-          await new Promise(resolve => setTimeout(resolve, 1500));
+          const res = await applyForOpportunity({
+             opportunityId: selectedOpp.id,
+             artistId: 'session-artist-id', // Would be real artist ID from session
+             pitch: (e.target as any).elements[0]?.value
+          });
+          if (!res.success) throw new Error('Application failed');
        }
 
        setIsApplying(false);
