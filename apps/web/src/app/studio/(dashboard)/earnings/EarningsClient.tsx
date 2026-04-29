@@ -132,36 +132,82 @@ export default function EarningsPage({ artist }: { artist: any }) {
         </section>
       )}
 
+      {/* REVENUE PERFORMANCE CHART */}
+      <section className="bg-[#111] border border-white/5 rounded-[3rem] p-12 space-y-10">
+         <div className="flex items-center justify-between">
+            <div className="space-y-1">
+               <h3 className="text-xl font-bold italic uppercase tracking-tight text-white">Revenue Performance</h3>
+               <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Monthly Growth & Settlement Trends</p>
+            </div>
+            <div className="flex items-center gap-4">
+               <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#00D2FF]"></div>
+                  <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Settled Revenue</span>
+               </div>
+            </div>
+         </div>
+
+         <div className="h-64 flex items-end gap-4 md:gap-8 px-4">
+            {data?.chartData && data.chartData.length > 0 ? (
+               data.chartData.map((d: any, i: number) => {
+                  const maxVal = Math.max(...data.chartData.map((item: any) => item.value), 1);
+                  const height = (d.value / maxVal) * 100;
+                  return (
+                     <div key={i} className="flex-1 flex flex-col items-center gap-4 group">
+                        <div className="w-full relative flex flex-col justify-end" style={{ height: '100%' }}>
+                           <motion.div 
+                              initial={{ height: 0 }}
+                              animate={{ height: `${height}%` }}
+                              transition={{ delay: i * 0.1, duration: 1, ease: 'circOut' }}
+                              className="w-full bg-gradient-to-t from-[#00D2FF]/20 to-[#00D2FF] rounded-t-xl group-hover:to-white transition-all relative"
+                           >
+                              <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                 <span className="text-xs font-bold text-white bg-black border border-white/10 px-3 py-1 rounded-lg">${d.value.toLocaleString()}</span>
+                              </div>
+                           </motion.div>
+                        </div>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{d.label}</span>
+                     </div>
+                  );
+               })
+            ) : (
+               <div className="w-full h-full flex items-center justify-center border border-dashed border-white/5 rounded-2xl">
+                  <p className="text-[10px] font-bold text-gray-700 uppercase tracking-widest italic">Awaiting Forensic Data Consolidation...</p>
+               </div>
+            )}
+         </div>
+      </section>
+
       {/* BALANCE CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-white p-10 rounded-[2.5rem] space-y-6 shadow-2xl relative overflow-hidden">
-           <div className="absolute top-0 right-0 p-8 opacity-[0.05]">
-              <DollarSign className="w-20 h-20 text-black" />
-           </div>
-           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest relative z-10">Available Settlement</p>
-           <div className="space-y-2 relative z-10">
-              <h2 className="text-5xl font-bold italic tracking-tighter text-black">${balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
-              <p className="text-[10px] font-bold text-green-600 flex items-center">
-                 <TrendingUp className="w-3 h-3 mr-1" /> +14.2% from last month
-              </p>
-           </div>
-        </div>
+         <div className="bg-white p-10 rounded-[2.5rem] space-y-6 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform">
+            <div className="absolute top-0 right-0 p-8 opacity-[0.05] group-hover:scale-110 transition-transform">
+               <DollarSign className="w-20 h-20 text-black" />
+            </div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest relative z-10">Available Settlement</p>
+            <div className="space-y-2 relative z-10">
+               <h2 className="text-5xl font-bold italic tracking-tighter text-black">${balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
+               <p className="text-[10px] font-bold text-green-600 flex items-center">
+                  <TrendingUp className="w-3 h-3 mr-1" /> +14.2% from last month
+               </p>
+            </div>
+         </div>
 
-        <div className="bg-[#111] border border-white/5 p-10 rounded-[2.5rem] space-y-6 relative overflow-hidden">
-           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active support (MRR)</p>
-           <div className="space-y-1">
-              <h2 className="text-4xl font-bold italic tracking-tighter text-white">${(stats.activesupportCents / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{stats.supporterCount} Active Master Holders</p>
-           </div>
-        </div>
+         <div className="bg-[#111] border border-white/5 p-10 rounded-[2.5rem] space-y-6 relative overflow-hidden group hover:border-white/20 transition-all">
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active support (MRR)</p>
+            <div className="space-y-1">
+               <h2 className="text-4xl font-bold italic tracking-tighter text-white">${(stats.activesupportCents / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
+               <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{stats.supporterCount} Active Master Holders</p>
+            </div>
+         </div>
 
-        <div className="bg-[#111] border border-white/5 p-10 rounded-[2.5rem] space-y-6 relative overflow-hidden">
-           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Growth Pool</p>
-           <div className="space-y-1">
-              <h2 className="text-4xl font-bold italic tracking-tighter text-white">Level: {earningsLevel}</h2>
-              <p className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">Phase 8 Performance Multiplier Active</p>
-           </div>
-        </div>
+         <div className="bg-[#111] border border-white/5 p-10 rounded-[2.5rem] space-y-6 relative overflow-hidden group hover:border-white/20 transition-all">
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Growth Pool</p>
+            <div className="space-y-1">
+               <h2 className="text-4xl font-bold italic tracking-tighter text-white">Level: {earningsLevel}</h2>
+               <p className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">Phase 8 Performance Multiplier Active</p>
+            </div>
+         </div>
       </div>
 
       {/* HISTORY */}

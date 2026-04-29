@@ -33,12 +33,19 @@ export async function GET(req: Request) {
       type: 'Direct Settlement'
     }));
 
+    // Generate chart data (last 6 months)
+    const chartData = org.ArtistRoyalties.slice().reverse().map(r => ({
+      label: new Date(r.year, r.month - 1).toLocaleDateString('en-US', { month: 'short' }),
+      value: r.totalEarnings / 100
+    }));
+
     // Calculate current month's projected support
     const activesupportCents = org.SupporterSubscriptions.reduce((sum, p) => sum + p.priceCents, 0);
 
     const responseData = {
       balance: org.balanceCents / 100,
       payouts,
+      chartData,
       stats: {
         activesupportCents,
         supporterCount: org.supporterCount,
