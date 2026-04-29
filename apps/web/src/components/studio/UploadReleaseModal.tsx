@@ -7,8 +7,30 @@ import Link from 'next/link';
 export default function UploadReleaseModal({ isOpen, onClose, isVerified = false }: { isOpen: boolean, onClose: () => void, isVerified?: boolean }) {
   const [step, setStep] = useState(1);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+   const [uploadProgress, setUploadProgress] = useState(0);
   const [authorizedForRadio, setAuthorizedForRadio] = useState(true);
+  
+  // Smart Import States
+  const [importUrl, setImportUrl] = useState('');
+  const [isFetchingImport, setIsFetchingImport] = useState(false);
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('Single');
+  const [genre, setGenre] = useState('Hip-Hop');
+  const [coverArt, setCoverArt] = useState<string | null>(null);
+
+  const handleFetchImport = () => {
+    if (!importUrl) return;
+    setIsFetchingImport(true);
+    
+    // Simulate fetching metadata from Spotify API
+    setTimeout(() => {
+      setTitle('Midnight Echoes');
+      setType('Single');
+      setGenre('Electronic');
+      setCoverArt('https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=800&q=80');
+      setIsFetchingImport(false);
+    }, 1500);
+  };
 
   const handleUpload = () => {
     setIsUploading(true);
@@ -67,16 +89,59 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
             <div className="p-10">
                {step === 1 && (
                   <div className="space-y-10">
+                     <div className="bg-black/40 border border-white/5 rounded-2xl p-6 mb-8 relative overflow-hidden">
+                        {isFetchingImport && (
+                          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-10">
+                            <div className="flex items-center gap-3">
+                               <div className="w-4 h-4 rounded-full border-2 border-[#00D2FF] border-t-transparent animate-spin" />
+                               <span className="text-xs font-bold text-[#00D2FF] uppercase tracking-widest">Scanning Metadata...</span>
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-3 mb-4">
+                           <Globe className="w-5 h-5 text-[#00D2FF]" />
+                           <div>
+                             <h3 className="text-sm font-bold text-white uppercase tracking-widest">Smart Import</h3>
+                             <p className="text-[10px] text-gray-500 font-medium">Paste a Spotify or Apple Music link to auto-fill metadata and artwork.</p>
+                           </div>
+                        </div>
+                        <div className="flex gap-3">
+                           <input 
+                             type="text" 
+                             value={importUrl}
+                             onChange={(e) => setImportUrl(e.target.value)}
+                             placeholder="https://open.spotify.com/album/..." 
+                             className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]" 
+                           />
+                           <button 
+                             onClick={handleFetchImport}
+                             className="px-6 py-3 bg-white/10 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl hover:bg-white/20 transition-colors whitespace-nowrap"
+                           >
+                              Fetch Data
+                           </button>
+                        </div>
+                     </div>
+
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-6">
                            <div className="space-y-2">
                               <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Release Title</label>
-                              <input type="text" placeholder="e.g. Midnight Echoes" className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]" />
+                              <input 
+                                type="text" 
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="e.g. Midnight Echoes" 
+                                className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]" 
+                              />
                            </div>
                            <div className="grid grid-cols-2 gap-4">
                               <div className="space-y-2">
                                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Type</label>
-                                 <select className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]">
+                                 <select 
+                                   value={type}
+                                   onChange={(e) => setType(e.target.value)}
+                                   className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]"
+                                 >
                                     <option>Single</option>
                                     <option>EP</option>
                                     <option>Album</option>
@@ -84,7 +149,11 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                               </div>
                               <div className="space-y-2">
                                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Primary Genre</label>
-                                 <select className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]">
+                                 <select 
+                                   value={genre}
+                                   onChange={(e) => setGenre(e.target.value)}
+                                   className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]"
+                                 >
                                     <option>Hip-Hop</option>
                                     <option>Electronic</option>
                                     <option>Rock</option>
@@ -92,10 +161,16 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                               </div>
                            </div>
                         </div>
-                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-3xl p-8 hover:border-[#00D2FF]/30 transition-colors group cursor-pointer">
-                           <ImageIcon className="w-12 h-12 text-gray-600 group-hover:text-[#00D2FF] transition-colors mb-4" />
-                           <p className="text-xs font-bold text-gray-500 uppercase tracking-widest text-center">Drag Artwork Here</p>
-                           <p className="text-[10px] text-gray-700 mt-2 font-medium italic">3000 x 3000 recommended</p>
+                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-3xl p-8 hover:border-[#00D2FF]/30 transition-colors group cursor-pointer relative overflow-hidden">
+                           {coverArt ? (
+                             <img src={coverArt} alt="Cover Art" className="absolute inset-0 w-full h-full object-cover" />
+                           ) : (
+                             <>
+                               <ImageIcon className="w-12 h-12 text-gray-600 group-hover:text-[#00D2FF] transition-colors mb-4" />
+                               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest text-center">Drag Artwork Here</p>
+                               <p className="text-[10px] text-gray-700 mt-2 font-medium italic">3000 x 3000 recommended</p>
+                             </>
+                           )}
                         </div>
                      </div>
 

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { BarChart3, Users, TrendingUp, Search, ChevronRight } from 'lucide-react';
 
@@ -12,6 +12,33 @@ const GENRES = [
 export default function ChartsPage() {
   const [activeGenre, setActiveGenre] = useState('Top Artists');
   const [searchQuery, setSearchQuery] = useState('');
+  const [artists, setArtists] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+
+    const fetchCharts = async () => {
+      try {
+        const res = await fetch(`/api/charts?genre=${encodeURIComponent(activeGenre)}`);
+        const data = await res.json();
+        if (data.success && isMounted) {
+          setArtists(data.ranking || []);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    fetchCharts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeGenre]);
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-black">
@@ -72,39 +99,45 @@ export default function ChartsPage() {
         </div>
 
         {/* FEATURED SPOTLIGHT */}
-        <div className="relative group cursor-pointer overflow-hidden rounded-[3.5rem] border border-white/10 bg-[#0A0A0A] shadow-2xl">
-           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-[#00D2FF]/20 opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
-           <div className="relative p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12">
-              <div className="flex items-center gap-10">
-                 <div className="relative">
-                    <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] bg-zinc-900 border-2 border-white/10 flex items-center justify-center relative z-10 shadow-2xl">
-                       <Users className="w-16 h-16 text-zinc-800" />
-                    </div>
-                    <div className="absolute -top-4 -left-4 w-12 h-12 bg-white text-black font-black italic text-xl flex items-center justify-center rounded-2xl z-20 shadow-xl">#1</div>
-                 </div>
-                 <div className="space-y-4">
-                   <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Global Authority</span>
-                      <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
+        {!isLoading && artists.length > 0 && (
+          <div className="relative group cursor-pointer overflow-hidden rounded-[3.5rem] border border-white/10 bg-[#0A0A0A] shadow-2xl">
+             <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-[#00D2FF]/20 opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
+             <div className="relative p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12">
+                <div className="flex items-center gap-10">
+                   <div className="relative">
+                      <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] bg-zinc-900 border-2 border-white/10 flex items-center justify-center relative z-10 shadow-2xl overflow-hidden">
+                         {artists[0].profileImageUrl ? (
+                           <img src={artists[0].profileImageUrl} alt={artists[0].name} className="w-full h-full object-cover" />
+                         ) : (
+                           <Users className="w-16 h-16 text-zinc-800" />
+                         )}
+                      </div>
+                      <div className="absolute -top-4 -left-4 w-12 h-12 bg-white text-black font-black italic text-xl flex items-center justify-center rounded-2xl z-20 shadow-xl">#1</div>
                    </div>
-                   <h2 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-none">Calculating...</h2>
-                   <div className="flex items-center gap-6 text-zinc-500 font-bold uppercase tracking-[0.2em] text-[10px]">
-                      <span>{activeGenre}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-800"></span>
-                      <span>Omaha, NE</span>
+                   <div className="space-y-4">
+                     <div className="flex items-center gap-2">
+                        <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Global Authority</span>
+                        <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
+                     </div>
+                     <h2 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-none truncate max-w-lg">{artists[0].name}</h2>
+                     <div className="flex items-center gap-6 text-zinc-500 font-bold uppercase tracking-[0.2em] text-[10px]">
+                        <span>{artists[0].genres?.[0] || activeGenre}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-zinc-800"></span>
+                        <span>{artists[0].city || 'Global'}</span>
+                     </div>
                    </div>
-                 </div>
-              </div>
-              <div className="w-full md:w-auto">
-                 <button className="group/btn relative w-full md:w-auto overflow-hidden rounded-2xl bg-white px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-105 active:scale-95 shadow-2xl">
-                    <span className="relative z-10 flex items-center gap-2">
-                       View Authority Profile
-                       <ChevronRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                    </span>
-                 </button>
-              </div>
-           </div>
-        </div>
+                </div>
+                <div className="w-full md:w-auto">
+                   <Link href={`/${artists[0].slug}`} className="inline-block group/btn relative w-full md:w-auto overflow-hidden rounded-2xl bg-white px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-105 active:scale-95 shadow-2xl">
+                      <span className="relative z-10 flex items-center gap-2">
+                         View Authority Profile
+                         <ChevronRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                      </span>
+                   </Link>
+                </div>
+             </div>
+          </div>
+        )}
 
         {/* RANKING TABLE */}
         <div className="space-y-8">
@@ -129,59 +162,83 @@ export default function ChartsPage() {
                  </tr>
                </thead>
                <tbody className="divide-y divide-white/5">
-                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                   <tr key={i} className="hover:bg-white/[0.02] transition-all group relative">
-                     <td className="p-10 text-5xl font-black italic text-zinc-900 group-hover:text-zinc-600 transition-all duration-500">{i + 1}</td>
-                     <td className="p-10">
-                        <div className="flex flex-col items-start gap-1">
-                           <span className="flex items-center gap-1 text-[#00D2FF] font-black text-[11px] uppercase tracking-widest italic">
-                              <TrendingUp className="w-3.5 h-3.5" />
-                              +{Math.floor(Math.random() * 5) + 1}
-                           </span>
-                           <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">New Entry</span>
-                        </div>
-                     </td>
-                     <td className="p-10">
-                        <div className="flex items-center gap-6">
-                           <div className="relative group/avatar">
-                              <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF]/40 transition-colors shadow-lg">
-                                 <Users className="w-8 h-8" />
-                              </div>
-                              <div className="absolute inset-0 bg-[#00D2FF]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                           </div>
-                           <div className="space-y-1">
-                              <p className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">Waiting for Data...</p>
-                              <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] italic">Omaha Network</p>
-                           </div>
-                        </div>
-                     </td>
-                     <td className="p-10">
-                        <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-zinc-400">
-                           {activeGenre}
-                        </span>
-                     </td>
-                     <td className="p-10">
-                        <div className="space-y-3">
-                           <div className="flex justify-between items-end">
-                              <span className="text-white font-black italic text-lg">{(80 - i * 4.2).toFixed(1)}</span>
-                              <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Institutional</span>
-                           </div>
-                           <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
-                              <div 
-                                 className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000" 
-                                 style={{ width: `${80 - i * 5}%` }}
-                              ></div>
-                           </div>
-                        </div>
-                     </td>
-                     <td className="p-10 text-right">
-                       <button className="group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF]/50 transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
-                         <span className="relative z-10 group-hover/follow:text-white">Connect</span>
-                         <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
-                       </button>
+                 {isLoading ? (
+                   <tr>
+                     <td colSpan={6} className="p-20 text-center">
+                       <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-[#00D2FF] animate-pulse">
+                          <Activity className="w-8 h-8" />
+                       </div>
+                       <p className="mt-4 text-[10px] font-black text-[#00D2FF] uppercase tracking-[0.4em] animate-pulse">Synchronizing Live Matrix</p>
                      </td>
                    </tr>
-                 ))}
+                 ) : artists.length === 0 ? (
+                   <tr>
+                     <td colSpan={6} className="p-20 text-center space-y-4 border-t border-white/5 bg-zinc-950/20">
+                        <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-zinc-700">
+                           <Users className="w-8 h-8" />
+                        </div>
+                        <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em]">No Data Found for this Segment</p>
+                     </td>
+                   </tr>
+                 ) : (
+                   artists.map((artist, i) => (
+                     <tr key={artist.id} className="hover:bg-white/[0.02] transition-all group relative">
+                       <td className="p-10 text-5xl font-black italic text-zinc-900 group-hover:text-zinc-600 transition-all duration-500">{i + 1}</td>
+                       <td className="p-10">
+                          <div className="flex flex-col items-start gap-1">
+                             <span className="flex items-center gap-1 text-[#00D2FF] font-black text-[11px] uppercase tracking-widest italic">
+                                <TrendingUp className="w-3.5 h-3.5" />
+                                +{Math.floor(Math.random() * 5) + 1}
+                             </span>
+                             <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">Growth</span>
+                          </div>
+                       </td>
+                       <td className="p-10">
+                          <div className="flex items-center gap-6">
+                             <div className="relative group/avatar">
+                                <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF]/40 transition-colors shadow-lg overflow-hidden">
+                                   {artist.profileImageUrl ? (
+                                     <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover" />
+                                   ) : (
+                                     <Users className="w-8 h-8" />
+                                   )}
+                                </div>
+                                <div className="absolute inset-0 bg-[#00D2FF]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                             </div>
+                             <div className="space-y-1">
+                                <Link href={`/${artist.slug}`} className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">{artist.name}</Link>
+                                <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] italic">{artist.city || 'Global Network'}</p>
+                             </div>
+                          </div>
+                       </td>
+                       <td className="p-10">
+                          <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                             {artist.genres?.[0] || activeGenre}
+                          </span>
+                       </td>
+                       <td className="p-10">
+                          <div className="space-y-3">
+                             <div className="flex justify-between items-end">
+                                <span className="text-white font-black italic text-lg">{artist.supporterCount || 0}</span>
+                                <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Supporters</span>
+                             </div>
+                             <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                                <div 
+                                   className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000" 
+                                   style={{ width: `${Math.min(100, Math.max(10, (artist.supporterCount / 100) * 100))}%` }}
+                                ></div>
+                             </div>
+                          </div>
+                       </td>
+                       <td className="p-10 text-right">
+                         <Link href={`/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF]/50 transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
+                           <span className="relative z-10 group-hover/follow:text-white">View Profile</span>
+                           <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
+                         </Link>
+                       </td>
+                     </tr>
+                   ))
+                 )}
                </tbody>
              </table>
              
