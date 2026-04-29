@@ -6,12 +6,35 @@ import {
   Play, ExternalLink, ChevronRight, Percent
 } from 'lucide-react';
 import Link from 'next/link';
+import { acceptCollabDeal, declineCollabDeal } from '@/app/actions/collabs';
+import { toast } from 'react-hot-toast';
 
 export default function CollabsClient({ currentOrg, incoming: initialIncoming, sent: initialSent, activeDeals: initialActive }: any) {
   const [activeTab, setActiveTab] = useState('incoming');
   const [incoming, setIncoming] = useState(initialIncoming);
   const [sent, setSent] = useState(initialSent);
   const [activeDeals, setActiveDeals] = useState(initialActive);
+
+  const handleAccept = async (id: string) => {
+    const res = await acceptCollabDeal(id);
+    if (res.success) {
+      toast.success('Collab Accepted! Deal Finalized.');
+      setIncoming(incoming.filter((r: any) => r.id !== id));
+      setActiveDeals([...activeDeals, res.collab]);
+    } else {
+      toast.error(res.error || 'Failed to accept');
+    }
+  };
+
+  const handleDecline = async (id: string) => {
+    const res = await declineCollabDeal(id);
+    if (res.success) {
+      toast.success('Request Declined');
+      setIncoming(incoming.filter((r: any) => r.id !== id));
+    } else {
+      toast.error(res.error || 'Failed to decline');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#020202] text-white pt-24 pb-40 px-4">
@@ -66,10 +89,8 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                         key={req.id} 
                         request={req} 
                         type="incoming" 
-                        onAccept={() => {
-                          alert(`Collab "${req.projectTitle}" accepted! Deal terms finalized.`);
-                          setIncoming(incoming.filter((r: any) => r.id !== req.id));
-                        }}
+                        onAccept={() => handleAccept(req.id)}
+                        onDecline={() => handleDecline(req.id)}
                       />
                     ))}
                   </div>
@@ -132,8 +153,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
     </div>
   );
 }
-
-function CollabCard({ request, type, onAccept }: any) {
+ function CollabCard({ request, type, onAccept, onDecline }: any) {
   const otherArtist = type === 'incoming' ? request.requester : request.receiver;
   const timeRemaining = Math.max(0, Math.floor((new Date(request.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60)));
 
@@ -228,7 +248,10 @@ function CollabCard({ request, type, onAccept }: any) {
                   <button className="flex-1 bg-white/5 hover:bg-white/10 text-white py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 border border-white/5">
                      <MessageSquare className="w-5 h-5" /> Counter
                   </button>
-                  <button className="flex-1 bg-transparent hover:bg-red-500/10 text-gray-500 hover:text-red-500 py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2">
+                  <button 
+                    onClick={onDecline}
+                    className="flex-1 bg-transparent hover:bg-red-500/10 text-gray-500 hover:text-red-500 py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2"
+                  >
                      <X className="w-5 h-5" /> Decline
                   </button>
                </div>
@@ -237,6 +260,8 @@ function CollabCard({ request, type, onAccept }: any) {
        </div>
     </div>
   );
+}
+
 }
 
 
