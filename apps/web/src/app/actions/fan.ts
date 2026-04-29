@@ -180,3 +180,83 @@ export async function getMessages(params: {
     return { success: false, error: error.message };
   }
 }
+
+export async function getVaultContent(userId: string) {
+  try {
+    // 1. Get the list of artists the user supports
+    const subscriptions = await prisma.supporterSubscription.findMany({
+      where: { fanId: userId, status: 'ACTIVE' },
+      select: { artistId: true }
+    });
+    
+    const supporterOfIds = subscriptions.map(s => s.artistId);
+    
+    // 2. Get all isSupporterOnly releases from these artists
+    const exclusiveReleases = await prisma.release.findMany({
+      where: { 
+        organizationId: { in: supporterOfIds },
+        isSupporterOnly: true
+      },
+      include: { Organization: true },
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    return { success: true, releases: exclusiveReleases };
+  } catch (error: any) {
+    console.error('Fetch vault error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function logListeningSession(userId: string, trackId: string) {
+  try {
+    // 1. Record the stream play
+    await prisma.streamPlay.create({
+      data: {
+        userId,
+        releaseId: trackId
+      }
+    });
+
+    // 2. Update listening stats and streak
+    const stats = await prisma.fanListeningStats.findUnique({ where: { fanId: userId } });
+    if (stats) {
+      const now = new Date();
+      const lastPlayed = new Date(stats.lastListeningDate || 0);
+      let newStreak = stats.listeningStreak;
+      
+      const diffDays = Math.floor((now.getTime() - lastPlayed.getTime()) / (1000 * 3600 * 24));
+      
+      if (diffDays === 1) {
+        newStreak += 1;
+      } else if (diffDays > 1) {
+        newStreak = 1;
+      }
+
+      await prisma.fanListeningStats.update({
+        where: { fanId: userId },
+        data: {
+          totalStreamsAllTime: { increment: 1 },
+          totalListeningHrs: { increment: 0.05 }, // Mock 3 mins
+          listeningStreak: newStreak,
+          lastListeningDate: now
+        }
+      });
+    } else {
+      await prisma.fanListeningStats.create({
+        data: {
+          fanId: userId,
+          totalStreamsAllTime: 1,
+          totalListeningHrs: 0.05,
+          listeningStreak: 1,
+          lastListeningDate: new Date()
+        }
+      });
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('Log listening error:', error);
+    return { success: false, error: error.message };
+  }
+}

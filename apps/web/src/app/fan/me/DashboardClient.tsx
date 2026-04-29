@@ -4,7 +4,7 @@ import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle
 import Link from 'next/link';
 import { useAudio } from '@/context/AudioContext';
 
-const TABS = ['Feed', 'Library', 'Messages', 'Following', 'Support', 'Stats', 'Notifications'];
+const TABS = ['Feed', 'Library', 'Messages', 'Following', 'Support', 'Vault', 'Stats', 'Notifications'];
 
 const MOCK_FEED = [
   {
@@ -64,10 +64,11 @@ const REACTION_EMOJI = [
   { key: 'bolt', emoji: '⚡', label: 'Bolt' },
 ];
 
-export default function FanDashboard({ user, initialLibraryCount, subscriptions = [], initialFeed = [], initialMessages = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[], initialFeed?: any[], initialMessages?: any[] }) {
+export default function FanDashboard({ user, initialLibraryCount, subscriptions = [], initialFeed = [], initialMessages = [], initialVault = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[], initialFeed?: any[], initialMessages?: any[], initialVault?: any[] }) {
   const [activeTab, setActiveTab] = useState('Feed');
   const [feed, setFeed] = useState<any[]>(initialFeed.length > 0 ? initialFeed : MOCK_FEED);
   const [messages, setMessages] = useState<any[]>(initialMessages);
+  const [vaultReleases, setVaultReleases] = useState<any[]>(initialVault);
   const [libraryTracks, setLibraryTracks] = useState<any[]>([]);
   const [isLoadingLibrary, setIsLoadingLibrary] = useState(false);
   const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
@@ -550,7 +551,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                         <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
                            <ShieldCheck className="w-4 h-4 text-green-500" />
                         </div>
-                        <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Protocol V2.4 Active</p>
+                       <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Protocol V2.4 Active</p>
                      </div>
                   </div>
                 </div>
@@ -562,22 +563,42 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
         {/* ── FOLLOWING TAB ── */}
         {activeTab === 'Following' && (
           <div className="space-y-4">
-            {MOCK_FEED.slice(0, 3).map((item, i) => (
-              <div key={i} className="flex items-center gap-4 p-4 bg-[#111] border border-white/5 rounded-2xl hover:border-white/10 transition-all">
-                <img src={item.artistPhoto} alt={item.artistName} className="w-12 h-12 rounded-full object-cover border border-white/10" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <Link href={`/${item.artistSlug}`} className="font-bold text-white hover:text-[#00D2FF] transition-colors">{item.artistName}</Link>
-                    {item.isVerified && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
+            {subscriptions.length > 0 ? (
+              subscriptions.map((sub, i) => (
+                <div key={i} className="flex items-center gap-4 p-5 bg-[#111] border border-white/5 rounded-2xl hover:border-white/10 transition-all group">
+                  <div className="relative">
+                    <img src={sub.Organization.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=100&q=80'} alt={sub.Organization.name} className="w-14 h-14 rounded-2xl object-cover border border-white/10" />
+                    {sub.Organization.isLive && (
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-black animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                    )}
                   </div>
-                  <p className="text-[10px] text-gray-500 mt-0.5">Artist · NRH Verified</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <Link href={`/${sub.Organization.slug}`} className="font-bold text-white hover:text-[#00D2FF] transition-colors truncate">{sub.Organization.name}</Link>
+                      {sub.Organization.isVerified && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{sub.Tier.name} Tier</span>
+                      {sub.Organization.isLive && (
+                        <span className="text-[9px] font-bold text-red-500 uppercase tracking-widest animate-pulse flex items-center gap-1">
+                          <Radio className="w-2.5 h-2.5" /> Live Now
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <Link href={`/${sub.Organization.slug}`}
+                    className="px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all shadow-xl">
+                    Enter Hub
+                  </Link>
                 </div>
-                <Link href={`/${item.artistSlug}`}
-                  className="px-4 py-2 rounded-lg border border-white/10 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:border-white/30 hover:text-white transition-all">
-                  View
-                </Link>
+              ))
+            ) : (
+              <div className="py-20 text-center bg-white/5 border border-dashed border-white/10 rounded-[2.5rem]">
+                <Users className="w-12 h-12 text-white/10 mx-auto mb-4" />
+                <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px] mb-4">You aren't following any artists yet</p>
+                <Link href="/discover" className="px-8 py-3 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all">Discover Talent</Link>
               </div>
-            ))}
+            )}
           </div>
         )}
 
@@ -648,6 +669,61 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                 </div>
              </div>
           </div>
+        )}
+
+        {activeTab === 'Vault' && (
+           <div className="space-y-12">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                 <div className="space-y-2">
+                    <h2 className="text-3xl font-bold italic tracking-tighter uppercase">Supporter Vault</h2>
+                    <p className="text-sm text-gray-500 font-medium">Exclusive high-fidelity masters and early access releases from your supported artists.</p>
+                 </div>
+                 <div className="px-6 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-3">
+                    <Star className="w-4 h-4 text-amber-500" />
+                    <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">{vaultReleases.length} Exclusive Items</span>
+                 </div>
+              </div>
+
+              {vaultReleases.length > 0 ? (
+                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {vaultReleases.map(release => (
+                       <div key={release.id} className="group space-y-4">
+                          <div className="aspect-square rounded-[2rem] overflow-hidden border border-white/5 relative shadow-2xl">
+                             <img src={release.coverArtUrl} alt={release.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300">
+                                <button 
+                                  onClick={() => playTrack(release)}
+                                  className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-all shadow-xl"
+                                >
+                                   <Play className="w-6 h-6 fill-current ml-1" />
+                                </button>
+                             </div>
+                             <div className="absolute top-4 right-4 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 text-[8px] font-bold text-[#00D2FF] uppercase tracking-widest">Vault Exclusive</div>
+                          </div>
+                          <div className="space-y-1">
+                             <h4 className="font-bold text-white truncate">{release.title}</h4>
+                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{release.Organization.name}</p>
+                          </div>
+                       </div>
+                    ))}
+                 </div>
+              ) : (
+                 <div className="py-32 text-center space-y-8 bg-[#111] border border-dashed border-white/10 rounded-[3rem] px-10">
+                    <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto text-gray-700">
+                       <Lock className="w-8 h-8" />
+                    </div>
+                    <div className="space-y-2 max-w-sm mx-auto">
+                       <h3 className="text-2xl font-bold uppercase tracking-tighter italic">Vault Locked</h3>
+                       <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                          Your vault will unlock once you become a supporter of an artist on the NRH network.
+                       </p>
+                    </div>
+                    <Link href="/discover" className="inline-block px-10 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-2xl">
+                       Explore Network
+                    </Link>
+                 </div>
+              )}
+           </div>
         )}
       </div>
     </div>

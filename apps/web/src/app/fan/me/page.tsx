@@ -8,7 +8,7 @@ export const metadata = {
   description: 'Manage your library, follow artists, and track your Support.',
 };
 
-import { getFanFeed, getMessages } from '@/app/actions/fan';
+import { getFanFeed, getMessages, getVaultContent } from '@/app/actions/fan';
 
 export default async function FanDashboardPage() {
   const user = await getSessionFan();
@@ -29,11 +29,12 @@ export default async function FanDashboardPage() {
     orderBy: { createdAt: 'desc' }
   });
 
-  // Fetch Feed
-  const feedResult = await getFanFeed(user.id);
-  
-  // Fetch Messages
-  const messagesResult = await getMessages({ userId: user.id });
+  // Fetch Feed, Messages, and Vault
+  const [feedResult, messagesResult, vaultResult] = await Promise.all([
+    getFanFeed(user.id),
+    getMessages({ userId: user.id }),
+    getVaultContent(user.id)
+  ]);
 
   return (
     <DashboardClient 
@@ -42,6 +43,7 @@ export default async function FanDashboardPage() {
       subscriptions={subscriptions}
       initialFeed={feedResult.success ? feedResult.feed : []}
       initialMessages={messagesResult.success ? messagesResult.messages : []}
+      initialVault={vaultResult.success ? vaultResult.releases : []}
     />
   );
 }

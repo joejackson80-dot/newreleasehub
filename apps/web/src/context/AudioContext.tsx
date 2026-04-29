@@ -1,5 +1,5 @@
-'use client';
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
+import { logListeningSession } from '@/app/actions/fan';
 
 export interface Track {
   id: string;
@@ -200,6 +200,11 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if(res) {
         const data = await res.json();
         streamPlayId.current = data.id;
+        
+        // Log listening session for fan stats
+        if (user) {
+          logListeningSession(user, track.id);
+        }
       }
       
       playTimer.current = 0;
