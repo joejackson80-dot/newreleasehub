@@ -32,54 +32,114 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#070707',
-            backgroundImage: 'radial-gradient(circle at center, rgba(29, 158, 117, 0.15) 0%, #070707 100%)',
+            backgroundColor: '#020202',
+            backgroundImage: 'radial-gradient(circle at 50% 50%, #111 0%, #020202 100%)',
             color: 'white',
-            padding: '40px',
+            padding: '80px',
             fontFamily: 'Arial',
             position: 'relative',
+            border: '20px solid #111',
           },
           children: [
+            // Background Glows
             {
               type: 'div',
               props: {
-                style: { position: 'absolute', top: '60px', left: '60px', fontSize: '32px', fontWeight: 'bold', color: '#1D9E75' },
-                children: 'NRH'
-              }
-            },
-            {
-              type: 'img',
-              props: {
-                src: artist.profileImageUrl || 'https://www.newreleasehub.com/placeholder-artist.png',
-                style: { width: '240px', height: '240px', borderRadius: '120px', marginBottom: '40px', border: '6px solid #1D9E75', objectFit: 'cover' }
+                style: { position: 'absolute', top: '-10%', left: '-10%', width: '50%', height: '50%', backgroundColor: '#1D9E75', opacity: 0.1, borderRadius: '100%', filter: 'blur(100px)' }
               }
             },
             {
               type: 'div',
               props: {
-                style: { fontSize: '56px', fontWeight: 'bold', marginBottom: '10px', textAlign: 'center' },
-                children: artist.name
+                style: { position: 'absolute', bottom: '-10%', right: '-10%', width: '50%', height: '50%', backgroundColor: '#00D2FF', opacity: 0.1, borderRadius: '100%', filter: 'blur(100px)' }
+              }
+            },
+            // Header
+            {
+              type: 'div',
+              props: {
+                style: { position: 'absolute', top: '80px', left: '80px', display: 'flex', alignItems: 'center', gap: '15px' },
+                children: [
+                  { type: 'div', props: { style: { width: '40px', height: '40px', backgroundColor: 'white', borderRadius: '10px' } } },
+                  { type: 'div', props: { style: { fontSize: '24px', fontWeight: 'bold', letterSpacing: '4px' }, children: 'NEW RELEASE HUB' } }
+                ]
               }
             },
             {
               type: 'div',
               props: {
-                style: { fontSize: '80px', fontWeight: 'bold', color: '#1D9E75', marginBottom: '10px', textAlign: 'center' },
-                children: milestoneLabel
+                style: { position: 'absolute', top: '80px', right: '80px', fontSize: '18px', fontWeight: 'bold', color: '#555', letterSpacing: '2px' },
+                children: 'PROTOCOL VERIFIED'
               }
             },
+            // Main Content Container
             {
               type: 'div',
               props: {
-                style: { fontSize: '32px', color: '#888', textTransform: 'uppercase', letterSpacing: '2px' },
-                children: 'Milestone Achieved'
+                style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' },
+                children: [
+                  // Artist Image with Glow
+                  {
+                    type: 'div',
+                    props: {
+                      style: { position: 'relative', marginBottom: '60px' },
+                      children: [
+                        {
+                          type: 'div',
+                          props: {
+                            style: { position: 'absolute', inset: '-10px', backgroundColor: '#1D9E75', borderRadius: '140px', opacity: 0.3, filter: 'blur(20px)' }
+                          }
+                        },
+                        {
+                          type: 'img',
+                          props: {
+                            src: artist.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
+                            style: { width: '260px', height: '260px', borderRadius: '130px', border: '8px solid #000', objectFit: 'cover', position: 'relative' }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  // Achievement Text
+                  {
+                    type: 'div',
+                    props: {
+                      style: { fontSize: '18px', fontWeight: 'bold', color: '#1D9E75', textTransform: 'uppercase', letterSpacing: '8px', marginBottom: '20px' },
+                      children: 'NETWORK ACHIEVEMENT'
+                    }
+                  },
+                  {
+                    type: 'div',
+                    props: {
+                      style: { fontSize: '90px', fontWeight: 'bold', textAlign: 'center', lineHeight: 1, marginBottom: '20px', fontStyle: 'italic', textTransform: 'uppercase' },
+                      children: milestoneLabel
+                    }
+                  },
+                  {
+                    type: 'div',
+                    props: {
+                      style: { width: '100px', height: '4px', backgroundColor: 'white', marginBottom: '30px' }
+                    }
+                  },
+                  {
+                    type: 'div',
+                    props: {
+                      style: { fontSize: '42px', fontWeight: 'bold', color: '#888' },
+                      children: artist.name
+                    }
+                  }
+                ]
               }
             },
+            // Footer Seal
             {
               type: 'div',
               props: {
-                style: { position: 'absolute', bottom: '60px', right: '60px', fontSize: '24px', color: '#444' },
-                children: 'newreleasehub.com'
+                style: { position: 'absolute', bottom: '80px', display: 'flex', flexDirection: 'column', alignItems: 'center' },
+                children: [
+                  { type: 'div', props: { style: { fontSize: '12px', color: '#444', fontWeight: 'bold', letterSpacing: '4px', marginBottom: '5px' }, children: 'AUTHORIZED BY NRH GOVERNANCE' } },
+                  { type: 'div', props: { style: { fontSize: '10px', color: '#222', fontWeight: 'bold' }, children: `ID: ${artistId.slice(0, 8)}-${Date.now().toString(16).slice(-8)}` } }
+                ]
               }
             }
           ]

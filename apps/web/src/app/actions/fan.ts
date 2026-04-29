@@ -1,6 +1,7 @@
 'use server';
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
+import { checkAndAwardFanBadges } from '@/lib/fan/badges';
 
 export async function processFanCheckout(artistId: string, tierId: string) {
   try {
@@ -58,6 +59,9 @@ export async function processFanCheckout(artistId: string, tierId: string) {
           where: { id: user.id },
           data: { fanXP: newXP, fanLevel: newLevel }
        });
+       
+       // Check for new badges
+       await checkAndAwardFanBadges(user.id);
     }
 
     // We can also create a mock transaction or yield logic later if needed.
@@ -290,6 +294,9 @@ export async function logListeningSession(userId: string, trackId: string) {
         where: { id: userId },
         data: { fanXP: newXP, fanLevel: newLevel }
       });
+
+      // Check for new badges
+      await checkAndAwardFanBadges(userId);
     }
 
     return { success: true };
