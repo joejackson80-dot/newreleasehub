@@ -83,7 +83,7 @@ export default function LiveStagePage() {
            <div className="absolute inset-y-0 left-0 w-1/2 bg-black/80 backdrop-blur-xl animate-[slideLeft_3s_ease-in-out_forwards] border-r border-white/5"></div>
            <div className="absolute inset-y-0 right-0 w-1/2 bg-black/80 backdrop-blur-xl animate-[slideRight_3s_ease-in-out_forwards] border-l border-white/5"></div>
 
-           <style jsx>{`
+           <style>{`
               @keyframes slideLeft { 0% { transform: translateX(0); } 80% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
               @keyframes slideRight { 0% { transform: translateX(0); } 80% { transform: translateX(0); } 100% { transform: translateX(100%); } }
            `}</style>

@@ -49,7 +49,8 @@ export const computeWeeklyCharts = inngest.createFunction(
     retries: 3,
   },
   { cron: 'TZ=America/Chicago 0 6 * * MON' },
-  async ({ step }) => {
+  // @ts-ignore
+  async ({ step }: { step: any }) => {
 
     const weekStart = getWeekStart(new Date())
 
@@ -81,7 +82,7 @@ export const computeWeeklyCharts = inngest.createFunction(
 
     for (const [i, batch] of batches.entries()) {
       const batchScores = await step.run(`score-batch-${i}`, async () => {
-        return Promise.all(batch.map(artist => computeArtistScore(artist)))
+        return Promise.all(batch.map((artist: any) => computeArtistScore(artist)))
       })
       scores.push(...batchScores)
     }
@@ -92,24 +93,24 @@ export const computeWeeklyCharts = inngest.createFunction(
       .map((s, i) => ({ ...s, globalRank: i + 1 }))
 
     // Step 4: Rank by genre
-    const genreGroups = groupBy(artists, a =>
+    const genreGroups = groupBy(artists, (a: any) =>
       Array.isArray(a.genre) && a.genre.length > 0 ? a.genre[0] : 'Other'
     )
     const genreRanks: Record<string, number> = {}
     for (const [genre, genreArtists] of Object.entries(genreGroups)) {
       const genreScores = scores
-        .filter(s => genreArtists.find(a => a.id === s.artistId))
+        .filter(s => (genreArtists as any[]).find((a: any) => a.id === s.artistId))
         .sort((a, b) => b.score - a.score)
       genreScores.forEach((s, i) => { genreRanks[s.artistId] = i + 1 })
     }
 
     // Step 5: Rank by city
-    const cityGroups = groupBy(artists, a => a.city ?? 'Unknown')
+    const cityGroups = groupBy(artists, (a: any) => a.city ?? 'Unknown')
     const cityRanks: Record<string, number> = {}
     for (const [city, cityArtists] of Object.entries(cityGroups)) {
       if (cityArtists.length < 3) continue // need at least 3 for a city chart
       const cityScores = scores
-        .filter(s => cityArtists.find(a => a.id === s.artistId))
+        .filter(s => (cityArtists as any[]).find((a: any) => a.id === s.artistId))
         .sort((a, b) => b.score - a.score)
       cityScores.forEach((s, i) => { cityRanks[s.artistId] = i + 1 })
     }
@@ -117,8 +118,8 @@ export const computeWeeklyCharts = inngest.createFunction(
     // Step 6: Rising artists (fastest growing in last 30 days)
     const risingScores = scores
       .filter(s => {
-        const artist = artists.find(a => a.id === s.artistId)!
-        const ageMonths = monthsSince(artist.createdAt)
+        const artist = artists.find((a: any) => a.id === s.artistId)!
+        const ageMonths = monthsSince((artist as any).createdAt)
         return ageMonths <= 12 || s.components.fanVelocity > 20
       })
       .sort((a, b) => b.components.fanVelocity - a.components.fanVelocity)
@@ -166,9 +167,9 @@ export const computeWeeklyCharts = inngest.createFunction(
             cityRank:     cityRanks[scored.artistId] ?? null,
             risingRank:   risingEntry?.risingRank ?? null,
             equityScore:  scored.score,
-            streamCount:  artists.find(a => a.id === scored.artistId)?.streamCount ?? 0,
-            patronCount:  artists.find(a => a.id === scored.artistId)?.patronCount ?? 0,
-            followerCount: artists.find(a => a.id === scored.artistId)?.followerCount ?? 0,
+            streamCount:  artists.find((a: any) => a.id === scored.artistId)?.streamCount ?? 0,
+            patronCount:  artists.find((a: any) => a.id === scored.artistId)?.patronCount ?? 0,
+            followerCount: artists.find((a: any) => a.id === scored.artistId)?.followerCount ?? 0,
           }
         })
       }
@@ -208,11 +209,11 @@ async function computeArtistScore(artist: any) {
   // Stream counts (fraud-filtered)
   const [streams7d, streams30d] = await Promise.all([
     prisma.streamPlay.count({
-      where: { artistId: artist.id, createdAt: { gte: day7 },
+      where: { artistId: artist.id, startedAt: { gte: day7 },
                countedAsStream: true, isExcludedFromPool: false }
     }),
     prisma.streamPlay.count({
-      where: { artistId: artist.id, createdAt: { gte: day30 },
+      where: { artistId: artist.id, startedAt: { gte: day30 },
                countedAsStream: true, isExcludedFromPool: false }
     }),
   ])
