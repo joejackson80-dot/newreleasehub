@@ -64,8 +64,9 @@ const REACTION_EMOJI = [
   { key: 'bolt', emoji: '⚡', label: 'Bolt' },
 ];
 
-export default function FanDashboard({ user, initialLibraryCount, subscriptions = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[] }) {
+export default function FanDashboard({ user, initialLibraryCount, subscriptions = [], initialFeed = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[], initialFeed?: any[] }) {
   const [activeTab, setActiveTab] = useState('Feed');
+  const [feed, setFeed] = useState<any[]>(initialFeed.length > 0 ? initialFeed : MOCK_FEED);
   const [libraryTracks, setLibraryTracks] = useState<any[]>([]);
   const [isLoadingLibrary, setIsLoadingLibrary] = useState(false);
   const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
@@ -210,36 +211,36 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
         {/* ── FEED TAB ── */}
         {activeTab === 'Feed' && (
           <div className="space-y-6">
-            {MOCK_FEED.map(post => (
+            {feed.map(post => (
               <div key={post.id} className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all">
                 {/* Post header */}
                 <div className="flex items-center gap-3 p-5 pb-0">
-                  <Link href={`/${post.artistSlug}`}>
-                    <img src={post.artistPhoto} alt={post.artistName}
+                  <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}>
+                    <img src={post.Organization?.profileImageUrl || post.artistPhoto || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt={post.Organization?.name || post.artistName}
                       className="w-10 h-10 rounded-full object-cover border border-white/10" />
                   </Link>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <Link href={`/${post.artistSlug}`} className="font-bold text-sm text-white hover:text-[#00D2FF] transition-colors">
-                        {post.artistName}
+                      <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`} className="font-bold text-sm text-white hover:text-[#00D2FF] transition-colors">
+                        {post.Organization?.name || post.artistName}
                       </Link>
-                      {post.isVerified && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
-                      {post.isisSupporterOnly && (
+                      {(post.Organization?.isVerified || post.isVerified) && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
+                      {(post.isSupporterOnly || post.isisSupporterOnly) && (
                         <span className="text-[9px] font-bold text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
                           SUPPORTER Only
                         </span>
                       )}
                     </div>
-                    <p className="text-[10px] text-gray-500">{post.time}</p>
+                    <p className="text-[10px] text-gray-500">{post.time || new Date(post.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
 
                 {/* Post body */}
-                {post.isisSupporterOnly ? (
+                {(post.isSupporterOnly || post.isisSupporterOnly) ? (
                   <div className="mx-5 mt-4 rounded-xl bg-purple-500/5 border border-purple-500/10 p-6 text-center space-y-3">
                     <Lock className="w-6 h-6 text-purple-400 mx-auto" />
                     <p className="text-sm text-gray-400 italic">"{post.content}"</p>
-                    <Link href={`/${post.artistSlug}`}
+                    <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}
                       className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold text-xs uppercase tracking-wider hover:bg-purple-500/20 transition-all">
                       Become a SUPPORTER to See This
                     </Link>
@@ -247,17 +248,31 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                 ) : (
                   <div className="px-5 pt-4">
                     <p className="text-sm text-gray-300 leading-relaxed">{post.content}</p>
-                    {post.type === 'release' && post.coverArt && (
+                    {(post.type === 'release' || post.coverArtUrl) && (
                       <div className="mt-4 rounded-xl overflow-hidden border border-white/5 relative group">
-                        <img src={post.coverArt} alt={post.releaseTitle} className="w-full h-48 object-cover" />
+                        <img src={post.coverArtUrl || post.coverArt} alt={post.title || post.releaseTitle} className="w-full h-48 object-cover" />
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <button className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
+                          <button 
+                            className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+                            onClick={() => {
+                              if (post.type === 'release') {
+                                playTrack({
+                                  id: post.id,
+                                  title: post.title,
+                                  artist: post.Organization?.name,
+                                  artistId: post.Organization?.slug,
+                                  audioUrl: post.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                                  imageUrl: post.coverArtUrl
+                                });
+                              }
+                            }}
+                          >
                             <Play className="w-5 h-5 fill-current ml-0.5" />
                           </button>
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black">
-                          <p className="font-bold text-white text-sm">{post.releaseTitle}</p>
-                          <p className="text-[10px] text-gray-400 uppercase tracking-widest">{post.releaseType}</p>
+                          <p className="font-bold text-white text-sm">{post.title || post.releaseTitle}</p>
+                          <p className="text-[10px] text-gray-400 uppercase tracking-widest">{post.type}</p>
                         </div>
                       </div>
                     )}
@@ -266,16 +281,18 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
 
                 {/* Reactions */}
                 <div className="flex items-center gap-2 px-5 py-4 mt-2 border-t border-white/5">
-                  {REACTION_EMOJI.map(r => (
+                  {REACTION_EMOJI.map(r => {
+                    const count = post.Reactions?.filter((re: any) => re.type === r.key).length || post.reactions?.[r.key as keyof typeof post.reactions] || 0;
+                    return (
                     <button key={r.key}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-xs font-medium text-gray-400 hover:text-white">
                       <span>{r.emoji}</span>
-                      <span>{post.reactions[r.key as keyof typeof post.reactions]}</span>
+                      <span>{count}</span>
                     </button>
-                  ))}
+                  )})}
                   <button className="ml-auto flex items-center gap-2 text-[10px] text-gray-500 hover:text-white transition-colors font-bold">
                     <MessageCircle className="w-3.5 h-3.5" />
-                    {post.comments}
+                    {post.comments || 0}
                   </button>
                 </div>
               </div>

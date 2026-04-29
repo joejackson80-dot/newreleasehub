@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Manage your library, follow artists, and track your Support.',
 };
 
+import { getFanFeed } from '@/app/actions/fan';
+
 export default async function FanDashboardPage() {
   const user = await getSessionFan();
 
@@ -27,11 +29,15 @@ export default async function FanDashboardPage() {
     orderBy: { createdAt: 'desc' }
   });
 
+  // Fetch Feed
+  const feedResult = await getFanFeed(user.id);
+
   return (
     <DashboardClient 
       user={user} 
       initialLibraryCount={libraryCount?._count.ParticipationLicenses || 0}
       subscriptions={subscriptions}
+      initialFeed={feedResult.success ? feedResult.feed : []}
     />
   );
 }

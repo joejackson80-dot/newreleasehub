@@ -6,6 +6,8 @@ import {
   Volume2, Share2, ArrowLeft, Zap, Info, ShieldCheck, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { reactToRadio } from '@/app/actions/fan';
+import { toast } from 'react-hot-toast';
 
 export default function StationPage({ slug }: { slug: string }) {
   const [station, setStation] = useState<any>(null);
@@ -136,12 +138,39 @@ export default function StationPage({ slug }: { slug: string }) {
                   >
                     {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
                   </button>
-                  <button className="px-8 py-4 rounded-full bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all">
+                  <button className="px-8 py-4 rounded-full bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/80 transition-all shadow-[0_0_20px_rgba(0,210,255,0.3)]">
                     Become a Supporter
                   </button>
                   <button className="px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
                     Follow
                   </button>
+                </div>
+
+                {/* LIVE REACTIONS */}
+                <div className="pt-4 flex flex-col items-center md:items-start gap-4">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic">Live Reactions</p>
+                  <div className="flex items-center gap-3">
+                    {[
+                      { key: 'fire', emoji: '🔥' },
+                      { key: 'heart', emoji: '❤️' },
+                      { key: 'crown', emoji: '👑' },
+                      { key: 'bolt', emoji: '⚡' },
+                      { key: 'rocket', emoji: '🚀' }
+                    ].map(r => (
+                      <button 
+                        key={r.key}
+                        onClick={async () => {
+                          const res = await reactToRadio(slug, r.key);
+                          if (res.success) {
+                             toast.success(`${r.emoji} Sent!`, { icon: r.emoji, style: { background: '#021220', color: '#fff', border: '1px solid #00D2FF' } });
+                          }
+                        }}
+                        className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl hover:bg-[#00D2FF]/10 hover:border-[#00D2FF]/30 transition-all hover:-translate-y-1 active:scale-90"
+                      >
+                        {r.emoji}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

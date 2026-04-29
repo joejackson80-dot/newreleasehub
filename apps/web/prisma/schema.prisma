@@ -60,6 +60,7 @@ model Organization {
   SupporterSubscriptions SupporterSubscription[]
   SupporterTiers         SupporterTier[]
   Releases               Release[]
+  Posts                  Post[]
   ServiceOrdersBought    ServiceOrder[]         @relation("ServiceBuyer")
   ServiceProvider        ServiceProvider?
   Sessions               Session[]
@@ -140,6 +141,7 @@ model Release {
   authorizedForRadio     Boolean      @default(false)
   CollabDeals            CollabDeal[]
   Tracks                 MusicAsset[]
+  Reactions              Reaction[]
   Organization           Organization @relation(fields: [organizationId], references: [id])
 }
 
@@ -166,6 +168,7 @@ model User {
   StreamPlays           StreamPlay[]
   ParticipationLicenses ParticipationLicense[]
   Votes                 Vote[]
+  Reactions             Reaction[]
   FanListeningStats     FanListeningStats?
   FanArtistRelations    FanArtistRelation[]
   FanChartPositions     FanChartPosition[]
@@ -936,4 +939,31 @@ enum MilestoneType {
   FRIDAY_ROUNDUP
   FOUNDING_ARTIST
   ONE_YEAR_ANNIVERSARY
+}
+
+model Post {
+  id              String       @id @default(cuid())
+  organizationId  String
+  content         String       @db.VarChar(2000)
+  imageUrl        String?
+  isSupporterOnly Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  Organization    Organization @relation(fields: [organizationId], references: [id])
+  Reactions       Reaction[]
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String?
+  releaseId String?
+  type      String   // e.g., 'fire', 'heart', 'crown', 'bolt'
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+  Post      Post?    @relation(fields: [postId], references: [id])
+  Release   Release? @relation(fields: [releaseId], references: [id])
+
+  @@unique([userId, postId, type])
+  @@unique([userId, releaseId, type])
 }

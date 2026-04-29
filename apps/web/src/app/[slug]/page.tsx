@@ -2,6 +2,7 @@ import React from 'react';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import ArtistReleasesClient from './ArtistReleasesClient';
 import type { Metadata } from 'next';
 import {
   Play, MapPin, Users, Disc, ShieldCheck, CheckCircle2, ArrowRight,
@@ -279,38 +280,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                 </Link>
               )}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {liveReleases.map(release => (
-                <Link key={release.id} href={`/${slug}/${release.id}`} className="group space-y-4">
-                  <div className="aspect-square bg-zinc-800 rounded-2xl overflow-hidden relative border border-white/5 group-hover:border-white/20 transition-all">
-                    {release.coverArtUrl ? (
-                      <img src={release.coverArtUrl} alt={release.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Disc className="w-12 h-12 text-white/10" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-[#00D2FF] flex items-center justify-center text-white scale-75 group-hover:scale-100 transition-transform">
-                        <Play className="w-5 h-5 fill-current ml-0.5" />
-                      </div>
-                    </div>
-                    {release.isSupporterOnly && (
-                      <div className="absolute top-2 right-2 bg-purple-600/90 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest">
-                        Supporter Only
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="font-bold truncate text-white">{release.title}</h4>
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{release.type}</span>
-                      <span className="text-[10px] text-gray-600">{new Date(release.releaseDate).getFullYear()}</span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <ArtistReleasesClient 
+              releases={liveReleases} 
+              slug={slug} 
+              artistName={org.name} 
+            />
             {liveReleases.length === 0 && (
               <div className="text-center py-20 border border-dashed border-white/10 rounded-2xl">
                 <Music className="w-12 h-12 text-white/10 mx-auto mb-4" />
