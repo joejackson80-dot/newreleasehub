@@ -15,6 +15,15 @@ export async function GET(
           include: {
             Organization: true,
           }
+        },
+        PlayHistory: {
+          include: {
+            Asset: {
+              include: { Organization: true }
+            }
+          },
+          orderBy: { playedAt: 'desc' },
+          take: 10
         }
       }
     });
@@ -36,6 +45,14 @@ export async function GET(
         imageUrl: station.NowPlaying.imageUrl || station.NowPlaying.Organization.profileImageUrl,
         audioUrl: station.NowPlaying.audioUrl,
       } : null,
+      recentlyPlayed: station.PlayHistory.map(ph => ({
+        id: ph.Asset.id,
+        title: ph.Asset.title,
+        artist: ph.Asset.Organization.name,
+        artistSlug: ph.Asset.Organization.slug,
+        imageUrl: ph.Asset.imageUrl || ph.Asset.Organization.profileImageUrl,
+        playedAt: ph.playedAt
+      })),
       updatedAt: station.updatedAt,
     });
   } catch (error) {

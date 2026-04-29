@@ -26,10 +26,9 @@ export default function StationPage({ slug }: { slug: string }) {
         setStation(data);
         if (data.nowPlaying && (!nowPlaying || data.nowPlaying.id !== nowPlaying.id)) {
           setNowPlaying(data.nowPlaying);
-          // Add to recently played if it's a new track
-          if (nowPlaying) {
-            setRecentlyPlayed(prev => [nowPlaying, ...prev].slice(0, 10));
-          }
+        }
+        if (data.recentlyPlayed) {
+          setRecentlyPlayed(data.recentlyPlayed);
         }
       } catch (err) {
         console.error(err);

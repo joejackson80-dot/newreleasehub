@@ -52,6 +52,24 @@ export async function GET(req: Request) {
           city: true,
         }
       });
+    } else if (genre === 'Top Fans') {
+      ranking = await prisma.user.findMany({
+        where: { role: 'fan' },
+        orderBy: [
+          { fanLevel: 'desc' },
+          { fanXP: 'desc' }
+        ],
+        take: limit,
+        select: {
+          id: true,
+          displayName: true,
+          username: true,
+          avatarUrl: true,
+          fanLevel: true,
+          fanXP: true,
+          badges: true,
+        }
+      });
     } else {
       // Specific genre
       ranking = await prisma.organization.findMany({

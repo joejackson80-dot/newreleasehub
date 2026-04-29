@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { BarChart3, Users, TrendingUp, Search, ChevronRight } from 'lucide-react';
 
 const GENRES = [
-  'Top Artists', 'Rising', 'Hip-Hop', 'R&B', 'Pop', 'Electronic', 
+  'Top Artists', 'Top Fans', 'Rising', 'Hip-Hop', 'R&B', 'Pop', 'Electronic', 
   'Afrobeats', 'Reggaeton', 'Indie', 'Rock', 'Country', 'Jazz', 'Classical',
   'Lo-Fi', 'Metal', 'Folk', 'Blues', 'World', 'Latin', 'Ambient'
 ];
@@ -155,9 +155,9 @@ export default function ChartsPage() {
                  <tr>
                    <th className="p-10"># Rank</th>
                    <th className="p-10">Trend</th>
-                   <th className="p-10">Authority Entity</th>
-                   <th className="p-10">Primary Discipline</th>
-                   <th className="p-10">Equity Score</th>
+                   <th className="p-10">{activeGenre === 'Top Fans' ? 'Network Agent' : 'Authority Entity'}</th>
+                   <th className="p-10">{activeGenre === 'Top Fans' ? 'Status' : 'Primary Discipline'}</th>
+                   <th className="p-10">{activeGenre === 'Top Fans' ? 'Reputation Score' : 'Equity Score'}</th>
                    <th className="p-10 text-right">Action</th>
                  </tr>
                </thead>
@@ -182,61 +182,73 @@ export default function ChartsPage() {
                    </tr>
                  ) : (
                    artists.map((artist, i) => (
-                     <tr key={artist.id} className="hover:bg-white/[0.02] transition-all group relative">
-                       <td className="p-10 text-5xl font-black italic text-zinc-900 group-hover:text-zinc-600 transition-all duration-500">{i + 1}</td>
-                       <td className="p-10">
-                          <div className="flex flex-col items-start gap-1">
-                             <span className="flex items-center gap-1 text-[#00D2FF] font-black text-[11px] uppercase tracking-widest italic">
-                                <TrendingUp className="w-3.5 h-3.5" />
-                                +{Math.floor(Math.random() * 5) + 1}
-                             </span>
-                             <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">Growth</span>
-                          </div>
-                       </td>
-                       <td className="p-10">
-                          <div className="flex items-center gap-6">
-                             <div className="relative group/avatar">
-                                <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF]/40 transition-colors shadow-lg overflow-hidden">
-                                   {artist.profileImageUrl ? (
-                                     <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover" />
-                                   ) : (
-                                     <Users className="w-8 h-8" />
-                                   )}
-                                </div>
-                                <div className="absolute inset-0 bg-[#00D2FF]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                             </div>
-                             <div className="space-y-1">
-                                <Link href={`/${artist.slug}`} className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">{artist.name}</Link>
-                                <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] italic">{artist.city || 'Global Network'}</p>
-                             </div>
-                          </div>
-                       </td>
-                       <td className="p-10">
-                          <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-zinc-400">
-                             {artist.genres?.[0] || activeGenre}
-                          </span>
-                       </td>
-                       <td className="p-10">
-                          <div className="space-y-3">
-                             <div className="flex justify-between items-end">
-                                <span className="text-white font-black italic text-lg">{artist.supporterCount || 0}</span>
-                                <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Supporters</span>
-                             </div>
-                             <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
-                                <div 
-                                   className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000" 
-                                   style={{ width: `${Math.min(100, Math.max(10, (artist.supporterCount / 100) * 100))}%` }}
-                                ></div>
-                             </div>
-                          </div>
-                       </td>
-                       <td className="p-10 text-right">
-                         <Link href={`/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF]/50 transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
-                           <span className="relative z-10 group-hover/follow:text-white">View Profile</span>
-                           <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
-                         </Link>
-                       </td>
-                     </tr>
+                      <tr key={artist.id} className="hover:bg-white/[0.02] transition-all group relative">
+                        <td className="p-10 text-5xl font-black italic text-zinc-900 group-hover:text-zinc-600 transition-all duration-500">{i + 1}</td>
+                        <td className="p-10">
+                           <div className="flex flex-col items-start gap-1">
+                              <span className="flex items-center gap-1 text-[#00D2FF] font-black text-[11px] uppercase tracking-widest italic">
+                                 <TrendingUp className="w-3.5 h-3.5" />
+                                 +{Math.floor(Math.random() * 5) + 1}
+                              </span>
+                              <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">Growth</span>
+                           </div>
+                        </td>
+                        <td className="p-10">
+                           <div className="flex items-center gap-6">
+                              <div className="relative group/avatar">
+                                 <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF]/40 transition-colors shadow-lg overflow-hidden">
+                                    {activeGenre === 'Top Fans' ? (
+                                      artist.avatarUrl ? <img src={artist.avatarUrl} alt={artist.displayName} className="w-full h-full object-cover" /> : <Users className="w-8 h-8" />
+                                    ) : (
+                                      artist.profileImageUrl ? <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover" /> : <Users className="w-8 h-8" />
+                                    )}
+                                 </div>
+                                 <div className="absolute inset-0 bg-[#00D2FF]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                              </div>
+                              <div className="space-y-1">
+                                 <p className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">
+                                   {activeGenre === 'Top Fans' ? artist.displayName : artist.name}
+                                 </p>
+                                 <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] italic">
+                                   {activeGenre === 'Top Fans' ? `@${artist.username}` : (artist.city || 'Global Network')}
+                                 </p>
+                              </div>
+                           </div>
+                        </td>
+                        <td className="p-10">
+                           <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                              {activeGenre === 'Top Fans' ? `LVL ${artist.fanLevel}` : (artist.genres?.[0] || activeGenre)}
+                           </span>
+                        </td>
+                        <td className="p-10">
+                           <div className="space-y-3">
+                              <div className="flex justify-between items-end">
+                                 <span className="text-white font-black italic text-lg">
+                                   {activeGenre === 'Top Fans' ? artist.fanXP : (artist.supporterCount || 0)}
+                                 </span>
+                                 <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
+                                   {activeGenre === 'Top Fans' ? 'XP' : 'Supporters'}
+                                 </span>
+                              </div>
+                              <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                                 <div 
+                                    className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000" 
+                                    style={{ 
+                                      width: activeGenre === 'Top Fans' 
+                                        ? `${(artist.fanXP / (artist.fanLevel * 500)) * 100}%` 
+                                        : `${Math.min(100, Math.max(10, (artist.supporterCount / 100) * 100))}%` 
+                                    }}
+                                 ></div>
+                              </div>
+                           </div>
+                        </td>
+                        <td className="p-10 text-right">
+                          <Link href={activeGenre === 'Top Fans' ? `/fan/${artist.username}` : `/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF]/50 transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
+                            <span className="relative z-10 group-hover/follow:text-white">View Protocol</span>
+                            <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
+                          </Link>
+                        </td>
+                      </tr>
                    ))
                  )}
                </tbody>

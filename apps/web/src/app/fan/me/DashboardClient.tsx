@@ -162,7 +162,16 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                <h1 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter italic leading-none text-white">Portfolio<br />Tracker.</h1>
              </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="text-right hidden md:block px-6 border-r border-white/10">
+               <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Fan Level</p>
+               <div className="flex items-center gap-3">
+                  <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden">
+                     <div className="h-full bg-gradient-to-r from-purple-500 to-[#00D2FF]" style={{ width: `${(user.fanXP / (user.fanLevel * 500)) * 100}%` }}></div>
+                  </div>
+                  <span className="text-xl font-bold italic tracking-tighter text-white">LVL {user.fanLevel}</span>
+               </div>
+            </div>
             <div className="text-right hidden md:block px-6 border-r border-white/10">
                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Global Balance</p>
                <p className="text-xl font-bold text-green-400">$24.80</p>

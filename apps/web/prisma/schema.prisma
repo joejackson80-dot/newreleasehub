@@ -162,6 +162,8 @@ model User {
   passwordHash        String?
   role                String               @default("fan")
   tier                String               @default("LISTENER")
+  fanLevel            Int                  @default(1)
+  fanXP               Int                  @default(0)
   username            String?              @unique
   AdImpressions       AdImpression[]
   FanRoyaltyShares    FanRoyaltyShare[]
@@ -320,6 +322,7 @@ model Station {
   updatedAt    DateTime    @updatedAt
   NowPlaying   MusicAsset? @relation("NowPlaying", fields: [nowPlayingId], references: [id])
   Playlist     Playlist?   @relation(fields: [playlistId], references: [id])
+  PlayHistory  StationPlayHistory[]
 
   @@index([slug])
 }
@@ -1001,3 +1004,13 @@ model OpportunityApplication {
   Opportunity     Opportunity @relation(fields: [opportunityId], references: [id])
   Artist          Organization @relation(fields: [artistId], references: [id])
 }
+
+model StationPlayHistory {
+  id          String     @id @default(cuid())
+  stationId   String
+  assetId     String
+  playedAt    DateTime   @default(now())
+  Station     Station    @relation(fields: [stationId], references: [id])
+  Asset       MusicAsset @relation(fields: [assetId], references: [id])
+}
+

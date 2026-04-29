@@ -44,6 +44,22 @@ export async function processFanCheckout(artistId: string, tierId: string) {
       data: { supporterCount: { increment: 1 } }
     });
 
+    // Award XP to the fan
+    const userUpdate = await prisma.user.findUnique({ where: { id: user.id }, select: { fanXP: true, fanLevel: true } });
+    if (userUpdate) {
+       let newXP = userUpdate.fanXP + 500;
+       let newLevel = userUpdate.fanLevel;
+       const xpNeeded = newLevel * 500;
+       if (newXP >= xpNeeded) {
+          newLevel += 1;
+          newXP -= xpNeeded;
+       }
+       await prisma.user.update({
+          where: { id: user.id },
+          data: { fanXP: newXP, fanLevel: newLevel }
+       });
+    }
+
     // We can also create a mock transaction or yield logic later if needed.
     
     return { success: true, subscriptionId: subscription.id, supporterNumber: subscription.supporterNumber };
@@ -220,6 +236,8 @@ export async function logListeningSession(userId: string, trackId: string) {
 
     // 2. Update listening stats and streak
     const stats = await prisma.fanListeningStats.findUnique({ where: { fanId: userId } });
+    let xpToAdd = 10; // Base XP for a stream
+
     if (stats) {
       const now = new Date();
       const lastPlayed = new Date(stats.lastListeningDate || 0);
@@ -229,6 +247,7 @@ export async function logListeningSession(userId: string, trackId: string) {
       
       if (diffDays === 1) {
         newStreak += 1;
+        xpToAdd += 50; // Streak bonus
       } else if (diffDays > 1) {
         newStreak = 1;
       }
@@ -251,6 +270,25 @@ export async function logListeningSession(userId: string, trackId: string) {
           listeningStreak: 1,
           lastListeningDate: new Date()
         }
+      });
+    }
+
+    // 3. Update User XP and Level
+    const user = await prisma.user.findUnique({ where: { id: userId }, select: { fanXP: true, fanLevel: true } });
+    if (user) {
+      let newXP = user.fanXP + xpToAdd;
+      let newLevel = user.fanLevel;
+      
+      // Basic leveling logic: Each level requires level * 500 XP
+      const xpNeeded = newLevel * 500;
+      if (newXP >= xpNeeded) {
+        newLevel += 1;
+        newXP -= xpNeeded;
+      }
+
+      await prisma.user.update({
+        where: { id: userId },
+        data: { fanXP: newXP, fanLevel: newLevel }
       });
     }
 
