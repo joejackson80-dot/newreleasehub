@@ -58,11 +58,9 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['@resvg/resvg-js'],
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
+  experimental: {
+    cpus: 1,
+    workerThreads: false,
   },
 };
 
