@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint",
-    "postinstall": "npm install @tailwindcss/oxide-linux-x64-gnu --no-save || echo skipped"
+    "lint": "eslint"
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^5.2.0",
