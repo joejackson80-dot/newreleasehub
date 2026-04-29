@@ -1,40 +1,49 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { prisma } from '@/lib/prisma';
+import { getSessionFanId } from '@/lib/session';
 
-export const runtime = 'edge';
+export async function GET(req: Request) {
+  try {
+    const fanId = await getSessionFanId();
+    if (!fanId) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
+    const shares = await prisma.fanRoyaltyShare.findMany({
+      where: { fanId },
+      include: {
+        Organization: {
+          select: { name: true, slug: true, profileImageUrl: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
 
-  if (!userId) {
-    return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+    // Grouping logic for yield overview
+    const totalEarned = shares.reduce((sum, s) => sum + s.amountEarned, 0);
+    const activePositions = shares.filter(s => s.status === 'CREDITED').length;
+
+    // Simulate some recent payout events for high-fidelity UI
+    const payouts = shares
+      .filter(s => s.amountEarned > 0)
+      .map(s => ({
+        id: `payout-${s.id}`,
+        artistName: s.Organization.name,
+        amount: s.amountEarned,
+        date: s.createdAt,
+        type: 'STREAMS_YIELD'
+      }));
+
+    return NextResponse.json({ 
+      success: true, 
+      history: shares,
+      stats: {
+        totalEarned,
+        activePositions,
+        currency: 'USD'
+      },
+      recentPayouts: payouts
+    });
+  } catch (error: any) {
+    console.error('Yield History API error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
-
-  // ── INSTITUTIONAL ANALYTICS ENGINE ──
-  // Fetching historical yield trend for the last 12 months
-  // Using Supabase Data API for Edge compatibility
-  const { data, error } = await supabase
-    .from('FanRoyaltyShare')
-    .select('month, year, amountEarned')
-    .eq('fanId', userId)
-    .order('year', { ascending: false })
-    .order('month', { ascending: false })
-    .limit(12);
-
-  if (error) {
-    console.error('[YIELD_ANALYTICS_ERROR]', error);
-    return NextResponse.json({ error: 'Failed to fetch yield history' }, { status: 500 });
-  }
-
-  // Sort back to chronological for the chart
-  const historicalData = data.reverse();
-
-  return NextResponse.json({ 
-    success: true,
-    history: historicalData,
-    protocol: 'NRH_ANALYTICS_V1.1'
-  });
 }
-
-

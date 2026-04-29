@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus, Clock, Radio } from 'lucide-react';
 import Link from 'next/link';
 import { useAudio } from '@/context/AudioContext';
+import YieldHistory from '@/components/fan/YieldHistory';
 
-const TABS = ['Feed', 'Library', 'Messages', 'Following', 'Support', 'Vault', 'Stats', 'Notifications'];
+const TABS = ['Feed', 'Library', 'Messages', 'Following', 'Support', 'Yield', 'Vault', 'Stats', 'Notifications'];
 
 const MOCK_FEED = [
   {
@@ -499,6 +500,13 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
               className="flex items-center justify-center gap-3 p-10 rounded-[2.5rem] border border-dashed border-white/5 text-gray-600 hover:text-white hover:border-white/10 hover:bg-white/[0.02] transition-all text-[10px] font-bold uppercase tracking-[0.3em] group">
               <Plus className="w-5 h-5 group-hover:scale-110 transition-transform" /> Acquire More Network Stakes
             </Link>
+          </div>
+        )}
+
+        {/* ── YIELD TAB ── */}
+        {activeTab === 'Yield' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+             <YieldHistory />
           </div>
         )}
 

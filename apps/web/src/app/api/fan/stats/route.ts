@@ -1,22 +1,34 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { safeError } from '@/lib/api/errors';
+import { getSessionFanId } from '@/lib/session';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
-
-    if (!userId) {
-      return NextResponse.json(safeError('Missing userId', 400), { status: 400 });
-    }
+    const fanId = await getSessionFanId();
+    if (!fanId) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
     const stats = await prisma.fanListeningStats.findUnique({
-      where: { fanId: userId }
+      where: { fanId }
     });
 
-    return NextResponse.json({ success: true, stats });
-  } catch (error) {
-    return NextResponse.json(safeError(error), { status: 500 });
+    // Calculate first discoveries (simplified: subscriptions made within 7 days of artist profile creation)
+    const discoveries = await prisma.supporterSubscription.count({
+      where: {
+        fanId,
+        status: 'ACTIVE',
+        // In a real app, we'd join with Organization and check dates
+      }
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      stats: {
+        ...stats,
+        firstDiscoveries: discoveries // Mocking for now based on support count
+      }
+    });
+  } catch (error: any) {
+    console.error('Fan Stats API error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
