@@ -12,11 +12,13 @@ const ARTIST_IMAGE_POOL = [
   'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80',
 ];
 
+import NetworkFeed from '@/components/network/NetworkFeed';
+
 export default async function HomePage() {
   const hubs = await prisma.organization.findMany({
     where: { isPublic: true },
     orderBy: { totalStreams: 'desc' },
-    take: 10,
+    take: 6,
     include: {
       ParticipationLicenses: true,
       SessionDeck: true
@@ -84,78 +86,96 @@ export default async function HomePage() {
 
       {/* DISCOVERY FEED */}
       <section className="section-container py-32">
-         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <div className="space-y-4">
-               <div className="flex items-center space-x-3 text-[#00D2FF]">
-                  <TrendingUp className="w-5 h-5" />
-                  <span className="text-xs font-bold uppercase tracking-widest">Trending this week</span>
-               </div>
-               <h2 className="text-5xl uppercase leading-none">Discover Artists.</h2>
-            </div>
-            <div className="flex items-center space-x-6">
-               <div className="relative group">
-                  <input
-                    type="text"
-                    placeholder="Search Artists..."
-                    className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00D2FF]/20 transition-all w-64 md:w-80 text-white"
-                  />
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-               </div>
-            </div>
-         </div>
-
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {validHubs.map((hub, index) => {
-              const imageUrl = hub.profileImageUrl || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
-              const isLive = hub.SessionDeck?.isPlaying;
-
-              return (
-                <Link 
-                  href={`/fan/${hub.slug}`} 
-                  key={hub.id} 
-                  className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#00D2FF]/30 transition-all duration-500 hover:-translate-y-2 shadow-2xl"
-                >
-                  <div className="aspect-[4/5] relative overflow-hidden">
-                     <img 
-                       src={imageUrl} 
-                       alt={hub.name} 
-                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
+            
+            {/* MAIN DISCOVERY */}
+            <div className="lg:col-span-2 space-y-16">
+               <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+                  <div className="space-y-4">
+                     <div className="flex items-center space-x-3 text-[#00D2FF]">
+                        <TrendingUp className="w-5 h-5" />
+                        <span className="text-xs font-bold uppercase tracking-widest">Trending this week</span>
+                     </div>
+                     <h2 className="text-5xl uppercase leading-none">Discover Artists.</h2>
+                  </div>
+                  <div className="relative group">
+                     <input
+                        type="text"
+                        placeholder="Search Artists..."
+                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00D2FF]/20 transition-all w-64 md:w-80 text-white"
                      />
-                     <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-60"></div>
-                     
-                     {isLive && (
-                       <div className="absolute top-6 left-6 flex items-center space-x-2 bg-red-600 text-white text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full animate-pulse">
-                         <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                         <span>Live Session</span>
-                       </div>
-                     )}
+                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
-                  
-                  <div className="p-8 space-y-6">
-                     <div className="flex justify-between items-start">
-                        <div>
-                           <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-white">{hub.name}</h3>
-                           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
+               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  {validHubs.map((hub, index) => {
+                    const imageUrl = hub.profileImageUrl || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
+                    const isLive = hub.SessionDeck?.isPlaying;
+
+                    return (
+                      <Link 
+                        href={`/fan/${hub.slug}`} 
+                        key={hub.id} 
+                        className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#00D2FF]/30 transition-all duration-500 hover:-translate-y-2 shadow-2xl"
+                      >
+                        <div className="aspect-[4/5] relative overflow-hidden">
+                           <img 
+                             src={imageUrl} 
+                             alt={hub.name} 
+                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+                           />
+                           <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-60"></div>
+                           
+                           {isLive && (
+                             <div className="absolute top-6 left-6 flex items-center space-x-2 bg-red-600 text-white text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full animate-pulse">
+                               <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                               <span>Live Session</span>
+                             </div>
+                           )}
                         </div>
-                        <div className="flex flex-col items-end">
-                           <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.supporterCount || 0).toLocaleString()}</p>
-                           <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
+                        
+                        <div className="p-8 space-y-6">
+                           <div className="flex justify-between items-start">
+                              <div>
+                                 <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-white">{hub.name}</h3>
+                                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
+                              </div>
+                              <div className="flex flex-col items-end">
+                                 <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.supporterCount || 0).toLocaleString()}</p>
+                                 <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
+                              </div>
+                           </div>
+                           <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                 <Play className="w-3.5 h-3.5 text-gray-500" />
+                                 <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{(hub.totalStreams || 0).toLocaleString()} streams</span>
+                              </div>
+                              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#00D2FF] transition-colors">
+                                 View Hub
+                              </div>
+                           </div>
                         </div>
-                     </div>
-                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                           <Play className="w-3.5 h-3.5 text-gray-500" />
-                           <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{(hub.totalStreams || 0).toLocaleString()} streams</span>
-                        </div>
-                        <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#00D2FF] transition-colors">
-                           View Hub
-                        </div>
-                     </div>
+                      </Link>
+                    );
+                  })}
+               </div>
+            </div>
+
+            {/* SIDEBAR FEED */}
+            <div className="lg:col-span-1 space-y-12">
+               <div className="space-y-4">
+                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                     <Zap className="w-5 h-5 fill-current" />
+                     <span className="text-xs font-bold uppercase tracking-widest">Network Live</span>
                   </div>
-                </Link>
-              );
-            })}
+                  <h2 className="text-4xl uppercase leading-none italic font-bold">Activity.</h2>
+               </div>
+               
+               <NetworkFeed />
+            </div>
          </div>
+      </section>
       </section>
 
       {/* HOW IT WORKS */}
