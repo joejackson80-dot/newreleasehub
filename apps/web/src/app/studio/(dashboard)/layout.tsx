@@ -21,8 +21,8 @@ const NAV_GROUPS = [
   {
     label: 'Fans',
     items: [
-      { href: '/studio/SUPPORTERs', label: 'SUPPORTER Tiers', icon: Users },
-      { href: '/studio/SUPPORTERs', label: 'Fan List', icon: Users },
+      { href: '/studio/supporters', label: 'SUPPORTER Tiers', icon: Users },
+      { href: '/studio/supporters', label: 'Fan List', icon: Users },
     ],
   },
   {
