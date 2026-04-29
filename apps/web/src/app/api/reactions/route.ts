@@ -25,3 +25,5 @@ export async function POST(req: Request) {
     return NextResponse.json(safeError(error, 'reactions-api'), { status: 500 });
   }
 }
+
+

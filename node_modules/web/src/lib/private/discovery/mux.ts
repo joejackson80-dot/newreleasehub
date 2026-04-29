@@ -64,3 +64,5 @@ export async function stopStream(slug: string) {
     await muxFetch(`/live-streams/${stream.id}/reset-reconnect`, { method: 'PUT' });
   }
 }
+
+

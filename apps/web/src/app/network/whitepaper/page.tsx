@@ -32,7 +32,7 @@ export default function NetworkWhitepaper() {
                      </h1>
                   </div>
                   <p className="text-xl text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">
-                     A forensic patronage model enabling independent artists to retain 100% master ownership while sharing commercial success with the global collective.
+                     A forensic SUPPORTERage model enabling independent artists to retain 100% master ownership while sharing commercial success with the global collective.
                   </p>
                </div>
             </FadeIn>
@@ -43,7 +43,7 @@ export default function NetworkWhitepaper() {
       <section className="max-w-6xl mx-auto px-10 py-32 grid grid-cols-1 md:grid-cols-3 gap-16">
          {[
            { title: 'Zero Dilution', desc: 'Artists retain full creative control and 100% legal ownership of their master recordings.', icon: Music },
-           { title: 'Support-Tier Equity', desc: 'Patrons acquire "Fan Revenue Shares" – a non-security patronage stake in future yield.', icon: Award },
+           { title: 'Support-Tier Equity', desc: 'SUPPORTERs acquire "Fan Revenue Shares" – a non-security SUPPORTERage stake in future yield.', icon: Award },
            { title: 'Network Security', desc: 'Every transaction is secured on the NRH Professional Network with full commercial transparency.', icon: ShieldCheck }
          ].map((pillar, i) => (
             <FadeIn key={i} delay={i * 0.1}>
@@ -130,3 +130,5 @@ export default function NetworkWhitepaper() {
     </div>
   );
 }
+
+

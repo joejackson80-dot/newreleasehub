@@ -130,3 +130,5 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
     return null
   }
 }
+
+

@@ -35,7 +35,7 @@ const BANNED_FIELDS = new Set([
   'rawStreamCount', 'totalPaidStreams', 'totalFreeStreams',
   // Chart System (Trade Secret)
   'nrhEquityScore', 'equityScoreDelta', 'equityScoreHistory',
-  'components', 'streamMomentum', 'patronDepth', 'fanVelocity',
+  'components', 'streamMomentum', 'SUPPORTERDepth', 'fanVelocity',
   'engagementQuality', 'releaseConsist',
 ]);
 
@@ -43,7 +43,7 @@ const BANNED_FIELDS = new Set([
 const FIELD_ALIASES: Record<string, string> = {
   netPayout: 'monthlyEarnings',
   totalEarnings: 'grossEarnings',
-  patronMultiplier: 'earningsLevel',
+  SUPPORTERMultiplier: 'earningsLevel',
   poolAEarnings: 'subscriberEarnings',
   poolCEarnings: 'radioEarnings',
   paidStreams: 'premiumPlays',
@@ -90,4 +90,6 @@ export function safeError(error: unknown, context?: string): { error: string } {
   console.error(`[NRH API Error]${context ? ` [${context}]` : ''}: ${message}`);
   return { error: 'An unexpected error occurred. Please try again.' };
 }
+
+
 

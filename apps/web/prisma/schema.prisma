@@ -29,7 +29,7 @@ model Organization {
   isVerified             Boolean                @default(false)
   isLive                 Boolean                @default(false)
   liveListenerCount      Int                    @default(0)
-  patronCount            Int                    @default(0)
+  supporterCount         Int                    @default(0)
   totalStreams           Int                    @default(0)
   monthlyListeners       Int                    @default(0)
   artistTier             String                 @default("rising")
@@ -57,8 +57,8 @@ model Organization {
   MusicReviews           MusicReview[]
   ParticipationLicenses  ParticipationLicense[]
   Proposals              Proposal[]
-  PatronSubscriptions    PatronSubscription[]
-  PatronTiers            PatronTier[]
+  SupporterSubscriptions SupporterSubscription[]
+  SupporterTiers         SupporterTier[]
   Releases               Release[]
   ServiceOrdersBought    ServiceOrder[]         @relation("ServiceBuyer")
   ServiceProvider        ServiceProvider?
@@ -80,6 +80,8 @@ model Organization {
   showEarningsOnChart   Boolean   @default(false)
 
   ChartSnapshots        ChartSnapshot[]
+  ArtistSupporterLeaderboard ArtistSupporterLeaderboard?
+  FanArtistRelations     FanArtistRelation[]
 }
 
 model SessionArchive {
@@ -131,7 +133,7 @@ model Release {
   releaseDate            DateTime     @default(now())
   isScheduled            Boolean      @default(false)
   totalPlays             Int          @default(0)
-  isPatronOnly           Boolean      @default(false)
+  isSupporterOnly        Boolean      @default(false)
   earlyAccessWindowHours Int          @default(48)
   createdAt              DateTime     @default(now())
   trackCount             Int          @default(1)
@@ -160,18 +162,21 @@ model User {
   FanRoyaltyShares    FanRoyaltyShare[]
   FanSubscriptions    FanSubscription[]
   Following           Follow[]
-  PatronSubscriptions   PatronSubscription[]
+  SupporterSubscriptions SupporterSubscription[]
   StreamPlays           StreamPlay[]
   ParticipationLicenses ParticipationLicense[]
   Votes                 Vote[]
+  FanListeningStats     FanListeningStats?
+  FanArtistRelations    FanArtistRelation[]
+  FanChartPositions     FanChartPosition[]
 }
 
-model PatronSubscription {
+model SupporterSubscription {
   id                  String       @id @default(cuid())
   fanId               String
   artistId            String
   tierId              String
-  patronNumber        Int          @default(0)
+  supporterNumber     Int          @default(0)
   priceCents          Int
   revenueSharePercent Float        @default(0.0)
   status              String       @default("ACTIVE")
@@ -179,10 +184,10 @@ model PatronSubscription {
   createdAt           DateTime     @default(now())
   Organization        Organization @relation(fields: [artistId], references: [id])
   User                User         @relation(fields: [fanId], references: [id])
-  Tier                PatronTier   @relation(fields: [tierId], references: [id])
+  Tier                SupporterTier @relation(fields: [tierId], references: [id])
 }
 
-model PatronTier {
+model SupporterTier {
   id                  String               @id @default(cuid())
   organizationId      String
   name                String
@@ -193,8 +198,75 @@ model PatronTier {
   isActive            Boolean              @default(true)
   priceCents          Int
   sortOrder           Int                  @default(0)
-  Subscriptions       PatronSubscription[]
+  Subscriptions       SupporterSubscription[]
   Organization        Organization         @relation(fields: [organizationId], references: [id])
+}
+
+model FanListeningStats {
+  id                    String   @id @default(uuid())
+  fanId                 String   @unique
+  totalStreamsAllTime    Int      @default(0)
+  totalStreams7d        Int      @default(0)
+  totalStreams30d       Int      @default(0)
+  totalListeningHrs     Float    @default(0)
+  listeningStreak       Int      @default(0)
+  longestStreak         Int      @default(0)
+  uniqueArtistsAllTime  Int      @default(0)
+  uniqueArtists30d      Int      @default(0)
+  topGenre              String?
+  topArtistId           String?
+  totalSupportPaidCents Int      @default(0)
+  totalEarnedCents      Int      @default(0)
+  firstDiscoveries      Int      @default(0)
+  updatedAt             DateTime @updatedAt
+  hideFromLeaderboards  Boolean  @default(false)
+
+  fan                   User     @relation(fields: [fanId], references: [id])
+}
+
+model FanArtistRelation {
+  id              String   @id @default(uuid())
+  fanId           String
+  artistId        String
+  streamCount     Int      @default(0)
+  streamCount7d   Int      @default(0)
+  streamCount30d  Int      @default(0)
+  firstStreamAt   DateTime?
+  lastStreamAt    DateTime?
+  isSupporter     Boolean  @default(false)
+  supporterSince  DateTime?
+  supporterNumber Int?
+  totalPaidCents  Int      @default(0)
+  supporterRank   Int?
+
+  fan             User     @relation(fields: [fanId], references: [id])
+  artist          Organization @relation(fields: [artistId], references: [id])
+  @@unique([fanId, artistId])
+  @@index([artistId, streamCount30d])
+  @@index([artistId, totalPaidCents])
+}
+
+model ArtistSupporterLeaderboard {
+  id              String   @id @default(uuid())
+  artistId        String   @unique
+  week            DateTime
+  leaderboardData Json
+  updatedAt       DateTime @updatedAt
+
+  artist          Organization @relation(fields: [artistId], references: [id])
+}
+
+model FanChartPosition {
+  id              String   @id @default(uuid())
+  fanId           String
+  week            DateTime
+  tastemaker      Int?
+  topStreamer      Int?
+  topSupporter    Int?
+  createdAt       DateTime @default(now())
+
+  fan             User     @relation(fields: [fanId], references: [id])
+  @@unique([fanId, week])
 }
 
 model FoundingCounter {
@@ -304,7 +376,7 @@ model ParticipationLicense {
   allocatedBps   Int
   feeCents       Int
   status         String       @default("PENDING")
-  ledgerHash     String?      // Forensic on-chain bridge
+  ledgerHash     String?      
   createdAt      DateTime     @default(now())
   MusicAsset     MusicAsset?  @relation(fields: [musicAssetId], references: [id])
   Organization   Organization @relation(fields: [organizationId], references: [id])
@@ -461,8 +533,8 @@ model Proposal {
   organizationId  String
   title           String
   description     String
-  status          String   @default("ACTIVE") // ACTIVE, PASSED, REJECTED
-  ledgerHash      String?  // Forensic on-chain bridge
+  status          String   @default("ACTIVE") 
+  ledgerHash      String?  
   createdAt       DateTime @default(now())
   expiresAt       DateTime
   Votes           Vote[]
@@ -473,9 +545,9 @@ model Vote {
   id              String   @id @default(cuid())
   proposalId      String
   userId          String
-  voteType        String   // YES, NO, ABSTAIN
+  voteType        String   
   weight          Int      @default(1)
-  ledgerHash      String?  // Forensic on-chain bridge
+  ledgerHash      String?  
   createdAt       DateTime @default(now())
   Proposal        Proposal @relation(fields: [proposalId], references: [id])
   User            User     @relation(fields: [userId], references: [id])
@@ -508,9 +580,9 @@ model ArtistRoyalty {
   poolAEarnings          Int           @default(0)
   poolCStreams           Int           @default(0)
   poolCEarnings          Int           @default(0)
-  patronMultiplier       Float         @default(1.0)
+  supporterMultiplier     Float         @default(1.0)
   totalEarnings          Int           @default(0)
-  patronShareDistributed Int           @default(0)
+  supporterShareDistributed Int           @default(0)
   netPayout              Int           @default(0)
   status                 RoyaltyStatus @default(PENDING)
   createdAt              DateTime      @default(now())
@@ -521,7 +593,7 @@ model FanRoyaltyShare {
   id                   String       @id @default(cuid())
   fanId                String
   artistId             String
-  patronageId          String?
+  supporterTierId      String?
   month                Int
   year                 Int
   artistStreamEarnings Int          @default(0)
@@ -700,6 +772,42 @@ model ServiceReview {
   Provider   ServiceProvider @relation(fields: [providerId], references: [id])
 }
 
+model ArtistMilestone {
+  id            String          @id @default(uuid())
+  artistId      String
+  type          MilestoneType
+  value         Int?            
+  achievedAt    DateTime        @default(now())
+  cardImageUrl  String?         
+  isViewed      Boolean         @default(false)
+  isShared      Boolean         @default(false)
+  sharedAt      DateTime?
+
+  artist        Organization    @relation(fields: [artistId], references: [id])
+  @@unique([artistId, type])
+  @@index([artistId, isViewed])
+}
+
+model ChartSnapshot {
+  id          String   @id @default(uuid())
+  artistId    String
+  week        DateTime 
+  globalRank  Int?
+  genreRank   Int?
+  cityRank    Int?
+  risingRank  Int?
+  equityScore Float
+  streamCount Int
+  supporterCount Int
+  followerCount Int
+  createdAt   DateTime @default(now())
+
+  artist      Organization   @relation(fields: [artistId], references: [id])
+  @@unique([artistId, week])
+  @@index([week, genreRank])
+  @@index([week, globalRank])
+}
+
 enum LoopMode {
   LOOP
   SHUFFLE
@@ -716,7 +824,7 @@ enum FanType {
   GUEST
   FREE
   SUBSCRIBER
-  PATRON
+  SUPPORTER
 }
 
 enum PoolSource {
@@ -798,32 +906,16 @@ enum ServiceOrderStatus {
   CANCELLED
 }
 
-model ArtistMilestone {
-  id            String          @id @default(uuid())
-  artistId      String
-  type          MilestoneType
-  value         Int?            // the actual number (e.g. 1000 for STREAMS_1000)
-  achievedAt    DateTime        @default(now())
-  cardImageUrl  String?         // generated card image URL
-  isViewed      Boolean         @default(false)
-  isShared      Boolean         @default(false)
-  sharedAt      DateTime?
-
-  artist        Organization    @relation(fields: [artistId], references: [id])
-  @@unique([artistId, type])
-  @@index([artistId, isViewed])
-}
-
 enum MilestoneType {
   FIRST_UPLOAD
-  FIRST_PATRON
-  PATRONS_10
-  PATRONS_50
-  PATRONS_100
-  PATRONS_250
-  PATRONS_500
-  PATRONS_1000
-  PATRONS_5000
+  FIRST_SUPPORTER
+  SUPPORTERS_10
+  SUPPORTERS_50
+  SUPPORTERS_100
+  SUPPORTERS_250
+  SUPPORTERS_500
+  SUPPORTERS_1000
+  SUPPORTERS_5000
   STREAMS_1000
   STREAMS_10000
   STREAMS_50000
@@ -841,24 +933,4 @@ enum MilestoneType {
   FRIDAY_ROUNDUP
   FOUNDING_ARTIST
   ONE_YEAR_ANNIVERSARY
-}
-
-model ChartSnapshot {
-  id          String   @id @default(uuid())
-  artistId    String
-  week        DateTime // ISO week start (Monday)
-  globalRank  Int?
-  genreRank   Int?
-  cityRank    Int?
-  risingRank  Int?
-  equityScore Float
-  streamCount Int
-  patronCount Int
-  followerCount Int
-  createdAt   DateTime @default(now())
-
-  artist      Organization   @relation(fields: [artistId], references: [id])
-  @@unique([artistId, week])
-  @@index([week, genreRank])
-  @@index([week, globalRank])
 }

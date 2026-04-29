@@ -35,3 +35,5 @@ export const ENTERPRISE_PLANS = {
     seats: 20,
   }
 }
+
+

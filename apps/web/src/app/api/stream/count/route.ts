@@ -76,11 +76,76 @@ export async function POST(req: NextRequest) {
         hadKeyboardInput: interactionSignals.hadKeyboardInput,
         wasTabVisible: interactionSignals.wasTabVisible,
         wasAudioMuted: interactionSignals.wasAudioMuted,
+      },
+      include: {
+        MusicAsset: true,
       }
     })
+
+    // --- FAN CHART TRACKING SYSTEM ---
+    if (!isExcluded && streamPlay.listenerId) {
+      const fanId = streamPlay.listenerId;
+      const artistId = streamPlay.artistId;
+      const trackDurationSecs = updated.MusicAsset?.duration || 0;
+
+      // 1. Update FanArtistRelation
+      await prisma.fanArtistRelation.upsert({
+        where: { fanId_artistId: { fanId, artistId } },
+        update: {
+          streamCount:   { increment: 1 },
+          streamCount7d: { increment: 1 },
+          streamCount30d: { increment: 1 },
+          lastStreamAt:   new Date(),
+        },
+        create: {
+          fanId,
+          artistId,
+          streamCount:   1,
+          streamCount7d: 1,
+          streamCount30d: 1,
+          firstStreamAt: new Date(),
+          lastStreamAt:  new Date(),
+        }
+      });
+
+      // 2. Update FanListeningStats
+      await prisma.fanListeningStats.upsert({
+        where: { fanId },
+        update: {
+          totalStreamsAllTime: { increment: 1 },
+          totalStreams7d:      { increment: 1 },
+          totalStreams30d:     { increment: 1 },
+          totalListeningHrs:   { increment: trackDurationSecs / 3600 },
+          updatedAt:           new Date(),
+        },
+        create: {
+          fanId,
+          totalStreamsAllTime: 1,
+          totalStreams7d:      1,
+          totalStreams30d:     1,
+          totalListeningHrs:   trackDurationSecs / 3600,
+        }
+      });
+
+      // 3. First Discovery Tracking
+      const artist = await prisma.organization.findUnique({
+        where: { id: artistId },
+        select: { chartPositionGenre: true, chartPositionGlobal: true }
+      });
+
+      if (artist && !artist.chartPositionGenre && !artist.chartPositionGlobal) {
+        await prisma.fanListeningStats.update({
+          where: { fanId },
+          data: { firstDiscoveries: { increment: 1 } }
+        });
+      }
+    }
     
     return NextResponse.json({ counted: !isExcluded, fraudScore })
   } catch (error) {
+    console.error('[STREAM_COUNT_ERROR]', error);
     return NextResponse.json(safeError(error), { status: 500 })
   }
 }
+
+

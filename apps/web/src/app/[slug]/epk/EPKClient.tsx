@@ -64,7 +64,7 @@ export default function EPKClient({ org }: { org: any }) {
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
          {[
            { label: 'Total Streams', val: '4.2M', growth: '+12%', icon: Activity, color: 'text-[#00D2FF]' },
-           { label: 'Active Patrons', val: org.ParticipationLicenses.length.toString(), growth: '+5%', icon: Users, color: 'text-orange-500' },
+           { label: 'Active Supporters', val: org.ParticipationLicenses.length.toString(), growth: '+5%', icon: Users, color: 'text-orange-500' },
            { label: 'Avg. Retention', val: '68%', growth: '+2%', icon: BarChart3, color: 'text-green-500' },
            { label: 'Market Reach', val: '42 Countries', growth: 'Global', icon: Globe, color: 'text-purple-500' }
          ].map((stat, i) => (

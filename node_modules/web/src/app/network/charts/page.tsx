@@ -201,7 +201,7 @@ export default function ChartsPage() {
               <h4 className="text-3xl font-black italic uppercase tracking-tighter">Scale Your Network Equity.</h4>
               <p className="text-zinc-500 font-medium text-sm leading-relaxed uppercase tracking-widest">
                  The NRH Authority score is calculated using 12 forensic data points. <br />
-                 Release music, grow your patrons, and dominate the charts.
+                 Release music, grow your SUPPORTERs, and dominate the charts.
               </p>
            </div>
            <Link href="/studio" className="px-12 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(0,210,255,0.2)]">
@@ -215,3 +215,5 @@ export default function ChartsPage() {
 
 // Reuse some icons
 import { Activity } from 'lucide-react';
+
+

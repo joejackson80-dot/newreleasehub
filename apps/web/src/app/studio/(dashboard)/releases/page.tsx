@@ -7,3 +7,5 @@ export default async function ReleasesManagerPage() {
 
   return <ReleasesClient org={org} />;
 }
+
+

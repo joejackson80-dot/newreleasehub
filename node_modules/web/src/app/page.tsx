@@ -60,7 +60,7 @@ export default async function HomePage() {
                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Masters.</span>
                   </h1>
                   <p className="text-gray-500 text-xl font-medium max-w-lg leading-relaxed italic">
-                      "One platform. Streaming, patron income, collab deals, opportunities, and AI tools — all built for independent artists."
+                      "One platform. Streaming, SUPPORTER income, collab deals, opportunities, and AI tools — all built for independent artists."
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
@@ -138,8 +138,8 @@ export default async function HomePage() {
                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
                         </div>
                         <div className="flex flex-col items-end">
-                           <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.patronCount || 0).toLocaleString()}</p>
-                           <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">Patrons</p>
+                           <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.SUPPORTERCount || 0).toLocaleString()}</p>
+                           <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
                         </div>
                      </div>
                      <div className="pt-6 border-t border-white/5 flex items-center justify-between">
@@ -180,7 +180,7 @@ export default async function HomePage() {
                    step: '02',
                    icon: Heart,
                    title: 'Fans fund your career',
-                   body: 'Set custom patron tiers with exclusive perks. Your supporters get 48-hour early access, patron-only content, and a real micro-share of your streaming revenue — not just bragging rights.'
+                   body: 'Set custom SUPPORTER tiers with exclusive perks. Your supporters get 48-hour early access, SUPPORTER-only content, and a real micro-share of your streaming revenue — not just bragging rights.'
                  },
                  {
                    step: '03',
@@ -224,7 +224,7 @@ export default async function HomePage() {
             </div>
             {[
               { title: 'The Hub Ecosystem', desc: 'Why distribute elsewhere when you can dominate here? NRH is where the industry happens. Your music, your data, your revenue — all in one professional network.', icon: Globe },
-              { title: 'Fans become investors', desc: 'Set custom patron tiers. Offer revenue participation to your biggest supporters. Your community funds your next release — and shares in your success.', icon: Award },
+              { title: 'Fans become investors', desc: 'Set custom SUPPORTER tiers. Offer revenue participation to your biggest supporters. Your community funds your next release — and shares in your success.', icon: Award },
               { title: 'Independent Growth', desc: 'Build credibility with sync buyers, booking agents, and venues using our verified performance metrics without compromising your independence.', icon: ShieldCheck }
             ].map((service, i) => (
               <div key={i} className="p-10 border border-white/5 rounded-3xl space-y-6 hover:bg-white/5 transition-colors group">
@@ -299,3 +299,5 @@ export default async function HomePage() {
     </div>
   );
 }
+
+

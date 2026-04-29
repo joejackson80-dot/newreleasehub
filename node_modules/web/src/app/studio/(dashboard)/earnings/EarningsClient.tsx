@@ -148,10 +148,10 @@ export default function EarningsPage({ artist }: { artist: any }) {
         </div>
 
         <div className="bg-[#111] border border-white/5 p-10 rounded-[2.5rem] space-y-6 relative overflow-hidden">
-           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Patronage (MRR)</p>
+           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active SUPPORTERage (MRR)</p>
            <div className="space-y-1">
-              <h2 className="text-4xl font-bold italic tracking-tighter text-white">${(stats.activePatronageCents / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{stats.patronCount} Active Master Holders</p>
+              <h2 className="text-4xl font-bold italic tracking-tighter text-white">${(stats.activeSUPPORTERageCents / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{stats.SUPPORTERCount} Active Master Holders</p>
            </div>
         </div>
 
@@ -233,3 +233,5 @@ export default function EarningsPage({ artist }: { artist: any }) {
     </div>
   );
 }
+
+

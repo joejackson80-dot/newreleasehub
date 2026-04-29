@@ -57,7 +57,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold uppercase tracking-widest">3. DATA SHARING</h2>
             <div className="prose prose-invert prose-p:text-gray-400 max-w-none">
               <p>
-                We do not sell your personal data. We share information with third-party service providers (like Stripe and Resend) only as necessary to provide our services. Artist profile information is public on the network to facilitate discovery and patronage.
+                We do not sell your personal data. We share information with third-party service providers (like Stripe and Resend) only as necessary to provide our services. Artist profile information is public on the network to facilitate discovery and SUPPORTERage.
               </p>
             </div>
           </section>
@@ -75,3 +75,5 @@ export default function PrivacyPage() {
     </div>
   );
 }
+
+

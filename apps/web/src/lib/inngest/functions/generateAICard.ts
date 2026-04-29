@@ -36,3 +36,5 @@ export const generateAICard = inngest.createFunction(
     return { artistId, milestoneType, imageUrl }
   }
 )
+
+

@@ -4,7 +4,7 @@ import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle
 import Link from 'next/link';
 import { useAudio } from '@/context/AudioContext';
 
-const TABS = ['Feed', 'Library', 'Following', 'Patronages', 'Notifications'];
+const TABS = ['Feed', 'Library', 'Following', 'Support', 'Stats', 'Notifications'];
 
 const MOCK_FEED = [
   {
@@ -14,7 +14,7 @@ const MOCK_FEED = [
     content: 'New single just dropped — "Worth It (feat. Nova Rae)" is out now. This one means everything to me.',
     coverArt: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
     releaseTitle: 'Worth It (feat. Nova Rae)', releaseType: 'single',
-    isPatronOnly: false,
+    isSUPPORTEROnly: false,
     reactions: { fire: 284, heart: 192, crown: 47, bolt: 103 },
     comments: 38,
   },
@@ -22,8 +22,8 @@ const MOCK_FEED = [
     id: '2', artistName: 'Lena Khari', artistSlug: 'lena-khari',
     artistPhoto: 'https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?w=200&q=80',
     isVerified: true, time: '5h ago', type: 'post',
-    content: 'Just finished mixing the Lagos to London deluxe edition. 4 bonus tracks. Patron-only preview dropping tomorrow 🎵',
-    isPatronOnly: false,
+    content: 'Just finished mixing the Lagos to London deluxe edition. 4 bonus tracks. SUPPORTER-only preview dropping tomorrow 🎵',
+    isSUPPORTEROnly: false,
     reactions: { fire: 512, heart: 341, crown: 88, bolt: 220 },
     comments: 64,
   },
@@ -32,13 +32,13 @@ const MOCK_FEED = [
     artistPhoto: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80',
     isVerified: true, time: '1d ago', type: 'post',
     content: '🔒 Behind-the-scenes studio session — phase 3 of Solar Frequencies is almost done.',
-    isPatronOnly: true,
+    isSUPPORTEROnly: true,
     reactions: { fire: 180, heart: 95, crown: 32, bolt: 78 },
     comments: 22,
   },
 ];
 
-const MOCK_PATRONAGES = [
+const MOCK_SUPPORTERAGES = [
   {
     id: '1', artistName: 'Marcus Webb', artistSlug: 'marcus-webb',
     artistPhoto: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&q=80',
@@ -54,7 +54,7 @@ const MOCK_PATRONAGES = [
 const MOCK_NOTIFICATIONS = [
   { id: '1', type: 'royalty', title: 'Revenue share credited', body: 'You earned $4.20 from Marcus Webb\'s streams this month.', time: '2h ago', unread: true },
   { id: '2', type: 'release', title: 'New release from Marcus Webb', body: '"Worth It (feat. Nova Rae)" is now available.', time: '5h ago', unread: true },
-  { id: '3', type: 'patron', title: 'Patron milestone', body: 'You are now Patron #742 of Lena Khari.', time: '2d ago', unread: false },
+  { id: '3', type: 'SUPPORTER', title: 'SUPPORTER milestone', body: 'You are now SUPPORTER #742 of Lena Khari.', time: '2d ago', unread: false },
 ];
 
 const REACTION_EMOJI = [
@@ -71,22 +71,32 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
   const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
   const [yieldHistory, setYieldHistory] = useState<any[]>([]);
   const [isLoadingYield, setIsLoadingYield] = useState(true);
+  const [fanStats, setFanStats] = useState<any>(null);
+  const [isLoadingStats, setIsLoadingStats] = useState(true);
   const unreadNotifs = MOCK_NOTIFICATIONS.filter(n => n.unread).length;
 
   useEffect(() => {
-    const fetchYield = async () => {
+    const fetchStats = async () => {
       if (!user.id) return;
       try {
-        const res = await fetch(`/api/fan/yield/history?userId=${user.id}`);
-        const data = await res.json();
-        if (data.success) setYieldHistory(data.history);
+        const [yieldRes, statsRes] = await Promise.all([
+          fetch(`/api/fan/yield/history?userId=${user.id}`),
+          fetch(`/api/fan/stats?userId=${user.id}`)
+        ]);
+        
+        const yieldData = await yieldRes.json();
+        if (yieldData.success) setYieldHistory(yieldData.history);
+
+        const statsData = await statsRes.json();
+        if (statsData.success) setFanStats(statsData.stats);
       } catch (e) {
         console.error(e);
       } finally {
         setIsLoadingYield(false);
+        setIsLoadingStats(false);
       }
     };
-    fetchYield();
+    fetchStats();
   }, [user.id]);
 
   useEffect(() => {
@@ -214,9 +224,9 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                         {post.artistName}
                       </Link>
                       {post.isVerified && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
-                      {post.isPatronOnly && (
+                      {post.isSUPPORTEROnly && (
                         <span className="text-[9px] font-bold text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                          Patron Only
+                          SUPPORTER Only
                         </span>
                       )}
                     </div>
@@ -225,13 +235,13 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                 </div>
 
                 {/* Post body */}
-                {post.isPatronOnly ? (
+                {post.isSUPPORTEROnly ? (
                   <div className="mx-5 mt-4 rounded-xl bg-purple-500/5 border border-purple-500/10 p-6 text-center space-y-3">
                     <Lock className="w-6 h-6 text-purple-400 mx-auto" />
                     <p className="text-sm text-gray-400 italic">"{post.content}"</p>
                     <Link href={`/${post.artistSlug}`}
                       className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold text-xs uppercase tracking-wider hover:bg-purple-500/20 transition-all">
-                      Become a Patron to See This
+                      Become a SUPPORTER to See This
                     </Link>
                   </div>
                 ) : (
@@ -319,8 +329,8 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
           </div>
         )}
 
-        {/* ── PATRONAGES TAB ── */}
-        {activeTab === 'Patronages' && (
+        {/* ── SUPPORTERAGES TAB ── */}
+        {activeTab === 'Support' && (
           <div className="space-y-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                <div className="lg:col-span-2 bg-[#111] border border-white/5 rounded-[2.5rem] p-10 space-y-8">
@@ -379,7 +389,7 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
                   <div className="space-y-6">
                      <div className="space-y-1">
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Stakes</p>
-                        <p className="text-5xl font-bold text-white">{MOCK_PATRONAGES.length}</p>
+                        <p className="text-5xl font-bold text-white">{MOCK_SUPPORTERAGES.length}</p>
                      </div>
                      <div className="space-y-4 pt-4 border-t border-white/5">
                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
@@ -400,7 +410,7 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {MOCK_PATRONAGES.map(p => (
+              {MOCK_SUPPORTERAGES.map(p => (
                 <div key={p.id} className="relative group">
                    <div className="absolute inset-0 bg-gradient-to-tr from-[#00D2FF]/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                    <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 hover:border-white/20 transition-all relative z-10 space-y-8">
@@ -456,6 +466,73 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
           </div>
         )}
 
+        {/* ── STATS TAB ── */}
+        {activeTab === 'Stats' && (
+          <div className="space-y-8 animate-in fade-in duration-700">
+            {isLoadingStats ? (
+              <div className="text-center py-20 text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest animate-pulse">Synchronizing Terminal Data...</div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[
+                    { label: 'Total Streams', value: fanStats?.totalStreamsAllTime || 0, icon: Play, color: 'text-[#00D2FF]' },
+                    { label: 'Unique Artists', value: fanStats?.uniqueArtistsAllTime || 0, icon: Users, color: 'text-purple-400' },
+                    { label: 'Listening Hours', value: (fanStats?.totalListeningHrs || 0).toFixed(1), icon: Clock, color: 'text-green-400' },
+                    { label: 'Streak', value: `${fanStats?.listeningStreak || 0} Days`, icon: Star, color: 'text-orange-400' },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-[#111] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-all group">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center ${stat.color}`}>
+                          <stat.icon className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest italic group-hover:text-gray-500 transition-colors">Verified</span>
+                      </div>
+                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">{stat.label}</p>
+                      <p className="text-3xl font-bold text-white mt-1 tracking-tighter">{stat.value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2 bg-[#111] border border-white/5 rounded-[2.5rem] p-10 space-y-8">
+                     <div className="flex justify-between items-center">
+                        <div className="space-y-1">
+                           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Artist Discovery Record</p>
+                           <h3 className="text-2xl font-bold text-white uppercase italic tracking-tighter">Your First Discoveries</h3>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
+                           <TrendingUp className="w-6 h-6 text-[#00D2FF]" />
+                        </div>
+                     </div>
+                     <div className="bg-black/40 border border-white/5 rounded-3xl p-12 text-center space-y-4">
+                        <p className="text-5xl font-bold text-[#00D2FF] tracking-tighter">{fanStats?.firstDiscoveries || 0}</p>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em] max-w-[200px] mx-auto leading-loose">Artists you supported before they hit the charts</p>
+                     </div>
+                  </div>
+
+                  <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-10 flex flex-col justify-between">
+                     <div className="space-y-6">
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Favorite Genre</p>
+                        <div className="space-y-2">
+                           <p className="text-4xl font-bold text-white uppercase italic tracking-tighter">{fanStats?.topGenre || 'Afrobeats'}</p>
+                           <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                              <div className="h-full bg-gradient-to-r from-purple-500 to-[#00D2FF] w-[75%]"></div>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="pt-10 flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                           <ShieldCheck className="w-4 h-4 text-green-500" />
+                        </div>
+                        <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Protocol V2.4 Active</p>
+                     </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         {/* ── FOLLOWING TAB ── */}
         {activeTab === 'Following' && (
           <div className="space-y-4">
@@ -500,3 +577,5 @@ export default function FanDashboard({ user, initialLibraryCount }: { user: any,
     </div>
   );
 }
+
+

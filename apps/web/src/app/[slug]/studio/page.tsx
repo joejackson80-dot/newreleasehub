@@ -35,7 +35,7 @@ export default async function StudioPage({ params }: { params: Promise<{ slug: s
                <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Artist Studio</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Management Hub</h1>
-            <p className="text-gray-500 text-lg">Retain 100% Master Ownership. Secure Patrons. Scale Direct.</p>
+            <p className="text-gray-500 text-lg">Retain 100% Master Ownership. Secure Supporters. Scale Direct.</p>
           </div>
           
           <div className="flex items-center space-x-4">

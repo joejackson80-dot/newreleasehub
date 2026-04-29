@@ -158,7 +158,7 @@ export default function CustomizePage() {
                   onClick={() => {
                     setIsGenerating(true);
                     setTimeout(() => {
-                      setManifesto("Pushing the boundaries of the local scene with high-intensity audio experiments. Every release is a master-class in independent growth, backed by a network of dedicated patrons who believe in the future of sound.");
+                      setManifesto("Pushing the boundaries of the local scene with high-intensity audio experiments. Every release is a master-class in independent growth, backed by a network of dedicated SUPPORTERs who believe in the future of sound.");
                       setIsGenerating(false);
                     }, 1500);
                   }}
@@ -184,7 +184,7 @@ export default function CustomizePage() {
               </div>
               <div>
                 <h4 className="font-bold text-white uppercase italic">Network Broadcast.</h4>
-                <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-1">Notify all followers and patrons</p>
+                <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-1">Notify all followers and SUPPORTERs</p>
               </div>
               <textarea 
                 value={broadcastMsg}
@@ -229,7 +229,7 @@ export default function CustomizePage() {
                 <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-1">Stripe Connect required for earnings</p>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                To receive streaming royalties and patronage payouts, you must connect a Stripe account. This allows for instant, transparent payouts to your local bank.
+                To receive streaming royalties and SUPPORTERage payouts, you must connect a Stripe account. This allows for instant, transparent payouts to your local bank.
               </p>
               <button 
                 onClick={() => window.location.href = '/studio/stripe-mock'}
@@ -321,3 +321,5 @@ export default function CustomizePage() {
     </div>
   );
 }
+
+

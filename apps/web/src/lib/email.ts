@@ -27,17 +27,17 @@ export async function sendWelcomeEmail(to: string, name: string) {
   }
 }
 
-export async function sendNewPatronEmail(to: string, artistName: string, patronName: string, amount: number) {
+export async function sendNewSUPPORTEREmail(to: string, artistName: string, SUPPORTERName: string, amount: number) {
   try {
     await resend.emails.send({
       from: 'New Release Hub <alerts@newreleasehub.com>',
       to: [to],
-      subject: 'New Patron Secured.',
+      subject: 'New SUPPORTER Secured.',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #020202; color: #ffffff;">
           <p style="color: #00D2FF; font-size: 10px; font-weight: bold; text-transform: uppercase;">Alert: New Participation</p>
           <h1 style="font-style: italic; text-transform: uppercase; letter-spacing: -1px;">$${amount} Settlement.</h1>
-          <p style="color: #888888; font-size: 14px; line-height: 1.6;">${patronName} has just acquired a master participation license for your catalog.</p>
+          <p style="color: #888888; font-size: 14px; line-height: 1.6;">${SUPPORTERName} has just acquired a master participation license for your catalog.</p>
           <p style="color: #444444; font-size: 10px; margin-top: 40px;">© 2025 New Release Hub LLC. Institutional Grade Audio.</p>
         </div>
       `,
@@ -48,3 +48,5 @@ export async function sendNewPatronEmail(to: string, artistName: string, patronN
     return { success: false, error };
   }
 }
+
+

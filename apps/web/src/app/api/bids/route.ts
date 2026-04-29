@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getStripeSession } from '@/lib/stripe';
-import { sendNewPatronEmail } from '@/lib/email';
+import { sendNewSUPPORTEREmail } from '@/lib/email';
 
 export const runtime = 'nodejs';
 
@@ -114,12 +114,12 @@ export async function PATCH(req: Request) {
 
       // Send Notification
       if (artist?.email) {
-        sendNewPatronEmail(
+        sendNewSUPPORTEREmail(
           artist.email, 
           artist.name, 
           fan?.displayName || 'A Fan', 
           bid.offerAmountCents / 100
-        ).catch(err => console.error('Failed to send patron email:', err));
+        ).catch(err => console.error('Failed to send SUPPORTER email:', err));
       }
     }
 
@@ -128,3 +128,5 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+

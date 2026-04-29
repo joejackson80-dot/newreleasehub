@@ -19,20 +19,20 @@ export const metadata: Metadata = {
     template: '%s | New Release Hub',
   },
   description:
-    'The platform for independent artists to release music, build fan patronage, and earn more per stream — without signing away their rights. No label. No middleman.',
-  keywords: ['independent music', 'artist platform', 'music patronage', 'fan revenue sharing', 'music streaming'],
+    'The platform for independent artists to release music, build fan SUPPORTERage, and earn more per stream — without signing away their rights. No label. No middleman.',
+  keywords: ['independent music', 'artist platform', 'music SUPPORTERage', 'fan revenue sharing', 'music streaming'],
   metadataBase: new URL('https://www.newreleasehub.com'),
   openGraph: {
     type: 'website',
     siteName: 'New Release Hub',
     title: 'New Release Hub — Your Music. Your Fans. Your Money.',
-    description: 'The platform for independent artists to release music, build fan patronage, and earn more per stream — without signing away their rights.',
+    description: 'The platform for independent artists to release music, build fan SUPPORTERage, and earn more per stream — without signing away their rights.',
     url: 'https://www.newreleasehub.com',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'New Release Hub — Your Music. Your Fans. Your Money.',
-    description: 'The platform for independent artists to release music, build fan patronage, and earn more per stream — without signing away their rights.',
+    description: 'The platform for independent artists to release music, build fan SUPPORTERage, and earn more per stream — without signing away their rights.',
   },
   robots: { index: true, follow: true },
 };
@@ -66,3 +66,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

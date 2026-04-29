@@ -13,7 +13,7 @@ export async function GET() {
       {
         slug: 'vibe-master',
         name: 'Vibe Master',
-        bio: 'Chill beats and visual journeys. Join the patronage movement.',
+        bio: 'Chill beats and visual journeys. Join the SUPPORTERage movement.',
       }
     ];
 
@@ -64,3 +64,5 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+

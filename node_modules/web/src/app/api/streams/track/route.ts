@@ -18,13 +18,13 @@ export async function POST(req: Request) {
     if (userId) {
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        include: { PatronSubscriptions: { where: { artistId: artistId, status: 'ACTIVE' } } }
+        include: { SUPPORTERSubscriptions: { where: { artistId: artistId, status: 'ACTIVE' } } }
       });
 
       if (user) {
         let type = 'free';
-        if (user.PatronSubscriptions.length > 0) type = 'patron';
-        else if (user.subscriptionStatus === 'subscriber' || user.subscriptionStatus === 'patron') type = 'subscriber';
+        if (user.SUPPORTERSubscriptions.length > 0) type = 'SUPPORTER';
+        else if (user.subscriptionStatus === 'subscriber' || user.subscriptionStatus === 'SUPPORTER') type = 'subscriber';
         
         fanData = { id: user.id, type };
       }
@@ -59,4 +59,6 @@ export async function PATCH(req: Request) {
     return NextResponse.json(safeError(error), { status: 500 });
   }
 }
+
+
 

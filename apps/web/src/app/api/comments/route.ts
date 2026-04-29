@@ -26,3 +26,5 @@ export async function POST(req: Request) {
     return NextResponse.json(safeError(error, 'comments-api'), { status: 500 });
   }
 }
+
+

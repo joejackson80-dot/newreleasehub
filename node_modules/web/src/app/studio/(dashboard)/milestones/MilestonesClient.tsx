@@ -5,13 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const MILESTONE_DEFINITIONS = [
   { type: 'FIRST_UPLOAD', label: 'First Upload', category: 'Creator' },
-  { type: 'FIRST_PATRON', label: 'First Patron', category: 'Community' },
-  { type: 'PATRONS_10', label: '10 Patrons', category: 'Community' },
-  { type: 'PATRONS_50', label: '50 Patrons', category: 'Community' },
-  { type: 'PATRONS_100', label: '100 Patrons', category: 'Community' },
-  { type: 'PATRONS_250', label: '250 Patrons', category: 'Community' },
-  { type: 'PATRONS_500', label: '500 Patrons', category: 'Community' },
-  { type: 'PATRONS_1000', label: '1,000 Patrons', category: 'Community' },
+  { type: 'FIRST_SUPPORTER', label: 'First SUPPORTER', category: 'Community' },
+  { type: 'SUPPORTERS_10', label: '10 SUPPORTERs', category: 'Community' },
+  { type: 'SUPPORTERS_50', label: '50 SUPPORTERs', category: 'Community' },
+  { type: 'SUPPORTERS_100', label: '100 SUPPORTERs', category: 'Community' },
+  { type: 'SUPPORTERS_250', label: '250 SUPPORTERs', category: 'Community' },
+  { type: 'SUPPORTERS_500', label: '500 SUPPORTERs', category: 'Community' },
+  { type: 'SUPPORTERS_1000', label: '1,000 SUPPORTERs', category: 'Community' },
   { type: 'STREAMS_1000', label: '1,000 Streams', category: 'Impact' },
   { type: 'STREAMS_10000', label: '10,000 Streams', category: 'Impact' },
   { type: 'STREAMS_50000', label: '50,000 Streams', category: 'Impact' },
@@ -168,3 +168,5 @@ export default function MilestonesClient() {
     </div>
   );
 }
+
+

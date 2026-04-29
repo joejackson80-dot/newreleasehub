@@ -33,7 +33,7 @@ const tiers = [
       'Offline listening',
       'Higher-quality audio (320kbps)',
       'Early access to new releases (24hr)',
-      'Can earn revenue share as a patron',
+      'Can earn revenue share as a SUPPORTER',
     ],
     cta: 'Subscribe Now',
     href: '/api/stripe/subscribe?tier=subscriber',
@@ -41,17 +41,17 @@ const tiers = [
     icon: Zap,
   },
   {
-    name: 'NRH Patron Bundle',
+    name: 'NRH SUPPORTER Bundle',
     price: '$14.99',
     period: '/mo',
     description: 'The ultimate way to support and invest in artists.',
     features: [
       'Everything in Subscriber',
-      '$5 monthly patron credit applied automatically',
+      '$5 monthly SUPPORTER credit applied automatically',
       'Priority queue in live streams',
-      'Exclusive Patron badge on profile',
+      'Exclusive SUPPORTER badge on profile',
     ],
-    cta: 'Start Patronizing',
+    cta: 'Start SUPPORTERizing',
     href: '/discover',
     highlight: false,
     icon: Star,
@@ -208,3 +208,5 @@ export default function SubscribePage() {
     </div>
   );
 }
+
+

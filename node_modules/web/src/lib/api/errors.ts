@@ -13,3 +13,5 @@ export function safeError(error: unknown, statusCode: number = 500) {
   
   return { error: publicMessages[statusCode] ?? 'An error occurred.', code: statusCode }
 }
+
+

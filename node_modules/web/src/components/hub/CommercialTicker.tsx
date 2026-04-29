@@ -86,3 +86,5 @@ export default function CommercialTicker({ bids, licenses }: Props) {
     </div>
   );
 }
+
+

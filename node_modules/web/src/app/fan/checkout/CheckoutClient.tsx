@@ -126,7 +126,7 @@ export default function CheckoutClient() {
                 </div>
 
                 <div className="space-y-6">
-                  <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select Patronage Tier</h3>
+                  <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select SUPPORTERage Tier</h3>
                   <div className="space-y-4">
                     {artist?.tiers?.map((tier: any) => (
                       <button 
@@ -183,8 +183,8 @@ export default function CheckoutClient() {
                    <CheckCircle2 className="w-12 h-12" />
                 </div>
                 <div className="space-y-4">
-                   <h1 className="text-4xl md:text-3xl font-bold tracking-tighter italic uppercase">Welcome, Patron.</h1>
-                   <p className="text-gray-500 text-lg max-w-md mx-auto">Your participation in {artist?.name}'s revenue is now secured. You are now Patron #742.</p>
+                   <h1 className="text-4xl md:text-3xl font-bold tracking-tighter italic uppercase">Welcome, SUPPORTER.</h1>
+                   <p className="text-gray-500 text-lg max-w-md mx-auto">Your participation in {artist?.name}'s revenue is now secured. You are now SUPPORTER #742.</p>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                    <button onClick={() => router.push(`/${artist?.slug}`)} className="px-10 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">Return to Hub</button>
@@ -270,3 +270,5 @@ export default function CheckoutClient() {
     </div>
   );
 }
+
+

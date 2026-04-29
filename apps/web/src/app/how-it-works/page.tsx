@@ -82,10 +82,10 @@ export default function HowItWorksPage() {
               <div className="space-y-4">
                 <h3 className="text-3xl font-bold italic uppercase tracking-tighter">2. Connect</h3>
                 <p className="text-gray-500 leading-relaxed font-medium">
-                  Invite your fans to your Hub. Offer exclusive patron tiers with real benefits like early access, exclusive content, and even a share of your streaming revenue.
+                  Invite your fans to your Hub. Offer exclusive SUPPORTER tiers with real benefits like early access, exclusive content, and even a share of your streaming revenue.
                 </p>
                 <ul className="space-y-3 pt-4">
-                  {['Custom Patron Tiers', 'Direct fan messaging', 'Live Session Deck'].map((item, i) => (
+                  {['Custom SUPPORTER Tiers', 'Direct fan messaging', 'Live Session Deck'].map((item, i) => (
                     <li key={i} className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">
                       <div className="w-1 h-1 rounded-full bg-[#00D2FF]"></div>
                       <span>{item}</span>
@@ -102,10 +102,10 @@ export default function HowItWorksPage() {
               <div className="space-y-4">
                 <h3 className="text-3xl font-bold italic uppercase tracking-tighter">3. Earn</h3>
                 <p className="text-gray-500 leading-relaxed font-medium">
-                  Get paid more per stream through our high-yield royalty engine. Combine streaming income with predictable monthly patron revenue and collab opportunities.
+                  Get paid more per stream through our high-yield royalty engine. Combine streaming income with predictable monthly SUPPORTER revenue and collab opportunities.
                 </p>
                 <ul className="space-y-3 pt-4">
-                  {['High-yield royalties', 'Monthly patron income', 'Transparent splits'].map((item, i) => (
+                  {['High-yield royalties', 'Monthly SUPPORTER income', 'Transparent splits'].map((item, i) => (
                     <li key={i} className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">
                       <div className="w-1 h-1 rounded-full bg-[#00D2FF]"></div>
                       <span>{item}</span>
@@ -130,10 +130,10 @@ export default function HowItWorksPage() {
             
             <div className="space-y-10">
               {[
-                { title: 'Set Up Your Hub', desc: 'Create your digital storefront in minutes. Customize your branding and set your patron tiers.', icon: Globe },
-                { title: 'Release & Distribute', desc: 'Upload your masters. Choose whether to release to the whole network or just your patrons first.', icon: Upload },
+                { title: 'Set Up Your Hub', desc: 'Create your digital storefront in minutes. Customize your branding and set your SUPPORTER tiers.', icon: Globe },
+                { title: 'Release & Distribute', desc: 'Upload your masters. Choose whether to release to the whole network or just your SUPPORTERs first.', icon: Upload },
                 { title: 'Engage with Fans', desc: 'Use the Session Deck to host live listening parties and interact with your community in real-time.', icon: Heart },
-                { title: 'Monetize Everything', desc: 'From streams to patronage to merch, track every dollar through your real-time analytics dashboard.', icon: BarChart3 },
+                { title: 'Monetize Everything', desc: 'From streams to SUPPORTERage to merch, track every dollar through your real-time analytics dashboard.', icon: BarChart3 },
               ].map((step, i) => (
                 <div key={i} className="flex space-x-6">
                   <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] font-bold text-sm">
@@ -199,7 +199,7 @@ export default function HowItWorksPage() {
               { q: 'Do I keep my masters?', a: 'Yes. 100%. Always. New Release Hub is a platform, not a label. You grant us a non-exclusive license to stream your music, that\'s it.' },
               { q: 'How do I get paid?', a: 'We use Stripe Connect for instant payouts. Once your balance is over $10, you can withdraw your earnings directly to your bank account.' },
               { q: 'Can I use NRH alongside Spotify?', a: 'Absolutely. Many artists use NRH as their "premium" home for super-fans while keeping their music on major DSPs for broad discovery.' },
-              { q: 'What are Patron Tiers?', a: 'Custom monthly subscriptions you create for your fans. You decide the price and the perks, from early access to exclusive downloads.' },
+              { q: 'What are SUPPORTER Tiers?', a: 'Custom monthly subscriptions you create for your fans. You decide the price and the perks, from early access to exclusive downloads.' },
             ].map((faq, i) => (
               <div key={i} className="p-10 border border-white/5 rounded-[2.5rem] bg-[#050505] space-y-4">
                 <h4 className="text-lg font-bold uppercase tracking-tight">{faq.q}</h4>
@@ -230,3 +230,5 @@ export default function HowItWorksPage() {
     </div>
   );
 }
+
+

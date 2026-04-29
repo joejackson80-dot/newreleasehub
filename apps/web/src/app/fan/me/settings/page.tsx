@@ -12,3 +12,5 @@ export default async function FanSettingsPage() {
 
   return <SettingsClient user={user} />;
 }
+
+

@@ -20,7 +20,7 @@ async function main() {
   const marcus = await prisma.organization.update({
     where: { slug: 'marcus-webb' },
     data: {
-      patronCount: 2140,
+      SUPPORTERCount: 2140,
     }
   });
 
@@ -112,3 +112,5 @@ async function main() {
 main()
   .catch((e) => { console.error(e); process.exit(1); })
   .finally(async () => { await prisma.$disconnect(); await pool.end(); });
+
+

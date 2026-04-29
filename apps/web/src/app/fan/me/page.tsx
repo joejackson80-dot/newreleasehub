@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export const metadata = {
   title: 'Fan Dashboard | New Release Hub',
-  description: 'Manage your library, follow artists, and track your patronages.',
+  description: 'Manage your library, follow artists, and track your Support.',
 };
 
 export default async function FanDashboardPage() {
@@ -24,3 +24,5 @@ export default async function FanDashboardPage() {
     />
   );
 }
+
+

@@ -35,7 +35,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
 
   // Find where the input is rendered (around line 300+)
 
-  const [chatTab, setChatTab] = useState<'CHAT' | 'MERCH' | 'WAR' | 'PATRONS'>('CHAT');
+  const [chatTab, setChatTab] = useState<'CHAT' | 'MERCH' | 'WAR' | 'SUPPORTERS'>('CHAT');
   const [artistName, setArtistName] = useState('Loading...');
   const [orgId, setOrgId] = useState('');
   const [trackTitle, setTrackTitle] = useState('Waiting for artist...');
@@ -159,7 +159,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                   <div className="flex items-center space-x-8">
                      <div className="flex items-center space-x-2 text-gray-400">
                         <Users className="w-4 h-4" />
-                        <span className="text-xs font-bold uppercase tracking-widest">{activeLicenses.length.toLocaleString()} Patrons</span>
+                        <span className="text-xs font-bold uppercase tracking-widest">{activeLicenses.length.toLocaleString()} SUPPORTERs</span>
                      </div>
                      <div className="flex items-center space-x-2 text-gray-400">
                         <Globe className="w-4 h-4" />
@@ -191,7 +191,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                <div className="space-y-4">
                   <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Protocol & Profile</h3>
                   <p className="text-sm text-gray-400 leading-relaxed font-medium italic">
-                     "Operating on New Release Hub. Scaled through decentralized patronage and fan revenue shares."
+                     "Operating on New Release Hub. Scaled through decentralized SUPPORTERage and fan revenue shares."
                   </p>
                </div>
                <div className="space-y-6 pt-10 border-t border-white/5">
@@ -314,7 +314,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
             {/* INTERACTION TABS - INSTITUTIONAL DARK STYLE */}
             <div className="bg-[#111] border border-white/5 rounded-[3rem] shadow-2xl overflow-hidden">
                <div className="flex px-12 pt-12 border-b border-white/5 space-x-16">
-                  {['CHAT', 'MERCH', 'PATRONS'].map(tab => (
+                  {['CHAT', 'MERCH', 'SUPPORTERS'].map(tab => (
                     <button 
                       key={tab} 
                       onClick={() => setChatTab(tab as any)}
@@ -372,8 +372,8 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                         </motion.div>
                       )}
 
-                      {chatTab === 'PATRONS' && (
-                        <motion.div key="patrons" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-16">
+                      {chatTab === 'SUPPORTERS' && (
+                        <motion.div key="SUPPORTERs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-16">
                            <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-12 text-white space-y-10 relative overflow-hidden backdrop-blur-xl">
                               <div className="absolute top-0 right-0 p-12 opacity-5">
                                  <ShieldCheck className="w-32 h-32" />
@@ -383,13 +383,13 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                     <Crown className="w-10 h-10" />
                                  </div>
                                  <div className="space-y-1">
-                                    <h3 className="text-4xl font-bold uppercase italic tracking-tighter">Patronage Hub.</h3>
+                                    <h3 className="text-4xl font-bold uppercase italic tracking-tighter">SUPPORTERage Hub.</h3>
                                     <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Revenue Participation</p>
                                  </div>
                               </div>
 
                               <p className="text-gray-400 text-lg leading-relaxed max-w-3xl font-medium italic relative z-10">
-                                "Become a verified patron to support {artistName} and secure a {activeLicenses[0]?.allocatedBps / 100 || '15'}% share of all future streaming revenue from this hub."
+                                "Become a verified SUPPORTER to support {artistName} and secure a {activeLicenses[0]?.allocatedBps / 100 || '15'}% share of all future streaming revenue from this hub."
                               </p>
 
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-6 relative z-10">
@@ -407,7 +407,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                  </div>
                                  <div className="flex items-end">
                                     <button 
-                                      onClick={() => window.location.href = `/studio/stripe-mock?success_redirect=/${slug}/live&status=PATRON_ACTIVE`}
+                                      onClick={() => window.location.href = `/studio/stripe-mock?success_redirect=/${slug}/live&status=SUPPORTER_ACTIVE`}
                                       className="w-full py-6 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-[2rem] hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]"
                                     >
                                        Acquire Master Stake
@@ -428,7 +428,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                           <Users className="w-6 h-6" />
                                        </div>
                                        <div>
-                                          <p className="text-xs font-bold text-white uppercase tracking-widest">Patron_{Math.floor(Math.random() * 9999)}</p>
+                                          <p className="text-xs font-bold text-white uppercase tracking-widest">SUPPORTER_{Math.floor(Math.random() * 9999)}</p>
                                           <p className="text-[10px] text-gray-600 font-medium uppercase tracking-tighter">Stake: ${Math.floor(Math.random() * 500 + 50)}.00</p>
                                        </div>
                                     </div>
@@ -448,3 +448,5 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
     </div>
   );
 }
+
+

@@ -14,7 +14,7 @@ export async function GET(req: Request) {
           orderBy: { createdAt: 'desc' },
           take: 6
         },
-        PatronSubscriptions: {
+        SUPPORTERSubscriptions: {
           where: { status: 'ACTIVE' }
         }
       }
@@ -33,15 +33,15 @@ export async function GET(req: Request) {
       type: 'Direct Settlement'
     }));
 
-    // Calculate current month's projected patronage
-    const activePatronageCents = org.PatronSubscriptions.reduce((sum, p) => sum + p.priceCents, 0);
+    // Calculate current month's projected SUPPORTERage
+    const activeSUPPORTERageCents = org.SUPPORTERSubscriptions.reduce((sum, p) => sum + p.priceCents, 0);
 
     const responseData = {
       balance: org.balanceCents / 100,
       payouts,
       stats: {
-        activePatronageCents,
-        patronCount: org.patronCount,
+        activeSUPPORTERageCents,
+        SUPPORTERCount: org.SUPPORTERCount,
         totalEarningsCents: org.ArtistRoyalties.reduce((sum, r) => sum + r.totalEarnings, 0)
       }
     };
@@ -52,3 +52,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+

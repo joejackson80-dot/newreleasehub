@@ -26,7 +26,7 @@ export default function RevenueSharingPage() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Royalty Engine.</span>
           </h1>
           <p className="text-gray-500 text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-            New Release Hub operates on a transparent, mathematical model designed to prioritize master rights holders and their patrons.
+            New Release Hub operates on a transparent, mathematical model designed to prioritize master rights holders and their SUPPORTERs.
           </p>
         </header>
 
@@ -63,7 +63,7 @@ export default function RevenueSharingPage() {
            </div>
         </section>
 
-        {/* PATRON MULTIPLIER */}
+        {/* SUPPORTER MULTIPLIER */}
         <section className="bg-white text-black rounded-[4rem] p-12 md:p-20 space-y-12">
            <div className="space-y-4">
               <div className="inline-flex items-center space-x-3 text-gray-500">
@@ -71,14 +71,14 @@ export default function RevenueSharingPage() {
                  <span className="text-[10px] font-bold uppercase tracking-widest">Growth Accelerator</span>
               </div>
               <h2 className="text-4xl md:text-3xl font-bold tracking-tighter uppercase italic leading-[0.9]">
-                 The Patron<br />Multiplier.
+                 The SUPPORTER<br />Multiplier.
               </h2>
            </div>
 
            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {[
                 { label: 'Core Artist', bonus: '1.0x', desc: 'Starting baseline for independent creators.' },
-                { label: 'Rising Hub', bonus: '1.2x', desc: 'Achieved at 50+ unique active patrons.' },
+                { label: 'Rising Hub', bonus: '1.2x', desc: 'Achieved at 50+ unique active SUPPORTERs.' },
                 { label: 'Network Legend', bonus: '1.5x', desc: 'Max multiplier for top-tier hub vitality.' }
               ].map((tier, i) => (
                 <div key={i} className="p-8 border border-black/10 rounded-3xl space-y-4">
@@ -108,3 +108,5 @@ export default function RevenueSharingPage() {
     </div>
   );
 }
+
+

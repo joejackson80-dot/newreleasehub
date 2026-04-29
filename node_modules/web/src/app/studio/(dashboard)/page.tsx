@@ -4,10 +4,10 @@ import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Ac
 import Link from 'next/link';
 
 export default async function StudioOverviewPage() {
-  const org = await getSessionArtist({ includeReleases: true, includePatrons: true });
+  const org = await getSessionArtist({ includeReleases: true, includeSUPPORTERs: true });
 
-  const currentRevenue = (org.PatronSubscriptions || []).reduce((sum: number, p: any) => sum + p.priceCents, 0) / 100;
-  const patronCount = (org.PatronSubscriptions || []).length;
+  const currentRevenue = (org.SUPPORTERSubscriptions || []).reduce((sum: number, p: any) => sum + p.priceCents, 0) / 100;
+  const SUPPORTERCount = (org.SUPPORTERSubscriptions || []).length;
   const releaseCount = (org.Releases || []).length;
 
   return (
@@ -96,11 +96,11 @@ export default async function StudioOverviewPage() {
         
         <div className="bg-[#111] border border-white/5 p-6 rounded-2xl space-y-4 hover:border-white/10 transition-colors">
           <div className="flex justify-between items-start">
-            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total Patrons</h3>
+            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total SUPPORTERs</h3>
             <Users className="w-4 h-4 text-purple-400" />
           </div>
           <div>
-            <p className="text-3xl font-bold text-white">{patronCount}</p>
+            <p className="text-3xl font-bold text-white">{SUPPORTERCount}</p>
             <p className="text-xs text-green-500 mt-2 font-medium flex items-center"><TrendingUp className="w-3 h-3 mr-1" /> +4 this week</p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default async function StudioOverviewPage() {
             </div>
             <span className="text-xs font-bold uppercase tracking-widest">Opportunities</span>
           </Link>
-          <Link href="/studio/patrons" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
+          <Link href="/studio/SUPPORTERs" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors">
               <Users className="w-5 h-5" />
             </div>
@@ -201,7 +201,7 @@ export default async function StudioOverviewPage() {
         <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden">
           <div className="divide-y divide-white/5">
             {[
-              { text: "New patron joined the 'Inner Circle' tier.", time: "2 hours ago", icon: Users, color: "text-purple-400" },
+              { text: "New SUPPORTER joined the 'Inner Circle' tier.", time: "2 hours ago", icon: Users, color: "text-purple-400" },
               { text: "Your latest release 'Midnight Echo' passed 10,000 streams.", time: "1 day ago", icon: Activity, color: "text-[#00D2FF]" },
               { text: "Payout of $450.00 processed to your connected Stripe account.", time: "3 days ago", icon: DollarSign, color: "text-green-400" },
               { text: "Opportunity 'Netflix Sync Request' is closing soon.", time: "4 days ago", icon: Briefcase, color: "text-orange-400" },
@@ -223,3 +223,5 @@ export default async function StudioOverviewPage() {
     </div>
   );
 }
+
+

@@ -21,8 +21,8 @@ const NAV_GROUPS = [
   {
     label: 'Fans',
     items: [
-      { href: '/studio/patrons', label: 'Patron Tiers', icon: Users },
-      { href: '/studio/patrons', label: 'Fan List', icon: Users },
+      { href: '/studio/SUPPORTERs', label: 'SUPPORTER Tiers', icon: Users },
+      { href: '/studio/SUPPORTERs', label: 'Fan List', icon: Users },
     ],
   },
   {
@@ -69,3 +69,5 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
     </div>
   );
 }
+
+

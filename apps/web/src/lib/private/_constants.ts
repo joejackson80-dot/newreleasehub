@@ -22,17 +22,19 @@ export const PLATFORM_FEE_PERCENT = Number(process.env.PLATFORM_FEE_PERCENT ?? '
 export const SERVICES_FEE_PERCENT = Number(process.env.SERVICES_FEE_PERCENT ?? '0.15')
 export const MIN_STREAM_SECONDS   = Number(process.env.MIN_STREAM_SECONDS   ?? '30')
 
-export const PATRON_MULTIPLIER_TIERS = [
-  { minPatrons: Number(process.env.MULT_TIER_4_MIN ?? '2000'), multiplier: Number(process.env.MULT_TIER_4_VAL ?? '1.5') },
-  { minPatrons: Number(process.env.MULT_TIER_3_MIN ?? '500'),  multiplier: Number(process.env.MULT_TIER_3_VAL ?? '1.2') },
-  { minPatrons: Number(process.env.MULT_TIER_2_MIN ?? '100'),  multiplier: Number(process.env.MULT_TIER_2_VAL ?? '1.1') },
-  { minPatrons: 0, multiplier: 1.0 },
+export const SUPPORTER_MULTIPLIER_TIERS = [
+  { minSUPPORTERs: Number(process.env.MULT_TIER_4_MIN ?? '2000'), multiplier: Number(process.env.MULT_TIER_4_VAL ?? '1.5') },
+  { minSUPPORTERs: Number(process.env.MULT_TIER_3_MIN ?? '500'),  multiplier: Number(process.env.MULT_TIER_3_VAL ?? '1.2') },
+  { minSUPPORTERs: Number(process.env.MULT_TIER_2_MIN ?? '100'),  multiplier: Number(process.env.MULT_TIER_2_VAL ?? '1.1') },
+  { minSUPPORTERs: 0, multiplier: 1.0 },
 ] as const
 
 export const DISCOVERY_WEIGHTS = {
-  patronGrowth7Day:  Number(process.env.DISC_W_PATRON_GROWTH ?? '0.35'),
+  SUPPORTERGrowth7Day:  Number(process.env.DISC_W_SUPPORTER_GROWTH ?? '0.35'),
   totalStreams:      Number(process.env.DISC_W_TOTAL_STREAMS ?? '0.25'),
   recentActivity:    Number(process.env.DISC_W_ACTIVITY      ?? '0.20'),
-  patronCount:       Number(process.env.DISC_W_PATRON_COUNT  ?? '0.15'),
+  SUPPORTERCount:       Number(process.env.DISC_W_SUPPORTER_COUNT  ?? '0.15'),
   profileComplete:   Number(process.env.DISC_W_PROFILE       ?? '0.05'),
 } as const
+
+

@@ -260,7 +260,7 @@ export default function StudioDashboard({ slug, initialOrgData }: Props) {
               <table className="w-full text-left">
                 <thead>
                   <tr className="text-[10px] text-gray-600 uppercase tracking-widest border-b border-[#1f1f1f]">
-                    <th className="px-8 py-4 font-bold">Patron ID</th>
+                    <th className="px-8 py-4 font-bold">SUPPORTER ID</th>
                     <th className="px-8 py-4 font-bold">Asset</th>
                     <th className="px-8 py-4 font-bold">Offer</th>
                     <th className="px-8 py-4 font-bold">Requested %</th>
@@ -314,7 +314,7 @@ export default function StudioDashboard({ slug, initialOrgData }: Props) {
                     <tr>
                       <td colSpan={5} className="px-8 py-20 text-center">
                          <Award className="w-10 h-10 text-gray-800 mx-auto mb-4" />
-                         <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Your pool is empty. Promote your live stream to attract patrons.</p>
+                         <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Your pool is empty. Promote your live stream to attract SUPPORTERs.</p>
                       </td>
                     </tr>
                   )}
@@ -374,3 +374,5 @@ export default function StudioDashboard({ slug, initialOrgData }: Props) {
     </div>
   );
 }
+
+

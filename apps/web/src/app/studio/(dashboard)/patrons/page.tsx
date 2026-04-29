@@ -2,14 +2,14 @@ import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { Users, Plus, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
-export default async function PatronTiersManagerPage() {
-  const org = await getSessionArtist({ includePatrons: true });
+export default async function SUPPORTERTiersManagerPage() {
+  const org = await getSessionArtist({ includeSUPPORTERs: true });
 
   return (
     <div className="p-8 md:p-12 space-y-8">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Patron Tiers</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white">SUPPORTER Tiers</h1>
           <p className="text-sm text-gray-500 font-medium mt-1">Configure your funding tiers and revenue participation shares.</p>
         </div>
         <button className="bg-[#00D2FF] text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all flex items-center gap-2 w-full md:w-auto justify-center">
@@ -19,7 +19,7 @@ export default async function PatronTiersManagerPage() {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {org.PatronTiers.map(tier => (
+        {org.SUPPORTERTiers.map(tier => (
           <div key={tier.id} className="bg-[#111] border border-white/5 rounded-2xl p-6 relative group hover:border-[#00D2FF]/50 transition-colors flex flex-col h-full">
             <div className="flex justify-between items-start mb-6">
               <div>
@@ -48,12 +48,14 @@ export default async function PatronTiersManagerPage() {
             </button>
           </div>
         ))}
-        {org.PatronTiers.length === 0 && (
+        {org.SUPPORTERTiers.length === 0 && (
           <div className="col-span-full py-12 text-center text-gray-500 text-sm bg-[#111] rounded-2xl border border-dashed border-white/10">
-            No active patron tiers. Create one to start funding your next release.
+            No active SUPPORTER tiers. Create one to start funding your next release.
           </div>
         )}
       </div>
     </div>
   );
 }
+
+

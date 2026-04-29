@@ -68,7 +68,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                   </div>
                   <h1 className="text-4xl md:text-7xl font-bold tracking-tighter italic uppercase leading-[0.9]">{org.name}</h1>
                   <p className="text-base md:text-xl text-gray-500 font-medium leading-relaxed max-w-xl">
-                     Independent Artist & Master Rights Holder. Scaled through decentralized patronage and fan revenue shares.
+                     Independent Artist & Master Rights Holder. Scaled through decentralized supporterage and fan revenue shares.
                      {org.ParticipationLicenses.length > 0 && ` Currently offering ${org.ParticipationLicenses[0].allocatedBps / 100}% stake starting at $${org.ParticipationLicenses[0].feeCents / 100}.`}
                   </p>
                </div>
@@ -103,7 +103,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                   <h2 className="text-5xl font-bold tracking-tighter italic uppercase">Revenue Participation<br />Inventory.</h2>
                </div>
                <p className="text-sm text-gray-500 max-w-sm font-medium leading-relaxed">
-                  Every asset listed below is secured by New Release Hub. All master recordings are held 100% by the artist while 5,000bps (50%) of revenue is distributed to patrons.
+                  Every asset listed below is secured by New Release Hub. All master recordings are held 100% by the artist while 5,000bps (50%) of revenue is distributed to supporters.
                </p>
             </div>
 
@@ -167,7 +167,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                <div className="flex-1 space-y-6">
                   <h4 className="text-2xl font-bold italic tracking-tighter uppercase">Professional<br />Credentials.</h4>
                   <p className="text-sm text-gray-500 leading-relaxed">
-                     {org.officialBio || "Independent artist operating on a decentralized patronage model. Secured master ownership and collective funding milestones reached across 14 release cycles."}
+                     {org.officialBio || "Independent artist operating on a decentralized supporterage model. Secured master ownership and collective funding milestones reached across 14 release cycles."}
                   </p>
                </div>
                <div className="grid grid-cols-1 gap-4 w-full md:w-64">

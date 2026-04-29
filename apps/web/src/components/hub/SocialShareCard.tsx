@@ -28,10 +28,10 @@ export default function SocialShareCard({ artistName, fanId, bps, trackTitle }: 
       </div>
 
       <div className="space-y-4 relative z-10">
-         <h3 className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em]">Official Patron</h3>
+         <h3 className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em]">Official SUPPORTER</h3>
          <h2 className="text-4xl font-bold tracking-tighter italic leading-none">
             {fanId.toUpperCase()}<br />
-            <span className="text-white/40">SECURED PATRONAGE.</span>
+            <span className="text-white/40">SECURED SUPPORTERAGE.</span>
          </h2>
       </div>
 
@@ -70,3 +70,5 @@ export default function SocialShareCard({ artistName, fanId, bps, trackTitle }: 
     </div>
   );
 }
+
+

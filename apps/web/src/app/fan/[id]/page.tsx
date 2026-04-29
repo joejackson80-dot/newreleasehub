@@ -39,7 +39,7 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
                     <h1 className="text-4xl font-bold tracking-tight">{fanId}</h1>
                     <div className="bg-white/10 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest text-white/60 flex items-center space-x-1">
                        <ShieldCheck className="w-3 h-3 text-green-500" />
-                       <span>Verified Patron</span>
+                       <span>Verified Supporter</span>
                     </div>
                  </div>
                  <p className="text-gray-500 font-medium">Digital Master Participation Collector</p>

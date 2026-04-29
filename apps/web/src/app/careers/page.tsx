@@ -56,7 +56,7 @@ export default function CareersPage() {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-y border-white/5">
            {[
              { title: 'Remote-First', desc: 'Work from anywhere in the world. Our collective is globally distributed and radically independent.', icon: Globe },
-             { title: 'Equity & Ownership', desc: 'Every team member receives meaningful equity. We win when our artists and patrons win.', icon: ShieldCheck },
+             { title: 'Equity & Ownership', desc: 'Every team member receives meaningful equity. We win when our artists and SUPPORTERs win.', icon: ShieldCheck },
              { title: 'High Impact', desc: 'Build tools that actually change lives. Your code and designs directly support thousands of artists.', icon: Users }
            ].map((perk, i) => (
              <div key={i} className="space-y-6 group">
@@ -125,3 +125,5 @@ export default function CareersPage() {
     </div>
   );
 }
+
+

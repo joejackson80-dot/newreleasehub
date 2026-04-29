@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     // Use a placeholder price ID if not set in environment
     const priceId = tier === 'subscriber' 
       ? process.env.STRIPE_SUBSCRIBER_PRICE_ID || 'price_1Q_subscriber_placeholder'
-      : process.env.STRIPE_PATRON_PRICE_ID || 'price_1Q_patron_placeholder';
+      : process.env.STRIPE_SUPPORTER_PRICE_ID || 'price_1Q_SUPPORTER_placeholder';
 
     // Find or create user in DB if they don't exist
     // In a real app, this would be handled by auth
@@ -39,3 +39,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+

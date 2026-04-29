@@ -13,3 +13,5 @@ export async function getDeviceFingerprint(): Promise<string> {
   const result = await fp.get()
   return result.visitorId // Unique device hash
 }
+
+

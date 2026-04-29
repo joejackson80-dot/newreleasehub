@@ -106,3 +106,5 @@ export default function AudioReactor({ audioUrl, isPlaying, onIntensityChange }:
     </div>
   );
 }
+
+

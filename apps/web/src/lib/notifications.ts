@@ -25,3 +25,5 @@ export async function notifyArtistMilestone(artistId: string, milestoneType: str
     '/studio/milestones'
   );
 }
+
+

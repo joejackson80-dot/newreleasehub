@@ -17,7 +17,7 @@ export async function generateMetadata(
   const params = await props.params;
   const org = await prisma.organization.findUnique({
     where: { slug: params.slug },
-    select: { name: true, bio: true, genres: true, city: true, country: true, profileImageUrl: true, patronCount: true, isVerified: true }
+    select: { name: true, bio: true, genres: true, city: true, country: true, profileImageUrl: true, supporterCount: true, isVerified: true }
   });
   if (!org) return { title: 'Artist Not Found' };
 
@@ -25,7 +25,7 @@ export async function generateMetadata(
   const location = org.city ? `${org.city}, ${org.country}` : '';
   const desc = org.bio
     ? org.bio.slice(0, 155)
-    : `${org.name} is an independent ${genreStr} artist${location ? ` from ${location}` : ''}. ${org.patronCount.toLocaleString()} patrons. Stream on New Release Hub.`;
+    : `${org.name} is an independent ${genreStr} artist${location ? ` from ${location}` : ''}. ${org.supporterCount.toLocaleString()} supporters. Stream on New Release Hub.`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -71,11 +71,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
         include: { Tracks: { take: 3 } },
         orderBy: { releaseDate: 'desc' }
       },
-      PatronTiers: { 
+      SupporterTiers: { 
         include: { Subscriptions: true },
         orderBy: { priceCents: 'asc' } 
       },
-      PatronSubscriptions: true,
+      SupporterSubscriptions: true,
       Followers: true,
       SessionDeck: true,
       FoundingSlot: true,
@@ -85,7 +85,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   if (!org) notFound();
 
   const isLive = org.isLive && org.liveListenerCount > 0;
-  const patronCount = org.patronCount;
+  const supporterCount = org.supporterCount;
   const socialLinks = org.socialLinksJson ? JSON.parse(org.socialLinksJson) : {};
   const liveReleases = org.Releases.filter(r => !r.isScheduled);
   const scheduledReleases = org.Releases.filter(r => r.isScheduled);
@@ -158,8 +158,8 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               <div className="flex items-center gap-8 text-sm">
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-[#00D2FF]" />
-                  <span className="font-bold text-white">{patronCount.toLocaleString()}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Patrons</span>
+                  <span className="font-bold text-white">{supporterCount.toLocaleString()}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Supporters</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Disc className="w-4 h-4 text-[#00D2FF]" />
@@ -219,7 +219,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               <Link href={`/fan/checkout?artist=${org.id}`}
                 className="px-8 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all flex items-center gap-2 shadow-lg">
                 <Heart className="w-4 h-4" />
-                Become a Patron
+                Become a Supporter
               </Link>
               <Link href={`/studio/collab/new?artist=${org.slug}`}
                 className="px-8 py-3 rounded-xl bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all flex items-center gap-2">
@@ -295,9 +295,9 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                         <Play className="w-5 h-5 fill-current ml-0.5" />
                       </div>
                     </div>
-                    {release.isPatronOnly && (
+                    {release.isSupporterOnly && (
                       <div className="absolute top-2 right-2 bg-purple-600/90 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest">
-                        Patron Only
+                        Supporter Only
                       </div>
                     )}
                   </div>
@@ -320,7 +320,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
           </section>
         </div>
 
-        {/* RIGHT: PATRON TIERS */}
+        {/* RIGHT: SUPPORTER TIERS */}
         <div className="space-y-6">
           <div>
             <h3 className="text-2xl font-bold uppercase tracking-tighter mb-1">Support {org.name}</h3>
@@ -330,7 +330,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
           </div>
 
           <div className="space-y-5">
-            {org.PatronTiers.map(tier => {
+            {org.SupporterTiers.map(tier => {
               const currentSlots = tier.Subscriptions.length;
               const isFull = tier.maxSlots !== null && currentSlots >= tier.maxSlots;
               const slotsRemaining = tier.maxSlots ? tier.maxSlots - currentSlots : null;
@@ -409,9 +409,9 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               );
             })}
 
-            {org.PatronTiers.length === 0 && (
+            {org.SupporterTiers.length === 0 && (
               <div className="text-center py-10 bg-white/5 rounded-xl border border-dashed border-white/10">
-                <p className="text-xs text-gray-500 font-medium">No active patron tiers.</p>
+                <p className="text-xs text-gray-500 font-medium">No active supporter tiers.</p>
               </div>
             )}
           </div>

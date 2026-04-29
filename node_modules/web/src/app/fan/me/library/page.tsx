@@ -10,3 +10,5 @@ export default async function FanLibraryPage() {
   const user = await getSessionFan();
   return <FanLibraryClient user={user} />;
 }
+
+

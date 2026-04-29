@@ -15,7 +15,7 @@ interface Activity {
 export default function NetworkPulse() {
   const [activities, setActivities] = useState<Activity[]>([
     { id: '1', type: 'LICENSE', user: 'alpha_fan', amount: '$450.00', hub: 'HELLZ-FLAME', timestamp: new Date() },
-    { id: '2', type: 'BID', user: 'neon_patron', amount: '$120.00', hub: 'SILK-ROAD', timestamp: new Date() },
+    { id: '2', type: 'BID', user: 'neon_SUPPORTER', amount: '$120.00', hub: 'SILK-ROAD', timestamp: new Date() },
     { id: '3', type: 'CHAT', user: 'sector_9', hub: 'GHOST-MODE', timestamp: new Date() },
   ]);
 
@@ -90,3 +90,5 @@ export default function NetworkPulse() {
     </div>
   );
 }
+
+

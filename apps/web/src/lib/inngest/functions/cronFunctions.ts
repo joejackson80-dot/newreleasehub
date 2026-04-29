@@ -92,3 +92,105 @@ export const presaveNotificationsCron = inngest.createFunction(
     // pre-save notification logic here
   }
 )
+
+// ── Weekly Fan Stats Reset (Monday midnight) ────────────────
+export const weeklyFanStatsResetCron = inngest.createFunction(
+  {
+    id: 'weekly-fan-stats-reset',
+    name: 'Weekly Fan Stats Reset',
+    triggers: [{ cron: '0 0 * * 1' }],
+  },
+  async ({ step }: { step: any }) => {
+    await step.run('reset-7d-stats', async () => {
+      await prisma.fanArtistRelation.updateMany({
+        data: { streamCount7d: 0 }
+      });
+      await prisma.fanListeningStats.updateMany({
+        data: { totalStreams7d: 0 }
+      });
+    });
+  }
+);
+
+// ── Monthly Fan Stats Reset (1st of month midnight) ──────────
+export const monthlyFanStatsResetCron = inngest.createFunction(
+  {
+    id: 'monthly-fan-stats-reset',
+    name: 'Monthly Fan Stats Reset',
+    triggers: [{ cron: '0 0 1 * *' }],
+  },
+  async ({ step }: { step: any }) => {
+    await step.run('reset-30d-stats', async () => {
+      await prisma.fanArtistRelation.updateMany({
+        data: { streamCount30d: 0 }
+      });
+      await prisma.fanListeningStats.updateMany({
+        data: { totalStreams30d: 0 }
+      });
+    });
+  }
+);
+
+// ── Daily Fan Streak Maintenance (Midnight) ──────────────────
+export const dailyFanStreakCron = inngest.createFunction(
+  {
+    id: 'daily-fan-streak-maintenance',
+    name: 'Daily Fan Streak Maintenance',
+    triggers: [{ cron: '0 0 * * *' }],
+  },
+  async ({ step }: { step: any }) => {
+    await step.run('update-streaks', async () => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      
+      // Reset streaks for those who didn't listen yesterday
+      await prisma.fanListeningStats.updateMany({
+        where: { updatedAt: { lt: yesterday } },
+        data: { listeningStreak: 0 }
+      });
+    });
+  }
+);
+
+// ── Weekly Fan Leaderboard Generation (Monday 3am) ───────────
+export const generateFanLeaderboardsCron = inngest.createFunction(
+  {
+    id: 'generate-fan-leaderboards',
+    name: 'Generate Fan Leaderboards',
+    triggers: [{ cron: '0 3 * * 1' }],
+  },
+  async ({ step }: { step: any }) => {
+    const artists = await step.run('get-artists', async () => {
+      return prisma.organization.findMany({
+        select: { id: true }
+      });
+    });
+
+    for (const artist of artists) {
+      await step.run(`process-artist-${artist.id}`, async () => {
+        const topFans = await prisma.fanArtistRelation.findMany({
+          where: { artistId: artist.id },
+          orderBy: { streamCount30d: 'desc' },
+          take: 10,
+          include: { fan: { select: { id: true, displayName: true, avatarUrl: true } } }
+        });
+
+        await prisma.artistSupporterLeaderboard.upsert({
+          where: { artistId: artist.id },
+          update: {
+            leaderboardData: JSON.stringify(topFans),
+            week: new Date(),
+            updatedAt: new Date()
+          },
+          create: {
+            artistId: artist.id,
+            leaderboardData: JSON.stringify(topFans),
+            week: new Date()
+          }
+        });
+      });
+    }
+  }
+);
+
+

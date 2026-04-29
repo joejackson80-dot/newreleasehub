@@ -137,7 +137,7 @@ export default function StationPage({ slug }: { slug: string }) {
                     {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
                   </button>
                   <button className="px-8 py-4 rounded-full bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all">
-                    Become a Patron
+                    Become a Supporter
                   </button>
                   <button className="px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
                     Follow
@@ -205,7 +205,7 @@ export default function StationPage({ slug }: { slug: string }) {
                <h4 className="text-sm font-bold uppercase tracking-widest text-white">Radio Governance</h4>
              </div>
              <p className="text-xs text-gray-400 leading-relaxed font-medium">
-               This station is governed by the NRH Network protocol. 100% of the tracks you hear are authorized directly by the artists. Support them instantly by becoming a patron or following their journey.
+               This station is governed by the NRH Network protocol. 100% of the tracks you hear are authorized directly by the artists. Support them instantly by becoming a supporter or following their journey.
              </p>
              <ul className="space-y-4">
                {[

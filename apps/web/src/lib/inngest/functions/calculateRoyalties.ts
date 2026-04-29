@@ -44,3 +44,5 @@ export const calculateMonthlyRoyalties = inngest.createFunction(
     return { processed: artists.length }
   }
 )
+
+

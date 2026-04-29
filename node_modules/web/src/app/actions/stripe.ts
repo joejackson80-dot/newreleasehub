@@ -40,3 +40,5 @@ export async function getStripeAccountStatus() {
     return { connected: false, error: 'Failed to retrieve account status' };
   }
 }
+
+

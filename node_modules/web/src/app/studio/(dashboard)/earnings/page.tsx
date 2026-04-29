@@ -12,3 +12,5 @@ export default async function StudioEarningsPage() {
 
   return <EarningsClient artist={artist} />;
 }
+
+

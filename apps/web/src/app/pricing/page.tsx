@@ -13,7 +13,7 @@ const ARTIST_PLANS = [
     features: [
       'Stream & earn',
       '75% streaming royalties',
-      '1 patron tier',
+      '1 SUPPORTER tier',
       '5 releases',
       'Basic analytics',
       '3 opportunity applications/month',
@@ -34,7 +34,7 @@ const ARTIST_PLANS = [
       'Everything in Indie, plus:',
       '85% streaming royalties',
       'Unlimited releases',
-      '3 patron tiers',
+      '3 SUPPORTER tiers',
       'Full analytics',
       'Unlimited opportunity applications',
       '50 AI credits/month',
@@ -54,7 +54,7 @@ const ARTIST_PLANS = [
     features: [
       'Everything in Pro, plus:',
       '95% streaming royalties',
-      'Unlimited patron tiers',
+      'Unlimited SUPPORTER tiers',
       'Advanced analytics',
       '200 AI credits/month',
       'Daily payouts',
@@ -114,8 +114,8 @@ const FAQS = [
     a: 'Your music and fans are always yours.'
   },
   {
-    q: 'Do you take a cut of patron income?',
-    a: 'No. Patron subscriptions go directly to you via Stripe.'
+    q: 'Do you take a cut of SUPPORTER income?',
+    a: 'No. SUPPORTER subscriptions go directly to you via Stripe.'
   },
   {
     q: 'Is there a free trial?',
@@ -240,3 +240,5 @@ export default function PricingPage() {
     </div>
   );
 }
+
+

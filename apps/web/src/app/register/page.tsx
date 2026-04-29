@@ -29,7 +29,7 @@ export default function RegisterPage() {
                    <Users className="w-8 h-8" />
                 </div>
                 <h3 className="text-3xl font-bold uppercase italic tracking-tighter mb-4">I'm a Fan</h3>
-                <p className="text-gray-500 font-medium leading-relaxed mb-8">Discover independent artists, join exclusive patron tiers, and earn a share of streaming royalties.</p>
+                <p className="text-gray-500 font-medium leading-relaxed mb-8">Discover independent artists, join exclusive SUPPORTER tiers, and earn a share of streaming royalties.</p>
                 <div className="inline-flex items-center space-x-2 text-[#00D2FF] font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform">
                    <span>Sign up as Fan</span>
                    <ArrowRight className="w-4 h-4" />
@@ -41,7 +41,7 @@ export default function RegisterPage() {
                    <Music className="w-8 h-8" />
                 </div>
                 <h3 className="text-3xl font-bold uppercase italic tracking-tighter mb-4">I'm an Artist</h3>
-                <p className="text-gray-500 font-medium leading-relaxed mb-8">Keep 100% of your masters, build a patron community, and access the command center.</p>
+                <p className="text-gray-500 font-medium leading-relaxed mb-8">Keep 100% of your masters, build a SUPPORTER community, and access the command center.</p>
                 <div className="inline-flex items-center space-x-2 text-purple-400 font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform">
                    <span>Sign up as Artist</span>
                    <ArrowRight className="w-4 h-4" />
@@ -137,3 +137,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+

@@ -60,7 +60,7 @@ export const computeWeeklyCharts = inngest.createFunction(
         select: {
           id: true, slug: true, genres: true, city: true,
           country: true, createdAt: true,
-          patronCount: true, totalStreams: true,
+          SUPPORTERCount: true, totalStreams: true,
           nrhEquityScore: true,
           _count: {
             select: { Followers: true }
@@ -182,7 +182,7 @@ export const computeWeeklyCharts = inngest.createFunction(
             risingRank:   risingEntry?.risingRank ?? null,
             equityScore:  scored.score,
             streamCount:  artists.find((a: any) => a.id === scored.artistId)?.streamCount ?? 0,
-            patronCount:  artists.find((a: any) => a.id === scored.artistId)?.patronCount ?? 0,
+            SUPPORTERCount:  artists.find((a: any) => a.id === scored.artistId)?.SUPPORTERCount ?? 0,
             followerCount: artists.find((a: any) => a.id === scored.artistId)?.followerCount ?? 0,
           }
         })
@@ -208,7 +208,7 @@ export const computeWeeklyCharts = inngest.createFunction(
 async function computeArtistScore(artist: any) {
   const weights = {
     streamMomentum: Number(process.env.CHART_W_STREAM_MOMENTUM ?? '0.30'),
-    patronDepth:    Number(process.env.CHART_W_PATRON_DEPTH    ?? '0.25'),
+    SUPPORTERDepth:    Number(process.env.CHART_W_SUPPORTER_DEPTH    ?? '0.25'),
     fanVelocity:    Number(process.env.CHART_W_FAN_VELOCITY    ?? '0.20'),
     engagement:     Number(process.env.CHART_W_ENGAGEMENT      ?? '0.15'),
     consistency:    Number(process.env.CHART_W_CONSISTENCY     ?? '0.07'),
@@ -232,14 +232,14 @@ async function computeArtistScore(artist: any) {
     }),
   ])
 
-  // Patron data
-  const [patronData, patronChurn] = await Promise.all([
-    prisma.patronSubscription.aggregate({
+  // SUPPORTER data
+  const [SUPPORTERData, SUPPORTERChurn] = await Promise.all([
+    prisma.SUPPORTERSubscription.aggregate({
       where: { artistId: artist.id, status: 'ACTIVE' },
       _count: true,
       _avg: { priceCents: true }
     }),
-    prisma.patronSubscription.count({
+    prisma.SUPPORTERSubscription.count({
       where: { artistId: artist.id,
                status: { in: ['CANCELLED', 'EXPIRED'] },
                createdAt: { gte: day30 } } // Note: using createdAt instead of updatedAt due to schema limitations
@@ -284,7 +284,7 @@ async function computeArtistScore(artist: any) {
     !!artist.bio, !!artist.profileImageUrl, !!artist.headerImageUrl,
     !!artist.genre, !!artist.city,
     artist.streamCount > 0,
-    artist.patronCount > 0,
+    artist.SUPPORTERCount > 0,
     true, // proAffiliation mock
   ].filter(Boolean).length
 
@@ -297,10 +297,10 @@ async function computeArtistScore(artist: any) {
       (streams7d * 4) + (streams30d * 2) + (artist.streamCount * 0.001),
       10000
     ),
-    patronDepth: normalize(
-      (artist.patronCount * 10) +
-      ((patronData._avg.priceCents ?? 0) * 0.5) -
-      (patronChurn * 3),
+    SUPPORTERDepth: normalize(
+      (artist.SUPPORTERCount * 10) +
+      ((SUPPORTERData._avg.priceCents ?? 0) * 0.5) -
+      (SUPPORTERChurn * 3),
       5000
     ),
     fanVelocity: normalize(Math.max(fanVelocity, 0), 100),
@@ -315,7 +315,7 @@ async function computeArtistScore(artist: any) {
 
   const score =
     (components.streamMomentum * weights.streamMomentum) +
-    (components.patronDepth    * weights.patronDepth) +
+    (components.SUPPORTERDepth    * weights.SUPPORTERDepth) +
     (components.fanVelocity    * weights.fanVelocity) +
     (components.engagement     * weights.engagement) +
     (components.consistency    * weights.consistency) +
@@ -323,3 +323,5 @@ async function computeArtistScore(artist: any) {
 
   return { artistId: artist.id, score: Math.round(score * 100) / 100, components }
 }
+
+

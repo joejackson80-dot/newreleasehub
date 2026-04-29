@@ -20,7 +20,7 @@ import { checkAndAwardMilestones } from '@/lib/milestones/detectMilestone';
 interface PoolTotals {
   premiumPoolTotal: number     // cents — 70% of subscription revenue
   networkPoolTotal: number     // cents — 60% of ad revenue
-  totalPremiumStreams: number  // counted streams from subscribers/patrons
+  totalPremiumStreams: number  // counted streams from subscribers/SUPPORTERs
   totalNetworkStreams: number  // counted streams from free/guest users
   month: number                // 1–12
   year: number
@@ -30,7 +30,7 @@ interface ArtistStreamData {
   artistId: string
   premiumStreams: number
   networkStreams: number
-  patronCount: number
+  SUPPORTERCount: number
 }
 
 interface ArtistEarnings {
@@ -40,16 +40,16 @@ interface ArtistEarnings {
   premiumEarnings: number          // cents
   networkEarnings: number          // cents
   grossStreamingEarnings: number // cents — before multiplier
-  patronMultiplier: number       // 1.0 – 1.5
+  SUPPORTERMultiplier: number       // 1.0 – 1.5
   totalEarnings: number          // cents — after multiplier
-  patronShareDistributed: number // cents — paid out to patrons
+  SUPPORTERShareDistributed: number // cents — paid out to SUPPORTERs
   netPayout: number              // cents — what artist actually gets
 }
 
-interface PatronShareEntry {
+interface SUPPORTERShareEntry {
   fanId: string
   artistId: string
-  patronageId: string
+  SUPPORTERageId: string
   revenueSharePercent: number
   amountEarned: number // cents
 }
@@ -63,10 +63,10 @@ interface RoyaltyReport {
   totalNetworkStreams: number
   artistCount: number
   totalArtistPayout: number      // cents
-  totalPatronDistribution: number // cents
+  totalSUPPORTERDistribution: number // cents
   totalNRHRevenue: number        // cents
   artists: ArtistEarnings[]
-  patronShares: PatronShareEntry[]
+  SUPPORTERShares: SUPPORTERShareEntry[]
   errors: string[]
 }
 
@@ -80,21 +80,21 @@ const MIN_STREAM_SECONDS     = 30    // streams under 30s don't count
 const MIN_PAYOUT_CENTS       = 1000  // $10 minimum payout
 const FAN_MIN_WITHDRAW_CENTS = 500   // $5 minimum fan withdrawal
 
-// Patron multiplier thresholds
+// SUPPORTER multiplier thresholds
 const MULTIPLIER_TIERS = [
-  { minPatrons: 2000, multiplier: 1.5 },
-  { minPatrons: 500,  multiplier: 1.2 },
-  { minPatrons: 100,  multiplier: 1.1 },
-  { minPatrons: 0,    multiplier: 1.0 },
+  { minSUPPORTERs: 2000, multiplier: 1.5 },
+  { minSUPPORTERs: 500,  multiplier: 1.2 },
+  { minSUPPORTERs: 100,  multiplier: 1.1 },
+  { minSUPPORTERs: 0,    multiplier: 1.0 },
 ] as const
 
 // ─────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────
 
-function getPatronMultiplier(patronCount: number): number {
+function getSUPPORTERMultiplier(SUPPORTERCount: number): number {
   for (const tier of MULTIPLIER_TIERS) {
-    if (patronCount >= tier.minPatrons) {
+    if (SUPPORTERCount >= tier.minSUPPORTERs) {
       return tier.multiplier
     }
   }
@@ -221,7 +221,7 @@ async function getArtistStreamData(
       id: true,
       _count: {
         select: {
-          PatronSubscriptions: {
+          SUPPORTERSubscriptions: {
             where: { status: 'ACTIVE' },
           },
         },
@@ -229,8 +229,8 @@ async function getArtistStreamData(
     },
   })
 
-  const patronCountMap = new Map(
-    organizations.map((o) => [o.id, o._count.PatronSubscriptions])
+  const SUPPORTERCountMap = new Map(
+    organizations.map((o) => [o.id, o._count.SUPPORTERSubscriptions])
   )
 
   const artistDataMap = new Map<string, ArtistStreamData>()
@@ -240,7 +240,7 @@ async function getArtistStreamData(
       artistId:       group.artistId,
       premiumStreams:  0,
       networkStreams:  0,
-      patronCount:    patronCountMap.get(group.artistId) ?? 0,
+      SUPPORTERCount:    SUPPORTERCountMap.get(group.artistId) ?? 0,
     }
 
     if (group.poolSource === 'A') {
@@ -262,7 +262,7 @@ async function getArtistStreamData(
 function calculateArtistEarnings(
   artistData: ArtistStreamData[],
   pools: PoolTotals
-): Omit<ArtistEarnings, 'patronShareDistributed' | 'netPayout'>[] {
+): Omit<ArtistEarnings, 'SUPPORTERShareDistributed' | 'netPayout'>[] {
   return artistData.map((artist) => {
     const premiumShare    = safeDivide(artist.premiumStreams, pools.totalPremiumStreams)
     const premiumEarnings = roundCents(premiumShare * pools.premiumPoolTotal)
@@ -271,8 +271,8 @@ function calculateArtistEarnings(
     const networkEarnings = roundCents(networkShare * pools.networkPoolTotal)
 
     const grossStreamingEarnings = premiumEarnings + networkEarnings
-    const patronMultiplier = getPatronMultiplier(artist.patronCount)
-    const totalEarnings = roundCents(grossStreamingEarnings * patronMultiplier)
+    const SUPPORTERMultiplier = getSUPPORTERMultiplier(artist.SUPPORTERCount)
+    const totalEarnings = roundCents(grossStreamingEarnings * SUPPORTERMultiplier)
 
     return {
       artistId:             artist.artistId,
@@ -281,23 +281,23 @@ function calculateArtistEarnings(
       premiumEarnings,
       networkEarnings,
       grossStreamingEarnings,
-      patronMultiplier,
+      SUPPORTERMultiplier,
       totalEarnings,
     }
   })
 }
 
 // ─────────────────────────────────────────────
-// STEP 4 — CALCULATE PATRON REVENUE SHARES
+// STEP 4 — CALCULATE SUPPORTER REVENUE SHARES
 // ─────────────────────────────────────────────
 
-async function calculatePatronShares(
-  artistEarnings: Omit<ArtistEarnings, 'patronShareDistributed' | 'netPayout'>[]
+async function calculateSUPPORTERShares(
+  artistEarnings: Omit<ArtistEarnings, 'SUPPORTERShareDistributed' | 'netPayout'>[]
 ): Promise<{
-  patronShares: PatronShareEntry[]
+  SUPPORTERShares: SUPPORTERShareEntry[]
   artistNetPayouts: Map<string, { distributed: number; net: number }>
 }> {
-  const patronShares: PatronShareEntry[]  = []
+  const SUPPORTERShares: SUPPORTERShareEntry[]  = []
   const artistNetPayouts = new Map<string, { distributed: number; net: number }>()
 
   for (const artist of artistEarnings) {
@@ -306,7 +306,7 @@ async function calculatePatronShares(
       continue
     }
 
-    const patronages = await prisma.patronSubscription.findMany({
+    const Support = await prisma.SUPPORTERSubscription.findMany({
       where: {
         artistId: artist.artistId,
         status:   'ACTIVE',
@@ -320,16 +320,16 @@ async function calculatePatronShares(
 
     let totalDistributed = 0
 
-    for (const patronage of patronages) {
-      const shareDecimal = patronage.revenueSharePercent / 100
+    for (const SUPPORTERage of Support) {
+      const shareDecimal = SUPPORTERage.revenueSharePercent / 100
       const amountEarned = roundCents(artist.totalEarnings * shareDecimal)
 
       if (amountEarned > 0) {
-        patronShares.push({
-          fanId:               patronage.fanId,
+        SUPPORTERShares.push({
+          fanId:               SUPPORTERage.fanId,
           artistId:            artist.artistId,
-          patronageId:         patronage.id,
-          revenueSharePercent: patronage.revenueSharePercent,
+          SUPPORTERageId:         SUPPORTERage.id,
+          revenueSharePercent: SUPPORTERage.revenueSharePercent,
           amountEarned,
         })
         totalDistributed += amountEarned
@@ -344,7 +344,7 @@ async function calculatePatronShares(
     })
   }
 
-  return { patronShares, artistNetPayouts }
+  return { SUPPORTERShares, artistNetPayouts }
 }
 
 // ─────────────────────────────────────────────
@@ -356,7 +356,7 @@ async function persistRoyalties(
   year: number,
   pools: PoolTotals,
   fullArtistEarnings: ArtistEarnings[],
-  patronShares: PatronShareEntry[]
+  SUPPORTERShares: SUPPORTERShareEntry[]
 ): Promise<void> {
   await prisma.$transaction(async (tx) => {
 
@@ -392,9 +392,9 @@ async function persistRoyalties(
           poolAEarnings:           earnings.premiumEarnings,
           poolCStreams:            earnings.networkStreams,
           poolCEarnings:           earnings.networkEarnings,
-          patronMultiplier:        earnings.patronMultiplier,
+          SUPPORTERMultiplier:        earnings.SUPPORTERMultiplier,
           totalEarnings:           earnings.totalEarnings,
-          patronShareDistributed:  earnings.patronShareDistributed,
+          SUPPORTERShareDistributed:  earnings.SUPPORTERShareDistributed,
           netPayout:               earnings.netPayout,
           status:                  'PAID',
         },
@@ -413,12 +413,12 @@ async function persistRoyalties(
       }
     }
 
-    for (const share of patronShares) {
+    for (const share of SUPPORTERShares) {
       await tx.fanRoyaltyShare.create({
         data: {
           fanId:               share.fanId,
           artistId:            share.artistId,
-          patronageId:         share.patronageId,
+          SUPPORTERageId:         share.SUPPORTERageId,
           month,
           year,
           revenueSharePercent: share.revenueSharePercent,
@@ -449,7 +449,7 @@ async function sendRoyaltyNotifications(
   month: number,
   year: number,
   fullArtistEarnings: ArtistEarnings[],
-  patronShares: PatronShareEntry[]
+  SUPPORTERShares: SUPPORTERShareEntry[]
 ): Promise<void> {
   const monthName = new Date(year, month - 1, 1)
     .toLocaleString('en-US', { month: 'long', year: 'numeric' })
@@ -470,7 +470,7 @@ async function sendRoyaltyNotifications(
     }))
 
   const fanEarnings = new Map<string, number>()
-  for (const share of patronShares) {
+  for (const share of SUPPORTERShares) {
     fanEarnings.set(share.fanId, (fanEarnings.get(share.fanId) ?? 0) + share.amountEarned)
   }
 
@@ -481,7 +481,7 @@ async function sendRoyaltyNotifications(
       userType:  'fan',
       type:      'revenue_share_credited',
       title:     `You earned money from music you support`,
-      body:      `$${(totalEarned / 100).toFixed(2)} from your patron revenue shares in ${monthName} has been credited to your balance.`,
+      body:      `$${(totalEarned / 100).toFixed(2)} from your SUPPORTER revenue shares in ${monthName} has been credited to your balance.`,
       link:      '/fan/me',
       isRead:    false,
       createdAt: new Date(),
@@ -526,10 +526,10 @@ export async function calculateMonthlyRoyalties(
         totalNetworkStreams:     pools.totalNetworkStreams,
         artistCount:             0,
         totalArtistPayout:       0,
-        totalPatronDistribution: 0,
+        totalSUPPORTERDistribution: 0,
         totalNRHRevenue:         0,
         artists:                 [],
-        patronShares:            [],
+        SUPPORTERShares:            [],
         errors,
       }
     }
@@ -537,29 +537,29 @@ export async function calculateMonthlyRoyalties(
     console.log('[NRH Royalties] Step 3: Calculating artist earnings...')
     const partialEarnings = calculateArtistEarnings(artistStreamData, pools)
 
-    console.log('[NRH Royalties] Step 4: Calculating patron revenue shares...')
-    const { patronShares, artistNetPayouts } = await calculatePatronShares(partialEarnings)
+    console.log('[NRH Royalties] Step 4: Calculating SUPPORTER revenue shares...')
+    const { SUPPORTERShares, artistNetPayouts } = await calculateSUPPORTERShares(partialEarnings)
 
     const fullArtistEarnings: ArtistEarnings[] = partialEarnings.map((e) => {
       const payoutData = artistNetPayouts.get(e.artistId) ?? { distributed: 0, net: 0 }
       return {
         ...e,
-        patronShareDistributed: payoutData.distributed,
+        SUPPORTERShareDistributed: payoutData.distributed,
         netPayout:              payoutData.net,
       }
     })
 
     console.log('[NRH Royalties] Step 5: Persisting to database...')
-    await persistRoyalties(month, year, pools, fullArtistEarnings, patronShares)
+    await persistRoyalties(month, year, pools, fullArtistEarnings, SUPPORTERShares)
 
     console.log('[NRH Royalties] Step 6: Sending notifications...')
-    await sendRoyaltyNotifications(month, year, fullArtistEarnings, patronShares)
+    await sendRoyaltyNotifications(month, year, fullArtistEarnings, SUPPORTERShares)
 
     const totalArtistPayout       = fullArtistEarnings.reduce((s, e) => s + e.netPayout, 0)
-    const totalPatronDistribution = patronShares.reduce((s, p) => s + p.amountEarned, 0)
+    const totalSUPPORTERDistribution = SUPPORTERShares.reduce((s, p) => s + p.amountEarned, 0)
     const totalNRHRevenue         = (pools.premiumPoolTotal + pools.networkPoolTotal) 
                                     - totalArtistPayout 
-                                    - totalPatronDistribution
+                                    - totalSUPPORTERDistribution
 
     return {
       month,
@@ -570,10 +570,10 @@ export async function calculateMonthlyRoyalties(
       totalNetworkStreams:     pools.totalNetworkStreams,
       artistCount:             fullArtistEarnings.length,
       totalArtistPayout,
-      totalPatronDistribution,
+      totalSUPPORTERDistribution,
       totalNRHRevenue,
       artists:                 fullArtistEarnings,
-      patronShares,
+      SUPPORTERShares,
       errors,
     }
   } catch (error) {
@@ -593,7 +593,7 @@ export async function startStreamPlay(
   fan: { id?: string; type: string } | null,
   metadata?: { ip: string; userAgent: string; deviceId: string }
 ): Promise<string> {
-  const poolSource = (fan?.type === 'subscriber' || fan?.type === 'patron') ? 'A' : 'C'
+  const poolSource = (fan?.type === 'subscriber' || fan?.type === 'SUPPORTER') ? 'A' : 'C'
   
   // Anti-fraud checks
   const userAgent = metadata?.userAgent || '';
@@ -666,7 +666,7 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
   estimatedEarnings:  number  // cents
   premiumStreams:     number
   networkStreams:     number
-  patronMultiplier:   number
+  SUPPORTERMultiplier:   number
   premiumPoolRate:    number  // cents per stream (estimated)
   networkPoolRate:    number  // cents per stream (estimated)
   vsSpotifyRate:      number  // how much more per stream vs Spotify avg
@@ -689,10 +689,10 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
   const premiumStreams = streams.find((s) => s.poolSource === 'A')?._count.id ?? 0
   const networkStreams = streams.find((s) => s.poolSource === 'C')?._count.id ?? 0
 
-  const patronCount = await prisma.patronSubscription.count({
+  const SUPPORTERCount = await prisma.SUPPORTERSubscription.count({
     where: { artistId: artistId, status: 'ACTIVE' },
   })
-  const patronMultiplier = getPatronMultiplier(patronCount)
+  const SUPPORTERMultiplier = getSUPPORTERMultiplier(SUPPORTERCount)
 
   const subscriberCount = await prisma.fanSubscription.count({
     where: { status: 'active', startDate: { lte: now } },
@@ -711,7 +711,7 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
 
   const premiumEarnings = roundCents(premiumStreams * premiumPoolRate)
   const networkEarnings = roundCents(networkStreams * networkPoolRate)
-  const estimatedEarnings = roundCents((premiumEarnings + networkEarnings) * patronMultiplier)
+  const estimatedEarnings = roundCents((premiumEarnings + networkEarnings) * SUPPORTERMultiplier)
 
   const spotifyRatePerStream = 0.4
   const nrhRatePerStream = totalPremiumStreamsThisMonth > 0
@@ -723,9 +723,11 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
     estimatedEarnings,
     premiumStreams,
     networkStreams,
-    patronMultiplier,
+    SUPPORTERMultiplier,
     premiumPoolRate:  roundCents(premiumPoolRate),
     networkPoolRate:  roundCents(networkPoolRate),
     vsSpotifyRate: Math.round(vsSpotifyRate * 10) / 10,
   }
 }
+
+

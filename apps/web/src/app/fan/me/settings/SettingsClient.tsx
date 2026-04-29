@@ -52,7 +52,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
            <section className="bg-[#111] border border-white/5 rounded-3xl p-8 md:p-12 space-y-10">
               <div className="flex justify-between items-center">
                  <h3 className="text-xl font-bold italic uppercase tracking-tight flex items-center gap-3">
-                    <CreditCard className="w-5 h-5 text-gray-500" /> Billing & Patronages
+                    <CreditCard className="w-5 h-5 text-gray-500" /> Billing & Support
                  </h3>
                  <span className="bg-green-500/10 text-green-500 border border-green-500/20 px-3 py-1 rounded text-[9px] font-bold uppercase tracking-widest">Active Settlement</span>
               </div>
@@ -70,7 +70,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
                     <button className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:underline">Update</button>
                  </div>
                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <p className="text-xs text-gray-400 font-medium">Manage active artist patronages and revenue shares.</p>
+                    <p className="text-xs text-gray-400 font-medium">Manage active artist Support and revenue shares.</p>
                     <Link href="/fan/me/library" className="flex items-center space-x-2 text-[10px] font-bold text-white uppercase tracking-widest hover:translate-x-2 transition-transform">
                        <span>View Library</span>
                        <ArrowRight className="w-4 h-4" />
@@ -112,3 +112,5 @@ export default function FanSettingsPage({ user }: { user: any }) {
     </div>
   );
 }
+
+

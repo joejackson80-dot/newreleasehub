@@ -26,3 +26,5 @@ export const sendEmailNotification = inngest.createFunction(
     return { sent: true, to, type }
   }
 )
+
+

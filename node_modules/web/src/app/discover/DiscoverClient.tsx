@@ -239,3 +239,5 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
     </div>
   );
 }
+
+

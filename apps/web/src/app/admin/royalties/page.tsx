@@ -19,3 +19,5 @@ export default async function RoyaltiesAdminPage() {
     <RoyaltiesDashboardClient initialPools={pools} />
   );
 }
+
+

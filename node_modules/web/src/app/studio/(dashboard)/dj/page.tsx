@@ -10,3 +10,5 @@ export default async function DJPage() {
   const artist = await getSessionArtist();
   return <DJControlRoom artist={artist} />;
 }
+
+

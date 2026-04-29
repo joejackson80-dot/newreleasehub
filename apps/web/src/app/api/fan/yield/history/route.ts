@@ -36,3 +36,5 @@ export async function GET(request: Request) {
     protocol: 'NRH_ANALYTICS_V1.1'
   });
 }
+
+

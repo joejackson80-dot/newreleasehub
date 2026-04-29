@@ -215,7 +215,7 @@ export default function AnalyticsClient() {
             <div className="space-y-8">
               {[
                 { name: 'Streaming Activity', score: 82, msg: 'Your streams are strong — keep releasing music', color: 'bg-[#00D2FF]' },
-                { name: 'Patron Community', score: 61, msg: '43 patrons. Each new patron adds points.', color: 'bg-purple-500' },
+                { name: 'SUPPORTER Community', score: 61, msg: '43 SUPPORTERs. Each new SUPPORTER adds points.', color: 'bg-purple-500' },
                 { name: 'Fan Growth', score: 41, msg: '+12 new followers this month', color: 'bg-[#00D2FF]' },
                 { name: 'Fan Engagement', score: 89, msg: '2 tips received, 8 comments — great!', color: 'bg-purple-500' },
                 { name: 'Release Consistency', score: 32, msg: '1 release in 90 days. Release more consistently.', color: 'bg-orange-500' },
@@ -241,3 +241,5 @@ export default function AnalyticsClient() {
     </div>
   );
 }
+
+
