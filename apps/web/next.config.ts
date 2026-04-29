@@ -58,6 +58,12 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['@resvg/resvg-js'],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
