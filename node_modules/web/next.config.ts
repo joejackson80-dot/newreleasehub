@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=()" },
           { key: "Content-Security-Policy", value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-eval' js.stripe.com cdnjs.cloudflare.com",
+            "script-src 'self' 'unsafe-eval' 'unsafe-inline' js.stripe.com cdnjs.cloudflare.com",
             "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
             "font-src 'self' fonts.gstatic.com",
             "img-src 'self' images.unsplash.com *.supabase.co data: blob:",

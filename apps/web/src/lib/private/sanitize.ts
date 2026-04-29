@@ -33,6 +33,10 @@ const BANNED_FIELDS = new Set([
   // Thresholds / Flags
   'minStreamSeconds', 'adTriggerThreshold', 'countedAsStream',
   'rawStreamCount', 'totalPaidStreams', 'totalFreeStreams',
+  // Chart System (Trade Secret)
+  'nrhEquityScore', 'equityScoreDelta', 'equityScoreHistory',
+  'components', 'streamMomentum', 'patronDepth', 'fanVelocity',
+  'engagementQuality', 'releaseConsist',
 ]);
 
 /** Field aliases: internal name → public-safe name */

@@ -84,7 +84,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
             }
           ]
         }
-      },
+      } as any,
       {
         width: 1080,
         height: 1080,

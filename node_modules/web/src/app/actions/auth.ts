@@ -8,22 +8,28 @@ export async function loginArtist(identifier: string, password: string) {
   try {
     // DEMO MODE FALLBACK
     if (identifier === 'iamjoejack' && password === 'Password123') {
-      const cookieStore = await cookies();
-      cookieStore.set('nrh_artist_session', 'true', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
+      const demoArtist = await prisma.organization.findFirst({
+        where: { username: 'iamjoejack' }
       });
-      cookieStore.set('nrh_artist_id', 'artist-demo', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      });
-      return { success: true };
+      
+      if (demoArtist) {
+        const cookieStore = await cookies();
+        cookieStore.set('nrh_artist_session', 'true', {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7
+        });
+        cookieStore.set('nrh_artist_id', demoArtist.id, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7
+        });
+        return { success: true };
+      }
     }
 
     const artist = await prisma.organization.findFirst({
@@ -72,6 +78,32 @@ export async function loginArtist(identifier: string, password: string) {
 
 export async function loginFan(identifier: string, password: string) {
   try {
+    // DEMO MODE FALLBACK
+    if (identifier === 'johndoe' && password === 'Password123') {
+      const demoFan = await prisma.user.findFirst({
+        where: { username: 'johndoe' }
+      });
+      
+      if (demoFan) {
+        const cookieStore = await cookies();
+        cookieStore.set('nrh_user_session', 'true', {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7
+        });
+        cookieStore.set('nrh_user_id', demoFan.id, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7
+        });
+        return { success: true };
+      }
+    }
+
     const fan = await prisma.user.findFirst({
       where: {
         OR: [

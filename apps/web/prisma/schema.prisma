@@ -67,6 +67,19 @@ model Organization {
   SessionDeck            SessionDeck?
   StreamPlays            StreamPlay[]
   Milestones             ArtistMilestone[]
+
+  // NRH Chart System Fields
+  nrhEquityScore        Float     @default(0)
+  equityScoreHistory    Json      @default("[]")
+  chartPositionGenre    Int?
+  chartPositionGlobal   Int?
+  chartPositionCity     Int?
+  chartPositionRising   Int?
+  previousEquityScore   Float     @default(0)
+  equityScoreDelta      Float     @default(0)
+  showEarningsOnChart   Boolean   @default(false)
+
+  ChartSnapshots        ChartSnapshot[]
 }
 
 model SessionArchive {
@@ -828,4 +841,24 @@ enum MilestoneType {
   FRIDAY_ROUNDUP
   FOUNDING_ARTIST
   ONE_YEAR_ANNIVERSARY
+}
+
+model ChartSnapshot {
+  id          String   @id @default(uuid())
+  artistId    String
+  week        DateTime // ISO week start (Monday)
+  globalRank  Int?
+  genreRank   Int?
+  cityRank    Int?
+  risingRank  Int?
+  equityScore Float
+  streamCount Int
+  patronCount Int
+  followerCount Int
+  createdAt   DateTime @default(now())
+
+  artist      Organization   @relation(fields: [artistId], references: [id])
+  @@unique([artistId, week])
+  @@index([week, genreRank])
+  @@index([week, globalRank])
 }

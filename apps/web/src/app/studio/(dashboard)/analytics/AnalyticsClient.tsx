@@ -1,11 +1,12 @@
-'use client';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { 
   Users, Activity, TrendingUp, Globe, Smartphone, 
   Monitor, Tablet, MapPin, BarChart3, PieChart
 } from 'lucide-react';
 
 export default function AnalyticsClient() {
+  const [activeTab, setActiveTab] = useState<'overview' | 'charts'>('overview');
+
   // Simulate 30 days of data
   const retentionData = useMemo(() => {
     return Array.from({ length: 30 }, (_, i) => ({
@@ -35,9 +36,20 @@ export default function AnalyticsClient() {
           <BarChart3 className="w-6 h-6" />
           <span className="text-xs font-bold uppercase tracking-widest">Network Analytics</span>
         </div>
-        <h1 className="text-5xl font-bold tracking-tighter uppercase italic text-white">Audience<br />Intelligence.</h1>
-        <p className="text-gray-500 font-medium max-w-xl">Deep insights into your listener base, device distribution, and global retention metrics over the last 30 days.</p>
+        <div className="flex items-end justify-between">
+          <div>
+            <h1 className="text-5xl font-bold tracking-tighter uppercase italic text-white">Audience<br />Intelligence.</h1>
+            <p className="text-gray-500 font-medium max-w-xl mt-4">Deep insights into your listener base, device distribution, and global retention metrics over the last 30 days.</p>
+          </div>
+          <div className="flex space-x-2 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800">
+            <button onClick={() => setActiveTab('overview')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'overview' ? 'bg-[#00D2FF] text-black' : 'text-zinc-500 hover:text-white'}`}>Overview</button>
+            <button onClick={() => setActiveTab('charts')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'charts' ? 'bg-[#1D9E75] text-white' : 'text-zinc-500 hover:text-white'}`}>Charts</button>
+          </div>
+        </div>
       </header>
+
+      {activeTab === 'overview' && (
+        <div className="space-y-12">
 
       {/* KPI GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -176,10 +188,53 @@ export default function AnalyticsClient() {
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{loc.country}</p>
                  </div>
               </div>
-            ))}
-         </div>
-      </div>
+             ))}
+          </div>
+       </div>
 
+       </div>
+      )}
+
+      {activeTab === 'charts' && (
+        <div className="space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {['Global Rank', 'Genre Rank', 'City Rank', 'Rising Rank'].map((title, i) => (
+              <div key={i} className="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+                <h3 className="text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">{title}</h3>
+                <div className="flex items-end justify-between">
+                  <p className="text-3xl font-bold">#24</p>
+                  <span className="text-emerald-400 text-sm font-bold">▲ +2</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
+            <h2 className="text-2xl font-bold mb-8">What's Helping Your Rank</h2>
+            <div className="space-y-6">
+              {[
+                { name: 'Streaming Activity', score: 82, msg: 'Your streams are strong — keep releasing music' },
+                { name: 'Patron Community', score: 61, msg: '43 patrons. Each new patron adds points.' },
+                { name: 'Fan Growth', score: 41, msg: '+12 new followers this month' },
+                { name: 'Fan Engagement', score: 89, msg: '2 tips received, 8 comments — great!' },
+                { name: 'Release Consistency', score: 32, msg: '1 release in 90 days. Release more consistently.' },
+                { name: 'Profile Completeness', score: 100, msg: 'Profile fully set up ✓' },
+              ].map(factor => (
+                <div key={factor.name}>
+                  <div className="flex justify-between mb-2">
+                    <span className="font-bold">{factor.name}</span>
+                    <span className="text-zinc-500">{factor.score}/100</span>
+                  </div>
+                  <div className="h-2 bg-zinc-800 rounded-full overflow-hidden mb-2">
+                    <div className="h-full bg-[#1D9E75]" style={{ width: `${factor.score}%` }}></div>
+                  </div>
+                  <p className="text-sm text-zinc-500">{factor.msg}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
