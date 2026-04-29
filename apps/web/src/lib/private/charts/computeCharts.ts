@@ -47,9 +47,8 @@ export const computeWeeklyCharts = inngest.createFunction(
     id: 'compute-weekly-charts',
     name: 'Compute Weekly NRH Charts',
     retries: 3,
+    triggers: [{ cron: 'TZ=America/Chicago 0 6 * * MON' }],
   },
-  { cron: 'TZ=America/Chicago 0 6 * * MON' },
-  // @ts-ignore
   async ({ step }: { step: any }) => {
 
     const weekStart = getWeekStart(new Date())

@@ -1,11 +1,34 @@
-import { serve } from "inngest/next";
-import { inngest } from "@/lib/inngest/client";
-import { computeWeeklyCharts } from "@/lib/private/charts/computeCharts";
+import { serve } from 'inngest/next'
+import { inngest } from '@/lib/inngest/client'
 
-// Create an API that serves zero functions
+// Import all functions
+import { calculateMonthlyRoyalties }  from '@/lib/inngest/functions/calculateRoyalties'
+import { processStreamFraudScore }    from '@/lib/inngest/functions/processStreamFraud'
+import { sendEmailNotification }      from '@/lib/inngest/functions/sendEmail'
+import { generateAICard }             from '@/lib/inngest/functions/generateAICard'
+import {
+  foundingConversionsCron,
+  expireCollabsCron,
+  generateRadioPlaylistsCron,
+  resetAICreditsCron,
+  djListenerCountCron,
+  computeWeeklyCharts,
+  presaveNotificationsCron,
+} from '@/lib/inngest/functions/cronFunctions'
+
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
-    computeWeeklyCharts
+    calculateMonthlyRoyalties,
+    processStreamFraudScore,
+    sendEmailNotification,
+    generateAICard,
+    foundingConversionsCron,
+    expireCollabsCron,
+    generateRadioPlaylistsCron,
+    resetAICreditsCron,
+    djListenerCountCron,
+    computeWeeklyCharts,
+    presaveNotificationsCron,
   ],
-});
+})
