@@ -13,6 +13,8 @@ const ARTIST_IMAGE_POOL = [
 ];
 
 import NetworkFeed from '@/components/network/NetworkFeed';
+import HeroVisual from '@/components/home/HeroVisual';
+import MusicNewsFeed from '@/components/network/MusicNewsFeed';
 
 export default async function HomePage() {
   const hubs = await prisma.organization.findMany({
@@ -44,14 +46,8 @@ export default async function HomePage() {
          <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-[#02020299] to-transparent"></div>
          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
-            <div className="space-y-16 animate-in fade-in slide-in-from-bottom-12 duration-1000">
-               
-               {/* BRAND LOGO */}
-               <div className="flex">
-                  <Link href="/" className="w-16 h-16 rounded-[2rem] bg-white text-black flex items-center justify-center font-bold text-3xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
-               </div>
-
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="space-y-12 animate-in fade-in slide-in-from-bottom-12 duration-1000 flex flex-col items-center lg:items-start text-center lg:text-left">
                <div className="space-y-8">
                   <div className="flex items-center space-x-3 text-[#00D2FF]">
                      <Zap className="w-4 h-4 fill-current" />
@@ -59,27 +55,31 @@ export default async function HomePage() {
                   </div>
                   <h1 className="text-white text-[clamp(2.5rem,10vw,7.5rem)] font-bold leading-[0.9] uppercase italic tracking-tighter break-words max-w-full">
                      Your Music.<br />
-                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Your Fans.</span>
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600 text-glow">Your Fans.</span>
                   </h1>
-                  <p className="text-gray-500 text-[clamp(1rem,2.5vw,1.25rem)] font-medium max-w-lg leading-relaxed italic">
-                      "Streaming royalties, supporter income, and collab deals — all built for independent artists who own their masters."
+                  <p className="text-gray-500 text-[clamp(1rem,2.5vw,1.35rem)] font-medium max-w-lg leading-relaxed italic">
+                      "Institutional-grade tools for independent artists who own their masters and control their destiny."
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
-                  <Link href="/studio/login" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">Artist Studio</Link>
-                  <Link href="/discover" className="px-12 py-5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Start Listening</Link>
+                  <Link href="/register" className="px-12 py-5 rounded-2xl bg-white text-black font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">Start Building</Link>
+                  <Link href="/discover" className="px-12 py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Explore Network</Link>
                </div>
                
-               {/* MISSION BLOCK */}
-                <div className="pt-16 border-t border-white/5">
-                   <p className="text-gray-400 text-sm font-medium leading-relaxed max-w-lg italic">
-                     "NRH exists to give independent artists a real path to a music career. We pay more, take less, and never ask for your rights. It's your music, your fans, and your money."
-                   </p>
-                   <div className="mt-8 flex items-center space-x-3">
-                     <p className="text-[#00D2FF] text-2xl font-bold uppercase italic tracking-tighter">100%</p>
-                     <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-tight">ownership of your masters,<br />from day one.</p>
-                   </div>
-                </div>
+               <div className="pt-12 border-t border-white/5 flex items-center gap-12">
+                  <div className="space-y-2">
+                     <p className="text-3xl font-bold italic tracking-tighter text-white">100%</p>
+                     <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Master Retention</p>
+                  </div>
+                  <div className="space-y-2">
+                     <p className="text-3xl font-bold italic tracking-tighter text-[#00D2FF]">Real-Time</p>
+                     <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Ledger Settlement</p>
+                  </div>
+               </div>
+            </div>
+
+            <div className="hidden lg:block">
+               <HeroVisual />
             </div>
           </div>
       </section>
@@ -227,6 +227,13 @@ export default async function HomePage() {
          </div>
       </section>
 
+
+      {/* MUSIC INDUSTRY NEWS */}
+      <section className="py-24 sm:py-32 lg:py-40 px-6 md:px-16 bg-[#020202]">
+         <div className="max-w-7xl mx-auto">
+            <MusicNewsFeed />
+         </div>
+      </section>
 
       {/* HOW IT WORKS */}
       <section className="py-16 sm:py-20 lg:py-32 bg-[#050505] border-y border-white/5 px-4 sm:px-8 lg:px-16">

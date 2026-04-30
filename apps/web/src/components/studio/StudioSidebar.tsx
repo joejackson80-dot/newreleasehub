@@ -97,10 +97,25 @@ export default function StudioSidebar({ org }: { org: any }) {
                     key={item.href + item.label}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all text-xs font-medium ${isActive ? 'text-[#00D2FF] bg-[#00D2FF]/10' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all text-xs font-medium relative group ${
+                      pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))
+                        ? 'text-[#00D2FF] bg-[#00D2FF]/5' 
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    }`}
                   >
-                    <div className="flex items-center space-x-2.5">
-                      <item.icon className="w-3.5 h-3.5 shrink-0" />
+                    {(pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))) && (
+                      <motion.div 
+                        layoutId="nav-glow"
+                        className="absolute inset-0 bg-[#00D2FF]/5 rounded-lg shadow-[inset_0_0_20px_rgba(0,210,255,0.1)] border border-[#00D2FF]/20"
+                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <div className="flex items-center space-x-2.5 relative z-10">
+                      <item.icon className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                        pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))
+                          ? 'text-[#00D2FF]' 
+                          : 'text-gray-500 group-hover:text-white'
+                      }`} />
                       <span>{item.label}</span>
                     </div>
                     {item.label === 'Milestones' && unviewedMilestones > 0 && (
