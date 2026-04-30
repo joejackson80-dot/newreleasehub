@@ -49,18 +49,6 @@ export const generateRadioPlaylistsCron = inngest.createFunction(
   }
 )
 
-// ── Reset AI credits (1st of each month midnight) ─────────────
-export const resetAICreditsCron = inngest.createFunction(
-  {
-    id: 'reset-ai-credits-monthly',
-    name: 'Reset Monthly AI Credits',
-    retries: 2,
-    triggers: [{ cron: '0 0 1 * *' }],
-  },
-  async ({ step }: { step: any }) => {
-    // AI credit reset logic here
-  }
-)
 
 // ── DJ listener count update (every minute) ───────────────────
 export const djListenerCountCron = inngest.createFunction(

@@ -17,7 +17,6 @@ const ARTIST_PLANS = [
       '5 releases',
       'Basic analytics',
       '3 opportunity applications/month',
-      '10 AI credits/month',
       'Monthly payouts'
     ],
     buttonText: 'Get Started Free',
@@ -37,7 +36,6 @@ const ARTIST_PLANS = [
       '3 SUPPORTER tiers',
       'Full analytics',
       'Unlimited opportunity applications',
-      '50 AI credits/month',
       'Bi-weekly payouts',
       'Listening parties',
       'Post scheduling'
@@ -56,7 +54,6 @@ const ARTIST_PLANS = [
       '95% streaming royalties',
       'Unlimited SUPPORTER tiers',
       'Advanced analytics',
-      '200 AI credits/month',
       'Weekly payouts',
       'Custom domain support',
       'White-label player',
