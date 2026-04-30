@@ -48,7 +48,7 @@ export default function BlogPage() {
                 <Tag className="w-5 h-5" />
                 <span className="text-xs font-bold uppercase tracking-widest">Industry Journal</span>
              </div>
-             <h1 className="text-3xl md:text-8xl font-bold tracking-tighter italic uppercase leading-[0.8]">
+             <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-bold tracking-tighter italic uppercase leading-[0.8]">
                 NRH<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Editorial.</span>
              </h1>

@@ -88,7 +88,7 @@ export default function ProposalCreatorClient() {
             <Gavel className="w-5 h-5" />
             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Protocol Expansion Suite</span>
          </div>
-         <h1 className="text-6xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">
+         <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-black italic uppercase tracking-tighter leading-none">
             New<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Initiative.</span>
          </h1>

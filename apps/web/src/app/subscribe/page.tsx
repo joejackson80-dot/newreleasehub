@@ -111,7 +111,7 @@ export default function SubscribePage() {
             <Zap className="w-4 h-4 fill-current" />
             <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Grade Access</span>
           </div>
-          <h1 className="text-5xl md:text-9xl font-bold tracking-tighter leading-[0.8] uppercase italic">
+          <h1 className="text-[clamp(2.5rem,9vw,5.5rem)] font-bold tracking-tighter leading-[0.8] uppercase italic">
              Upgrade Your<br />
              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Experience.</span>
           </h1>

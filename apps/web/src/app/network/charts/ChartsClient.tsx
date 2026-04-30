@@ -35,7 +35,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
                   <BarChart3 className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Live Trending Analytics</span>
                </div>
-               <h1 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-[0.8] italic">
+               <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-bold tracking-tighter uppercase leading-[0.8] italic">
                   Top<br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Artists.</span>
                </h1>

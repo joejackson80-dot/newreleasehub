@@ -129,7 +129,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                   <Briefcase className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Independent Growth Board</span>
                </div>
-                <h1 className="text-[clamp(3.5rem,15vw,6rem)] md:text-8xl font-black tracking-tighter uppercase leading-[0.8] italic break-words">
+                <h1 className="text-[clamp(2.25rem,8vw,5rem)] font-black tracking-tight leading-[1.05] uppercase italic hyphens-none break-normal">
                    New<br />
                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Opportunities.</span>
                 </h1>

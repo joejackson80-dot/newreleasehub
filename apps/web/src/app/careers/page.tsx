@@ -42,7 +42,7 @@ export default function CareersPage() {
                  <Zap className="w-4 h-4 text-amber-500" />
                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Join the Collective</span>
               </div>
-              <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.8] italic uppercase">
+              <h1 className="text-[clamp(2.5rem,9vw,5.5rem)] font-bold tracking-tighter leading-[0.8] italic uppercase">
                  The Future<br />
                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">of Music.</span>
               </h1>

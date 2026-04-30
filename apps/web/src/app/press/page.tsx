@@ -15,7 +15,7 @@ export default function PressPage() {
                  <Globe className="w-5 h-5" />
                  <span className="text-xs font-bold uppercase tracking-widest">Press & Media</span>
               </div>
-              <h1 className="text-3xl md:text-8xl font-bold tracking-tighter leading-[0.8] italic uppercase">
+              <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-bold tracking-tighter leading-[0.8] italic uppercase">
                  Press<br />
                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Resources.</span>
               </h1>

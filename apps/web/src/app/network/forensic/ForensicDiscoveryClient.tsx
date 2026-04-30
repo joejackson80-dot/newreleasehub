@@ -60,7 +60,7 @@ export default function ForensicDiscoveryClient() {
                  <BarChart3 className="w-5 h-5" />
                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Intelligence Terminal</span>
               </div>
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.8]">
+              <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-black tracking-tighter uppercase italic leading-[0.8]">
                  Forensic<br />
                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Discovery.</span>
               </h1>

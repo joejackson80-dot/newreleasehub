@@ -26,7 +26,7 @@ export default function NetworkWhitepaper() {
                         <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
                         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Institutional Protocol v1.0.4</span>
                      </div>
-                     <h1 className="text-6xl md:text-9xl font-bold tracking-tighter leading-[0.8] italic uppercase">
+                     <h1 className="text-[clamp(2.5rem,9vw,5.5rem)] font-bold tracking-tighter leading-[0.8] italic uppercase">
                         The Support<br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Framework.</span>
                      </h1>

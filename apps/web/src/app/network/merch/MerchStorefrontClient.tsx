@@ -48,7 +48,7 @@ export default function MerchStorefrontClient() {
                   <Package className="w-5 h-5" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Logistics & Drops</span>
                </div>
-               <h1 className="text-6xl md:text-9xl font-black tracking-tighter uppercase italic leading-[0.8]">
+               <h1 className="text-[clamp(2.5rem,9vw,5.5rem)] font-black tracking-tighter uppercase italic leading-[0.8]">
                   Network<br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Assets.</span>
                </h1>

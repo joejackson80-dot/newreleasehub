@@ -32,7 +32,7 @@ export default function DiscographyPage() {
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Back to Profile</span>
                </Link>
                <div className="space-y-2">
-                  <h1 className="text-5xl md:text-8xl font-black tracking-tighter italic uppercase leading-[0.8]">Full<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Discography.</span></h1>
+                  <h1 className="text-5xl md:text-[clamp(2.25rem,8vw,4.5rem)] font-black tracking-tighter italic uppercase leading-[0.8]">Full<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Discography.</span></h1>
                   <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">Total of {MOCK_RELEASES.length} Verified Assets on the Network</p>
                </div>
             </div>

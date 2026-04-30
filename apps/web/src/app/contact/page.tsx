@@ -21,7 +21,7 @@ export default function ContactPage() {
                      <MessageSquare className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Global Inquiries</span>
                   </div>
-                  <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.8] italic uppercase">
+                  <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-bold tracking-tighter leading-[0.8] italic uppercase">
                      Get in<br />
                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Touch.</span>
                   </h1>

@@ -80,10 +80,12 @@ html, body {
 }
 
 /* Prevent oversized text on mobile */
-h1, h2, h3 {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
+h1, h2, h3, h4, h5, h6 {
+  hyphens: none;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 /* Base mobile font scale */
