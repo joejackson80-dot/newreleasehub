@@ -37,6 +37,13 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 
 import { Toaster } from 'react-hot-toast';
 import MainLayoutWrapper from "@/components/layout/MainLayoutWrapper";

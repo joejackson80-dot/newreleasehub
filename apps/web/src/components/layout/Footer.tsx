@@ -7,13 +7,13 @@ export default function Footer() {
   const [email, setEmail] = useState('');
 
   return (
-    <footer className="bg-[#020202] border-t border-white/5 pt-32 pb-20 px-10">
+    <footer className="bg-[#020202] border-t border-white/5 pt-16 sm:pt-32 pb-16 sm:pb-20 px-6 sm:px-10">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-32">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-12 mb-16 sm:mb-32">
           
           {/* BRAND (col-span-2) */}
-          <div className="lg:col-span-2 space-y-10">
-            <Link href="/" className="flex flex-col space-y-8 group">
+          <div className="lg:col-span-2 space-y-8 sm:space-y-10">
+            <Link href="/" className="flex flex-col space-y-6 sm:space-y-8 group">
                <div className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</div>
                <div className="space-y-1">
                   <span className="text-lg font-bold tracking-tighter uppercase text-white italic leading-none">New Release Hub<span className="text-[#00D2FF]">.</span></span>
@@ -87,13 +87,13 @@ export default function Footer() {
 
         {/* BOTTOM BAR */}
         <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center space-x-6 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <span>|</span>
+            <span className="hidden sm:inline text-white/10">|</span>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-            <span>|</span>
+            <span className="hidden sm:inline text-white/10">|</span>
             <Link href="/dmca" className="hover:text-white transition-colors">DMCA</Link>
-            <span>|</span>
+            <span className="hidden sm:inline text-white/10">|</span>
             <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
           </div>
           <div className="flex items-center space-x-4">

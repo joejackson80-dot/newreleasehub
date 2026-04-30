@@ -116,33 +116,33 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-12 pb-32">
       
       {/* PAGE HEADER */}
-      <header className="pt-12 pb-24 px-4 md:px-10 max-w-7xl mx-auto space-y-12">
+      <header className="pt-12 pb-16 sm:pb-24 px-4 sm:px-10 max-w-7xl mx-auto space-y-12">
          
          {/* LOGO */}
          <div className="flex">
             <Link href="/" className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
          </div>
 
-         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 sm:gap-10">
             <div className="space-y-6">
                <div className="flex items-center space-x-3 text-[#00D2FF]">
                   <Briefcase className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Independent Growth Board</span>
                </div>
-               <h1 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-[0.8] italic">
+               <h1 className="text-[clamp(3.5rem,15vw,6rem)] md:text-8xl font-bold tracking-tighter uppercase leading-[0.8] italic break-words">
                   New<br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Opportunities.</span>
                </h1>
-               <p className="text-gray-500 max-w-xl font-medium leading-relaxed italic">
+               <p className="text-gray-500 max-w-xl font-medium leading-relaxed italic text-sm sm:text-base">
                   "Verified sync deals, performance grants, and high-value collaboration requests — exclusively for the New Release Hub artist community."
                </p>
             </div>
             <Link
               href="/studio/login?intent=opportunity-poster"
-              className="px-12 py-5 rounded-full bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-2xl flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-12 py-5 rounded-full bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-2xl flex items-center justify-center gap-2"
             >
-              <Plus className="w-4 h-4" />
-              <span>Post Opportunity</span>
+               <Plus className="w-4 h-4" />
+               <span>Post Opportunity</span>
             </Link>
          </div>
       </header>
@@ -150,19 +150,19 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
       {/* FILTER BAR */}
       <section className="max-w-7xl mx-auto px-4 md:px-10 mb-12">
          <div className="bg-[#111] border border-white/5 rounded-3xl p-4 flex flex-col lg:flex-row items-center justify-between gap-6">
-            <div className="flex flex-wrap items-center gap-2 md:gap-6 px-4 w-full lg:w-auto justify-center lg:justify-start">
+            <div className="flex overflow-x-auto scrollbar-hide items-center gap-2 md:gap-6 px-2 w-full lg:w-auto justify-start lg:justify-start -mx-2 sm:mx-0">
                {['All', 'Sync', 'Gigs', 'Grants', 'Collabs', 'Proposals'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all ${activeTab === tab ? 'bg-white text-black' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
+                    className={`flex-shrink-0 text-[10px] sm:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all ${activeTab === tab ? 'bg-white text-black' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
                   >
                     {tab}
                   </button>
                ))}
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-               <div className="relative w-full sm:w-64">
+               <div className="relative w-full lg:w-64">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <input 
                     type="text" 

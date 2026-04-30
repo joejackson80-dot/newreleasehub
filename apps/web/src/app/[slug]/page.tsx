@@ -102,7 +102,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
 
       {/* ── HEADER PHOTO ── */}
       <div className="relative">
-        <div className="h-[280px] w-full bg-zinc-900 overflow-hidden relative">
+        <div className="h-[200px] sm:h-[280px] w-full bg-zinc-900 overflow-hidden relative">
           {org.headerImageUrl ? (
             <img src={org.headerImageUrl} alt={`${org.name} header`} className="w-full h-full object-cover opacity-60" />
           ) : (
@@ -112,28 +112,30 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
         </div>
 
         {/* ── PROFILE IDENTITY ── */}
-        <div className="max-w-7xl mx-auto px-8 relative -mt-20 z-10">
-          <div className="flex flex-col md:flex-row items-start md:items-end gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 relative -mt-16 sm:-mt-20 z-10">
+          <div className="flex flex-col md:flex-row items-center md:items-end gap-6 sm:gap-8">
 
-            {/* AVATAR — 88px overlapping */}
-            <div className="w-36 h-36 rounded-full border-4 border-[#020202] overflow-hidden bg-zinc-800 shadow-2xl shrink-0">
+            {/* AVATAR — smaller on mobile */}
+            <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full border-4 border-[#020202] overflow-hidden bg-zinc-800 shadow-2xl shrink-0">
               {org.profileImageUrl && (
                 <img src={org.profileImageUrl} alt={org.name} className="w-full h-full object-cover" />
               )}
             </div>
 
-            <div className="flex-1 space-y-4 pb-2">
+            <div className="flex-1 space-y-4 pb-2 text-center md:text-left w-full">
               {/* NAME + VERIFIED + TIER */}
-              <div className="flex flex-wrap items-center gap-4">
-                <h1 className="text-5xl md:text-3xl font-bold uppercase tracking-tighter">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-bold uppercase tracking-tighter break-words">
                   {org.name}
                 </h1>
-                {org.isVerified && (
-                  <CheckCircle2 className="w-7 h-7 text-[#00D2FF] shrink-0" />
-                )}
-                <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border ${tierBadgeColor}`}>
-                  {tierCapitalized}
-                </span>
+                <div className="flex items-center gap-4">
+                  {org.isVerified && (
+                    <CheckCircle2 className="w-6 h-6 text-[#00D2FF] shrink-0" />
+                  )}
+                  <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border ${tierBadgeColor}`}>
+                    {tierCapitalized}
+                  </span>
+                </div>
                 {org.FoundingSlot && (
                   <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border border-[#00D2FF]/50 text-[#00D2FF] bg-[#00D2FF]/20 flex items-center gap-1.5">
                     <Star className="w-3 h-3 fill-current" />
@@ -143,7 +145,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               </div>
 
               {/* GENRES + CITY */}
-              <div className="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-wider">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
                 {org.genres.map(g => (
                   <span key={g} className="bg-white/5 border border-white/10 px-3 py-1 rounded-full text-gray-300">{g}</span>
                 ))}
@@ -156,7 +158,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               </div>
 
               {/* STATS ROW */}
-              <div className="flex items-center gap-8 text-sm">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 sm:gap-8 text-sm">
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-[#00D2FF]" />
                   <span className="font-bold text-white">{supporterCount.toLocaleString()}</span>
@@ -175,7 +177,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               </div>
 
               {/* SOCIAL LINKS */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center md:justify-start gap-4">
                 {socialLinks.instagram && (
                   <Link href={`https://instagram.com/${socialLinks.instagram}`} target="_blank"
                     className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all">
@@ -216,18 +218,18 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
             </div>
 
             {/* ACTION BUTTONS */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
               <Link href={`/fan/checkout?artist=${org.id}`}
-                className="px-8 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all flex items-center gap-2 shadow-lg">
+                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all flex items-center justify-center gap-2 shadow-lg">
                 <Heart className="w-4 h-4" />
                 Become a Supporter
               </Link>
               <Link href={`/studio/collab/new?artist=${org.slug}`}
-                className="px-8 py-3 rounded-xl bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all flex items-center gap-2">
+                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all flex items-center justify-center gap-2">
                 <Users className="w-4 h-4" />
                 Collab Request
               </Link>
-              <button className="px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
+              <button className="w-full sm:w-auto px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
                 Follow
               </button>
             </div>
@@ -257,7 +259,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       )}
 
       {/* ── MAIN CONTENT ── */}
-      <div className="max-w-7xl mx-auto px-8 mt-16 grid grid-cols-1 lg:grid-cols-3 gap-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-3 gap-12 sm:gap-16">
 
         {/* LEFT: RELEASES + BIO */}
         <div className="lg:col-span-2 space-y-20">
@@ -272,11 +274,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
 
           {/* LATEST RELEASES */}
           <section>
-            <div className="flex items-center justify-between mb-10">
-              <h3 className="text-3xl font-bold uppercase tracking-tighter">Latest Releases</h3>
+            <div className="flex items-center justify-between mb-8 sm:mb-10">
+              <h3 className="text-2xl sm:text-3xl font-bold uppercase tracking-tighter">Latest Releases</h3>
               {liveReleases.length > 3 && (
-                <Link href={`/${slug}/discography`} className="text-xs font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white flex items-center gap-2">
-                  All Releases <ArrowRight className="w-4 h-4" />
+                <Link href={`/${slug}/discography`} className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white flex items-center gap-2">
+                  All <ArrowRight className="w-4 h-4" />
                 </Link>
               )}
             </div>

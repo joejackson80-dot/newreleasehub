@@ -153,8 +153,8 @@ export default function StudioSidebar() {
 
   return (
     <>
-      {/* Mobile Toggle */}
-      <div className="lg:hidden fixed top-4 left-4 z-[60]">
+      {/* Mobile Toggle - HIDDEN in favor of BottomNav */}
+      <div className="hidden lg:hidden fixed top-4 left-4 z-[60]">
         <button 
           onClick={() => setIsOpen(true)}
           className="p-3 bg-[#050505] border border-white/10 rounded-xl text-white shadow-2xl"

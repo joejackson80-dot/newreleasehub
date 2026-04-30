@@ -33,7 +33,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white">
 
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center bg-black overflow-hidden pt-32 pb-20">
+      <section className="relative min-h-screen flex items-center bg-black overflow-hidden px-4 sm:px-8 lg:px-16 py-20 sm:py-24 lg:py-32">
          <div className="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-[3000ms]">
             <img
               src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1600&q=80"
@@ -57,11 +57,11 @@ export default async function HomePage() {
                      <ShieldCheck className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The Support-Tier Framework</span>
                   </div>
-                  <h1 className="text-white text-6xl md:text-9xl font-bold leading-[0.8] uppercase italic tracking-tighter">
+                  <h1 className="text-white text-[clamp(2.5rem,10vw,7.5rem)] font-bold leading-[0.9] uppercase italic tracking-tighter break-words max-w-full">
                      Own Your<br />
                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Masters.</span>
                   </h1>
-                  <p className="text-gray-500 text-xl font-medium max-w-lg leading-relaxed italic">
+                  <p className="text-gray-500 text-[clamp(1rem,2.5vw,1.25rem)] font-medium max-w-lg leading-relaxed italic">
                       "One platform. Streaming, SUPPORTER income, collab deals, opportunities, and AI tools — all built for independent artists."
                   </p>
                </div>
@@ -85,7 +85,7 @@ export default async function HomePage() {
       </section>
 
       {/* DISCOVERY FEED */}
-      <section className="section-container py-32">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-8 lg:px-16">
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
             
             {/* MAIN DISCOVERY */}
@@ -96,19 +96,19 @@ export default async function HomePage() {
                         <TrendingUp className="w-5 h-5" />
                         <span className="text-xs font-bold uppercase tracking-widest">Trending this week</span>
                      </div>
-                     <h2 className="text-5xl uppercase leading-none">Discover Artists.</h2>
+                     <h2 className="text-[clamp(2rem,6vw,3.5rem)] uppercase leading-none">Discover Artists.</h2>
                   </div>
-                  <div className="relative group">
+                  <div className="relative group w-full md:w-auto">
                      <input
                         type="text"
                         placeholder="Search Artists..."
-                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00D2FF]/20 transition-all w-64 md:w-80 text-white"
+                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#00D2FF]/20 transition-all w-full md:w-80 text-white"
                      />
                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
                </div>
 
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
                   {validHubs.map((hub, index) => {
                     const imageUrl = hub.profileImageUrl || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
                     const isLive = hub.SessionDeck?.isPlaying;
@@ -178,16 +178,16 @@ export default async function HomePage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-32 bg-[#050505] border-y border-white/5">
-         <div className="section-container space-y-24">
+      <section className="py-16 sm:py-20 lg:py-32 bg-[#050505] border-y border-white/5 px-4 sm:px-8 lg:px-16">
+         <div className="max-w-7xl mx-auto space-y-16 sm:space-y-24">
             <div className="text-center space-y-4">
                <div className="flex items-center justify-center space-x-3 text-[#00D2FF]">
                   <Disc className="w-5 h-5 animate-spin-slow" />
                   <span className="text-xs font-bold uppercase tracking-widest">The Independent Cycle</span>
                </div>
-               <h2 className="text-5xl uppercase leading-none">How It Works.</h2>
+               <h2 className="text-[clamp(2rem,6vw,3.5rem)] uppercase leading-none">How It Works.</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-12">
                {[
                  {
                    step: '01',
@@ -231,8 +231,8 @@ export default async function HomePage() {
       </section>
 
       {/* INDUSTRY TOOLS */}
-      <section className="bg-[#020202] py-32 border-b border-white/5">
-         <div className="section-container grid grid-cols-1 lg:grid-cols-4 gap-12">
+      <section className="bg-[#020202] py-16 sm:py-20 lg:py-32 border-b border-white/5 px-4 sm:px-8 lg:px-16">
+         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
             <div className="lg:col-span-1 space-y-6">
                <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Industry tools</p>
                <h3 className="text-4xl uppercase leading-tight">Everything you need to build a music business.</h3>
@@ -258,13 +258,11 @@ export default async function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-32 border-b border-white/5">
-         <div className="section-container">
-            <div className="text-center space-y-4 mb-20">
+            <div className="text-center space-y-4 mb-12 sm:mb-20">
                <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Artist voices</p>
-               <h2 className="text-5xl uppercase leading-none">Real results. Real artists.</h2>
+               <h2 className="text-[clamp(2rem,6vw,3.5rem)] uppercase leading-none">Real results. Real artists.</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
                {[
                  {
                    quote: "NRH helped me earn more from 1,000 fans than I ever made from 10 million streams on other platforms.",
@@ -298,10 +296,10 @@ export default async function HomePage() {
       </section>
 
       {/* CALL TO ACTION */}
-      <section className="bg-[#111] py-40 text-center space-y-12 overflow-hidden relative">
+      <section className="bg-[#111] py-24 sm:py-32 lg:py-40 text-center space-y-12 overflow-hidden relative px-4 sm:px-8">
          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00D2FF]/10 rounded-full blur-[150px] -z-0"></div>
          <div className="relative z-10 space-y-10">
-            <h2 className="text-white text-7xl md:text-8xl leading-[0.9] uppercase max-w-4xl mx-auto">
+            <h2 className="text-white text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.9] uppercase max-w-4xl mx-auto break-words">
                Ready to own your<br />
                <span className="text-[#00D2FF]">music career?</span>
             </h2>

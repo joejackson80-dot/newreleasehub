@@ -70,8 +70,8 @@ export default function Navbar() {
         </div>
 
         {/* MOBILE MENU TOGGLE */}
-        <button onClick={() => setIsOpen(true)} className="lg:hidden p-2 text-white">
-           <Menu className="w-6 h-6" />
+        <button onClick={() => setIsOpen(true)} className="lg:hidden p-3 -mr-3 text-white">
+           <Menu className="w-7 h-7" />
         </button>
 
       </div>
@@ -87,7 +87,7 @@ export default function Navbar() {
           >
              <div className="flex justify-between items-center mb-12">
                 <BrandLogo className="w-12 h-12" />
-                <button onClick={() => setIsOpen(false)}><X className="w-8 h-8 text-white" /></button>
+                <button onClick={() => setIsOpen(false)} className="p-3 -mr-3"><X className="w-8 h-8 text-white" /></button>
              </div>
              <div className="space-y-10 flex-1 overflow-y-auto">
                 {NAV_ITEMS.map((item) => (

@@ -54,6 +54,7 @@ const NAV_GROUPS = [
 ];
 
 import StudioSidebar from '@/components/studio/StudioSidebar';
+import StudioBottomNav from '@/components/studio/StudioBottomNav';
 
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -61,11 +62,13 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
       <StudioSidebar />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-[#020202]">
-        <div className="lg:pt-0 pt-20"> {/* Add padding for mobile toggle */}
+      <main className="flex-1 overflow-y-auto bg-[#020202] pb-20 md:pb-0">
+        <div className="lg:pt-0">
           {children}
         </div>
       </main>
+
+      <StudioBottomNav />
     </div>
   );
 }
