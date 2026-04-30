@@ -29,11 +29,27 @@ export default async function FraudDashboardPage() {
     take: 50
   });
 
+  // Fetch IP clusters (High volume IPs in last 24h)
+  const ipClusters = await prisma.streamPlay.groupBy({
+    by: ['ipAddress'],
+    _count: { id: true },
+    _avg: { fraudScore: true },
+    where: {
+      startedAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+    },
+    orderBy: {
+      _count: { id: 'desc' }
+    },
+    take: 20
+  });
+
+
   return (
     <FraudDashboardClient 
       flaggedIncidents={flaggedIncidents}
       topStreamers={topStreamers}
       excludedStreams={excludedStreams}
+      ipClusters={ipClusters}
     />
   );
 }

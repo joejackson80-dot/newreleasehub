@@ -28,11 +28,11 @@ export async function GET() {
       return acc;
     }, {});
 
-    // Fraud Score Distribution
+    // Heuristic Score Distribution (High = Legit, Low = Suspicious)
     const fraudMetrics = {
-      clean: streams.filter(s => s.fraudScore < 0.2).length,
-      suspicious: streams.filter(s => s.fraudScore >= 0.2 && s.fraudScore < 0.6).length,
-      rejected: streams.filter(s => s.fraudScore >= 0.6).length,
+      clean: streams.filter(s => s.fraudScore >= 0.8).length,
+      suspicious: streams.filter(s => s.fraudScore >= 0.3 && s.fraudScore < 0.8).length,
+      rejected: streams.filter(s => s.fraudScore < 0.3).length,
     };
 
     // Calculate Daily Streams (Simple version)
