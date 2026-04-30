@@ -116,8 +116,8 @@ export default function ChartsPage() {
                    </div>
                    <div className="space-y-4">
                      <div className="flex items-center gap-2">
-                        <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Global Authority</span>
-                        <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
+                         <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Authority Score: {artists[0].forensicScore || 85}</span>
+                         <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
                      </div>
                      <h2 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-none truncate max-w-lg">{artists[0].name}</h2>
                      <div className="flex items-center gap-6 text-zinc-500 font-bold uppercase tracking-[0.2em] text-[10px]">
@@ -223,21 +223,20 @@ export default function ChartsPage() {
                         <td className="p-10">
                            <div className="space-y-3">
                               <div className="flex justify-between items-end">
-                                 <span className="text-white font-black italic text-lg">
-                                   {activeGenre === 'Top Fans' ? artist.fanXP : (artist.supporterCount || 0)}
-                                 </span>
-                                 <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
-                                   {activeGenre === 'Top Fans' ? 'XP' : 'Supporters'}
-                                 </span>
+                                  <span className="text-white font-black italic text-lg">
+                                    {activeGenre === 'Top Fans' ? artist.fanXP : (artist.forensicScore || 0)}
+                                  </span>
+                                  <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
+                                    {activeGenre === 'Top Fans' ? 'XP' : 'Authority'}
+                                  </span>
                               </div>
                               <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
                                  <div 
-                                    className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000" 
-                                    style={{ 
-                                      width: activeGenre === 'Top Fans' 
-                                        ? `${(artist.fanXP / (artist.fanLevel * 500)) * 100}%` 
-                                        : `${Math.min(100, Math.max(10, (artist.supporterCount / 100) * 100))}%` 
-                                    }}
+                                    className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000"                                     style={{ 
+                                       width: activeGenre === 'Top Fans' 
+                                         ? `${(artist.fanXP / (artist.fanLevel * 500)) * 100}%` 
+                                         : `${artist.forensicScore || 10}%` 
+                                     }}
                                  ></div>
                               </div>
                            </div>

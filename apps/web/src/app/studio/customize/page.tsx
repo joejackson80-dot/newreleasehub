@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Palette, Type, Layout, Pen, Save, ExternalLink, ChevronDown, DollarSign, Radio } from 'lucide-react';
+import { Palette, Type, Layout, Pen, Save, ExternalLink, ChevronDown, DollarSign, Radio, ShieldCheck, Music } from 'lucide-react';
 
 const FONT_OPTIONS = [
   { name: 'Syne', class: 'font-sans', preview: 'The Quick Brown Fox' },
@@ -15,7 +15,7 @@ const HERO_STYLES = ['Minimal', 'Fullscreen', 'Split', 'Centered'];
 const ACCENT_SWATCHES = ['#00D2FF', '#E63946', '#2EC4B6', '#FF9F1C', '#8338EC', '#06D6A0', '#FFBE0B', '#FB5607'];
 
 export default function CustomizePage() {
-  const [tab, setTab] = useState<'appearance' | 'layout' | 'signature' | 'account' | 'broadcast'>('appearance');
+  const [tab, setTab] = useState<'appearance' | 'layout' | 'signature' | 'account' | 'broadcast' | 'vault'>('appearance');
   const [bgType, setBgType] = useState<'color' | 'gradient' | 'image'>('color');
   const [accentColor, setAccentColor] = useState('#00D2FF');
   const [selectedFont, setSelectedFont] = useState('Syne');
@@ -58,7 +58,7 @@ export default function CustomizePage() {
 
         {/* Sub-tabs */}
         <div className="flex gap-1 bg-white/5 p-1 rounded-lg">
-          {(['appearance', 'layout', 'signature', 'broadcast', 'account'] as const).map(t => (
+          {(['appearance', 'layout', 'signature', 'vault', 'broadcast', 'account'] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`flex-1 py-1.5 rounded-md text-[8px] font-bold uppercase tracking-widest transition-all ${
                 tab === t ? 'bg-white text-black' : 'text-gray-400 hover:text-white'
@@ -172,6 +172,46 @@ export default function CustomizePage() {
                 placeholder="Your creative vision in 280 characters..."
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white/30 resize-none"
               />
+            </div>
+          </div>
+        )}
+        {tab === 'vault' && (
+          <div className="space-y-8">
+            <div className="p-6 bg-purple-500/5 border border-purple-500/10 rounded-2xl space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white uppercase italic">Master Vault.</h4>
+                <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-1">Institutional Asset Management</p>
+              </div>
+              <p className="text-xs text-gray-400 leading-relaxed italic">
+                "Curate your high-fidelity masters. Pinned assets appear as forensic-grade commercial entities on your authority profile."
+              </p>
+            </div>
+
+            <div className="space-y-4">
+               <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Select Pinned Masters</label>
+               <div className="space-y-2">
+                  {[
+                    { id: '1', title: 'Midnight Protocol', genre: 'Electronic', bpm: 124 },
+                    { id: '2', title: 'Shadow Logic', genre: 'Industrial', bpm: 128 },
+                    { id: '3', title: 'Neural Rift', genre: 'Techno', bpm: 130 }
+                  ].map(m => (
+                    <div key={m.id} className="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center justify-between group hover:border-[#00D2FF]/30 transition-all">
+                       <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-700">
+                             <Music className="w-4 h-4" />
+                          </div>
+                          <div>
+                             <p className="text-xs font-bold text-white">{m.title}</p>
+                             <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">{m.genre} / {m.bpm} BPM</p>
+                          </div>
+                       </div>
+                       <input type="checkbox" className="w-4 h-4 rounded border-white/10 bg-transparent text-[#00D2FF]" defaultChecked />
+                    </div>
+                  ))}
+               </div>
             </div>
           </div>
         )}
@@ -302,20 +342,29 @@ export default function CustomizePage() {
               </p>
            </div>
 
-           {/* RECENT BROADCAST MOCK */}
-           {broadcastMsg && (
-             <div className="px-12 mt-12">
-                <div className="p-6 rounded-2xl border border-[#00D2FF]/20 bg-[#00D2FF]/5 relative overflow-hidden">
-                   <div className="absolute top-0 right-0 p-4 opacity-10">
-                     <Radio className="w-24 h-24 text-[#00D2FF]" />
-                   </div>
-                   <div className="relative z-10">
-                      <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest mb-2 block">Latest Broadcast</span>
-                      <p className="text-white text-sm font-medium leading-relaxed">{broadcastMsg}</p>
-                   </div>
-                </div>
-             </div>
-           )}
+           {/* VAULT PREVIEW */}
+           <div className="px-12 mt-16 space-y-6">
+              <div className="flex items-center justify-between">
+                 <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border-b border-white/5 pb-2">Institutional Vault</h3>
+                 <span className="text-[8px] font-black text-[#00D2FF] uppercase tracking-widest">3 Forensic Assets</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                 {[1, 2].map(i => (
+                    <div key={i} className="p-6 rounded-[2rem] bg-white/5 border border-white/10 space-y-4 hover:border-[#00D2FF]/40 transition-all cursor-pointer">
+                       <div className="flex items-center justify-between">
+                          <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center">
+                             <Music className="w-5 h-5 text-gray-500" />
+                          </div>
+                          <ShieldCheck className="w-4 h-4 text-[#00D2FF] opacity-50" />
+                       </div>
+                       <div className="space-y-1">
+                          <h4 className="text-sm font-bold text-white uppercase italic">Master Asset_0{i}</h4>
+                          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">High Fidelity / 24-bit</p>
+                       </div>
+                    </div>
+                 ))}
+              </div>
+           </div>
         </div>
       </div>
     </div>

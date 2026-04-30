@@ -10,10 +10,8 @@ export async function GET(req: Request) {
     let ranking = [];
 
     if (genre === 'Top Artists') {
-      ranking = await prisma.organization.findMany({
-        where: {
-          isPublic: true,
-        },
+      const orgs = await prisma.organization.findMany({
+        where: { isPublic: true },
         orderBy: [
           { supporterCount: 'desc' },
           { totalStreams: 'desc' }
@@ -28,18 +26,18 @@ export async function GET(req: Request) {
           totalStreams: true,
           genres: true,
           city: true,
+          isVerified: true
         }
       });
+
+      ranking = orgs.map(org => ({
+        ...org,
+        forensicScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
+      }));
     } else if (genre === 'Rising') {
-      // For now, sort by recent streams or just a subset of artists with lower total streams but growing
-      ranking = await prisma.organization.findMany({
-        where: {
-          isPublic: true,
-          totalStreams: { gt: 0 }
-        },
-        orderBy: {
-          supporterCount: 'desc' // We can improve this with actual rising logic
-        },
+      const orgs = await prisma.organization.findMany({
+        where: { isPublic: true },
+        orderBy: { createdAt: 'desc' },
         take: limit,
         select: {
           id: true,
@@ -50,8 +48,14 @@ export async function GET(req: Request) {
           totalStreams: true,
           genres: true,
           city: true,
+          isVerified: true
         }
       });
+
+      ranking = orgs.map(org => ({
+        ...org,
+        forensicScore: Math.min(99, 65 + Math.floor(org.supporterCount / 5) + Math.min(15, Math.floor(org.totalStreams / 5000)))
+      }));
     } else if (genre === 'Top Fans') {
       ranking = await prisma.user.findMany({
         where: { role: 'fan' },
@@ -71,13 +75,10 @@ export async function GET(req: Request) {
         }
       });
     } else {
-      // Specific genre
-      ranking = await prisma.organization.findMany({
+      const orgs = await prisma.organization.findMany({
         where: {
           isPublic: true,
-          genres: {
-            has: genre
-          }
+          genres: { has: genre }
         },
         orderBy: [
           { supporterCount: 'desc' },
@@ -93,8 +94,14 @@ export async function GET(req: Request) {
           totalStreams: true,
           genres: true,
           city: true,
+          isVerified: true
         }
       });
+
+      ranking = orgs.map(org => ({
+        ...org,
+        forensicScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
+      }));
     }
 
     return NextResponse.json({ success: true, ranking });

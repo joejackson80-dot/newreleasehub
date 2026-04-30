@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutGrid, DollarSign, Settings, LogOut, Radio, Disc, Users,
-  BarChart3, Briefcase, Palette, Share2, Wrench, GitMerge, Sparkles, Music, Wallet, Menu, X, Trophy, Package
+  BarChart3, Briefcase, Palette, Share2, Wrench, GitMerge, Sparkles, Music, Wallet, Menu, X, Trophy, Package, Gavel
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -33,7 +33,7 @@ const NAV_GROUPS = [
     items: [
       { href: '/studio/analytics', label: 'Analytics', icon: BarChart3 },
       { href: '/studio/earnings', label: 'Earnings', icon: DollarSign },
-      { href: '/studio/earnings', label: 'Payouts', icon: Wallet },
+      { href: '/studio/payouts', label: 'Payouts', icon: Wallet },
     ],
   },
   {
@@ -41,6 +41,7 @@ const NAV_GROUPS = [
     items: [
       { href: '/network/board', label: 'Opportunities', icon: Briefcase },
       { href: '/studio/collabs', label: 'Collab Requests', icon: GitMerge },
+      { href: '/studio/governance/new', label: 'Submit Proposal', icon: Gavel },
     ],
   },
   {

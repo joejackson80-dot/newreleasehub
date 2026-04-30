@@ -57,6 +57,7 @@ model Organization {
   MusicReviews           MusicReview[]
   ParticipationLicenses  ParticipationLicense[]
   Proposals              Proposal[]
+  PayoutRequests         PayoutRequest[]
   SupporterSubscriptions SupporterSubscription[]
   SupporterTiers         SupporterTier[]
   Releases               Release[]
@@ -551,6 +552,7 @@ model Proposal {
   title           String
   description     String
   status          String   @default("ACTIVE") 
+  category        String?
   ledgerHash      String?  
   createdAt       DateTime @default(now())
   expiresAt       DateTime
@@ -604,6 +606,25 @@ model ArtistRoyalty {
   status                 RoyaltyStatus @default(PENDING)
   createdAt              DateTime      @default(now())
   Organization           Organization  @relation(fields: [artistId], references: [id])
+}
+
+model PayoutRequest {
+  id               String       @id @default(cuid())
+  artistId         String
+  amountCents      Int
+  status           PayoutStatus @default(PENDING)
+  method           String       // STRIPE, BANK_TRANSFER, PAYPAL
+  destination      String?      // Account ID or email
+  processedAt      DateTime?
+  createdAt        DateTime     @default(now())
+  Organization     Organization @relation(fields: [artistId], references: [id])
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSED
+  FAILED
+  CANCELLED
 }
 
 model FanRoyaltyShare {
