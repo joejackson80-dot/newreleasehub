@@ -40,6 +40,7 @@ const NAV_GROUPS = [
     label: 'Network',
     items: [
       { href: '/network/board', label: 'Opportunities', icon: Briefcase },
+      { href: '/studio/opportunities', label: 'My Postings', icon: Briefcase },
       { href: '/studio/collabs', label: 'Collab Requests', icon: GitMerge },
       { href: '/studio/governance/new', label: 'Submit Proposal', icon: Gavel },
     ],

@@ -138,7 +138,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                 </p>
             </div>
             <Link
-              href="/studio/login?intent=opportunity-poster"
+              href="/studio/opportunities/new"
               className="w-full sm:w-auto px-12 py-5 rounded-full bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-2xl flex items-center justify-center gap-2"
             >
                <Plus className="w-4 h-4" />

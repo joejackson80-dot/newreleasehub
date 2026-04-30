@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { Mail, Search, MessageSquare, ArrowLeft, Send, Lock, MoreVertical, ShieldCheck, User } from 'lucide-react';
 import Link from 'next/link';
 
+import { useSearchParams } from 'next/navigation';
+
 export default function MessagesClient({ initialMessages, org }: { initialMessages: any[], org: any }) {
+  const searchParams = useSearchParams();
   const [messages, setMessages] = useState<any[]>(initialMessages);
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [replyText, setReplyText] = useState('');
@@ -27,6 +30,49 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
   const conversations = Object.values(conversationsMap).sort((a: any, b: any) => 
     new Date(b.lastMessage.createdAt).getTime() - new Date(a.lastMessage.createdAt).getTime()
   );
+
+  // Auto-select from searchParams
+  React.useEffect(() => {
+    const userId = searchParams.get('userId');
+    if (userId && conversationsMap[userId]) {
+      setSelectedConversation(conversationsMap[userId]);
+    }
+  }, [searchParams, conversationsMap]);
+
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!replyText.trim() || isSending || !selectedConversation) return;
+
+    setIsSending(true);
+    try {
+      const res = await fetch('/api/studio/messages/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          receiverUserId: selectedConversation.user.id,
+          text: replyText
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        // Optimistically update the UI or refetch
+        setMessages([...messages, data.message]);
+        setReplyText('');
+        
+        // Update selected conversation messages
+        const updatedConv = { ...selectedConversation };
+        updatedConv.messages.push(data.message);
+        setSelectedConversation(updatedConv);
+      }
+    } catch (err) {
+      console.error('Failed to send message:', err);
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#020202] text-white">
@@ -129,21 +175,21 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                  {/* Chat Input */}
                  <div className="p-8 border-t border-white/5 bg-[#050505]">
                     <form 
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        // TODO: Implement reply action
-                        setReplyText('');
-                      }}
+                      onSubmit={handleSend}
                       className="flex items-center gap-4"
                     >
                        <input 
                          value={replyText}
                          onChange={(e) => setReplyText(e.target.value)}
+                         disabled={isSending}
                          placeholder="Type a professional response..."
-                         className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner"
+                         className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner disabled:opacity-50"
                        />
-                       <button className="w-16 h-16 rounded-2xl bg-white text-black flex items-center justify-center hover:bg-[#00D2FF] hover:text-white transition-all hover:scale-105 active:scale-95 shadow-2xl">
-                          <Send className="w-6 h-6" />
+                       <button 
+                         disabled={isSending || !replyText.trim()}
+                         className="w-16 h-16 rounded-2xl bg-white text-black flex items-center justify-center hover:bg-[#00D2FF] hover:text-white transition-all hover:scale-105 active:scale-95 shadow-2xl disabled:opacity-50 disabled:scale-100"
+                       >
+                          {isSending ? <Lock className="w-6 h-6 animate-pulse" /> : <Send className="w-6 h-6" />}
                        </button>
                     </form>
                  </div>
