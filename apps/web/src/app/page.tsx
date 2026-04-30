@@ -41,8 +41,8 @@ export default async function HomePage() {
               alt="Independent artist performing"
             />
          </div>
-         <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-[#020202]/60 to-transparent"></div>
-         <div className="absolute inset-0 bg-black/20"></div>
+         <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-[#02020299] to-transparent"></div>
+         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
             <div className="space-y-16 animate-in fade-in slide-in-from-bottom-12 duration-1000">
@@ -102,7 +102,7 @@ export default async function HomePage() {
                      <input
                         type="text"
                         placeholder="Search Artists..."
-                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#00D2FF]/20 transition-all w-full md:w-80 text-white"
+                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#00D2FF33] transition-all w-full md:w-80 text-white"
                      />
                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
@@ -114,12 +114,12 @@ export default async function HomePage() {
                     const isLive = hub.SessionDeck?.isPlaying;
 
                     return (
-                      <Link 
-                        href={`/fan/${hub.slug}`} 
-                        key={hub.id} 
-                        className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#00D2FF]/30 transition-all duration-500 hover:-translate-y-2 shadow-2xl"
-                      >
-                        <div className="aspect-[4/5] relative overflow-hidden">
+                       <Link 
+                         href={`/fan/${hub.slug}`} 
+                         key={hub.id} 
+                         className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#00D2FF4d] transition-all duration-500 hover:-translate-y-2 shadow-2xl"
+                       >
+                         <div className="aspect-[0.8] relative overflow-hidden">
                            <img 
                              src={imageUrl} 
                              alt={hub.name} 
@@ -210,7 +210,7 @@ export default async function HomePage() {
                ].map((item, i) => (
                  <div key={i} className="p-10 border border-white/5 rounded-3xl space-y-6 hover:bg-white/5 transition-colors group relative">
                     <div className="absolute top-8 right-8 text-[10px] font-bold text-white/10 uppercase tracking-widest">Step {item.step}</div>
-                    <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                     <div className="w-14 h-14 rounded-2xl bg-[#00D2FF1a] flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
                        <item.icon className="w-7 h-7" />
                     </div>
                     <h4 className="text-xl uppercase">{item.title}</h4>
@@ -247,7 +247,7 @@ export default async function HomePage() {
               { title: 'Independent Growth', desc: 'Build credibility with sync buyers, booking agents, and venues using our verified performance metrics without compromising your independence.', icon: ShieldCheck }
             ].map((service, i) => (
               <div key={i} className="p-10 border border-white/5 rounded-3xl space-y-6 hover:bg-white/5 transition-colors group">
-                 <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                 <div className="w-14 h-14 rounded-2xl bg-[#00D2FF1a] flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
                     <service.icon className="w-7 h-7" />
                  </div>
                  <h4 className="text-xl uppercase">{service.title}</h4>
@@ -258,11 +258,13 @@ export default async function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-            <div className="text-center space-y-4 mb-12 sm:mb-20">
-               <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Artist voices</p>
-               <h2 className="text-[clamp(2rem,6vw,3.5rem)] uppercase leading-none">Real results. Real artists.</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+       <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-8 lg:px-16">
+          <div className="max-w-7xl mx-auto">
+             <div className="text-center space-y-4 mb-12 sm:mb-20">
+                <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Artist voices</p>
+                <h2 className="text-[clamp(2rem,6vw,3.5rem)] uppercase leading-none">Real results. Real artists.</h2>
+             </div>
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
                {[
                  {
                    quote: "NRH helped me earn more from 1,000 fans than I ever made from 10 million streams on other platforms.",
@@ -296,8 +298,8 @@ export default async function HomePage() {
       </section>
 
       {/* CALL TO ACTION */}
-      <section className="bg-[#111] py-24 sm:py-32 lg:py-40 text-center space-y-12 overflow-hidden relative px-4 sm:px-8">
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00D2FF]/10 rounded-full blur-[150px] -z-0"></div>
+       <section className="bg-[#111] py-24 sm:py-32 lg:py-40 text-center space-y-12 overflow-hidden relative px-4 sm:px-8">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00D2FF1a] rounded-full blur-[150px] -z-0"></div>
          <div className="relative z-10 space-y-10">
             <h2 className="text-white text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.9] uppercase max-w-4xl mx-auto break-words">
                Ready to own your<br />

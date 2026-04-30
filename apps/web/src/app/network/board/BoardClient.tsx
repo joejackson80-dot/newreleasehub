@@ -304,7 +304,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
 
               {isSuccess ? (
                 <div className="py-12 text-center space-y-6">
-                   <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF]/10 text-[#00D2FF]' : 'bg-green-500/10 text-green-500'} rounded-2xl flex items-center justify-center mx-auto`}>
+                   <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF1a] text-[#00D2FF]' : 'bg-green-500/10 text-green-500'} rounded-2xl flex items-center justify-center mx-auto`}>
                       <ShieldCheck className="w-8 h-8" />
                    </div>
                    <h3 className="text-2xl font-bold uppercase italic tracking-tighter">
@@ -341,7 +341,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Reason / Comment (Optional)</label>
                                <textarea 
                                  placeholder="Add a comment to your vote..."
-                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#00D2FF]/40 transition-all h-32 resize-none"
+                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#00D2FF66] transition-all h-32 resize-none"
                                />
                             </div>
                          </div>
@@ -352,10 +352,10 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                                <textarea 
                                  required
                                  placeholder="Tell the partner why you're a good fit..."
-                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#00D2FF]/40 transition-all h-32 resize-none"
+                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#00D2FF66] transition-all h-32 resize-none"
                                />
                             </div>
-                            <div className="p-4 bg-[#00D2FF]/10 rounded-2xl border border-[#00D2FF]/20 flex items-center gap-4">
+                            <div className="p-4 bg-[#00D2FF1a] rounded-2xl border border-[#00D2FF]/20 flex items-center gap-4">
                                <Music className="w-5 h-5 text-[#00D2FF]" />
                                <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Your Latest Master will be attached automatically.</p>
                             </div>

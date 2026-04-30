@@ -198,14 +198,14 @@ export default function ChartsPage() {
                          <td className="p-10">
                             <div className="flex items-center gap-6">
                                <div className="relative group/avatar">
-                                  <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF]/40 transition-colors shadow-lg overflow-hidden">
+                                  <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF66] transition-colors shadow-lg overflow-hidden">
                                      {activeGenre === 'Top Fans' ? (
                                        artist.avatarUrl ? <img src={artist.avatarUrl} alt={artist.displayName} className="w-full h-full object-cover" /> : <Users className="w-8 h-8" />
                                      ) : (
                                        artist.profileImageUrl ? <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover" /> : <Users className="w-8 h-8" />
                                      )}
                                   </div>
-                                  <div className="absolute inset-0 bg-[#00D2FF]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                                  <div className="absolute inset-0 bg-[#00D2FF0d] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                                </div>
                                <div className="space-y-1">
                                   <p className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">
@@ -244,7 +244,7 @@ export default function ChartsPage() {
                             </div>
                          </td>
                          <td className="p-10 text-right">
-                           <Link href={activeGenre === 'Top Fans' ? `/fan/${artist.username}` : `/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF]/50 transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
+                           <Link href={activeGenre === 'Top Fans' ? `/fan/${artist.username}` : `/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF80] transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
                              <span className="relative z-10 group-hover/follow:text-white">View Protocol</span>
                              <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
                            </Link>
