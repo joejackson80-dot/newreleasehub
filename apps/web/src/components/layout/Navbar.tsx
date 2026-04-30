@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X, Award, Zap, Radio, DollarSign } from 'lucide-react';
+import { Search, Menu, X, Award, Zap, Radio, DollarSign, TrendingUp, Users, Info } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 const NAV_ITEMS = [
   { label: 'Discover', href: '/discover', icon: Zap },
-  { label: 'Charts', href: '/network/charts', icon: Radio },
+  { label: 'Radio', href: '/radio', icon: Radio },
+  { label: 'Charts', href: '/network/charts', icon: TrendingUp },
   { label: 'Opportunities', href: '/network/board', icon: Award },
   { label: 'Pricing', href: '/pricing', icon: DollarSign },
 ];
@@ -80,33 +81,83 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-[2000] bg-[#111111] p-10 flex flex-col"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[2000] bg-[#0A0A0A] flex flex-col"
           >
-             <div className="flex justify-between items-center mb-12">
-                <BrandLogo className="w-12 h-12" />
-                <button onClick={() => setIsOpen(false)} className="p-3 -mr-3"><X className="w-8 h-8 text-white" /></button>
+             <div className="flex justify-between items-center p-8 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                   <BrandLogo className="w-10 h-10" />
+                   <span className="text-xs font-bold uppercase tracking-widest text-white">Menu</span>
+                </div>
+                <button onClick={() => setIsOpen(false)} className="p-3 -mr-3 bg-white/5 rounded-2xl border border-white/10">
+                   <X className="w-6 h-6 text-white" />
+                </button>
              </div>
-             <div className="space-y-10 flex-1 overflow-y-auto">
-                {NAV_ITEMS.map((item) => (
-                  <Link 
-                    key={item.label} 
-                    href={item.href} 
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center space-x-6 group"
-                  >
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
-                         <item.icon className="w-6 h-6" />
-                      </div>
-                      <span className="text-2xl font-bold uppercase tracking-tighter text-white">{item.label}</span>
-                  </Link>
-                ))}
+
+             <div className="flex-1 overflow-y-auto p-8 space-y-12 pb-32">
+                
+                {/* INSTITUTIONAL SECTION */}
+                <div className="space-y-6">
+                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Network Intelligence</p>
+                   <div className="grid grid-cols-1 gap-4">
+                      {[
+                        { label: 'Forensic Discovery', href: '/network/forensic', icon: Search, desc: 'Analyze entity equity' },
+                        { label: 'Governance Board', href: '/governance', icon: Award, desc: 'Exercise voting rights' },
+                        { label: 'Network Charts', href: '/network/charts', icon: TrendingUp, desc: 'Momentum analytics' },
+                        { label: 'NRH Radio', href: '/radio', icon: Radio, desc: '24/7 curated network sound' }
+                      ].map((item) => (
+                        <Link key={item.label} href={item.href} onClick={() => setIsOpen(false)} className="bg-[#111] border border-white/5 rounded-2xl p-5 flex items-center gap-5 group active:scale-[0.98] transition-all">
+                           <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
+                              <item.icon className="w-5 h-5" />
+                           </div>
+                           <div className="flex-1">
+                              <p className="font-bold text-white text-sm uppercase italic">{item.label}</p>
+                              <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{item.desc}</p>
+                           </div>
+                        </Link>
+                      ))}
+                   </div>
+                </div>
+
+                {/* PROFESSIONAL SECTION */}
+                <div className="space-y-6">
+                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Artist Suite</p>
+                   <div className="grid grid-cols-1 gap-4">
+                      {[
+                        { label: 'Studio Dashboard', href: '/studio', icon: Zap },
+                        { label: 'Opportunity Board', href: '/network/board', icon: DollarSign },
+                        { label: 'Collab Matrix', href: '/studio/collab', icon: Users }
+                      ].map((item) => (
+                        <Link key={item.label} href={item.href} onClick={() => setIsOpen(false)} className="flex items-center gap-5 p-2 group">
+                           <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-500 group-hover:text-white transition-colors">
+                              <item.icon className="w-4 h-4" />
+                           </div>
+                           <span className="font-bold text-lg text-gray-400 group-hover:text-white uppercase tracking-tighter transition-colors italic">{item.label}</span>
+                        </Link>
+                      ))}
+                   </div>
+                </div>
+
+                {/* COMMUNITY & SUPPORT */}
+                <div className="space-y-6">
+                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Support & Legal</p>
+                   <div className="flex flex-wrap gap-3">
+                      {['Pricing', 'Whitepaper', 'Privacy', 'Security'].map(label => (
+                        <Link key={label} href={`/${label.toLowerCase()}`} onClick={() => setIsOpen(false)} className="px-5 py-3 bg-white/5 border border-white/10 rounded-xl text-[9px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
+                           {label}
+                        </Link>
+                      ))}
+                   </div>
+                </div>
+
              </div>
-             <div className="pt-10 border-t border-white/5 space-y-4">
-                <Link href="/login" onClick={() => setIsOpen(false)} className="btn-outline w-full text-center block py-3 border-white/20 hover:bg-white hover:text-black">Sign In</Link>
-                <Link href="/register" onClick={() => setIsOpen(false)} className="btn-primary w-full text-center block">Join Free</Link>
+
+             <div className="p-8 border-t border-white/5 bg-[#0A0A0A] space-y-4">
+                <Link href="/login" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block">Sign In</Link>
+                <Link href="/register" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block shadow-[0_10px_30px_rgba(0,210,255,0.3)]">Join the Network</Link>
              </div>
           </motion.div>
         )}

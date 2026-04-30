@@ -131,25 +131,54 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
                      </div>
 
                      <div className="space-y-8">
-                        {/* MOCK RESULTS BAR */}
+                        {/* REAL RESULTS BAR */}
                         <div className="space-y-3">
                            <div className="flex justify-between items-end">
                               <div className="flex items-center gap-4">
                                  <div className="flex flex-col">
-                                    <span className="text-xl font-black italic text-emerald-500">74%</span>
+                                    <span className="text-xl font-black italic text-emerald-500">{p.consensusPercent}%</span>
                                     <span className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">CONSENSUS</span>
                                  </div>
                                  <div className="w-px h-6 bg-white/5"></div>
                                  <div className="flex flex-col">
-                                    <span className="text-xl font-black italic text-gray-400">26%</span>
+                                    <span className="text-xl font-black italic text-gray-400">{100 - p.consensusPercent}%</span>
                                     <span className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">REJECTION</span>
                                  </div>
                               </div>
-                              <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest italic">{p._count.Votes} Votes Registered</span>
+                              <div className="text-right">
+                                 <p className="text-[9px] font-bold text-white uppercase tracking-widest italic">{p.totalWeight.toLocaleString()} Weighted Units</p>
+                                 <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{p._count.Votes} Forensic Entries</p>
+                              </div>
                            </div>
                            <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden flex">
-                              <div className="h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]" style={{ width: '74%' }}></div>
-                              <div className="h-full bg-white/10" style={{ width: '26%' }}></div>
+                              <div className="h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]" style={{ width: `${p.consensusPercent}%` }}></div>
+                              <div className="h-full bg-white/10" style={{ width: `${100 - p.consensusPercent}%` }}></div>
+                           </div>
+                        </div>
+
+                        {/* FORENSIC AUDIT LOG */}
+                        <div className="bg-black/40 rounded-2xl p-6 border border-white/5 space-y-4">
+                           <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em]">Forensic Audit Log</span>
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                           </div>
+                           <div className="space-y-3">
+                              {(p.Votes || []).length > 0 ? (
+                                p.Votes.map((vote: any) => (
+                                  <div key={vote.id} className="flex items-center justify-between group/vote">
+                                     <div className="flex items-center gap-3">
+                                        <div className={`w-1.5 h-1.5 rounded-full ${vote.voteType === 'YES' ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate max-w-[100px]">{vote.User?.displayName || 'Anonymous'}</span>
+                                     </div>
+                                     <div className="flex items-center gap-3">
+                                        <span className="text-[9px] font-bold text-gray-600 uppercase">x{vote.weight} Units</span>
+                                        <span className="text-[8px] text-gray-800 font-bold uppercase">{new Date(vote.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                     </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="text-[9px] text-gray-700 font-bold uppercase tracking-widest text-center py-2">No Verified Entries Detected</p>
+                              )}
                            </div>
                         </div>
 

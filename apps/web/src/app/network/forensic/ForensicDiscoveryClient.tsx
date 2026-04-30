@@ -23,6 +23,7 @@ export default function ForensicDiscoveryClient() {
   const [artists, setArtists] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'matrix'>('grid');
 
   useEffect(() => {
     const fetchArtists = async () => {
@@ -160,20 +161,26 @@ export default function ForensicDiscoveryClient() {
 
         {/* RESULTS GRID */}
         <section className="space-y-12">
-           <div className="flex items-center justify-between border-b border-white/5 pb-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-6 gap-6">
               <h3 className="text-xl font-black italic uppercase tracking-tighter text-white">Consolidated Analysis <span className="text-gray-700 ml-3">/ {artists.length} Entities Found</span></h3>
-              <div className="flex items-center gap-4 text-[9px] font-bold text-gray-600 uppercase tracking-widest">
-                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> HIGH GROWTH</div>
-                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#00D2FF]"></div> VERIFIED EQUITY</div>
+              <div className="flex items-center gap-6">
+                 <div className="flex bg-[#111] p-1 rounded-xl border border-white/5">
+                    <button onClick={() => setViewMode('grid')} className={`px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all ${viewMode === 'grid' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}>Grid View</button>
+                    <button onClick={() => setViewMode('matrix')} className={`px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all ${viewMode === 'matrix' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}>Matrix View</button>
+                 </div>
+                 <div className="hidden sm:flex items-center gap-4 text-[9px] font-bold text-gray-600 uppercase tracking-widest">
+                    <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> HIGH GROWTH</div>
+                    <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#00D2FF]"></div> VERIFIED EQUITY</div>
+                 </div>
               </div>
-           </div>
+            </div>
 
            {loading ? (
              <div className="py-40 flex flex-col items-center justify-center space-y-6">
                 <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
                 <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em] animate-pulse">Running Forensic Diagnostics...</p>
              </div>
-           ) : (
+           ) : viewMode === 'grid' ? (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {artists.map((artist, i) => (
                   <motion.div 
@@ -234,7 +241,64 @@ export default function ForensicDiscoveryClient() {
                   </motion.div>
                 ))}
              </div>
+           ) : (
+             <div className="bg-[#0A0A0A] border border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
+                <div className="overflow-x-auto">
+                   <table className="w-full text-left border-collapse">
+                      <thead>
+                         <tr className="border-b border-white/5 bg-[#111]/50">
+                            <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Entity Matrix</th>
+                            <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Cluster</th>
+                            <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Equity Base</th>
+                            <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Retention</th>
+                            <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Score</th>
+                            <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em] text-right">Protocol</th>
+                         </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                         {artists.map((artist) => (
+                           <tr key={artist.id} className="group hover:bg-white/[0.02] transition-colors">
+                              <td className="p-8">
+                                 <div className="flex items-center gap-5">
+                                    <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-white/10 overflow-hidden shrink-0">
+                                       {artist.profileImageUrl && <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />}
+                                    </div>
+                                    <div>
+                                       <p className="font-bold text-white text-base tracking-tight uppercase italic">{artist.name}</p>
+                                       <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{artist.city || 'Global Network'}</p>
+                                    </div>
+                                 </div>
+                              </td>
+                              <td className="p-8">
+                                 <span className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-gray-500 uppercase tracking-widest">{artist.genres?.[0] || 'Independent'}</span>
+                              </td>
+                              <td className="p-8">
+                                 <p className="text-lg font-black italic text-white tracking-tighter">{artist.supporterCount}</p>
+                              </td>
+                              <td className="p-8">
+                                 <p className="text-lg font-black italic text-emerald-500 tracking-tighter">{artist.retentionRate}%</p>
+                              </td>
+                              <td className="p-8">
+                                 <div className="flex items-center gap-3">
+                                    <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                       <div className="h-full bg-[#00D2FF]" style={{ width: `${artist.forensicScore}%` }}></div>
+                                    </div>
+                                    <span className="text-sm font-black italic text-white">{artist.forensicScore}</span>
+                                 </div>
+                              </td>
+                              <td className="p-8 text-right">
+                                 <Link href={`/fan/${artist.slug}`} className="inline-flex items-center gap-2 text-[10px] font-black text-white uppercase tracking-widest hover:text-[#00D2FF] transition-colors">
+                                    Analyze <ArrowUpRight className="w-3 h-3" />
+                                 </Link>
+                              </td>
+                           </tr>
+                         ))}
+                      </tbody>
+                   </table>
+                </div>
+             </div>
            )}
+
 
            {!loading && artists.length === 0 && (
               <div className="py-40 text-center space-y-6 bg-[#0A0A0A] border border-dashed border-white/5 rounded-[3.5rem]">

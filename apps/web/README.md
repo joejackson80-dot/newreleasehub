@@ -7,7 +7,7 @@ New Release Hub is a high-fidelity SaaS platform that empowers independent artis
 ## 🚀 Core Features
 
 - **Live Hubs**: Real-time interactive stages with high-fidelity audio streaming and visual DJ controllers.
-- **Dual-Pool Royalty Engine**: Transparent revenue distribution via Pool A (Subscriptions) and Pool C (Commercials).
+- **Dual-Pool Royalty Engine**: Transparent revenue distribution via Premium Pool (Subscriptions) and Network Pool (Commercials).
 - **Patronage Bidding**: Secure bidding system for fans to acquire Revenue Participation Licenses.
 - **Studio Dashboard**: Comprehensive management suite for artists, including analytics, collab engine, and release distribution.
 - **Anti-Fraud Engine**: Multi-layer security capturing IP, DeviceID, and UA to ensure streaming integrity.

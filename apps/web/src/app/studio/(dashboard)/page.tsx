@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
-import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Activity, Star, Award, MessageCircle } from 'lucide-react';
+import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Activity, Star, Award, MessageCircle, FileText } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function StudioOverviewPage() {
@@ -155,6 +155,12 @@ export default async function StudioOverviewPage() {
               <MessageCircle className="w-5 h-5" />
             </div>
             <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Messages</span>
+          </Link>
+          <Link href="/studio/epk" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors flex-shrink-0">
+              <FileText className="w-5 h-5" />
+            </div>
+            <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Manage EPK</span>
           </Link>
           <Link href="/studio/supporters" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
             <div className="w-10 h-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors flex-shrink-0">

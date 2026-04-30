@@ -8,6 +8,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { reactToRadio } from '@/app/actions/fan';
 import { toast } from 'react-hot-toast';
+import { supabase } from '@/lib/supabase';
 
 export default function StationPage({ slug }: { slug: string }) {
   const [station, setStation] = useState<any>(null);
@@ -38,9 +39,26 @@ export default function StationPage({ slug }: { slug: string }) {
     };
 
     fetchStationData();
-    const interval = setInterval(fetchStationData, 5000); // Poll every 5s
-    return () => clearInterval(interval);
-  }, [slug, nowPlaying]);
+
+    // Supabase Realtime Subscription
+    const channel = supabase.channel(`radio:${slug}`, {
+      config: { broadcast: { self: true } }
+    })
+    .on('broadcast', { event: 'track_update' }, ({ payload }) => {
+       if (payload.nowPlaying) setNowPlaying(payload.nowPlaying);
+       if (payload.recentlyPlayed) setRecentlyPlayed(payload.recentlyPlayed);
+    })
+    .on('broadcast', { event: 'reaction' }, ({ payload }) => {
+       // Optional: show small floating emoji for others' reactions
+    })
+    .subscribe();
+
+    const interval = setInterval(fetchStationData, 15000); // Slower poll as backup
+    return () => {
+      clearInterval(interval);
+      supabase.removeChannel(channel);
+    };
+  }, [slug]);
 
   if (isLoading) {
     return (
@@ -105,12 +123,15 @@ export default function StationPage({ slug }: { slug: string }) {
                   </div>
                 )}
                 {isPlaying && (
-                  <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-2xl">
-                    <div className="flex items-end gap-1 h-4">
-                      <div className="w-1 bg-[#00D2FF] animate-[bounce_1s_infinite_0.1s]" style={{ height: '60%' }} />
-                      <div className="w-1 bg-[#00D2FF] animate-[bounce_1s_infinite_0.3s]" style={{ height: '100%' }} />
-                      <div className="w-1 bg-[#00D2FF] animate-[bounce_1s_infinite_0.2s]" style={{ height: '80%' }} />
-                    </div>
+                  <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md p-4 rounded-2xl flex items-center gap-1.5 h-12">
+                    {[0, 1, 2, 3, 4, 5, 6].map(i => (
+                      <motion.div 
+                        key={i}
+                        animate={{ height: ['20%', '100%', '40%', '90%', '20%'] }}
+                        transition={{ repeat: Infinity, duration: 0.5 + (i * 0.1), ease: 'easeInOut' }}
+                        className="w-1 bg-[#00D2FF] rounded-full"
+                      />
+                    ))}
                   </div>
                 )}
               </div>

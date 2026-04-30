@@ -50,6 +50,19 @@ export async function getProposals() {
         Organization: {
           select: { name: true, profileImageUrl: true }
         },
+        Votes: {
+          take: 5,
+          orderBy: { createdAt: 'desc' },
+          select: {
+            id: true,
+            voteType: true,
+            weight: true,
+            createdAt: true,
+            User: {
+              select: { displayName: true }
+            }
+          }
+        },
         _count: {
           select: { Votes: true }
         }
@@ -57,7 +70,28 @@ export async function getProposals() {
       orderBy: { createdAt: 'desc' }
     });
 
-    return { success: true, proposals };
+    // Calculate weighted sums for each proposal
+    const proposalsWithWeights = await Promise.all(proposals.map(async (p) => {
+      const voteSums = await prisma.vote.groupBy({
+        by: ['voteType'],
+        where: { proposalId: p.id },
+        _sum: { weight: true }
+      });
+
+      const yesWeight = voteSums.find(v => v.voteType === 'YES')?._sum?.weight || 0;
+      const noWeight = voteSums.find(v => v.voteType === 'NO')?._sum?.weight || 0;
+      const totalWeight = yesWeight + noWeight;
+
+      return {
+        ...p,
+        yesWeight,
+        noWeight,
+        totalWeight,
+        consensusPercent: totalWeight > 0 ? Math.round((yesWeight / totalWeight) * 100) : 0
+      };
+    }));
+
+    return { success: true, proposals: proposalsWithWeights };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

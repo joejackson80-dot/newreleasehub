@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap } from 'lucide-react';
+import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap, Radio, Users } from 'lucide-react';
 
 const ARTIST_IMAGE_POOL = [
   'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
@@ -176,6 +176,57 @@ export default async function HomePage() {
             </div>
          </div>
       </section>
+
+      {/* RADIO NETWORK PROMO */}
+      <section className="py-16 sm:py-20 lg:py-32 bg-[#050505] border-y border-white/5 px-4 sm:px-8 lg:px-16 overflow-hidden">
+         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
+            <div className="lg:w-1/2 space-y-12 relative z-10">
+               <div className="space-y-6">
+                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                     <Radio className="w-5 h-5 animate-pulse" />
+                     <span className="text-xs font-bold uppercase tracking-widest">24/7 Network Broadcast</span>
+                  </div>
+                  <h2 className="text-[clamp(2.5rem,8vw,5rem)] font-black tracking-tighter leading-[0.8] uppercase italic">
+                     Live<br />
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Radio.</span>
+                  </h2>
+                  <p className="text-gray-500 text-xl font-medium max-w-lg leading-relaxed italic">
+                     "The first internet radio network built on 100% master rights retention. Listen to the future of music, verified and live."
+                  </p>
+               </div>
+               <div className="flex flex-col sm:flex-row gap-6">
+                  <Link href="/radio" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-2xl">Enter the Broadcast</Link>
+                  <div className="flex items-center gap-4 px-8 py-5 rounded-full bg-white/5 border border-white/10 text-gray-500 text-[10px] font-bold uppercase tracking-widest">
+                     <Users className="w-4 h-4 text-[#00D2FF]" />
+                     <span>84.2k active listeners</span>
+                  </div>
+               </div>
+            </div>
+            <div className="lg:w-1/2 relative">
+               <div className="absolute inset-0 bg-[#00D2FF]/5 blur-[120px] rounded-full"></div>
+               <div className="relative z-10 grid grid-cols-2 gap-6 rotate-3">
+                  {[
+                    { name: 'Hip-Hop', color: 'from-orange-500 to-red-600', icon: '🔥' },
+                    { name: 'Electronic', color: 'from-[#00D2FF] to-blue-700', icon: '⚡' },
+                    { name: 'Afrobeats', color: 'from-emerald-400 to-green-600', icon: '🌍' },
+                    { name: 'Lo-Fi', color: 'from-purple-500 to-indigo-600', icon: '🌙' }
+                  ].map((station, i) => (
+                    <div key={i} className="p-8 bg-[#111] border border-white/5 rounded-[2.5rem] space-y-4 hover:border-white/20 transition-all hover:-translate-y-2 group cursor-pointer shadow-2xl">
+                       <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${station.color} flex items-center justify-center text-xl shadow-lg`}>
+                          {station.icon}
+                       </div>
+                       <h4 className="text-lg font-bold uppercase italic tracking-tighter text-white group-hover:text-[#00D2FF] transition-colors">{station.name}</h4>
+                       <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
+                          <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Live</span>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </section>
+
 
       {/* HOW IT WORKS */}
       <section className="py-16 sm:py-20 lg:py-32 bg-[#050505] border-y border-white/5 px-4 sm:px-8 lg:px-16">

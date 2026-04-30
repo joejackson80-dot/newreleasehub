@@ -73,9 +73,9 @@ export default function PressPage() {
               <p className="text-gray-500 font-medium">For interview requests, podcast appearances, or high-res assets, please contact our communications team.</p>
            </div>
            <div className="flex justify-center">
-              <Link href="mailto:press@newreleasehub.com" className="inline-flex items-center space-x-4 bg-white/5 border border-white/10 px-8 py-4 rounded-full hover:bg-white/10 transition-all group">
+              <Link href="mailto:info@newreleasehub.com" className="inline-flex items-center space-x-4 bg-white/5 border border-white/10 px-8 py-4 rounded-full hover:bg-white/10 transition-all group">
                  <Mail className="w-5 h-5 text-[#00D2FF]" />
-                 <span className="text-xs font-bold uppercase tracking-widest text-white">press@newreleasehub.com</span>
+                 <span className="text-xs font-bold uppercase tracking-widest text-white">info@newreleasehub.com</span>
                  <ArrowRight className="w-4 h-4 text-gray-600 group-hover:translate-x-1 transition-transform" />
               </Link>
            </div>

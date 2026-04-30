@@ -200,7 +200,7 @@ export default function SubscribePage() {
             href="/how-it-works/revenue-sharing" 
             className="flex items-center space-x-2 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:underline"
           >
-            <span>Learn About Pool A & C</span>
+            <span>Learn About Premium & Network Pool</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

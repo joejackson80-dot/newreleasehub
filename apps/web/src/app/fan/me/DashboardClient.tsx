@@ -1,43 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus, Clock, Radio } from 'lucide-react';
+import { Music, Users, DollarSign, Bell, Heart, Play, Pause, Lock, MessageCircle, ArrowRight, Star, Check, ShieldCheck, TrendingUp, Plus, Clock, Radio, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { useAudio } from '@/context/AudioContext';
 import YieldHistory from '@/components/fan/YieldHistory';
+import RadioMonitor from '@/components/fan/RadioMonitor';
+import DiscoveryFeed from '@/components/fan/DiscoveryFeed';
 
-const TABS = ['Feed', 'Library', 'Messages', 'Following', 'Support', 'Yield', 'Vault', 'Stats', 'Notifications'];
+const TABS = ['Feed', 'Discovery', 'Radio', 'Library', 'Messages', 'Following', 'Support', 'Yield', 'Vault', 'Stats', 'Notifications'];
 
-const MOCK_FEED = [
-  {
-    id: '1', artistName: 'Marcus Webb', artistSlug: 'marcus-webb',
-    artistPhoto: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&q=80',
-    isVerified: true, time: '2h ago', type: 'release',
-    content: 'New single just dropped — "Worth It (feat. Nova Rae)" is out now. This one means everything to me.',
-    coverArt: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
-    releaseTitle: 'Worth It (feat. Nova Rae)', releaseType: 'single',
-    isisSupporterOnly: false,
-    reactions: { fire: 284, heart: 192, crown: 47, bolt: 103 },
-    comments: 38,
-  },
-  {
-    id: '2', artistName: 'Lena Khari', artistSlug: 'lena-khari',
-    artistPhoto: 'https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?w=200&q=80',
-    isVerified: true, time: '5h ago', type: 'post',
-    content: 'Just finished mixing the Lagos to London deluxe edition. 4 bonus tracks. SUPPORTER-only preview dropping tomorrow 🎵',
-    isisSupporterOnly: false,
-    reactions: { fire: 512, heart: 341, crown: 88, bolt: 220 },
-    comments: 64,
-  },
-  {
-    id: '3', artistName: 'DJ Solarize', artistSlug: 'dj-solarize',
-    artistPhoto: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80',
-    isVerified: true, time: '1d ago', type: 'post',
-    content: '🔒 Behind-the-scenes studio session — phase 3 of Solar Frequencies is almost done.',
-    isisSupporterOnly: true,
-    reactions: { fire: 180, heart: 95, crown: 32, bolt: 78 },
-    comments: 22,
-  },
-];
+const MOCK_FEED: any[] = [];
 
 const MOCK_SUPPORTERAGES = [
   {
@@ -67,7 +39,8 @@ const REACTION_EMOJI = [
 
 export default function FanDashboard({ user, initialLibraryCount, subscriptions = [], initialFeed = [], initialMessages = [], initialVault = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[], initialFeed?: any[], initialMessages?: any[], initialVault?: any[] }) {
   const [activeTab, setActiveTab] = useState('Feed');
-  const [feed, setFeed] = useState<any[]>(initialFeed.length > 0 ? initialFeed : MOCK_FEED);
+  const [feed, setFeed] = useState<any[]>([]);
+  const [isLoadingFeed, setIsLoadingFeed] = useState(true);
   const [messages, setMessages] = useState<any[]>(initialMessages);
   const [vaultReleases, setVaultReleases] = useState<any[]>(initialVault);
   const [libraryTracks, setLibraryTracks] = useState<any[]>([]);
@@ -101,7 +74,20 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
         setIsLoadingStats(false);
       }
     };
+    const fetchFeed = async () => {
+      try {
+        const res = await fetch('/api/fan/feed');
+        const data = await res.json();
+        if (data.success) setFeed(data.feed);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoadingFeed(false);
+      }
+    };
+
     fetchStats();
+    fetchFeed();
   }, [user.id]);
 
   useEffect(() => {
@@ -224,94 +210,118 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
         {/* ── FEED TAB ── */}
         {activeTab === 'Feed' && (
           <div className="space-y-6">
-            {feed.map(post => (
-              <div key={post.id} className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all">
-                {/* Post header */}
-                <div className="flex items-center gap-3 p-5 pb-0">
-                  <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}>
-                    <img src={post.Organization?.profileImageUrl || post.artistPhoto || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt={post.Organization?.name || post.artistName}
-                      className="w-10 h-10 rounded-full object-cover border border-white/10" />
-                  </Link>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`} className="font-bold text-sm text-white hover:text-[#00D2FF] transition-colors">
-                        {post.Organization?.name || post.artistName}
-                      </Link>
-                      {(post.Organization?.isVerified || post.isVerified) && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
-                      {(post.isSupporterOnly || post.isisSupporterOnly) && (
-                        <span className="text-[9px] font-bold text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                          SUPPORTER Only
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[10px] text-gray-500">{post.time || new Date(post.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </div>
+            {isLoadingFeed ? (
+               <div className="py-20 text-center animate-pulse text-[10px] font-bold text-gray-700 uppercase tracking-widest">Compiling Network Activity...</div>
+            ) : feed.length === 0 ? (
+               <div className="bg-[#111] border border-white/5 rounded-3xl p-12 text-center flex flex-col items-center justify-center space-y-4">
+                  <Music className="w-12 h-12 text-white/10" />
+                  <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Your feed is currently silent.</p>
+                  <Link href="/discover" className="text-[#00D2FF] font-bold text-xs">Explore Artists</Link>
+               </div>
+            ) : (
+               feed.map(post => (
+                 <div key={post.id} className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all">
+                   {/* Post header */}
+                   <div className="flex items-center gap-3 p-5 pb-0">
+                     <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}>
+                       <img src={post.Organization?.profileImageUrl || post.artistPhoto || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt={post.Organization?.name || post.artistName}
+                         className="w-10 h-10 rounded-full object-cover border border-white/10" />
+                     </Link>
+                     <div className="flex-1">
+                       <div className="flex items-center gap-2">
+                         <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`} className="font-bold text-sm text-white hover:text-[#00D2FF] transition-colors">
+                           {post.Organization?.name || post.artistName}
+                         </Link>
+                         {(post.Organization?.isVerified || post.isVerified) && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
+                         {(post.isSupporterOnly || post.isisSupporterOnly) && (
+                           <span className="text-[9px] font-bold text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                             SUPPORTER Only
+                           </span>
+                         )}
+                       </div>
+                       <p className="text-[10px] text-gray-500">{post.time || new Date(post.createdAt).toLocaleDateString()}</p>
+                     </div>
+                   </div>
 
-                {/* Post body */}
-                {(post.isSupporterOnly || post.isisSupporterOnly) ? (
-                  <div className="mx-5 mt-4 rounded-xl bg-purple-500/5 border border-purple-500/10 p-6 text-center space-y-3">
-                    <Lock className="w-6 h-6 text-purple-400 mx-auto" />
-                    <p className="text-sm text-gray-400 italic">"{post.content}"</p>
-                    <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}
-                      className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold text-xs uppercase tracking-wider hover:bg-purple-500/20 transition-all">
-                      Become a SUPPORTER to See This
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="px-5 pt-4">
-                    <p className="text-sm text-gray-300 leading-relaxed">{post.content}</p>
-                    {(post.type === 'release' || post.coverArtUrl) && (
-                      <div className="mt-4 rounded-xl overflow-hidden border border-white/5 relative group">
-                        <img src={post.coverArtUrl || post.coverArt} alt={post.title || post.releaseTitle} className="w-full h-48 object-cover" />
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <button 
-                            className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
-                            onClick={() => {
-                              if (post.type === 'release') {
-                                playTrack({
-                                  id: post.id,
-                                  title: post.title,
-                                  artist: post.Organization?.name,
-                                  artistId: post.Organization?.slug,
-                                  audioUrl: post.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-                                  imageUrl: post.coverArtUrl
-                                });
-                              }
-                            }}
-                          >
-                            <Play className="w-5 h-5 fill-current ml-0.5" />
-                          </button>
-                        </div>
-                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black">
-                          <p className="font-bold text-white text-sm">{post.title || post.releaseTitle}</p>
-                          <p className="text-[10px] text-gray-400 uppercase tracking-widest">{post.type}</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+                   {/* Post body */}
+                   {(post.isSupporterOnly || post.isisSupporterOnly) ? (
+                     <div className="mx-5 mt-4 rounded-xl bg-purple-500/5 border border-purple-500/10 p-6 text-center space-y-3">
+                       <Lock className="w-6 h-6 text-purple-400 mx-auto" />
+                       <p className="text-sm text-gray-400 italic">"{post.content}"</p>
+                       <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}
+                         className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-purple-500/10 border border-purple-400/20 text-purple-400 font-bold text-xs uppercase tracking-wider hover:bg-purple-500/20 transition-all">
+                         Become a SUPPORTER to See This
+                       </Link>
+                     </div>
+                   ) : (
+                     <div className="px-5 pt-4">
+                       <p className="text-sm text-gray-300 leading-relaxed">{post.content}</p>
+                       {(post.type === 'release' || post.coverArtUrl) && (
+                         <div className="mt-4 rounded-xl overflow-hidden border border-white/5 relative group">
+                           <img src={post.coverArtUrl || post.coverArt} alt={post.title || post.releaseTitle} className="w-full h-48 object-cover" />
+                           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                             <button 
+                               className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+                               onClick={() => {
+                                 if (post.type === 'release') {
+                                   playTrack({
+                                     id: post.id,
+                                     title: post.title,
+                                     artist: post.Organization?.name,
+                                     artistId: post.Organization?.slug,
+                                     audioUrl: post.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                                     imageUrl: post.coverArtUrl
+                                   });
+                                 }
+                               }}
+                             >
+                               <Play className="w-5 h-5 fill-current ml-0.5" />
+                             </button>
+                           </div>
+                           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black">
+                             <p className="font-bold text-white text-sm">{post.title || post.releaseTitle}</p>
+                             <p className="text-[10px] text-gray-400 uppercase tracking-widest">{post.type}</p>
+                           </div>
+                         </div>
+                       )}
+                     </div>
+                   )}
 
-                {/* Reactions */}
-                <div className="flex items-center gap-2 px-5 py-4 mt-2 border-t border-white/5">
-                  {REACTION_EMOJI.map(r => {
-                    const count = post.Reactions?.filter((re: any) => re.type === r.key).length || post.reactions?.[r.key as keyof typeof post.reactions] || 0;
-                    return (
-                    <button key={r.key}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-xs font-medium text-gray-400 hover:text-white">
-                      <span>{r.emoji}</span>
-                      <span>{count}</span>
-                    </button>
-                  )})}
-                  <button className="ml-auto flex items-center gap-2 text-[10px] text-gray-500 hover:text-white transition-colors font-bold">
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    {post.comments || 0}
-                  </button>
-                </div>
-              </div>
-            ))}
+                   {/* Reactions */}
+                   <div className="flex items-center gap-2 px-5 py-4 mt-2 border-t border-white/5">
+                     {REACTION_EMOJI.map(r => {
+                       const count = post.Reactions?.filter((re: any) => re.type === r.key).length || post.reactions?.[r.key as keyof typeof post.reactions] || 0;
+                       return (
+                       <button key={r.key}
+                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-xs font-medium text-gray-400 hover:text-white">
+                         <span>{r.emoji}</span>
+                         <span>{count}</span>
+                       </button>
+                     )})}
+                     <button className="ml-auto flex items-center gap-2 text-[10px] text-gray-500 hover:text-white transition-colors font-bold">
+                       <MessageCircle className="w-3.5 h-3.5" />
+                       {post.comments || 0}
+                     </button>
+                   </div>
+                 </div>
+               ))
+            )}
           </div>
         )}
+        
+        {/* ── DISCOVERY TAB ── */}
+        {activeTab === 'Discovery' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+             <DiscoveryFeed />
+          </div>
+        )}
+
+        {activeTab === 'Radio' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+             <RadioMonitor />
+          </div>
+        )}
+
 
         {/* ── LIBRARY TAB ── */}
         {activeTab === 'Library' && (
@@ -537,40 +547,92 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                   ))}
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2 bg-[#111] border border-white/5 rounded-[2.5rem] p-10 space-y-8">
-                     <div className="flex justify-between items-center">
-                        <div className="space-y-1">
-                           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Artist Discovery Record</p>
-                           <h3 className="text-2xl font-bold text-white uppercase italic tracking-tighter">Your First Discoveries</h3>
-                        </div>
-                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
-                           <TrendingUp className="w-6 h-6 text-[#00D2FF]" />
-                        </div>
-                     </div>
-                     <div className="bg-black/40 border border-white/5 rounded-3xl p-12 text-center space-y-4">
-                        <p className="text-5xl font-bold text-[#00D2FF] tracking-tighter">{fanStats?.firstDiscoveries || 0}</p>
-                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em] max-w-[200px] mx-auto leading-loose">Artists you supported before they hit the charts</p>
-                     </div>
-                  </div>
+                {/* YIELD PROJECTION & NETWORK MAP */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                   <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-10 space-y-8 relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 p-8 opacity-[0.05] group-hover:scale-110 transition-transform">
+                         <TrendingUp className="w-20 h-20 text-[#00D2FF]" />
+                      </div>
+                      <div className="space-y-1">
+                         <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Forensic Yield Projection</h4>
+                         <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Predicted 12-Month Performance</p>
+                      </div>
+                      <div className="flex items-end gap-4">
+                         <h2 className="text-5xl font-black italic tracking-tighter text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 12).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
+                         <span className="text-emerald-500 text-xs font-bold uppercase mb-2">/ Potential ARR</span>
+                      </div>
+                      <div className="space-y-4">
+                         <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-gray-500">
+                            <span>Conservative (+4%)</span>
+                            <span className="text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 10.5).toFixed(0)}</span>
+                         </div>
+                         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-white/20" style={{ width: '85%' }}></div>
+                         </div>
+                         <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-[#00D2FF]">
+                            <span>Network Target (+12%)</span>
+                            <span className="text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 12).toFixed(0)}</span>
+                         </div>
+                         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-[#00D2FF]" style={{ width: '100%' }}></div>
+                         </div>
+                      </div>
+                      <p className="text-[9px] text-gray-700 font-medium leading-relaxed italic uppercase tracking-wider">
+                         * Projections based on current stream velocity, historical retention, and network equity multipliers.
+                      </p>
+                   </div>
 
-                  <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-10 flex flex-col justify-between">
-                     <div className="space-y-6">
-                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Favorite Genre</p>
-                        <div className="space-y-2">
-                           <p className="text-4xl font-bold text-white uppercase italic tracking-tighter">{fanStats?.topGenre || 'Afrobeats'}</p>
-                           <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                              <div className="h-full bg-gradient-to-r from-purple-500 to-[#00D2FF] w-[75%]"></div>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="pt-10 flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                           <ShieldCheck className="w-4 h-4 text-green-500" />
-                        </div>
-                       <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Protocol V2.4 Active</p>
-                     </div>
-                  </div>
+                   <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-10 space-y-8 relative overflow-hidden group">
+                      <div className="space-y-1">
+                         <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Network Footprint</h4>
+                         <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Geographic Asset Distribution</p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-6">
+                         <div className="space-y-4">
+                            {[
+                              { label: 'West Coast', val: 42 },
+                              { label: 'Europe', val: 28 },
+                              { label: 'Lagos', val: 18 },
+                              { label: 'Atlanta', val: 12 }
+                            ].map(loc => (
+                              <div key={loc.label} className="space-y-1">
+                                 <div className="flex justify-between text-[8px] font-bold uppercase tracking-widest text-gray-500">
+                                    <span>{loc.label}</span>
+                                    <span>{loc.val}%</span>
+                                 </div>
+                                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="h-full bg-white/10 group-hover:bg-[#00D2FF]/40 transition-colors" style={{ width: `${loc.val}%` }}></div>
+                                 </div>
+                              </div>
+                            ))}
+                         </div>
+                         <div className="flex items-center justify-center">
+                            <div className="relative w-32 h-32">
+                               <div className="absolute inset-0 border-[10px] border-white/5 rounded-full" />
+                               <div className="absolute inset-0 border-[10px] border-[#00D2FF] rounded-full border-t-transparent border-l-transparent rotate-45" />
+                               <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                  <Globe className="w-6 h-6 text-[#00D2FF] mb-1" />
+                                  <span className="text-[9px] font-black text-white uppercase">Global</span>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+
+                <div className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-10 flex flex-col md:flex-row items-center gap-10">
+                   <div className="w-20 h-20 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
+                      <Star className="w-10 h-10 text-emerald-500" />
+                   </div>
+                   <div className="flex-1 space-y-2">
+                      <h4 className="text-xl font-bold italic uppercase tracking-tighter text-white">First Discovery Milestone</h4>
+                      <p className="text-sm text-gray-500 font-medium leading-relaxed italic">
+                         You were among the first 100 supporters for {fanStats?.firstDiscoveries || 0} artists in your portfolio. Your Early Access Multiplier is currently <span className="text-emerald-500 font-black">1.25x</span>.
+                      </p>
+                   </div>
+                   <Link href="/governance" className="px-8 py-4 rounded-xl bg-white text-black font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-xl">
+                      Manage Equity
+                   </Link>
                 </div>
               </>
             )}
