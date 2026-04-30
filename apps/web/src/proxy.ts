@@ -49,10 +49,30 @@ export async function proxy(request: NextRequest) {
   }
 
   // Protect /studio/* routes
-  if (path.startsWith('/studio') && !path.startsWith('/studio/login') && !path.startsWith('/studio/register')) {
-    const artistSession = request.cookies.get('nrh_artist_session');
-    if (!artistSession) {
-      return NextResponse.redirect(new URL('/studio/login', request.url));
+  if (path.startsWith('/studio')) {
+    // Exclude login/register/welcome from protection
+    const isPublicStudio = path === '/studio/login' || path === '/studio/register' || path === '/studio/welcome';
+    if (!isPublicStudio) {
+      const artistSession = request.cookies.get('artist_id') || request.cookies.get('nrh_artist_session');
+      if (!artistSession) {
+        return NextResponse.redirect(new URL('/studio/login', request.url));
+      }
+    }
+  }
+
+  // Protect /fan/me routes
+  if (path.startsWith('/fan/me')) {
+    const fanSession = request.cookies.get('fan_id');
+    if (!fanSession) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  // Protect /admin/* routes
+  if (path.startsWith('/admin')) {
+    const userRole = request.cookies.get('user_role')?.value;
+    if (userRole !== 'nrh_admin') {
+      return NextResponse.redirect(new URL('/', request.url));
     }
   }
 
@@ -63,8 +83,9 @@ export const config = {
   matcher: [
     '/api/:path*', 
     '/studio/:path*',
-    '/wp-admin/:path*',
+    '/fan/me/:path*',
     '/admin/:path*',
+    '/wp-admin/:path*',
     '/.git/:path*',
     '/config/:path*',
     '/.env',
