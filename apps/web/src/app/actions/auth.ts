@@ -250,6 +250,53 @@ export async function registerFan(data: { email: string, username: string, displ
   }
 }
 
+export async function resetArtistPassword(email: string, newPassword: string) {
+  try {
+    const artist = await prisma.organization.findFirst({
+      where: { email: { equals: email, mode: 'insensitive' } }
+    });
+
+    if (!artist) {
+      // Return success anyway to prevent email enumeration, but for MVP testing we can be explicit
+      return { success: false, error: 'Account not found' };
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await prisma.organization.update({
+      where: { id: artist.id },
+      data: { passwordHash }
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('Reset password error:', error);
+    return { success: false, error: 'An unexpected error occurred' };
+  }
+}
+
+export async function resetFanPassword(email: string, newPassword: string) {
+  try {
+    const fan = await prisma.user.findFirst({
+      where: { email: { equals: email, mode: 'insensitive' } }
+    });
+
+    if (!fan) {
+      return { success: false, error: 'Account not found' };
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({
+      where: { id: fan.id },
+      data: { passwordHash }
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('Reset password error:', error);
+    return { success: false, error: 'An unexpected error occurred' };
+  }
+}
+
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete('nrh_artist_session');

@@ -62,7 +62,10 @@ export default function ArtistLogin() {
             />
           </div>
           <div>
-            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">Secret Password</label>
+            <div className="flex justify-between mb-2">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Secret Password</label>
+              <Link href="/studio/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-[#00D2FF] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
+            </div>
             <input 
               type="password" 
               required
