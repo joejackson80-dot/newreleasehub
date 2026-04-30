@@ -25,6 +25,15 @@ export async function proxy(request: NextRequest) {
     return new NextResponse('Internal Server Error', { status: 403 });
   }
 
+  // Vault Gate Protection
+  const isVaultUnlocked = request.cookies.has('nrh_vault_unlocked');
+  const isVaultRoute = path.startsWith('/vault') || path.startsWith('/api/vault');
+  
+  if (!isVaultUnlocked && !isVaultRoute) {
+    return NextResponse.redirect(new URL('/vault', request.url));
+  }
+
+
   // Skip rate limiting if Redis env vars are missing (development safety)
   if (process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
     let limiter = limits.general
@@ -81,15 +90,14 @@ export async function proxy(request: NextRequest) {
 
 export const config = { 
   matcher: [
-    '/api/:path*', 
-    '/studio/:path*',
-    '/fan/me/:path*',
-    '/admin/:path*',
-    '/wp-admin/:path*',
-    '/.git/:path*',
-    '/config/:path*',
-    '/.env',
-    '/xmlrpc.php'
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - images/ (public images folder)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ] 
 }
 
