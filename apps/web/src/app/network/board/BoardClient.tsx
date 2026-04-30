@@ -250,13 +250,13 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                           <div className="flex items-center gap-3">
                               <button 
                                 onClick={() => setSelectedOpp({...opp, voteType: 'YES'})}
-                                className="px-4 py-2 rounded-lg bg-emerald-5001a text-emerald-500 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-50033 transition-all"
+                                className="px-4 py-2 rounded-lg bg-[#10b9811a] text-emerald-500 text-[10px] font-bold uppercase tracking-widest hover:bg-[#10b98133] transition-all"
                               >
                                 Vote Yes
                               </button>
                               <button 
                                 onClick={() => setSelectedOpp({...opp, voteType: 'NO'})}
-                                className="px-4 py-2 rounded-lg bg-rose-5001a text-rose-500 text-[10px] font-bold uppercase tracking-widest hover:bg-rose-50033 transition-all"
+                                className="px-4 py-2 rounded-lg bg-[#f43f5e1a] text-rose-500 text-[10px] font-bold uppercase tracking-widest hover:bg-[#f43f5e33] transition-all"
                               >
                                 Vote No
                               </button>
@@ -304,7 +304,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
 
               {isSuccess ? (
                  <div className="py-12 text-center space-y-6">
-                    <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF1a] text-[#00D2FF]' : 'bg-emerald-5001a text-emerald-500'} rounded-2xl flex items-center justify-center mx-auto`}>
+                    <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF1a] text-[#00D2FF]' : 'bg-[#10b9811a] text-emerald-500'} rounded-2xl flex items-center justify-center mx-auto`}>
                        <ShieldCheck className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl font-black italic uppercase tracking-tighter">

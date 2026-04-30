@@ -93,7 +93,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   const tierCapitalized = org.artistTier.charAt(0).toUpperCase() + org.artistTier.slice(1);
 
   const tierBadgeColor =
-    org.artistTier === 'legend' ? 'border-amber-50033 text-amber-400 bg-amber-5001a' :
+    org.artistTier === 'legend' ? 'border-[#f59e0b33] text-amber-400 bg-[#f59e0b1a]' :
     org.artistTier === 'established' ? 'border-[#00D2FF4d] text-[#00D2FF] bg-[#00D2FF1a]' :
     'border-white/20 text-gray-400 bg-white/5';
 
@@ -223,7 +223,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       {/* ── LIVE BANNER ── */}
       {isLive && (
         <div className="max-w-7xl mx-auto px-4 sm:px-8 mt-10">
-          <div className="bg-rose-5001a border border-rose-5004d rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="bg-[#f43f5e1a] border border-[#f43f5e4d] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-rose-500 flex items-center justify-center animate-pulse">
                 <Radio className="w-6 h-6 text-white" />

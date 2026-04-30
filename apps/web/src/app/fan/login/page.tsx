@@ -111,7 +111,7 @@ export default function FanAuthPage() {
             </div>
 
             {error && (
-              <div className="p-4 rounded-2xl bg-red-5001a border border-red-50033 text-red-400 text-[10px] font-bold uppercase tracking-widest text-center">
+              <div className="p-4 rounded-2xl bg-[#ef44441a] border border-[#ef444433] text-red-400 text-[10px] font-bold uppercase tracking-widest text-center">
                 {error}
               </div>
             )}

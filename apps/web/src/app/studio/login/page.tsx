@@ -74,7 +74,7 @@ export default function ArtistLogin() {
           </div>
 
           {error && (
-            <div className="bg-red-5001a border border-red-50033 text-red-500 text-[10px] font-bold uppercase tracking-widest p-4 rounded-xl text-center">
+            <div className="bg-[#ef44441a] border border-[#ef444433] text-red-500 text-[10px] font-bold uppercase tracking-widest p-4 rounded-xl text-center">
               {error}
             </div>
           )}
