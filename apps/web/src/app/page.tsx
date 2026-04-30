@@ -4,12 +4,12 @@ import { prisma } from '@/lib/prisma';
 import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap, Radio, Users } from 'lucide-react';
 
 const ARTIST_IMAGE_POOL = [
-  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80',
-  'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80',
-  'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80',
-  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80',
-  'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80',
-  'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80',
+  '/images/default-avatar.png',
+  '/images/default-avatar.png',
+  '/images/default-avatar.png',
+  '/images/default-cover.png',
+  '/images/default-avatar.png',
+  '/images/default-avatar.png',
 ];
 
 import NetworkFeed from '@/components/network/NetworkFeed';
@@ -36,7 +36,7 @@ export default async function HomePage() {
       <section className="relative min-h-screen flex items-center bg-black overflow-hidden px-4 sm:px-8 lg:px-16 py-20 sm:py-24 lg:py-32">
          <div className="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-[3000ms]">
             <img
-              src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1600&q=80"
+              src="/images/default-avatar.png"
               className="w-full h-full object-cover scale-110"
               alt="Independent artist performing"
             />

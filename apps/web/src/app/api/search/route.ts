@@ -33,7 +33,7 @@ export async function GET(req: Request) {
           type: 'artist',
           name: artist.name,
           category: artist.genres.join(' / ') || 'Independent',
-          img: artist.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
+          img: artist.profileImageUrl || '/images/default-avatar.png',
           badge: artist.artistTier.toUpperCase().replace('_', ' '),
           slug: artist.slug
         });
@@ -59,7 +59,7 @@ export async function GET(req: Request) {
           title: release.title,
           artist: release.Organization.name,
           category: `${release.type.toUpperCase()} • ${new Date(release.releaseDate).getFullYear()}`,
-          img: release.coverArtUrl || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400&q=80',
+          img: release.coverArtUrl || '/images/default-cover.png',
           status: release.isScheduled ? 'SCHEDULED' : 'LIVE',
           artistSlug: release.Organization.slug
         });
@@ -84,7 +84,7 @@ export async function GET(req: Request) {
           type: 'hub',
           name: hub.name,
           slug: hub.slug,
-          img: hub.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
+          img: hub.profileImageUrl || '/images/default-avatar.png',
           isLive: true,
           scene: 'Recording Studio A'
         });

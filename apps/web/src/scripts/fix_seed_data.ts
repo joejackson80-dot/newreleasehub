@@ -67,7 +67,7 @@ async function main() {
         organizationId: joejack.id,
         title: 'Worth It (feat. Nova Rae)',
         type: 'single',
-        coverArtUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=800',
+        coverArtUrl: '/images/default-cover.png',
       }
     });
     await prisma.release.create({
@@ -75,7 +75,7 @@ async function main() {
         organizationId: joejack.id,
         title: 'The Comeback EP',
         type: 'ep',
-        coverArtUrl: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&q=80&w=800',
+        coverArtUrl: '/images/default-cover.png',
       }
     });
   }

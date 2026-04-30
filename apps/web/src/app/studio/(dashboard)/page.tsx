@@ -183,7 +183,7 @@ export default async function StudioOverviewPage() {
               <div className="flex items-center justify-between">
                  <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
-                       <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&q=80" className="w-full h-full object-cover" />
+                       <img src="/images/default-avatar.png" className="w-full h-full object-cover" />
                     </div>
                     <div className="min-w-0">
                        <p className="text-xs font-bold text-white uppercase italic truncate">Nova Rae</p>

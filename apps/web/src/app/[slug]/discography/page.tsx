@@ -7,12 +7,12 @@ import ArtistReleasesClient from '../ArtistReleasesClient';
 
 // Mock data for the discography
 const MOCK_RELEASES = [
-  { id: 'rel-1', title: 'Silicon Soul', type: 'ALBUM', releaseDate: '2026-10-24', coverArtUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=800&q=80', isSupporterOnly: true },
-  { id: 'rel-2', title: 'Deep Logic', type: 'SINGLE', releaseDate: '2026-09-12', coverArtUrl: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=800&q=80' },
-  { id: 'rel-3', title: 'Binary Sunset', type: 'EP', releaseDate: '2026-07-05', coverArtUrl: 'https://images.unsplash.com/photo-1459749411177-042180ce673c?w=800&q=80' },
-  { id: 'rel-4', title: 'Ghost in the Machine', type: 'SINGLE', releaseDate: '2026-05-20', coverArtUrl: 'https://images.unsplash.com/photo-1514525253361-bee8718a342b?w=800&q=80' },
-  { id: 'rel-5', title: 'System Error', type: 'SINGLE', releaseDate: '2026-03-15', coverArtUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80' },
-  { id: 'rel-6', title: 'The Architect', type: 'ALBUM', releaseDate: '2025-11-30', coverArtUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80' },
+  { id: 'rel-1', title: 'Silicon Soul', type: 'ALBUM', releaseDate: '2026-10-24', coverArtUrl: '/images/default-cover.png', isSupporterOnly: true },
+  { id: 'rel-2', title: 'Deep Logic', type: 'SINGLE', releaseDate: '2026-09-12', coverArtUrl: '/images/default-cover.png' },
+  { id: 'rel-3', title: 'Binary Sunset', type: 'EP', releaseDate: '2026-07-05', coverArtUrl: '/images/default-cover.png' },
+  { id: 'rel-4', title: 'Ghost in the Machine', type: 'SINGLE', releaseDate: '2026-05-20', coverArtUrl: '/images/default-cover.png' },
+  { id: 'rel-5', title: 'System Error', type: 'SINGLE', releaseDate: '2026-03-15', coverArtUrl: '/images/default-cover.png' },
+  { id: 'rel-6', title: 'The Architect', type: 'ALBUM', releaseDate: '2025-11-30', coverArtUrl: '/images/default-cover.png' },
 ];
 
 export default function DiscographyPage() {

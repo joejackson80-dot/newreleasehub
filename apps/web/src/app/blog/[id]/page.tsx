@@ -26,7 +26,7 @@ const MOCK_POSTS = [
     author: "NRH Editorial",
     date: "Oct 28, 2026",
     category: "Manifesto",
-    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&q=80",
+    image: "/images/default-avatar.png",
     readTime: "8 min"
   },
   {
@@ -46,7 +46,7 @@ const MOCK_POSTS = [
     author: "Success Stories",
     date: "Oct 25, 2026",
     category: "Case Study",
-    image: "https://images.unsplash.com/photo-1514525253361-bee8718a342b?w=1200&q=80",
+    image: "/images/default-cover.png",
     readTime: "12 min"
   }
 ];

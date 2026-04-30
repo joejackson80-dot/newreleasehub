@@ -13,7 +13,7 @@ const MOCK_LIBRARY = [
     participation: 0.5, // 0.5%
     yieldToDate: 42.50,
     velocity: 'High',
-    img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=80',
+    img: '/images/default-avatar.png',
     type: 'Single'
   },
   {
@@ -24,7 +24,7 @@ const MOCK_LIBRARY = [
     participation: 0.1,
     yieldToDate: 12.10,
     velocity: 'Stable',
-    img: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400&q=80',
+    img: '/images/default-cover.png',
     type: 'EP'
   },
   {
@@ -35,7 +35,7 @@ const MOCK_LIBRARY = [
     participation: 1.0,
     yieldToDate: 85.00,
     velocity: 'Rising',
-    img: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&q=80',
+    img: '/images/default-avatar.png',
     type: 'Album'
   }
 ];

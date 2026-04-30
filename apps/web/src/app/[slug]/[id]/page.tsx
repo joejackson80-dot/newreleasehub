@@ -11,7 +11,7 @@ const MOCK_RELEASES = [
     title: 'Silicon Soul', 
     type: 'ALBUM', 
     releaseDate: '2026-10-24', 
-    coverArtUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=1200&q=80',
+    coverArtUrl: '/images/default-cover.png',
     description: 'Silicon Soul is a journey through the intersection of biological emotion and synthetic logic. Recorded over 6 months in a mobile studio across the Pacific Northwest, this album represents the next evolution of independent electronic production.',
     isSupporterOnly: true,
     tracks: [
@@ -26,7 +26,7 @@ const MOCK_RELEASES = [
       { role: 'Mastered by', name: 'NRH Forensic Audio' }
     ]
   },
-  { id: 'rel-2', title: 'Deep Logic', type: 'SINGLE', releaseDate: '2026-09-12', coverArtUrl: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=1200&q=80' }
+  { id: 'rel-2', title: 'Deep Logic', type: 'SINGLE', releaseDate: '2026-09-12', coverArtUrl: '/images/default-cover.png' }
 ];
 
 export default function ReleaseDetailPage() {

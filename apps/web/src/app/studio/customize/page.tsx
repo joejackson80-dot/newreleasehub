@@ -34,7 +34,7 @@ export default function CustomizePage() {
     if (bgType === 'color') return { backgroundColor: '#020202' };
     if (bgType === 'gradient') return { background: `linear-gradient(to bottom right, #020202, ${accentColor}30, #020202)` };
     if (bgType === 'image') return { 
-      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), #020202), url('https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?q=80&w=2000&auto=format&fit=crop')`, 
+      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), #020202), url('/images/default-cover.png')`, 
       backgroundSize: 'cover', 
       backgroundPosition: 'center' 
     };
@@ -313,7 +313,7 @@ export default function CustomizePage() {
                  ${heroStyle === 'Centered' ? 'w-48 h-48 mb-8' : ''}
                  ${heroStyle === 'Split' ? 'w-64 h-64' : ''}
               `}>
-                 <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80" alt="Artist Profile" className="w-full h-full object-cover" />
+                 <img src="/images/default-avatar.png" alt="Artist Profile" className="w-full h-full object-cover" />
               </div>
 
               <div className={`space-y-4 max-w-2xl ${heroStyle === 'Fullscreen' ? 'bg-black/40 backdrop-blur-md p-8 rounded-3xl border border-white/10' : ''}`}>

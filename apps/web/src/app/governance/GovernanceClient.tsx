@@ -116,7 +116,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
                      <div className="space-y-6">
                         <div className="flex items-center justify-between">
                            <div className="flex items-center gap-3">
-                              <img src={p.Organization.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=100&q=80'} alt={p.Organization.name} className="w-10 h-10 rounded-xl object-cover border border-white/10" />
+                              <img src={p.Organization.profileImageUrl || '/images/default-avatar.png'} alt={p.Organization.name} className="w-10 h-10 rounded-xl object-cover border border-white/10" />
                               <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest italic">{p.Organization.name}</span>
                            </div>
                            <div className="flex items-center gap-2 px-3 py-1 bg-white/05 rounded-full">

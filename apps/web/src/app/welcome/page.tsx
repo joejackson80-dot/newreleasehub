@@ -10,12 +10,12 @@ const GENRES = [
 ];
 
 const SUGGESTED_ARTISTS = [
-  { id: 'artist-001', slug: 'marcus-webb', name: 'Marcus Webb', genre: 'R&B · Soul', photo: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=80', SUPPORTERs: 2140 },
-  { id: 'artist-003', slug: 'lena-khari', name: 'Lena Khari', genre: 'Afrobeats · Highlife', photo: 'https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?w=400&q=80', SUPPORTERs: 3420 },
-  { id: 'artist-002', slug: 'dj-solarize', name: 'DJ Solarize', genre: 'Electronic · House', photo: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&q=80', SUPPORTERs: 1820 },
-  { id: 'artist-004', slug: 'hellz-flame', name: 'Hellz Flame', genre: 'Hip-Hop · Trap', photo: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&q=80', SUPPORTERs: 980 },
-  { id: 'artist-005', slug: 'nova-rae', name: 'Nova Rae', genre: 'Indie Pop · Folk', photo: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&q=80', SUPPORTERs: 1240 },
-  { id: 'artist-008', slug: 'solaris-bloom', name: 'Solaris Bloom', genre: 'K-Indie · Dream Pop', photo: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&q=80', SUPPORTERs: 1640 },
+  { id: 'artist-001', slug: 'marcus-webb', name: 'Marcus Webb', genre: 'R&B · Soul', photo: '/images/default-avatar.png', SUPPORTERs: 2140 },
+  { id: 'artist-003', slug: 'lena-khari', name: 'Lena Khari', genre: 'Afrobeats · Highlife', photo: '/images/default-avatar.png', SUPPORTERs: 3420 },
+  { id: 'artist-002', slug: 'dj-solarize', name: 'DJ Solarize', genre: 'Electronic · House', photo: '/images/default-avatar.png', SUPPORTERs: 1820 },
+  { id: 'artist-004', slug: 'hellz-flame', name: 'Hellz Flame', genre: 'Hip-Hop · Trap', photo: '/images/default-avatar.png', SUPPORTERs: 980 },
+  { id: 'artist-005', slug: 'nova-rae', name: 'Nova Rae', genre: 'Indie Pop · Folk', photo: '/images/default-avatar.png', SUPPORTERs: 1240 },
+  { id: 'artist-008', slug: 'solaris-bloom', name: 'Solaris Bloom', genre: 'K-Indie · Dream Pop', photo: '/images/default-avatar.png', SUPPORTERs: 1640 },
 ];
 
 export default function WelcomePage() {

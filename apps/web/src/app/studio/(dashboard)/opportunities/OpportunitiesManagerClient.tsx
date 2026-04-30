@@ -121,7 +121,7 @@ export default function OpportunitiesManagerClient({ initialOpportunities }: { i
                               <div key={app.id} className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8 hover:border-white/10 transition-all">
                                  <div className="flex items-center gap-6">
                                     <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                                       <img src={app.Artist.profileImageUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} className="w-full h-full object-cover" />
+                                       <img src={app.Artist.profileImageUrl || '/images/default-avatar.png'} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="space-y-1">
                                        <div className="flex items-center gap-2">

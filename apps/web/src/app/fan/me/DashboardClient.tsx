@@ -15,12 +15,12 @@ const MOCK_FEED: any[] = [];
 const MOCK_SUPPORTERAGES = [
   {
     id: '1', artistName: 'Marcus Webb', artistSlug: 'marcus-webb',
-    artistPhoto: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&q=80',
+    artistPhoto: '/images/default-avatar.png',
     tier: 'True Fan', amount: 15.00, earnedThisMonth: 4.20, revenueShare: 0.5, status: 'active',
   },
   {
     id: '2', artistName: 'Lena Khari', artistSlug: 'lena-khari',
-    artistPhoto: 'https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?w=200&q=80',
+    artistPhoto: '/images/default-avatar.png',
     tier: 'Day One', amount: 5.00, earnedThisMonth: 2.10, revenueShare: 0.1, status: 'active',
   },
 ];
@@ -225,7 +225,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                    {/* Post header */}
                    <div className="flex items-center gap-3 p-5 pb-0">
                      <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`}>
-                       <img src={post.Organization?.profileImageUrl || post.artistPhoto || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt={post.Organization?.name || post.artistName}
+                       <img src={post.Organization?.profileImageUrl || post.artistPhoto || '/images/default-avatar.png'} alt={post.Organization?.name || post.artistName}
                          className="w-10 h-10 rounded-full object-cover border border-white/10" />
                      </Link>
                      <div className="flex-1">
@@ -464,7 +464,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                    <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 hover:border-white/20 transition-all relative z-10 space-y-8">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center gap-4">
-                            <img src={sub.Organization?.profileImageUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt={sub.Organization?.name} className="w-12 h-12 rounded-2xl object-cover border border-white/10" />
+                            <img src={sub.Organization?.profileImageUrl || '/images/default-avatar.png'} alt={sub.Organization?.name} className="w-12 h-12 rounded-2xl object-cover border border-white/10" />
                             <div>
                                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Asset Manager</p>
                                <p className="text-lg font-bold text-white italic uppercase">{sub.Organization?.name}</p>
@@ -647,7 +647,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
               subscriptions.map((sub, i) => (
                 <div key={i} className="flex items-center gap-4 p-5 bg-[#111] border border-white/5 rounded-2xl hover:border-white/10 transition-all group">
                   <div className="relative">
-                    <img src={sub.Organization.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=100&q=80'} alt={sub.Organization.name} className="w-14 h-14 rounded-2xl object-cover border border-white/10" />
+                    <img src={sub.Organization.profileImageUrl || '/images/default-avatar.png'} alt={sub.Organization.name} className="w-14 h-14 rounded-2xl object-cover border border-white/10" />
                     {sub.Organization.isLive && (
                       <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-black animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
                     )}
@@ -719,7 +719,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          {messages.map(m => (
                             <button key={m.id} className="w-full p-6 text-left hover:bg-white/5 transition-all flex items-start gap-4 group">
                                <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 border border-white/10">
-                                  <img src={m.senderOrg?.profileImageUrl || m.senderUser?.avatarUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt="" className="w-full h-full object-cover" />
+                                  <img src={m.senderOrg?.profileImageUrl || m.senderUser?.avatarUrl || '/images/default-avatar.png'} alt="" className="w-full h-full object-cover" />
                                </div>
                                <div className="flex-1 min-w-0">
                                   <div className="flex items-center justify-between mb-1">

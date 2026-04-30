@@ -151,7 +151,7 @@ export default function HowItWorksPage() {
           <div className="relative">
              <div className="aspect-square rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&q=80" 
+                  src="/images/default-avatar.png" 
                   alt="Artist in studio" 
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                 />

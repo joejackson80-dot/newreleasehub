@@ -27,7 +27,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
       setTitle('Midnight Echoes');
       setType('Single');
       setGenre('Electronic');
-      setCoverArt('https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=800&q=80');
+      setCoverArt('/images/default-cover.png');
       setIsFetchingImport(false);
     }, 1500);
   };

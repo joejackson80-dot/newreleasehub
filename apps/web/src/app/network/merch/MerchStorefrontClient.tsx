@@ -26,9 +26,9 @@ export default function MerchStorefrontClient() {
       } catch (e) {
         // Mock data if API fails
         setMerch([
-          { id: '1', title: 'Institutional Hoodie v1', priceCents: 6500, description: 'Commemorative high-fidelity drop.', imageUrl: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&q=80', isLocked: true, lockReason: 'FAN LEVEL 10 REQUIRED', isSupporterOnly: false, minFanLevel: 10, Organization: { name: 'Marcus Webb' } },
-          { id: '2', title: 'Vault Access Key (Physical)', priceCents: 2500, description: 'Limited edition support asset.', imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80', isLocked: true, lockReason: 'SUPPORTER ONLY', isSupporterOnly: true, minFanLevel: 1, Organization: { name: 'Lena Khari' } },
-          { id: '3', title: 'Network Cap', priceCents: 3500, description: 'Official NRH Professional Network apparel.', imageUrl: 'https://images.unsplash.com/photo-1588850561447-417f337a7df4?w=400&q=80', isLocked: false, lockReason: '', isSupporterOnly: false, minFanLevel: 1, Organization: { name: 'Institutional' } },
+          { id: '1', title: 'Institutional Hoodie v1', priceCents: 6500, description: 'Commemorative high-fidelity drop.', imageUrl: '/images/default-cover.png', isLocked: true, lockReason: 'FAN LEVEL 10 REQUIRED', isSupporterOnly: false, minFanLevel: 10, Organization: { name: 'Marcus Webb' } },
+          { id: '2', title: 'Vault Access Key (Physical)', priceCents: 2500, description: 'Limited edition support asset.', imageUrl: '/images/default-cover.png', isLocked: true, lockReason: 'SUPPORTER ONLY', isSupporterOnly: true, minFanLevel: 1, Organization: { name: 'Lena Khari' } },
+          { id: '3', title: 'Network Cap', priceCents: 3500, description: 'Official NRH Professional Network apparel.', imageUrl: '/images/default-cover.png', isLocked: false, lockReason: '', isSupporterOnly: false, minFanLevel: 1, Organization: { name: 'Institutional' } },
         ]);
       } finally {
         setLoading(false);

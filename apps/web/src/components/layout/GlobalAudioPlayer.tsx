@@ -115,7 +115,7 @@ export default function GlobalAudioPlayer() {
             <div className="space-y-2">
               <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Now Playing</h3>
               <div className="flex items-center p-4 bg-white/5 rounded-2xl border border-white/10">
-                <img src={currentTrack.imageUrl || "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&q=80"} className="w-12 h-12 rounded-lg object-cover mr-4" alt="" />
+                <img src={currentTrack.imageUrl || "/images/default-cover.png"} className="w-12 h-12 rounded-lg object-cover mr-4" alt="" />
                 <div>
                   <h4 className="text-[#00D2FF] font-bold text-lg leading-tight">{currentTrack.title}</h4>
                   <p className="text-gray-400 text-sm font-medium">{currentTrack.artist}</p>
@@ -129,7 +129,7 @@ export default function GlobalAudioPlayer() {
                     {queue.map((track, idx) => (
                       <div key={`${track.id}-${idx}`} className={`flex items-center p-3 rounded-xl hover:bg-white/5 transition-colors ${currentTrack.id === track.id ? 'opacity-50' : ''}`}>
                         <span className="w-6 text-xs text-gray-500 font-bold">{idx + 1}</span>
-                        <img src={track.imageUrl || "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&q=80"} className="w-10 h-10 rounded-md object-cover mr-4" alt="" />
+                        <img src={track.imageUrl || "/images/default-cover.png"} className="w-10 h-10 rounded-md object-cover mr-4" alt="" />
                         <div>
                           <h4 className="text-white font-bold text-sm leading-tight">{track.title}</h4>
                           <p className="text-gray-400 text-xs font-medium">{track.artist}</p>
@@ -187,7 +187,7 @@ export default function GlobalAudioPlayer() {
          {/* LEFT: Track Info */}
          <div className="flex items-center space-x-3 md:space-x-4 w-1/2 md:w-1/3 lg:w-1/4 md:min-w-[250px]">
             <div className="relative w-10 h-10 md:w-14 md:h-14 bg-zinc-800 rounded-lg overflow-hidden shrink-0 shadow-lg group cursor-pointer">
-               <img src={currentTrack.imageUrl || "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&q=80"} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:blur-[2px]" alt="Album Art" />
+               <img src={currentTrack.imageUrl || "/images/default-cover.png"} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:blur-[2px]" alt="Album Art" />
                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Maximize2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
                </div>

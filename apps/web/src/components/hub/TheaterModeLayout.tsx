@@ -62,7 +62,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
         setDjPlaying(data.isPlaying);
         setTrackTitle(data.activeTrackTitle);
         setMuxConfig(data.muxConfig);
-        setBackgroundUrl(data.backgroundUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1600&q=80');
+        setBackgroundUrl(data.backgroundUrl || '/images/default-avatar.png');
         setStats({ fire: data.fireCount, cool: data.coolCount, trash: data.trashCount });
         
         const [orgRes, merchRes, licRes] = await Promise.all([

@@ -113,7 +113,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                          className={`w-full p-8 text-left transition-all flex items-start gap-5 group relative ${selectedConversation?.user.id === conv.user.id ? 'bg-[#00D2FF]/5 border-l-2 border-[#00D2FF]' : 'hover:bg-white/5 border-l-2 border-transparent'}`}
                        >
                           <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-2xl relative">
-                             <img src={conv.user.avatarUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt="" className="w-full h-full object-cover" />
+                             <img src={conv.user.avatarUrl || '/images/default-avatar.png'} alt="" className="w-full h-full object-cover" />
                              <div className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-green-500 border-2 border-black"></div>
                           </div>
                           <div className="flex-1 min-w-0">
@@ -138,7 +138,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                  <div className="p-8 border-b border-white/5 flex items-center justify-between bg-[#050505]/50 backdrop-blur-xl">
                     <div className="flex items-center gap-5">
                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10">
-                          <img src={selectedConversation.user.avatarUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80'} alt="" className="w-full h-full object-cover" />
+                          <img src={selectedConversation.user.avatarUrl || '/images/default-avatar.png'} alt="" className="w-full h-full object-cover" />
                        </div>
                        <div>
                           <h3 className="text-xl font-bold uppercase tracking-tighter italic">{selectedConversation.user.displayName || selectedConversation.user.username}</h3>

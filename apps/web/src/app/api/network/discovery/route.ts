@@ -29,7 +29,7 @@ export async function GET() {
         type: 'artist',
         name: a.name,
         slug: a.slug,
-        profileImageUrl: a.profileImageUrl || 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=80',
+        profileImageUrl: a.profileImageUrl || '/images/default-avatar.png',
         growth: Math.floor(Math.random() * 15) + 5 // Simulated growth metric
       })),
       ...latestOpps.map(o => ({

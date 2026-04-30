@@ -93,7 +93,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
                         {
                           type: 'img',
                           props: {
-                            src: artist.profileImageUrl || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
+                            src: artist.profileImageUrl || '/images/default-avatar.png',
                             style: { width: '260px', height: '260px', borderRadius: '130px', border: '8px solid #000', objectFit: 'cover', position: 'relative' }
                           }
                         }
