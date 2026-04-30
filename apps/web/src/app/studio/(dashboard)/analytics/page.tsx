@@ -1,13 +1,10 @@
-import React from 'react';
+import { getSessionArtist } from '@/lib/session';
+import { redirect } from 'next/navigation';
 import AnalyticsClient from './AnalyticsClient';
 
-export const metadata = {
-  title: 'Network Analytics | New Release Hub Studio',
-  description: 'Track your network reach and stream velocity.',
-};
+export default async function AnalyticsPage() {
+  const artist = await getSessionArtist();
+  if (!artist) redirect('/studio/login');
 
-export default function AnalyticsPage() {
-  return <AnalyticsClient />;
+  return <AnalyticsClient artist={artist} />;
 }
-
-

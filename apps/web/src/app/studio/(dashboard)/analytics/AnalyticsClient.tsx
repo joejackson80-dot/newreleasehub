@@ -1,245 +1,263 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Users, Activity, TrendingUp, Globe, Smartphone, 
-  Monitor, Tablet, MapPin, BarChart3, PieChart
+  BarChart3, TrendingUp, Globe, ShieldAlert, 
+  Activity, Users, Zap, Clock, Info, ChevronRight,
+  ArrowUpRight, ArrowDownRight, Map as MapIcon, 
+  Search, Filter, Download
 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
-export default function AnalyticsClient() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'charts'>('overview');
+export default function AnalyticsClient({ artist }: { artist: any }) {
+  const [stats, setStats] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate 30 days of data
-  const retentionData = useMemo(() => {
-    return Array.from({ length: 30 }, (_, i) => ({
-      day: i + 1,
-      value: 70 + Math.random() * 20
-    }));
+  useEffect(() => {
+    fetchAnalytics();
   }, []);
 
-  const topLocations = [
-    { city: 'New York', country: 'USA', share: 24 },
-    { city: 'London', country: 'UK', share: 18 },
-    { city: 'Berlin', country: 'Germany', share: 12 },
-    { city: 'Tokyo', country: 'Japan', share: 9 },
-    { city: 'Paris', country: 'France', share: 7 },
-  ];
-
-  const devices = [
-    { type: 'Mobile', icon: Smartphone, share: 68, color: 'bg-[#00D2FF]' },
-    { type: 'Desktop', icon: Monitor, share: 24, color: 'bg-purple-500' },
-    { type: 'Tablet', icon: Tablet, share: 8, color: 'bg-green-500' },
-  ];
+  const fetchAnalytics = async () => {
+    try {
+      const res = await fetch('/api/studio/analytics');
+      const data = await res.json();
+      if (data.success) setStats(data.stats);
+    } catch (e) {
+      toast.error('Forensic data sync failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="p-8 md:p-12 space-y-12 max-w-7xl mx-auto">
-      <header className="space-y-4">
-        <div className="flex items-center gap-3 text-[#00D2FF]">
-          <BarChart3 className="w-6 h-6" />
-          <span className="text-xs font-bold uppercase tracking-widest">Network Analytics</span>
-        </div>
-        <div className="flex items-end justify-between">
-          <div>
-            <h1 className="text-5xl font-bold tracking-tighter uppercase italic text-white">Audience<br />Intelligence.</h1>
-            <p className="text-gray-500 font-medium max-w-xl mt-4">Deep insights into your listener base, device distribution, and global retention metrics over the last 30 days.</p>
-          </div>
-          <div className="flex space-x-2 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800">
-            <button onClick={() => setActiveTab('overview')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'overview' ? 'bg-[#00D2FF] text-black' : 'text-zinc-500 hover:text-white'}`}>Overview</button>
-            <button onClick={() => setActiveTab('charts')} className={`px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === 'charts' ? 'bg-purple-600 text-white' : 'text-zinc-500 hover:text-white'}`}>Charts</button>
-          </div>
-        </div>
-      </header>
-
-      {activeTab === 'overview' && (
-        <div className="space-y-12">
-
-      {/* KPI GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
-          <div className="flex items-center justify-between">
-            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
-              <Users className="w-6 h-6" />
+    <div className="min-h-screen bg-[#020202] text-white p-8 md:p-12 space-y-12 selection:bg-[#00D2FF] selection:text-black">
+      
+      {/* HEADER */}
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+         <div className="space-y-4">
+            <div className="flex items-center gap-3 text-[#00D2FF]">
+               <Activity className="w-5 h-5" />
+               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Analytics Engine</span>
             </div>
-            <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">+12.4%</span>
-          </div>
-          <div>
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Listener Retention</h3>
-            <p className="text-4xl font-bold text-white italic">84.2%</p>
-          </div>
-        </div>
-        
-        <div className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
-          <div className="flex items-center justify-between">
-            <div className="w-12 h-12 rounded-2xl bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center">
-              <Globe className="w-6 h-6" />
-            </div>
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Global</span>
-          </div>
-          <div>
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Active Territories</h3>
-            <p className="text-4xl font-bold text-white italic">42</p>
-          </div>
-        </div>
-
-        <div className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
-          <div className="flex items-center justify-between">
-            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
-              <Activity className="w-6 h-6" />
-            </div>
-            <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Live Now</span>
-          </div>
-          <div>
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Stream Velocity</h3>
-            <p className="text-4xl font-bold text-white italic">Peak</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* RETENTION CHART */}
-        <div className="lg:col-span-8 bg-[#0A0A0A] border border-white/5 rounded-[3rem] p-10 space-y-10 shadow-2xl">
-           <div className="flex items-center justify-between">
-              <div>
-                 <h4 className="text-xl font-bold uppercase italic tracking-tighter">Retention Velocity</h4>
-                 <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">Last 30 Days Breakdown</p>
-              </div>
-              <div className="flex gap-4">
-                 <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Listeners</span>
-                 </div>
-              </div>
-           </div>
-
-           <div className="h-64 flex items-end gap-2 group">
-              {retentionData.map((d, i) => (
-                <div 
-                  key={i} 
-                  className="flex-1 bg-purple-500/10 rounded-t-lg hover:bg-purple-500 transition-all relative group/bar"
-                  style={{ height: `${d.value}%` }}
-                >
-                   <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black px-2 py-1 rounded text-[8px] font-bold opacity-0 group-hover/bar:opacity-100 transition-opacity">
-                      {d.value.toFixed(1)}%
-                   </div>
-                </div>
-              ))}
-           </div>
-           
-           <div className="flex justify-between text-[10px] font-bold text-gray-700 uppercase tracking-widest border-t border-white/5 pt-6">
-              <span>Day 1</span>
-              <span>Day 15</span>
-              <span>Day 30</span>
-           </div>
-        </div>
-
-        {/* DEVICE BREAKDOWN */}
-        <div className="lg:col-span-4 bg-[#0A0A0A] border border-white/5 rounded-[3rem] p-10 space-y-10 shadow-2xl">
-           <div>
-              <h4 className="text-xl font-bold uppercase italic tracking-tighter">Device Matrix</h4>
-              <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">Platform Distribution</p>
-           </div>
-
-           <div className="space-y-8">
-              {devices.map((device) => (
-                <div key={device.type} className="space-y-3">
-                   <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                         <device.icon className="w-4 h-4 text-gray-500" />
-                         <span className="text-xs font-bold uppercase tracking-widest">{device.type}</span>
-                      </div>
-                      <span className="text-sm font-black italic">{device.share}%</span>
-                   </div>
-                   <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                      <div className={`h-full ${device.type === 'Mobile' ? 'bg-[#00D2FF]' : 'bg-purple-600'} transition-all duration-1000`} style={{ width: `${device.share}%` }}></div>
-                   </div>
-                </div>
-              ))}
-           </div>
-
-           <div className="pt-6 border-t border-white/5">
-              <div className="p-4 bg-[#00D2FF]/5 border border-[#00D2FF]/10 rounded-2xl">
-                 <p className="text-[10px] text-gray-400 leading-relaxed font-medium">
-                    <span className="text-white font-bold uppercase">Pro Tip:</span> Your audience is mobile-heavy. Optimize your EPK for vertical displays.
-                 </p>
-              </div>
-           </div>
-        </div>
-      </div>
-
-      {/* TOP LOCATIONS */}
-      <div className="bg-[#0A0A0A] border border-white/5 rounded-[3rem] p-10 space-y-10 shadow-2xl">
-         <div className="flex items-center justify-between">
-            <div>
-               <h4 className="text-xl font-bold uppercase italic tracking-tighter">Top Territories</h4>
-               <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">Geographic Density Map</p>
-            </div>
-            <button className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-all">Export CSV</button>
+            <h1 className="text-6xl font-black italic uppercase tracking-tighter">Insights.</h1>
+            <p className="text-zinc-500 font-medium italic max-w-xl">
+               Monitor live listener behavior, forensic stream auditing, and global network equity in high-fidelity.
+            </p>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {topLocations.map((loc, i) => (
-              <div key={i} className="p-8 bg-black/40 border border-white/5 rounded-[2rem] space-y-4 hover:border-[#00D2FF]/30 transition-all group">
-                 <div className="flex justify-between items-start">
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-600 group-hover:text-white transition-colors">
-                       <MapPin className="w-5 h-5" />
-                    </div>
-                    <span className="text-xl font-black italic text-[#00D2FF]">{loc.share}%</span>
-                 </div>
-                 <div>
-                    <h5 className="font-bold text-white text-lg">{loc.city}</h5>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{loc.country}</p>
-                 </div>
-              </div>
-             ))}
-          </div>
-       </div>
-
-       </div>
-      )}
-
-      {activeTab === 'charts' && (
-        <div className="space-y-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {['Global Rank', 'Genre Rank', 'City Rank', 'Rising Rank'].map((title, i) => (
-              <div key={i} className="bg-[#0A0A0A] border border-white/5 p-8 rounded-[2rem] shadow-xl">
-                <h3 className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] mb-2">{title}</h3>
-                <div className="flex items-end justify-between">
-                  <p className="text-3xl font-black italic text-white">#24</p>
-                  <span className="text-[#00D2FF] text-xs font-bold uppercase tracking-widest">▲ +2</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="bg-[#0A0A0A] border border-white/5 p-10 rounded-[3rem] shadow-2xl">
-            <h2 className="text-2xl font-bold uppercase italic tracking-tighter mb-8">Equity Score Factors</h2>
-            <div className="space-y-8">
-              {[
-                { name: 'Streaming Activity', score: 82, msg: 'Your streams are strong — keep releasing music', color: 'bg-[#00D2FF]' },
-                { name: 'SUPPORTER Community', score: 61, msg: '43 SUPPORTERs. Each new SUPPORTER adds points.', color: 'bg-purple-500' },
-                { name: 'Fan Growth', score: 41, msg: '+12 new followers this month', color: 'bg-[#00D2FF]' },
-                { name: 'Fan Engagement', score: 89, msg: '2 tips received, 8 comments — great!', color: 'bg-purple-500' },
-                { name: 'Release Consistency', score: 32, msg: '1 release in 90 days. Release more consistently.', color: 'bg-orange-500' },
-                { name: 'Profile Completeness', score: 100, msg: 'Profile fully set up ✓', color: 'bg-[#00D2FF]' },
-              ].map(factor => (
-                <div key={factor.name} className="group">
-                  <div className="flex justify-between mb-3 items-end">
-                    <div>
-                       <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">{factor.name}</span>
-                       <p className="text-[10px] text-gray-600 font-medium mt-1">{factor.msg}</p>
-                    </div>
-                    <span className="text-sm font-black italic text-white">{factor.score}/100</span>
-                  </div>
-                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div className={`h-full ${factor.color} transition-all duration-1000 shadow-[0_0_10px_rgba(0,210,255,0.3)]`} style={{ width: `${factor.score}%` }}></div>
-                  </div>
-                </div>
-              ))}
+         <div className="flex items-center gap-4">
+            <button className="p-4 bg-white/5 border border-white/10 rounded-2xl text-zinc-400 hover:text-white transition-all">
+               <Download className="w-5 h-5" />
+            </button>
+            <div className="bg-[#0A0A0A] border border-white/5 p-4 rounded-2xl flex items-center gap-6">
+               <div className="text-right">
+                  <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Network Authority</p>
+                  <p className="text-xl font-black italic text-[#00D2FF]">TOP 2%</p>
+               </div>
+               <div className="w-px h-8 bg-white/5" />
+               <div className="text-right">
+                  <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Growth Velocity</p>
+                  <p className="text-xl font-black italic text-emerald-500">+12.4%</p>
+               </div>
             </div>
-          </div>
-        </div>
-      )}
+         </div>
+      </header>
+
+      {/* CORE METRICS */}
+      <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
+         {[
+           { label: 'Total Streams', value: stats?.totalStreams?.toLocaleString() || '0', sub: 'Verified & Suspicious', icon: Activity, color: 'text-white' },
+           { label: 'Verified Plays', value: stats?.verifiedStreams?.toLocaleString() || '0', sub: 'Protocol Authorized', icon: ShieldAlert, color: 'text-[#00D2FF]' },
+           { label: 'Unique Listeners', value: artist?.supporterCount?.toLocaleString() || '0', sub: 'Network Equity', icon: Users, color: 'text-white' },
+           { label: 'Retention Score', value: '84%', sub: 'Forensic Measurement', icon: Zap, color: 'text-purple-400' }
+         ].map((stat, i) => (
+           <div key={i} className="bg-[#0A0A0A] border border-white/10 p-8 rounded-[2.5rem] space-y-4 relative group hover:border-[#00D2FF]/40 transition-all cursor-default">
+              <div className="flex items-center justify-between">
+                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                 <span className="text-[9px] font-black text-zinc-700 uppercase tracking-widest">NRH-V1.4</span>
+              </div>
+              <div className="space-y-1">
+                 <h3 className={`text-4xl font-black italic tracking-tighter ${stat.color}`}>{stat.value}</h3>
+                 <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</p>
+              </div>
+              <p className="text-[9px] font-bold text-zinc-700 uppercase tracking-widest absolute bottom-4 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                {stat.sub}
+              </p>
+           </div>
+         ))}
+      </section>
+
+      {/* MAIN DATA GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+         
+         {/* PLAYBACK VELOCITY */}
+         <div className="lg:col-span-2 bg-[#0A0A0A] border border-white/5 rounded-[3.5rem] p-10 space-y-8 relative overflow-hidden">
+            <div className="flex items-center justify-between relative z-10">
+               <div className="space-y-1">
+                  <h3 className="text-xl font-black italic uppercase tracking-tighter">Playback Velocity</h3>
+                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Forensic 14-Day View</p>
+               </div>
+               <div className="flex gap-2">
+                  {['7D', '14D', '30D', '90D'].map(t => (
+                    <button key={t} className={`px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all ${t === '14D' ? 'bg-[#00D2FF] text-black shadow-lg' : 'bg-white/5 text-zinc-500 hover:text-white'}`}>
+                       {t}
+                    </button>
+                  ))}
+               </div>
+            </div>
+
+            <div className="h-64 flex items-end gap-2 relative z-10">
+               {stats?.dailyStreams?.map((s: any, i: number) => (
+                 <div key={i} className="flex-1 group relative">
+                    <div 
+                      className="w-full bg-gradient-to-t from-[#00D2FF]/40 to-[#00D2FF] rounded-t-lg transition-all group-hover:scale-y-105" 
+                      style={{ height: `${Math.max(10, (s.count / (Math.max(...stats.dailyStreams.map((x:any)=>x.count)) || 1)) * 100)}%` }}
+                    />
+                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                       {s.count}
+                    </div>
+                 </div>
+               ))}
+            </div>
+
+            <div className="flex justify-between text-[9px] font-bold text-zinc-700 uppercase tracking-widest pt-4 border-t border-white/5">
+               <span>Initiated Phase</span>
+               <span>Consensus Phase</span>
+               <span>Terminal Phase</span>
+            </div>
+
+            {/* DECOR */}
+            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#00D2FF]/5 blur-[100px] rounded-full pointer-events-none" />
+         </div>
+
+         {/* GLOBAL DENSITY */}
+         <div className="bg-[#0A0A0A] border border-white/5 rounded-[3.5rem] p-10 space-y-8 relative overflow-hidden">
+            <div className="space-y-1">
+               <h3 className="text-xl font-black italic uppercase tracking-tighter">Global Density</h3>
+               <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Listener Distribution</p>
+            </div>
+
+            <div className="space-y-4">
+               {stats?.countryDistribution && Object.entries(stats.countryDistribution).slice(0, 5).map(([country, count]: [string, any], i) => (
+                 <div key={country} className="space-y-2 group">
+                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+                       <span className="text-white flex items-center gap-2 group-hover:text-[#00D2FF] transition-colors">
+                          <Globe className="w-3 h-3 text-zinc-600" />
+                          {country}
+                       </span>
+                       <span className="text-zinc-500">{(count as number).toLocaleString()}</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                       <div 
+                         className="h-full bg-[#00D2FF] transition-all duration-1000 shadow-[0_0_10px_rgba(0,210,255,0.4)]" 
+                         style={{ width: `${((count as number) / stats.totalStreams) * 100}%` }}
+                       />
+                    </div>
+                 </div>
+               ))}
+            </div>
+
+            <button className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all flex items-center justify-center gap-2">
+               Full Forensic Map <MapIcon className="w-3 h-3" />
+            </button>
+         </div>
+      </div>
+
+      {/* FRAUD & AUDIT SECTION */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+         
+         {/* FRAUD AUDIT */}
+         <div className="bg-[#0A0A0A] border border-white/5 rounded-[3.5rem] p-12 flex flex-col md:flex-row gap-12 items-center">
+            <div className="relative w-48 h-48 shrink-0">
+               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="#1a1a1a" strokeWidth="8" />
+                  <circle 
+                    cx="50" cy="50" r="45" fill="none" stroke="#00D2FF" strokeWidth="8" 
+                    strokeDasharray="282.7" 
+                    strokeDashoffset={282.7 - (282.7 * (stats?.fraudMetrics?.clean / (stats?.totalStreams || 1)))}
+                    className="transition-all duration-1000"
+                  />
+               </svg>
+               <div className="absolute inset-0 flex flex-col items-center justify-center space-y-1">
+                  <span className="text-3xl font-black italic text-white tracking-tighter">
+                    {Math.round((stats?.fraudMetrics?.clean / (stats?.totalStreams || 1)) * 100)}%
+                  </span>
+                  <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">Clean Score</span>
+               </div>
+            </div>
+
+            <div className="space-y-6 flex-1">
+               <div className="space-y-1">
+                  <h3 className="text-xl font-black italic uppercase tracking-tighter">Forensic Audit</h3>
+                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Real-time Fraud Detection</p>
+               </div>
+               <div className="space-y-4">
+                  {[
+                    { label: 'Authorized Plays', count: stats?.fraudMetrics?.clean, color: 'bg-emerald-500' },
+                    { label: 'Suspicious Activity', count: stats?.fraudMetrics?.suspicious, color: 'bg-amber-500' },
+                    { label: 'Protocol Rejected', count: stats?.fraudMetrics?.rejected, color: 'bg-rose-500' }
+                  ].map((m, i) => (
+                    <div key={i} className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
+                       <span className="flex items-center gap-3 text-zinc-400">
+                          <div className={`w-2 h-2 rounded-full ${m.color}`} />
+                          {m.label}
+                       </span>
+                       <span className="text-white">{m.count?.toLocaleString() || '0'}</span>
+                    </div>
+                  ))}
+               </div>
+            </div>
+         </div>
+
+         {/* REVENUE FORECAST */}
+         <div className="bg-gradient-to-br from-zinc-900 to-[#020202] border border-white/10 rounded-[3.5rem] p-12 space-y-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
+               <TrendingUp className="w-48 h-48 text-[#00D2FF]" />
+            </div>
+            
+            <div className="space-y-6 relative z-10">
+               <div className="space-y-1">
+                  <h3 className="text-xl font-black italic uppercase tracking-tighter">Yield Forecast</h3>
+                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">30-Day Commercial Projection</p>
+               </div>
+               
+               <div className="space-y-2">
+                  <h2 className="text-6xl font-black italic text-white tracking-tighter">$4,280.00</h2>
+                  <div className="flex items-center gap-2 text-emerald-500 font-black italic text-sm uppercase tracking-widest">
+                     <ArrowUpRight className="w-5 h-5" />
+                     Forecast High Authority
+                  </div>
+               </div>
+
+               <div className="grid grid-cols-2 gap-4">
+                  <div className="p-6 bg-white/5 border border-white/10 rounded-3xl space-y-2">
+                     <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Streaming Yield</p>
+                     <p className="text-xl font-black italic text-white">$1,120</p>
+                  </div>
+                  <div className="p-6 bg-white/5 border border-white/10 rounded-3xl space-y-2">
+                     <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Supporter Equity</p>
+                     <p className="text-xl font-black italic text-[#00D2FF]">$3,160</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* FOOTER CALLOUT */}
+      <footer className="pt-20 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+         <div className="flex items-start gap-4 max-w-xl">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+               <Info className="w-5 h-5 text-amber-500" />
+            </div>
+            <p className="text-[9px] font-bold text-zinc-500 uppercase leading-relaxed tracking-widest italic">
+               Institutional data is processed every 15 minutes. Forensic scores are calculated using a proprietary 12-point authentication matrix. Malicious streaming activity is automatically excluded from revenue pools.
+            </p>
+         </div>
+         <button className="px-12 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_50px_rgba(0,210,255,0.2)]">
+            Upgrade Data Protocol
+         </button>
+      </footer>
+
     </div>
   );
 }
-
-
