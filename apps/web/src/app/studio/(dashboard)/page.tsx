@@ -2,6 +2,7 @@ import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Activity, Star, Award, MessageCircle, FileText } from 'lucide-react';
 import Link from 'next/link';
+import MusicNewsFeed from '@/components/studio/MusicNewsFeed';
 
 export default async function StudioOverviewPage() {
   const org = await getSessionArtist({ includeReleases: true, includeSupporters: true });
@@ -231,6 +232,9 @@ export default async function StudioOverviewPage() {
           </div>
         </div>
       </section>
+
+      {/* INDUSTRY INTELLIGENCE (RSS FEED) */}
+      <MusicNewsFeed />
 
     </div>
   );
