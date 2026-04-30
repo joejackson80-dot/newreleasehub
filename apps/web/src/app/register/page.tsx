@@ -78,6 +78,50 @@ export default function RegisterPage() {
 
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               
+               {/* INSTITUTIONAL / LABEL PATH */}
+               <Link href="/register/label" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-purple-500/40 hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                     <ShieldCheck className="w-32 h-32 text-purple-500" />
+                  </div>
+                  <div className="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                     <ShieldCheck className="w-8 h-8" />
+                  </div>
+                  <div className="space-y-4">
+                     <h2 className="text-3xl font-bold uppercase italic tracking-tighter text-white">Join as Label</h2>
+                     <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                        Manage multiple artists, oversee royalty distributions, and access institutional network grants.
+                     </p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-purple-400 font-bold text-[10px] uppercase tracking-[0.2em]">
+                     <span>Institutional Access</span>
+                     <ArrowRight className="w-4 h-4" />
+                  </div>
+               </Link>
+
+               {/* ADMIN / STAFF (FOR DEVELOPERS/OWNERS) */}
+               <Link href="/login" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-amber-500/40 hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                     <Gavel className="w-32 h-32 text-amber-500" />
+                  </div>
+                  <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                     <Gavel className="w-8 h-8" />
+                  </div>
+                  <div className="space-y-4">
+                     <h2 className="text-3xl font-bold uppercase italic tracking-tighter text-white">Network Admin</h2>
+                     <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                        Internal operations, fraud detection, and global system governance for NRH staff.
+                     </p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-amber-400 font-bold text-[10px] uppercase tracking-[0.2em]">
+                     <span>Admin Login</span>
+                     <ArrowRight className="w-4 h-4" />
+                  </div>
+               </Link>
+
+            </div>
+
             <div className="pt-12 text-center">
                <Link href="/" className="inline-flex items-center space-x-3 text-gray-700 hover:text-white transition-colors">
                   <ArrowLeft className="w-4 h-4" />

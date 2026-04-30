@@ -147,7 +147,7 @@ export async function loginFan(identifier: string, password: string) {
   }
 }
 
-export async function registerArtist(data: { email: string, username: string, name: string, password: string }) {
+export async function registerArtist(data: { email: string, username: string, name: string, password: string, planTier?: 'FREE' | 'PRO' | 'ELITE' }) {
   try {
     const existing = await prisma.organization.findFirst({
       where: {
@@ -171,6 +171,7 @@ export async function registerArtist(data: { email: string, username: string, na
         name: data.name,
         slug: data.username.toLowerCase(),
         passwordHash,
+        planTier: data.planTier || 'FREE',
         isPublic: false, // Start hidden until they set up their profile
       }
     });

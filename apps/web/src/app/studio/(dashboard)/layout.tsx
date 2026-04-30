@@ -56,11 +56,14 @@ const NAV_GROUPS = [
 import StudioSidebar from '@/components/studio/StudioSidebar';
 import StudioBottomNav from '@/components/studio/StudioBottomNav';
 import WalkthroughModal from '@/components/studio/WalkthroughModal';
+import { getSessionArtist } from '@/lib/session';
 
-export default function StudioLayout({ children }: { children: React.ReactNode }) {
+export default async function StudioLayout({ children }: { children: React.ReactNode }) {
+  const org = await getSessionArtist();
+
   return (
     <div className="flex h-screen bg-[#000000] text-[#ededed] font-sans overflow-hidden">
-      <StudioSidebar />
+      <StudioSidebar org={org} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto bg-[#020202] pb-20 md:pb-0">

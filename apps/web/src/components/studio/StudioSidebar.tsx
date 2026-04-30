@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutGrid, DollarSign, Settings, LogOut, Radio, Disc, Users,
-  BarChart3, Briefcase, Palette, Share2, Wrench, GitMerge, Sparkles, Music, Wallet, Menu, X, Trophy, Package, Gavel
+  BarChart3, Briefcase, Palette, Share2, Wrench, GitMerge, Sparkles, Music, Wallet, Menu, X, Trophy, Package, Gavel, Building2
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -59,7 +59,8 @@ const NAV_GROUPS = [
   },
 ];
 
-export default function StudioSidebar() {
+export default function StudioSidebar({ org }: { org: any }) {
+  const isLabel = org?.planTier === 'ELITE';
   const [isOpen, setIsOpen] = useState(false);
   const [unviewedMilestones, setUnviewedMilestones] = useState(0);
   const pathname = usePathname();
@@ -114,6 +115,19 @@ export default function StudioSidebar() {
           </div>
         ))}
 
+        {isLabel && (
+          <div>
+            <p className="text-[9px] font-bold uppercase tracking-widest text-purple-500 px-3 mb-3">Institutional</p>
+            <Link 
+              href="/label" 
+              className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-lg transition-all text-xs font-bold text-purple-400 hover:text-white hover:bg-purple-500/10 ${pathname === '/label' ? 'bg-purple-500/10 text-purple-300' : ''}`}
+            >
+              <Building2 className="w-3.5 h-3.5 shrink-0" />
+              <span>Label Dashboard</span>
+            </Link>
+          </div>
+        )}
+
         <div className="border-t border-white/5 pt-4">
           <Link href="/studio/dj" onClick={() => setIsOpen(false)}
             className="flex items-center space-x-2.5 px-3 py-2 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all text-xs font-bold">
@@ -130,12 +144,14 @@ export default function StudioSidebar() {
 
       <div className="p-4 border-t border-[#1a1a1a] bg-[#050505]">
         <div className="flex items-center space-x-2.5 mb-3">
-          <div className="w-7 h-7 rounded-full bg-[#00D2FF]/20 border border-[#00D2FF]/30 flex items-center justify-center font-bold text-[10px] text-[#00D2FF] shrink-0">
-            A
+          <div className="w-7 h-7 rounded-full bg-[#00D2FF]/20 border border-[#00D2FF]/30 flex items-center justify-center font-bold text-[10px] text-[#00D2FF] shrink-0 uppercase">
+            {org?.name?.charAt(0) || 'A'}
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-bold text-white truncate">Artist Studio</p>
-            <p className="text-[9px] text-gray-500 uppercase tracking-widest">Verified</p>
+            <p className="text-xs font-bold text-white truncate">{org?.name || 'Artist Studio'}</p>
+            <p className="text-[9px] text-gray-500 uppercase tracking-widest">
+              {org?.planTier === 'ELITE' ? 'Institutional / Label' : 'Verified Artist'}
+            </p>
           </div>
         </div>
         <Link href="/studio/settings" onClick={() => setIsOpen(false)}

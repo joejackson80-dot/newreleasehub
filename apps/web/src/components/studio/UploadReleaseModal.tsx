@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Upload, Music, Disc, ShieldCheck, Zap, Globe, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { createRelease } from '@/app/actions/music';
+import toast from 'react-hot-toast';
 
 export default function UploadReleaseModal({ isOpen, onClose, isVerified = false }: { isOpen: boolean, onClose: () => void, isVerified?: boolean }) {
   const [step, setStep] = useState(1);
@@ -32,23 +34,45 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
     }, 1500);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
+    if (!title) {
+      toast.error('Title is required');
+      return;
+    }
     setIsUploading(true);
     setUploadProgress(0);
     
+    // Step 1: Simulate audio processing
     const interval = setInterval(() => {
       setUploadProgress(prev => {
-        if (prev >= 100) {
+        if (prev >= 80) {
           clearInterval(interval);
-          setTimeout(() => {
-            setIsUploading(false);
-            setStep(3);
-          }, 500);
-          return 100;
+          return 80;
         }
         return prev + 5;
       });
-    }, 100);
+    }, 50);
+
+    // Step 2: Call real server action
+    const res = await createRelease({
+      title,
+      type,
+      genre,
+      coverArtUrl: coverArt || '/images/default-cover.png',
+      authorizedForRadio: authorizedForRadio && isVerified
+    });
+
+    if (res.success) {
+      setUploadProgress(100);
+      setTimeout(() => {
+        setIsUploading(false);
+        setStep(3);
+      }, 500);
+    } else {
+      clearInterval(interval);
+      setIsUploading(false);
+      toast.error(res.error || 'Failed to deploy release');
+    }
   };
 
   return (

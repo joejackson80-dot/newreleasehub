@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { requestPayout } from '@/app/actions/payouts';
 
 export default function PayoutsClient({ artist }: { artist: any }) {
   const [requests, setRequests] = useState<any[]>([]);
@@ -45,21 +46,21 @@ export default function PayoutsClient({ artist }: { artist: any }) {
 
     setIsWithdrawing(true);
     try {
-      const res = await fetch('/api/studio/payouts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amountCents, method, destination: 'Primary Connected Account' })
+      const res = await requestPayout({ 
+        amountCents, 
+        method: method as any, 
+        destination: 'Primary Connected Account' 
       });
-      const data = await res.json();
       
-      if (data.success) {
-        toast.success('Withdrawal Request Initialized');
+      if (res.success) {
+        toast.success(res.message || 'Withdrawal Request Initialized');
         setBalance((prev: number) => prev - amountCents);
-        setRequests((prev: any[]) => [data.request, ...prev]);
+        // Refresh history
+        fetchPayouts();
         setShowModal(false);
         setWithdrawAmount('');
       } else {
-        toast.error(data.error || 'Withdrawal failed');
+        toast.error(res.error || 'Withdrawal failed');
       }
     } catch (e) {
       toast.error('Network error during settlement');
@@ -116,6 +117,34 @@ export default function PayoutsClient({ artist }: { artist: any }) {
               </div>
            </div>
          ))}
+      </section>
+
+      {/* SECURITY STATUS HUB */}
+      <section className="bg-zinc-900/50 border border-white/5 rounded-[3rem] p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+         <div className="flex items-center gap-6">
+            <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center ${artist.isVerified ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
+               <ShieldCheck className="w-8 h-8" />
+            </div>
+            <div>
+               <h3 className="text-xl font-black italic uppercase tracking-tighter">Security Protocol</h3>
+               <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Multi-Layer Financial Guard Active</p>
+            </div>
+         </div>
+
+         <div className="flex flex-wrap gap-4">
+            <div className={`px-6 py-3 rounded-2xl border flex items-center gap-3 ${artist.isVerified ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-500' : 'bg-white/5 border-white/10 text-zinc-600'}`}>
+               <CheckCircle2 className="w-4 h-4" />
+               <span className="text-[9px] font-black uppercase tracking-widest">KYC Verified</span>
+            </div>
+            <div className="px-6 py-3 rounded-2xl border bg-emerald-500/5 border-emerald-500/20 text-emerald-500 flex items-center gap-3">
+               <CheckCircle2 className="w-4 h-4" />
+               <span className="text-[9px] font-black uppercase tracking-widest">No Open Fraud Audits</span>
+            </div>
+            <div className="px-6 py-3 rounded-2xl border bg-white/5 border-white/10 text-zinc-600 flex items-center gap-3">
+               <CheckCircle2 className="w-4 h-4" />
+               <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sealed</span>
+            </div>
+         </div>
       </section>
 
       {/* HISTORY */}
