@@ -31,7 +31,7 @@ export default function FraudDashboardClient({ flaggedIncidents, topStreamers, e
                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">NRH Institutional Integrity Protocol</span>
               </div>
               <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] font-black tracking-tighter uppercase italic leading-[0.8]">
-                 Forensic<br />
+                 Verified<br />
                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Diagnostics.</span>
               </h1>
               <p className="text-gray-500 text-lg font-medium italic">

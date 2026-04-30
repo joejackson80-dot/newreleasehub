@@ -57,7 +57,7 @@ const SEED_ARTISTS = [
     bio: 'Chicago-bred lyricist and producer. Hellz Flame combines trap production with dense, literary lyricism. A student of the Golden Era, he runs his entire operation — management, touring — independently.',
     profilePhoto: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80',
     headerPhoto: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
-    genres: ['Hip-Hop', 'Trap', 'Conscious Rap'], city: 'Chicago', country: 'US',
+    genres: ['Hip-Hop', 'Trap', 'Conscious Rap'], city: 'Omaha', country: 'NE',
     socialLinks: { instagram: 'hellzflame', twitter: 'hellzflame', tiktok: 'hellzflame' },
     isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 980, totalStreams: 560000, monthlyListeners: 22000, tier: 'rising',
     releases: [
@@ -125,10 +125,10 @@ const SEED_ARTISTS = [
   {
     id: 'artist-demo', slug: 'iamjoejack', name: 'Joe Jack',
     username: 'iamjoejack', email: 'joe@nrh.com',
-    bio: 'The default demo artist for the New Release Hub Studio. Joe is an independent creator experimenting with new distribution models.',
+    bio: 'Joe Jack is a Hip-Hop architect from Omaha, Nebraska. A pioneer in the local scene, Joe has used NRH to bypass traditional distribution and build a direct-to-fan powerhouse that keeps 100% of his master rights.',
     profilePhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80',
     headerPhoto: 'https://images.unsplash.com/photo-1514525253361-bee87184919a?w=800&q=80',
-    genres: ['Electronic', 'Synthwave'], city: 'Digital', country: 'NRH',
+    genres: ['Hip-Hop', 'Omaha Rap'], city: 'Omaha', country: 'NE',
     socialLinks: { twitter: 'iamjoejack' },
     isVerified: true, isLive: false, liveListenerCount: 0, supporterCount: 42, totalStreams: 15000, monthlyListeners: 1200, tier: 'rising',
     releases: [
@@ -233,6 +233,8 @@ async function main() {
   await prisma.badge.deleteMany({});
   await prisma.merch.deleteMany({});
   await prisma.foundingArtistSlot.deleteMany({});
+  await prisma.station.deleteMany({});
+  await prisma.playlist.deleteMany({});
   await prisma.organization.deleteMany({});
   await prisma.user.deleteMany({});
 
@@ -381,6 +383,7 @@ async function main() {
         genres: ['Independent'],
         city: 'TBD',
         country: 'Global',
+        isPublic: false,
       }
     });
   }

@@ -119,7 +119,7 @@ export default function StudioEPKPage({ artist }: { artist: any }) {
                 <div className="space-y-2">
                    <h4 className="text-sm font-bold text-white uppercase tracking-widest">EPK Integrity</h4>
                    <p className="text-[10px] text-gray-500 leading-relaxed font-medium uppercase tracking-widest">
-                      Your Electronic Press Kit is the forensic gateway for industry scouts. Ensure all data points are verified.
+                      Your Electronic Press Kit is the Verified gateway for industry scouts. Ensure all data points are verified.
                    </p>
                 </div>
                 
@@ -150,7 +150,7 @@ export default function StudioEPKPage({ artist }: { artist: any }) {
                    <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Global Visibility</h4>
                 </div>
                 <p className="text-xs text-gray-500 leading-relaxed font-medium">
-                   EPKs are indexed by the New Release Hub Forensic Discovery matrix. High-quality kits increase your Curation Score by up to 15 points.
+                   EPKs are indexed by the New Release Hub Verified Discovery matrix. High-quality kits increase your Curation Score by up to 15 points.
                 </p>
              </div>
 

@@ -28,7 +28,7 @@ const NAV_GROUPS = [
   {
     label: 'Money',
     items: [
-      { href: '/studio/analytics', label: 'Analytics', icon: BarChart3 },
+      { href: '/studio/analytics', label: 'Insights', icon: BarChart3 },
       { href: '/studio/earnings', label: 'Earnings', icon: DollarSign },
       { href: '/studio/earnings', label: 'Payouts', icon: Wallet },
     ],
@@ -43,13 +43,13 @@ const NAV_GROUPS = [
   {
     label: 'Creative',
     items: [
-      { href: '/studio/ai', label: 'AI Studio', icon: Sparkles },
+      { href: '/studio/tools', label: 'Tools Hub', icon: Wrench },
       { href: '/studio/share', label: 'Social Share', icon: Share2 },
     ],
   },
   {
     label: 'Services',
-    items: [{ href: '/services', label: 'Order Services', icon: Wrench }],
+    items: [{ href: '/services', label: 'Marketplace', icon: Palette }],
   },
 ];
 

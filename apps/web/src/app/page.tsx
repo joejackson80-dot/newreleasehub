@@ -54,34 +54,34 @@ export default async function HomePage() {
 
                <div className="space-y-8">
                   <div className="flex items-center space-x-3 text-[#00D2FF]">
-                     <ShieldCheck className="w-4 h-4 fill-current" />
-                     <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The Support-Tier Framework</span>
+                     <Zap className="w-4 h-4 fill-current" />
+                     <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The Independent Alternative</span>
                   </div>
                   <h1 className="text-white text-[clamp(2.5rem,10vw,7.5rem)] font-bold leading-[0.9] uppercase italic tracking-tighter break-words max-w-full">
-                     Own Your<br />
-                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Masters.</span>
+                     Your Music.<br />
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Your Fans.</span>
                   </h1>
                   <p className="text-gray-500 text-[clamp(1rem,2.5vw,1.25rem)] font-medium max-w-lg leading-relaxed italic">
-                      "One platform. Streaming, SUPPORTER income, collab deals, opportunities, and AI tools — all built for independent artists."
+                      "Streaming royalties, supporter income, and collab deals — all built for independent artists who own their masters."
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
-                  <Link href="/studio/login" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">Artist Onboarding</Link>
-                  <Link href="/fan/login" className="px-12 py-5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Public Discovery</Link>
+                  <Link href="/studio/login" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">Artist Studio</Link>
+                  <Link href="/discover" className="px-12 py-5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Start Listening</Link>
                </div>
                
                {/* MISSION BLOCK */}
                 <div className="pt-16 border-t border-white/5">
                    <p className="text-gray-400 text-sm font-medium leading-relaxed max-w-lg italic">
-                     "Built by artists who got tired of earning $0.004 per stream. NRH pays more, takes less, and gives artists the tools to build a real music business — without a label."
+                     "NRH exists to give independent artists a real path to a music career. We pay more, take less, and never ask for your rights. It's your music, your fans, and your money."
                    </p>
                    <div className="mt-8 flex items-center space-x-3">
-                     <p className="text-green-500 text-2xl font-bold uppercase italic tracking-tighter">100%</p>
-                     <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-tight">of your masters,<br />always.</p>
+                     <p className="text-[#00D2FF] text-2xl font-bold uppercase italic tracking-tighter">100%</p>
+                     <p className="text-gray-600 text-[9px] font-bold uppercase tracking-widest leading-tight">ownership of your masters,<br />from day one.</p>
                    </div>
                 </div>
             </div>
-         </div>
+          </div>
       </section>
 
       {/* DISCOVERY FEED */}

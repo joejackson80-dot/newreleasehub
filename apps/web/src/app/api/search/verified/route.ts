@@ -49,10 +49,10 @@ export async function GET(req: Request) {
       }
     });
 
-    // Add mock "Forensic Score" for institutional feel
+    // Add mock "Verified Score" for professional feel
     const enrichedArtists = artists.map(a => ({
       ...a,
-      forensicScore: Math.floor(Math.random() * 20) + 80, // 80-99
+      verifiedScore: Math.floor(Math.random() * 20) + 80, // 80-99
       retentionRate: Math.floor(Math.random() * 15) + 85 // 85-99%
     }));
 

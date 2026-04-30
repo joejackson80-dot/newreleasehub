@@ -77,64 +77,40 @@ body {
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
+  scroll-behavior: smooth;
 }
 
-/* Prevent oversized text on mobile */
+/* Prevent oversized text on mobile and mid-word hyphenation */
 h1, h2, h3, h4, h5, h6 {
-  hyphens: none;
-  -webkit-hyphens: none;
-  -ms-hyphens: none;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -ms-hyphens: none !important;
   overflow-wrap: normal;
   word-break: normal;
 }
 
-/* Base mobile font scale */
-:root {
-  --mobile-padding: 1rem;       /* 16px side padding on mobile */
-  --tablet-padding: 2rem;       /* 32px on tablet */
-  --desktop-padding: 4rem;      /* 64px on desktop */
+/* Ensure all inputs have minimum 16px font-size to prevent iOS zoom */
+input, textarea, select {
+  font-size: 16px !important;
 }
 
-@media (max-width: 768px) {
-  /* Prevent text overflow globally */
-  .container, section, main, article, aside {
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
-}
-
-/* NRH Responsive Type Scale */
+/* NRH Responsive Type Scale using clamp() */
 .text-display-xl {
-  font-size: clamp(2.5rem, 10vw, 7rem);
+  font-size: clamp(2.5rem, 9vw, 6rem);
   line-height: 0.9;
 }
 .text-display-lg {
-  font-size: clamp(2rem, 7vw, 5rem);
+  font-size: clamp(2.25rem, 8vw, 5rem);
   line-height: 0.95;
 }
 .text-display-md {
   font-size: clamp(1.75rem, 5vw, 3.5rem);
   line-height: 1;
 }
-.text-heading-lg {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  line-height: 1.2;
-}
-.text-heading-md {
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  line-height: 1.3;
-}
-.text-body-lg {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
-}
-.text-body {
-  font-size: clamp(0.875rem, 1.5vw, 1rem);
-  line-height: 1.6;
-}
-.text-caption {
-  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
-  line-height: 1.5;
+
+/* Tap targets */
+button, a {
+  min-height: 44px;
 }
 
 /* Hide scrollbar visually but keep functionality */
@@ -152,13 +128,4 @@ h1, h2, h3, h4, h5, h6 {
 }
 .safe-area-top {
   padding-top: env(safe-area-inset-top, 0px);
-}
-
-/* Touch-friendly tap targets */
-.tap-target {
-  min-height: 44px;
-  min-width: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

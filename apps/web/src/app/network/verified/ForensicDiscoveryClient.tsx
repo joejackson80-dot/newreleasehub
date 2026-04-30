@@ -16,7 +16,7 @@ const SORT_OPTIONS = [
   { id: 'streams', label: 'Global Streams' }
 ];
 
-export default function ForensicDiscoveryClient() {
+export default function VerifiedDiscoveryClient() {
   const [query, setQuery] = useState('');
   const [genre, setGenre] = useState('All');
   const [sortBy, setSortBy] = useState('relevance');
@@ -34,7 +34,7 @@ export default function ForensicDiscoveryClient() {
           genre,
           sortBy
         });
-        const res = await fetch(`/api/search/forensic?${params.toString()}`);
+        const res = await fetch(`/api/search/verified?${params.toString()}`);
         const data = await res.json();
         if (data.success) {
           setArtists(data.artists);
@@ -59,14 +59,14 @@ export default function ForensicDiscoveryClient() {
            <div className="space-y-6">
               <div className="flex items-center space-x-3 text-[#00D2FF]">
                  <BarChart3 className="w-5 h-5" />
-                 <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Intelligence Terminal</span>
+                 <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Intelligence Terminal</span>
               </div>
               <h1 className="text-[clamp(2.25rem,8vw,4.5rem)] font-black tracking-tighter uppercase italic leading-[0.8]">
-                 Forensic<br />
+                 Verified<br />
                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Discovery.</span>
               </h1>
               <p className="text-gray-500 max-w-xl font-medium italic">
-                Analyze network equity, track artist momentum, and identify high-growth talent using forensic metrics.
+                Analyze network equity, track artist momentum, and identify high-growth talent using Verified metrics.
               </p>
            </div>
            
@@ -97,7 +97,7 @@ export default function ForensicDiscoveryClient() {
                 className={`px-8 py-6 rounded-3xl border transition-all flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest ${showFilters ? 'bg-[#00D2FF] border-[#00D2FF] text-white' : 'bg-[#0A0A0A] border-white/5 text-gray-400 hover:border-white/20'}`}
               >
                  <SlidersHorizontal className="w-4 h-4" />
-                 Forensic Filters
+                 Verified Filters
                  <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
               </button>
            </div>
@@ -178,7 +178,7 @@ export default function ForensicDiscoveryClient() {
            {loading ? (
              <div className="py-40 flex flex-col items-center justify-center space-y-6">
                 <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
-                <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em] animate-pulse">Running Forensic Diagnostics...</p>
+                <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em] animate-pulse">Running Verified Diagnostics...</p>
              </div>
            ) : viewMode === 'grid' ? (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -202,8 +202,8 @@ export default function ForensicDiscoveryClient() {
                            )}
                         </div>
                         <div className="text-right">
-                           <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Forensic Score</p>
-                           <p className="text-4xl font-black italic text-white tracking-tighter">{artist.forensicScore}</p>
+                           <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Verified Score</p>
+                           <p className="text-4xl font-black italic text-white tracking-tighter">{artist.verifiedScore}</p>
                         </div>
                      </div>
 
@@ -281,9 +281,9 @@ export default function ForensicDiscoveryClient() {
                               <td className="p-8">
                                  <div className="flex items-center gap-3">
                                     <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                       <div className="h-full bg-[#00D2FF]" style={{ width: `${artist.forensicScore}%` }}></div>
+                                       <div className="h-full bg-[#00D2FF]" style={{ width: `${artist.verifiedScore}%` }}></div>
                                     </div>
-                                    <span className="text-sm font-black italic text-white">{artist.forensicScore}</span>
+                                    <span className="text-sm font-black italic text-white">{artist.verifiedScore}</span>
                                  </div>
                               </td>
                               <td className="p-8 text-right">

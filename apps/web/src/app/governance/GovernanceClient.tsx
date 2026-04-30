@@ -87,7 +87,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
            <div key={i} className="bg-[#111] border border-white/05 p-4 sm:p-6 rounded-2xl sm:rounded-3xl space-y-2">
              <div className="flex items-center justify-between">
                 <s.icon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
-                <span className="text-[8px] sm:text-[9px] font-bold text-gray-600 uppercase tracking-widest">FORENSIC DATA</span>
+                <span className="text-[8px] sm:text-[9px] font-bold text-gray-600 uppercase tracking-widest">Verified DATA</span>
              </div>
              <p className="text-lg sm:text-xl font-black italic text-white tracking-tight">{s.value}</p>
              <p className="text-[8px] sm:text-[9px] font-bold text-gray-500 uppercase tracking-widest">{s.label}</p>
@@ -147,7 +147,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
                               </div>
                               <div className="text-right">
                                  <p className="text-[9px] font-bold text-white uppercase tracking-widest italic">{p.totalWeight.toLocaleString()} Weighted Units</p>
-                                 <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{p._count.Votes} Forensic Entries</p>
+                                 <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{p._count.Votes} Verified Entries</p>
                               </div>
                            </div>
                            <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden flex">
@@ -156,10 +156,10 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
                            </div>
                         </div>
 
-                        {/* FORENSIC AUDIT LOG */}
+                        {/* Verified AUDIT LOG */}
                         <div className="bg-black/40 rounded-2xl p-6 border border-white/5 space-y-4">
                            <div className="flex items-center justify-between border-b border-white/5 pb-3">
-                              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em]">Forensic Audit Log</span>
+                              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em]">Verified Audit Log</span>
                               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                            </div>
                            <div className="space-y-3">

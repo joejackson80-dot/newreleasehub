@@ -109,7 +109,7 @@ export default function SubscribePage() {
         <div className="text-center space-y-12 mb-24">
           <div className="flex items-center justify-center space-x-3 text-[#00D2FF]">
             <Zap className="w-4 h-4 fill-current" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Grade Access</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Professional Network Access</span>
           </div>
           <h1 className="text-[clamp(2.5rem,9vw,5.5rem)] font-bold tracking-tighter leading-[0.8] uppercase italic">
              Upgrade Your<br />

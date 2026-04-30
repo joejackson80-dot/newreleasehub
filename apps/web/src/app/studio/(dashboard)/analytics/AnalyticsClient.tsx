@@ -23,7 +23,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
       const data = await res.json();
       if (data.success) setStats(data.stats);
     } catch (e) {
-      toast.error('Forensic data sync failed');
+      toast.error('Verified data sync failed');
     } finally {
       setIsLoading(false);
     }
@@ -37,11 +37,11 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
          <div className="space-y-4">
             <div className="flex items-center gap-3 text-[#00D2FF]">
                <Activity className="w-5 h-5" />
-               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Analytics Engine</span>
+               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Analytics Engine</span>
             </div>
             <h1 className="text-[clamp(3.5rem,12vw,6rem)] font-black italic uppercase tracking-tighter leading-none">Insights.</h1>
             <p className="text-zinc-500 font-medium italic max-w-xl text-sm sm:text-base">
-               Monitor live listener behavior, forensic stream auditing, and global network equity in high-fidelity.
+               Monitor live listener behavior, Verified stream auditing, and global network equity in high-fidelity.
             </p>
          </div>
 
@@ -69,7 +69,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
            { label: 'Total Streams', value: stats?.totalStreams?.toLocaleString() || '0', sub: 'Verified & Suspicious', icon: Activity, color: 'text-white' },
            { label: 'Verified Plays', value: stats?.verifiedStreams?.toLocaleString() || '0', sub: 'Protocol Authorized', icon: ShieldAlert, color: 'text-[#00D2FF]' },
            { label: 'Unique Listeners', value: artist?.supporterCount?.toLocaleString() || '0', sub: 'Network Equity', icon: Users, color: 'text-white' },
-           { label: 'Retention Score', value: '84%', sub: 'Forensic Measurement', icon: Zap, color: 'text-purple-400' }
+           { label: 'Retention Score', value: '84%', sub: 'Verified Measurement', icon: Zap, color: 'text-purple-400' }
          ].map((stat, i) => (
            <div key={i} className="bg-[#0A0A0A] border border-white/10 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 relative group hover:border-[#00D2FF66] transition-all cursor-default overflow-hidden">
               <div className="flex items-center justify-between">
@@ -95,7 +95,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
             <div className="flex items-center justify-between relative z-10">
                <div className="space-y-1">
                   <h3 className="text-xl font-black italic uppercase tracking-tighter">Playback Velocity</h3>
-                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Forensic 14-Day View</p>
+                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Verified 14-Day View</p>
                </div>
                <div className="flex gap-2">
                   {['7D', '14D', '30D', '90D'].map(t => (
@@ -158,7 +158,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
             </div>
 
             <button className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all flex items-center justify-center gap-2">
-               Full Forensic Map <MapIcon className="w-3 h-3" />
+               Full Verified Map <MapIcon className="w-3 h-3" />
             </button>
          </div>
       </div>
@@ -188,7 +188,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
 
             <div className="space-y-6 flex-1 w-full text-center sm:text-left">
                <div className="space-y-1">
-                  <h3 className="text-xl font-black italic uppercase tracking-tighter">Forensic Audit</h3>
+                  <h3 className="text-xl font-black italic uppercase tracking-tighter">Verified Audit</h3>
                   <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Real-time Fraud Detection</p>
                </div>
                <div className="space-y-4">
@@ -250,7 +250,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                <Info className="w-5 h-5 text-amber-500" />
             </div>
             <p className="text-[9px] font-bold text-zinc-500 uppercase leading-relaxed tracking-widest italic">
-               Institutional data is processed every 15 minutes. Forensic scores are calculated using a proprietary 12-point authentication matrix. Malicious streaming activity is automatically excluded from revenue pools.
+               Institutional data is processed every 15 minutes. Verified scores are calculated using a proprietary 12-point authentication matrix. Malicious streaming activity is automatically excluded from revenue pools.
             </p>
          </div>
          <button className="px-12 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_50px_rgba(0,210,255,0.2)]">

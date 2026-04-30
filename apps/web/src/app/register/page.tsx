@@ -1,141 +1,102 @@
 'use client';
-import React, { useState } from 'react';
-import { Mail, Globe, Zap, ArrowLeft, ArrowRight, Music, Users } from 'lucide-react';
+import React from 'react';
 import Link from 'next/link';
+import { User, Music, ArrowLeft, ArrowRight, Zap, ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import BrandLogo from '@/components/layout/BrandLogo';
 
 export default function RegisterPage() {
-  const [role, setRole] = useState<'fan' | 'artist' | null>(null);
-
-  if (!role) {
-    return (
-      <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-10 font-sans selection:bg-[#00D2FF] selection:text-white">
-        <div className="fixed inset-0 pointer-events-none">
-           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}></div>
-        </div>
-
-        <div className="w-full max-w-4xl relative z-10 space-y-12">
-          <div className="text-center space-y-4">
-             <Link href="/" className="inline-flex items-center space-x-2 text-gray-500 hover:text-white transition-colors mb-4">
-                <ArrowLeft className="w-4 h-4" />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Back to Home</span>
-             </Link>
-             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter italic uppercase leading-none">Join the <span className="text-[#00D2FF]">Network.</span></h1>
-             <p className="text-gray-500 font-medium tracking-wide">Choose how you want to use New Release Hub.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-             <button onClick={() => setRole('fan')} className="group bg-[#111] border border-white/5 hover:border-[#00D2FF]/50 rounded-[2rem] p-10 text-left transition-all hover:shadow-[0_0_30px_rgba(0,210,255,0.1)] hover:-translate-y-2">
-                <div className="w-16 h-16 rounded-2xl bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                   <Users className="w-8 h-8" />
-                </div>
-                <h3 className="text-3xl font-bold uppercase italic tracking-tighter mb-4">I'm a Fan</h3>
-                <p className="text-gray-500 font-medium leading-relaxed mb-8">Discover independent artists, join exclusive SUPPORTER tiers, and earn a share of streaming royalties.</p>
-                <div className="inline-flex items-center space-x-2 text-[#00D2FF] font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                   <span>Sign up as Fan</span>
-                   <ArrowRight className="w-4 h-4" />
-                </div>
-             </button>
-
-             <button onClick={() => setRole('artist')} className="group bg-[#111] border border-white/5 hover:border-purple-500/50 rounded-[2rem] p-10 text-left transition-all hover:shadow-[0_0_30px_rgba(168,85,247,0.1)] hover:-translate-y-2">
-                <div className="w-16 h-16 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                   <Music className="w-8 h-8" />
-                </div>
-                <h3 className="text-3xl font-bold uppercase italic tracking-tighter mb-4">I'm an Artist</h3>
-                <p className="text-gray-500 font-medium leading-relaxed mb-8">Keep 100% of your masters, build a SUPPORTER community, and access the command center.</p>
-                <div className="inline-flex items-center space-x-2 text-purple-400 font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                   <span>Sign up as Artist</span>
-                   <ArrowRight className="w-4 h-4" />
-                </div>
-             </button>
-          </div>
-          
-          <div className="text-center pt-8 border-t border-white/5">
-             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                Already have an account? <Link href="/login" className="text-white hover:text-[#00D2FF] transition-colors ml-2">Sign In Here</Link>
-             </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Simplified form for either role
-  const roleColor = role === 'artist' ? 'text-purple-400' : 'text-[#00D2FF]';
-  const roleBg = role === 'artist' ? 'bg-purple-500/10 border-purple-500/20' : 'bg-[#00D2FF]/10 border-[#00D2FF]/20';
-  const submitDest = role === 'artist' ? '/studio' : '/welcome';
-
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-10 font-sans selection:bg-white selection:text-black">
-      <div className="fixed inset-0 pointer-events-none">
-         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}></div>
-         <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full h-[60vh] bg-gradient-to-b ${role === 'artist' ? 'from-purple-500/10' : 'from-[#00D2FF]/10'} via-transparent to-transparent`}></div>
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col font-sans selection:bg-[#00D2FF] selection:text-white">
+      
+      {/* HEADER */}
+      <div className="p-8 flex justify-between items-center relative z-10">
+         <Link href="/" className="flex items-center space-x-3 group">
+            <BrandLogo className="w-10 h-10 transform group-hover:scale-105 transition-transform" />
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-white hidden sm:block">New Release Hub</span>
+         </Link>
+         <Link href="/login" className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 hover:text-white transition-colors">Already have an account? Sign In</Link>
       </div>
 
-      <div className="w-full max-w-md space-y-12 relative z-10">
-        <div className="text-center space-y-4">
-           <button onClick={() => setRole(null)} className="inline-flex items-center space-x-2 text-gray-500 hover:text-white transition-colors mb-4">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-[10px] font-bold uppercase tracking-widest">Back to Roles</span>
-           </button>
-           <h1 className="text-3xl font-bold tracking-tighter italic uppercase leading-none">Create<br /><span className={roleColor}>{role} Account.</span></h1>
-        </div>
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
+         {/* BACKGROUND VIBE */}
+         <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#00D2FF1a] rounded-full blur-[120px]"></div>
+         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); window.location.href = submitDest; }} className="space-y-6">
-           <div className="space-y-4">
-              <div className="relative">
-                <input 
-                  type="text" 
-                  required
-                  placeholder="USERNAME" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
-                />
-              </div>
-              <div className="relative">
-                <input 
-                  type="email" 
-                  required
-                  placeholder="EMAIL ADDRESS" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
-                />
-              </div>
-              <div className="relative">
-                <input 
-                  type="password" 
-                  required
-                  placeholder="PASSWORD" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
-                />
-              </div>
+         <div className="max-w-4xl w-full space-y-16 relative z-10">
+            <div className="text-center space-y-6">
+               <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] font-bold tracking-tighter italic uppercase leading-[0.85] text-white">
+                  Join the<br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-700">Next Era.</span>
+               </h1>
+               <p className="text-gray-500 text-lg font-medium max-w-xl mx-auto italic">
+                  Choose your path in the independent music network.
+               </p>
+            </div>
 
-              <button 
-                type="submit"
-                className="w-full py-4 rounded-2xl bg-white text-black font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-gray-200 transition-all shadow-xl flex items-center justify-center space-x-2 mt-4"
-              >
-                <span>Create Account</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-           </div>
-           
-           <div className="flex items-center space-x-4 py-2">
-              <div className="flex-1 h-px bg-white/5"></div>
-              <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">or sign up with</span>
-              <div className="flex-1 h-px bg-white/5"></div>
-           </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               
+               {/* ARTIST PATH */}
+               <Link href="/studio/login" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-[#00D2FF4d] hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                     <Music className="w-32 h-32 text-[#00D2FF]" />
+                  </div>
+                  <div className="w-16 h-16 rounded-2xl bg-[#00D2FF1a] flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                     <Sparkles className="w-8 h-8" />
+                  </div>
+                  <div className="space-y-4">
+                     <h2 className="text-3xl font-bold uppercase italic tracking-tighter text-white">Join as Artist</h2>
+                     <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                        Own your masters, build your supporter base, and earn more from every stream. No label required.
+                     </p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-[#00D2FF] font-bold text-[10px] uppercase tracking-[0.2em]">
+                     <span>Enter Studio Portal</span>
+                     <ArrowRight className="w-4 h-4" />
+                  </div>
+               </Link>
 
-           <div className="grid grid-cols-2 gap-4">
-              <button type="button" className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group">
-                  <Globe className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                 <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
-              </button>
-              <button type="button" className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group">
-                  <Zap className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                 <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
-              </button>
-           </div>
-        </form>
+               {/* FAN PATH */}
+               <Link href="/login" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-white/20 hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                     <User className="w-32 h-32 text-white" />
+                  </div>
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all">
+                     <Heart className="w-8 h-8" />
+                  </div>
+                  <div className="space-y-4">
+                     <h2 className="text-3xl font-bold uppercase italic tracking-tighter text-white">Join as Fan</h2>
+                     <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                        Discover independent talent, support your favorite artists, and participate in their success.
+                     </p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-white/50 font-bold text-[10px] uppercase tracking-[0.2em] group-hover:text-white transition-colors">
+                     <span>Access Fan Dashboard</span>
+                     <ArrowRight className="w-4 h-4" />
+                  </div>
+               </Link>
+
+            </div>
+
+            <div className="pt-12 text-center">
+               <Link href="/" className="inline-flex items-center space-x-3 text-gray-700 hover:text-white transition-colors">
+                  <ArrowLeft className="w-4 h-4" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Back to Discover</span>
+               </Link>
+            </div>
+         </div>
       </div>
+
+      {/* FOOTER */}
+      <div className="p-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 bg-[#020202]">
+         <p className="text-[10px] text-gray-700 font-bold uppercase tracking-widest leading-none">© 2025 New Release Hub LLC. All rights reserved.</p>
+         <div className="flex space-x-8 text-[10px] text-gray-700 font-bold uppercase tracking-widest">
+            <Link href="/terms" className="hover:text-white">Terms</Link>
+            <Link href="/privacy" className="hover:text-white">Privacy</Link>
+            <Link href="/contact" className="hover:text-white">Support</Link>
+         </div>
+      </div>
+
     </div>
   );
 }
-
-

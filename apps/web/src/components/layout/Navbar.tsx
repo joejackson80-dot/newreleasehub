@@ -8,7 +8,6 @@ import BrandLogo from './BrandLogo';
 
 const NAV_ITEMS = [
   { label: 'Discover', href: '/discover', icon: Zap },
-  { label: 'Radio', href: '/radio', icon: Radio },
   { label: 'Charts', href: '/network/charts', icon: TrendingUp },
   { label: 'Opportunities', href: '/network/board', icon: Award },
   { label: 'Pricing', href: '/pricing', icon: DollarSign },
@@ -99,15 +98,16 @@ export default function Navbar() {
 
              <div className="flex-1 overflow-y-auto p-8 space-y-12 pb-32">
                 
-                {/* INSTITUTIONAL SECTION */}
+                {/* EXPLORE SECTION */}
                 <div className="space-y-6">
-                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Network Intelligence</p>
+                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Explore</p>
                    <div className="grid grid-cols-1 gap-4">
                       {[
-                        { label: 'Forensic Discovery', href: '/network/forensic', icon: Search, desc: 'Analyze entity equity' },
-                        { label: 'Governance Board', href: '/governance', icon: Award, desc: 'Exercise voting rights' },
-                        { label: 'Network Charts', href: '/network/charts', icon: TrendingUp, desc: 'Momentum analytics' },
-                        { label: 'NRH Radio', href: '/radio', icon: Radio, desc: '24/7 curated network sound' }
+                        { label: 'Discover', href: '/discover', icon: Zap },
+                        { label: 'Charts', href: '/network/charts', icon: TrendingUp },
+                        { label: 'Opportunities', href: '/network/board', icon: Award },
+                        { label: 'Verified Discovery', href: '/network/verified', icon: Search },
+                        { label: 'Pricing', href: '/pricing', icon: DollarSign }
                       ].map((item) => (
                         <Link key={item.label} href={item.href} onClick={() => setIsOpen(false)} className="bg-[#111] border border-white/5 rounded-2xl p-5 flex items-center gap-5 group active:scale-[0.98] transition-all">
                            <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
@@ -115,21 +115,19 @@ export default function Navbar() {
                            </div>
                            <div className="flex-1">
                               <p className="font-bold text-white text-sm uppercase italic">{item.label}</p>
-                              <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{item.desc}</p>
                            </div>
                         </Link>
                       ))}
                    </div>
                 </div>
 
-                {/* PROFESSIONAL SECTION */}
+                {/* ARTIST SECTION */}
                 <div className="space-y-6">
-                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Artist Suite</p>
+                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Artist Studio</p>
                    <div className="grid grid-cols-1 gap-4">
                       {[
                         { label: 'Studio Dashboard', href: '/studio', icon: Zap },
-                        { label: 'Opportunity Board', href: '/network/board', icon: DollarSign },
-                        { label: 'Collab Matrix', href: '/studio/collab', icon: Users }
+                        { label: 'Opportunity Board', href: '/network/board', icon: DollarSign }
                       ].map((item) => (
                         <Link key={item.label} href={item.href} onClick={() => setIsOpen(false)} className="flex items-center gap-5 p-2 group">
                            <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-500 group-hover:text-white transition-colors">
@@ -141,23 +139,11 @@ export default function Navbar() {
                    </div>
                 </div>
 
-                {/* COMMUNITY & SUPPORT */}
-                <div className="space-y-6">
-                   <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Support & Legal</p>
-                   <div className="flex flex-wrap gap-3">
-                      {['Pricing', 'Whitepaper', 'Privacy', 'Security'].map(label => (
-                        <Link key={label} href={`/${label.toLowerCase()}`} onClick={() => setIsOpen(false)} className="px-5 py-3 bg-white/5 border border-white/10 rounded-xl text-[9px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
-                           {label}
-                        </Link>
-                      ))}
-                   </div>
-                </div>
-
              </div>
 
              <div className="p-8 border-t border-white/5 bg-[#0A0A0A] space-y-4">
                 <Link href="/login" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block">Sign In</Link>
-                <Link href="/register" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block shadow-[0_10px_30px_rgba(0,210,255,0.3)]">Join the Network</Link>
+                <Link href="/register" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block shadow-[0_10px_30px_rgba(0,210,255,0.3)]">Join Free</Link>
              </div>
           </motion.div>
         )}

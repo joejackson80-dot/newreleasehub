@@ -88,23 +88,11 @@ export default function ArtistLogin() {
               <span>{isSubmitting ? 'Verifying...' : 'Unlock Control Center'}</span>
               {!isSubmitting && <ArrowRight className="w-3.5 h-3.5" />}
             </button>
-
-            <button 
-              type="button"
-              onClick={() => {
-                setIdentifier('iamjoejack');
-                setPassword('Password123');
-              }}
-              className="w-full py-3 rounded-lg bg-white/5 border border-white/10 text-gray-400 font-bold text-[9px] uppercase tracking-[0.2em] hover:bg-white/10 hover:text-white transition-all"
-            >
-              Autofill Artist Demo
-            </button>
           </div>
         </form>
 
         <div className="mt-8 text-center border-t border-[var(--color-studio-border)] pt-8 space-y-4">
            <Link href="/login" className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-[0.2em] block">Switch to Fan Access Portal</Link>
-           <p className="text-[9px] text-gray-600 uppercase tracking-widest font-medium">Demo: iamjoejack / Password123</p>
         </div>
       </div>
     </div>

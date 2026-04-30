@@ -186,7 +186,7 @@ export default function CustomizePage() {
                 <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-1">Institutional Asset Management</p>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed italic">
-                "Curate your high-fidelity masters. Pinned assets appear as forensic-grade commercial entities on your authority profile."
+                "Curate your high-fidelity masters. Pinned assets appear as Verified-grade commercial entities on your authority profile."
               </p>
             </div>
 
@@ -346,7 +346,7 @@ export default function CustomizePage() {
            <div className="px-12 mt-16 space-y-6">
               <div className="flex items-center justify-between">
                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border-b border-white/5 pb-2">Institutional Vault</h3>
-                 <span className="text-[8px] font-black text-[#00D2FF] uppercase tracking-widest">3 Forensic Assets</span>
+                 <span className="text-[8px] font-black text-[#00D2FF] uppercase tracking-widest">3 Verified Assets</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                  {[1, 2].map(i => (

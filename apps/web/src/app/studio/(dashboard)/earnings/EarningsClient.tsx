@@ -99,7 +99,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
            <div className="space-y-4">
              <div className="flex items-center space-x-3 text-[#00D2FF]">
                <ShieldCheck className="w-4 h-4 fill-current" />
-               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Settlement Hub</span>
+               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Settlement Hub</span>
              </div>
              <h1 className="text-4xl md:text-6xl font-bold tracking-tighter italic uppercase text-white leading-none">Revenue<br />Control.</h1>
            </div>
@@ -187,7 +187,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
                })
             ) : (
                <div className="w-full h-full flex items-center justify-center border border-dashed border-white/5 rounded-2xl">
-                  <p className="text-[10px] font-bold text-gray-700 uppercase tracking-widest italic">Awaiting Forensic Data Consolidation...</p>
+                  <p className="text-[10px] font-bold text-gray-700 uppercase tracking-widest italic">Awaiting Verified Data Consolidation...</p>
                </div>
             )}
          </div>

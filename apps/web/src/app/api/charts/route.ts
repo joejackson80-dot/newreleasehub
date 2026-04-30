@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 
       ranking = orgs.map(org => ({
         ...org,
-        forensicScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
+        verifiedScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
       }));
     } else if (genre === 'Rising') {
       const orgs = await prisma.organization.findMany({
@@ -54,7 +54,7 @@ export async function GET(req: Request) {
 
       ranking = orgs.map(org => ({
         ...org,
-        forensicScore: Math.min(99, 65 + Math.floor(org.supporterCount / 5) + Math.min(15, Math.floor(org.totalStreams / 5000)))
+        verifiedScore: Math.min(99, 65 + Math.floor(org.supporterCount / 5) + Math.min(15, Math.floor(org.totalStreams / 5000)))
       }));
     } else if (genre === 'Top Fans') {
       ranking = await prisma.user.findMany({
@@ -100,7 +100,7 @@ export async function GET(req: Request) {
 
       ranking = orgs.map(org => ({
         ...org,
-        forensicScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
+        verifiedScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
       }));
     }
 

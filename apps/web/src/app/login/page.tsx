@@ -86,17 +86,6 @@ export default function FanLoginPage() {
                   <span>{isSubmitting ? 'Authenticating...' : 'Sign In to Network'}</span>
                   {!isSubmitting && <ArrowRight className="w-3.5 h-3.5" />}
                 </button>
-
-                <button 
-                  type="button"
-                  onClick={() => {
-                    setIdentifier('johndoe');
-                    setPassword('Password123');
-                  }}
-                  className="w-full py-3 rounded-2xl bg-white/5 border border-white/10 text-gray-500 font-bold text-[9px] uppercase tracking-[0.2em] hover:bg-white/10 hover:text-white transition-all"
-                >
-                  Autofill Fan Demo
-                </button>
               </div>
            </div>
            
@@ -119,9 +108,6 @@ export default function FanLoginPage() {
         </form>
 
         <div className="text-center space-y-6 pt-10">
-           <p className="text-[9px] text-gray-700 uppercase tracking-tighter max-w-xs mx-auto">
-              Demo: johndoe / Password123
-           </p>
            <div className="pt-4">
               <Link href="/studio/login" className="text-[10px] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-[0.2em]">Artist? Access Studio Portal</Link>
            </div>

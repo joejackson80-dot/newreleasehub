@@ -19,7 +19,7 @@ export const getStripeSession = async (bidId: string, amountCents: number, artis
           currency: 'usd',
           product_data: {
             name: 'NRH Master Participation License',
-            description: `Forensic participation in artist master royalties. Bid ID: ${bidId}`,
+            description: `Verified participation in artist master royalties. Bid ID: ${bidId}`,
           },
           unit_amount: amountCents,
         },
@@ -31,7 +31,7 @@ export const getStripeSession = async (bidId: string, amountCents: number, artis
     metadata: {
       bidId: bidId,
       type: 'MASTER_PARTICIPATION',
-      protocol: 'INSTITUTIONAL_V2.4'
+      protocol: 'PROFESSIONAL_V2.4'
     },
     payment_intent_data: {
       application_fee_amount: Math.floor(amountCents * 0.05), // 5% platform fee
@@ -59,7 +59,7 @@ export const createSubscriptionSession = async (userId: string, userEmail: strin
     metadata: {
       userId: userId,
       type: 'SUPPORT_TIER_SUBSCRIPTION',
-      protocol: 'INSTITUTIONAL_V2.4'
+      protocol: 'PROFESSIONAL_V2.4'
     },
     success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/fan/me?subscription=success`,
     cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/subscribe`,

@@ -116,7 +116,7 @@ export default function ChartsPage() {
                     </div>
                     <div className="space-y-4">
                       <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                          <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Authority: {artists[0].forensicScore || 85}</span>
+                          <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Authority: {artists[0].verifiedScore || 85}</span>
                           <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
                       </div>
                       <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-black italic uppercase tracking-tighter leading-none truncate max-w-[280px] sm:max-w-lg">{artists[0].name}</h2>
@@ -226,7 +226,7 @@ export default function ChartsPage() {
                             <div className="space-y-3">
                                <div className="flex justify-between items-end">
                                    <span className="text-white font-black italic text-lg">
-                                     {activeGenre === 'Top Fans' ? artist.fanXP : (artist.forensicScore || 0)}
+                                     {activeGenre === 'Top Fans' ? artist.fanXP : (artist.verifiedScore || 0)}
                                    </span>
                                    <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
                                      {activeGenre === 'Top Fans' ? 'XP' : 'Authority'}
@@ -237,7 +237,7 @@ export default function ChartsPage() {
                                      className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000"                                     style={{ 
                                         width: activeGenre === 'Top Fans' 
                                           ? `${(artist.fanXP / (artist.fanLevel * 500)) * 100}%` 
-                                          : `${artist.forensicScore || 10}%` 
+                                          : `${artist.verifiedScore || 10}%` 
                                       }}
                                   ></div>
                                </div>
@@ -290,7 +290,7 @@ export default function ChartsPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-[#00D2FF] font-black italic text-sm">
-                          {activeGenre === 'Top Fans' ? artist.fanXP : (artist.forensicScore || 0)}
+                          {activeGenre === 'Top Fans' ? artist.fanXP : (artist.verifiedScore || 0)}
                         </p>
                         <p className="text-[7px] font-bold text-zinc-700 uppercase tracking-widest">Score</p>
                       </div>
@@ -314,7 +314,7 @@ export default function ChartsPage() {
            <div className="max-w-xl space-y-4">
               <h4 className="text-3xl font-black italic uppercase tracking-tighter">Scale Your Network Equity.</h4>
               <p className="text-zinc-500 font-medium text-sm leading-relaxed uppercase tracking-widest">
-                 The NRH Authority score is calculated using 12 forensic data points. <br />
+                 The NRH Authority score is calculated using 12 Verified data points. <br />
                  Release music, grow your SUPPORTERs, and dominate the charts.
               </p>
            </div>

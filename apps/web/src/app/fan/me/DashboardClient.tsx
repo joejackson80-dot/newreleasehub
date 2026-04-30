@@ -144,7 +144,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
              <div className="space-y-3">
                <div className="flex items-center space-x-3 text-[#00D2FF]">
                   <ShieldCheck className="w-4 h-4 fill-current" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Network Terminal</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Network Terminal</span>
                </div>
                <h1 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter italic leading-none text-white">Portfolio<br />Tracker.</h1>
              </div>
@@ -554,7 +554,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          <TrendingUp className="w-20 h-20 text-[#00D2FF]" />
                       </div>
                       <div className="space-y-1">
-                         <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Forensic Yield Projection</h4>
+                         <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Verified Yield Projection</h4>
                          <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Predicted 12-Month Performance</p>
                       </div>
                       <div className="flex items-end gap-4">

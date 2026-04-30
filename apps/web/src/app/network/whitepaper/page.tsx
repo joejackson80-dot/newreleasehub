@@ -32,7 +32,7 @@ export default function NetworkWhitepaper() {
                      </h1>
                   </div>
                   <p className="text-xl text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">
-                     A forensic support model enabling independent artists to retain 100% master ownership while sharing commercial success with the global collective.
+                     A Verified support model enabling independent artists to retain 100% master ownership while sharing commercial success with the global collective.
                   </p>
                </div>
             </FadeIn>
@@ -58,10 +58,10 @@ export default function NetworkWhitepaper() {
          ))}
       </section>
 
-      {/* FORENSIC GATING SECTION */}
+      {/* Verified GATING SECTION */}
       <section className="max-w-6xl mx-auto px-10 py-32 space-y-20">
          <div className="max-w-3xl space-y-8">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter italic uppercase text-white">Forensic Gating<br />Protocols.</h2>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter italic uppercase text-white">Verified Gating<br />Protocols.</h2>
             <p className="text-gray-500 font-medium leading-relaxed">
                The NRH Professional Network utilizes a multi-layered reputation engine to gate commercial assets and exclusive drops. This ensures that high-value opportunities are reserved for participants with verified platform authority.
             </p>
@@ -112,7 +112,7 @@ export default function NetworkWhitepaper() {
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {[
               { title: 'Direct Streaming Yield', desc: 'A proportional share of all master royalty payments processed through NRH settlement nodes.' },
-              { title: 'Asset Appreciation', desc: 'As an artist\'s Forensic Score rises, the inherent value of support positions increases within the secondary market.' },
+              { title: 'Asset Appreciation', desc: 'As an artist\'s Verified Score rises, the inherent value of support positions increases within the secondary market.' },
               { title: 'Governance Power', desc: 'Holders of high-yield positions acquire weighted voting rights on institutional network proposals.' }
             ].map((mech, i) => (
               <div key={i} className="space-y-6 p-8 border-l border-white/5 hover:border-[#00D2FF] transition-all group">

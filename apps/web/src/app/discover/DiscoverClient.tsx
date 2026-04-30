@@ -104,7 +104,7 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
                  <Zap className="w-5 h-5" />
                  <span className="text-xs font-bold uppercase tracking-widest">Discovery Hub</span>
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase leading-[0.9]">
+              <h1 className="text-[clamp(2.5rem,10vw,5rem)] font-bold tracking-tighter uppercase leading-[0.9]">
                  Find Your<br />Sound.
               </h1>
               <p className="text-gray-500 max-w-xl font-medium leading-relaxed">

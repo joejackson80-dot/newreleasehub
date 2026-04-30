@@ -180,7 +180,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                          </td>
                          <td className="p-8 text-right">
                             <button className="text-[9px] font-black uppercase tracking-widest text-zinc-600 hover:text-white transition-colors">
-                               Forensic Data <ChevronRight className="w-4 h-4 inline" />
+                               Verified Data <ChevronRight className="w-4 h-4 inline" />
                             </button>
                          </td>
                       </tr>
@@ -256,7 +256,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                     <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex items-start gap-3">
                        <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                        <p className="text-[9px] font-bold text-amber-500/80 uppercase leading-relaxed tracking-widest">
-                          Settlements take 3-5 business days to clear. High-value withdrawals may trigger forensic compliance auditing.
+                          Settlements take 3-5 business days to clear. High-value withdrawals may trigger Verified compliance auditing.
                        </p>
                     </div>
 

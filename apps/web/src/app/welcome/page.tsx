@@ -36,7 +36,7 @@ export default function WelcomePage() {
   return (
     <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center px-6 py-20">
 
-      {/* INSTITUTIONAL LOGO */}
+      {/* PROFESSIONAL LOGO */}
       <div className="mb-20">
          <Link href="/" className="w-12 h-12 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform">N</Link>
       </div>
@@ -68,7 +68,7 @@ export default function WelcomePage() {
             <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 border border-[#00D2FF]/20 flex items-center justify-center mx-auto">
               <Music className="w-6 h-6 text-[#00D2FF]" />
             </div>
-            <h1 className="text-4xl font-bold uppercase tracking-tighter italic">What do you listen to?</h1>
+            <h1 className="text-[clamp(1.5rem,6vw,2.5rem)] font-bold uppercase tracking-tighter italic">What do you listen to?</h1>
             <p className="text-gray-500 font-medium">Select at least one genre to personalize your feed.</p>
           </div>
 
@@ -111,7 +111,7 @@ export default function WelcomePage() {
             <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 border border-[#00D2FF]/20 flex items-center justify-center mx-auto">
               <Users className="w-6 h-6 text-[#00D2FF]" />
             </div>
-            <h1 className="text-4xl font-bold uppercase tracking-tighter italic">Follow 3 artists.</h1>
+            <h1 className="text-[clamp(1.5rem,6vw,2.5rem)] font-bold uppercase tracking-tighter italic">Follow 3 artists.</h1>
             <p className="text-gray-500 font-medium">
               Your feed is built from who you follow.
             </p>
@@ -187,7 +187,7 @@ export default function WelcomePage() {
             <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto">
               <Zap className="w-9 h-9 text-green-400" />
             </div>
-            <h1 className="text-4xl font-bold uppercase tracking-tighter italic">Welcome to New Release Hub.</h1>
+            <h1 className="text-[clamp(1.5rem,6vw,3.5rem)] font-bold uppercase tracking-tighter italic leading-tight">Welcome to New Release Hub.</h1>
             <p className="text-gray-400 font-medium leading-relaxed">
               You're now following {followedArtists.length + 1} accounts — including{' '}
               <span className="text-white font-bold">@newreleasehub</span>.

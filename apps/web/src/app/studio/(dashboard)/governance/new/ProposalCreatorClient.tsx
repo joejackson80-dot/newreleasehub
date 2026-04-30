@@ -167,7 +167,7 @@ export default function ProposalCreatorClient() {
             <div className="space-y-4">
                <h4 className="text-xl font-black italic uppercase tracking-tighter">Submission Guidelines.</h4>
                <p className="text-zinc-500 text-sm font-medium italic leading-relaxed">
-                  Every proposal is forensicly audited before the consensus phase. Ensure your initiative aligns with the network's high-authority mission.
+                  Every proposal is Verifiedly audited before the consensus phase. Ensure your initiative aligns with the network's high-authority mission.
                </p>
             </div>
 
@@ -192,7 +192,7 @@ export default function ProposalCreatorClient() {
             <div className="p-8 bg-amber-500/10 border border-amber-500/20 rounded-[2.5rem] flex items-start gap-4">
                <AlertTriangle className="w-6 h-6 text-amber-500 shrink-0 mt-1" />
                <div className="space-y-2">
-                  <h5 className="font-black italic text-amber-500 uppercase text-sm">Forensic Disclosure</h5>
+                  <h5 className="font-black italic text-amber-500 uppercase text-sm">Verified Disclosure</h5>
                   <p className="text-[9px] font-bold text-amber-500/80 uppercase leading-relaxed tracking-widest">
                      Once a proposal is live, it cannot be edited or retracted. Malicious or fraudulent proposals may result in protocol-wide suspension of the submitting entity.
                   </p>

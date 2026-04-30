@@ -129,7 +129,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                   <Briefcase className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Independent Growth Board</span>
                </div>
-                <h1 className="text-[clamp(2.25rem,8vw,5rem)] font-black tracking-tight leading-[1.05] uppercase italic hyphens-none break-normal">
+                <h1 className="text-[clamp(2.25rem,8vw,5.5rem)] font-black tracking-tight leading-[1.05] uppercase italic hyphens-none break-normal">
                    New<br />
                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Opportunities.</span>
                 </h1>
@@ -308,7 +308,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                        <ShieldCheck className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl font-black italic uppercase tracking-tighter">
-                       {selectedOpp.type === 'PROPOSAL' ? 'Forensic Vote Cast.' : 'Application Sent!'}
+                       {selectedOpp.type === 'PROPOSAL' ? 'Verified Vote Cast.' : 'Application Sent!'}
                     </h3>
                    <p className="text-gray-500 text-sm font-medium">
                       {selectedOpp.type === 'PROPOSAL' 
@@ -367,7 +367,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                         disabled={isApplying}
                         className="w-full py-5 bg-white text-black font-bold text-xs uppercase tracking-widest rounded-2xl hover:scale-[1.02] transition-all shadow-2xl disabled:opacity-50"
                       >
-                         {isApplying ? 'Processing...' : selectedOpp.type === 'PROPOSAL' ? 'Confirm Forensic Vote' : 'Submit Application'}
+                         {isApplying ? 'Processing...' : selectedOpp.type === 'PROPOSAL' ? 'Confirm Verified Vote' : 'Submit Application'}
                       </button>
                    </form>
                 </>
