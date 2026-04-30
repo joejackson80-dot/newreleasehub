@@ -13,6 +13,15 @@ import Link from 'next/link';
 export default function GovernanceClient({ initialProposals, user }: { initialProposals: any[], user: any }) {
   const [proposals, setProposals] = useState(initialProposals);
   const [votingId, setVotingId] = useState<string | null>(null);
+  const [stats, setStats] = useState<any>(null);
+
+  React.useEffect(() => {
+    fetch('/api/governance/stats')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setStats(data.stats);
+      });
+  }, []);
 
   const handleVote = async (proposalId: string, type: 'YES' | 'NO') => {
     setVotingId(proposalId);
@@ -69,12 +78,12 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
 
       {/* STATS STRIP */}
       <section className="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-         {[
-           { label: 'Total Votes Cast', value: '42,910', icon: CheckCircle2 },
-           { label: 'Active Proposals', value: proposals.length.toString(), icon: Zap },
-           { label: 'Network Consensus', value: '88.4%', icon: TrendingUp },
-           { label: 'Locked Equity', value: '$1.2M', icon: Lock }
-         ].map((s, i) => (
+          {[
+            { label: 'Total Votes Cast', value: stats?.totalVotes?.toLocaleString() || '...', icon: CheckCircle2 },
+            { label: 'Active Proposals', value: stats?.activeProposals?.toString() || proposals.length.toString(), icon: Zap },
+            { label: 'Network Consensus', value: `${stats?.consensus || '...'}%`, icon: TrendingUp },
+            { label: 'Locked Equity', value: `$${((stats?.lockedEquity || 0) / 1000).toFixed(1)}k`, icon: Lock }
+          ].map((s, i) => (
            <div key={i} className="bg-[#111] border border-white/5 p-6 rounded-3xl space-y-2">
              <div className="flex items-center justify-between">
                 <s.icon className="w-4 h-4 text-gray-500" />

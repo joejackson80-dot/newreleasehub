@@ -2,17 +2,30 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { getSessionArtist } from '@/lib/session';
 
 export async function applyForOpportunity(data: {
   opportunityId: string,
-  artistId: string,
   pitch: string
 }) {
   try {
+    const artist = await getSessionArtist();
+    if (!artist) return { success: false, error: 'Artist session required' };
+
+    // Check if already applied
+    const existing = await prisma.opportunityApplication.findFirst({
+      where: {
+        opportunityId: data.opportunityId,
+        artistId: artist.id
+      }
+    });
+
+    if (existing) return { success: false, error: 'Application already submitted for this initiative.' };
+
     const application = await prisma.opportunityApplication.create({
       data: {
         opportunityId: data.opportunityId,
-        artistId: data.artistId,
+        artistId: artist.id,
         pitch: data.pitch
       }
     });
@@ -34,16 +47,26 @@ export async function applyForOpportunity(data: {
 export async function voteOnProposal(data: {
   oppId: string,
   voteType: string,
-  comment?: string,
-  userId: string
+  comment?: string
 }) {
    try {
-      // In a real app, we'd check if the user already voted
-      // For demo, we just record it as an application with special pitch
+      const artist = await getSessionArtist();
+      if (!artist) return { success: false, error: 'Artist session required for governance participation.' };
+
+      // Check if already voted
+      const existing = await prisma.opportunityApplication.findFirst({
+        where: {
+          opportunityId: data.oppId,
+          artistId: artist.id
+        }
+      });
+
+      if (existing) return { success: false, error: 'Vote already recorded in protocol ledger.' };
+
       const application = await prisma.opportunityApplication.create({
          data: {
             opportunityId: data.oppId,
-            artistId: 'session-artist-id', // Would be real artist ID from session
+            artistId: artist.id,
             pitch: `VOTE:${data.voteType}|COMMENT:${data.comment || ''}`
          }
       });

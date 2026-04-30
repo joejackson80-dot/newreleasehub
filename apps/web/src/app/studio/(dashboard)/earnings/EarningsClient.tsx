@@ -11,6 +11,8 @@ export default function EarningsPage({ artist }: { artist: any }) {
   const [error, setError] = useState<string | null>(null);
   const [stripeStatus, setStripeStatus] = useState<any>(null);
   const [isLinking, setIsLinking] = useState(false);
+  const [participation, setParticipation] = useState<any[]>([]);
+  const [isLoadingParticipation, setIsLoadingParticipation] = useState(true);
 
   useEffect(() => {
     const init = async () => {
@@ -33,7 +35,20 @@ export default function EarningsPage({ artist }: { artist: any }) {
     };
 
     init();
+    fetchParticipation();
   }, []);
+
+  const fetchParticipation = async () => {
+    try {
+      const res = await fetch('/api/studio/earnings/participation');
+      const json = await res.json();
+      if (json.success) setParticipation(json.participation);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoadingParticipation(false);
+    }
+  };
 
   const handleLinkPayout = async () => {
     setIsLinking(true);
@@ -262,6 +277,72 @@ export default function EarningsPage({ artist }: { artist: any }) {
             )}
          </div>
       </div>
+
+       {/* PARTICIPATION LEDGER */}
+       <div className="space-y-8">
+          <div className="flex items-center justify-between border-b border-white/5 pb-6">
+             <div className="flex items-center space-x-3">
+                <Users className="w-5 h-5 text-[#00D2FF]" />
+                <h3 className="text-xl font-bold italic uppercase tracking-tight text-white">Participation Ledger</h3>
+             </div>
+             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{participation.length} Holders Verified</p>
+          </div>
+
+          <div className="bg-[#111] border border-white/5 rounded-[2.5rem] overflow-hidden">
+             {isLoadingParticipation ? (
+               <div className="py-20 text-center animate-pulse text-[10px] font-bold text-gray-700 uppercase tracking-widest">Consolidating Stakeholder Data...</div>
+             ) : participation.length > 0 ? (
+               <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                     <thead>
+                        <tr className="border-b border-white/5">
+                           <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Network Participant</th>
+                           <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Reputation</th>
+                           <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Asset Share</th>
+                           <th className="p-8 text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em] text-right">Yield Settled</th>
+                        </tr>
+                     </thead>
+                     <tbody className="divide-y divide-white/5">
+                        {participation.map((p: any) => (
+                          <tr key={p.id} className="hover:bg-white/[0.02] transition-colors group">
+                             <td className="p-8">
+                                <div className="flex items-center gap-4">
+                                   <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/10 overflow-hidden">
+                                      {p.User.avatarUrl && <img src={p.User.avatarUrl} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />}
+                                   </div>
+                                   <div>
+                                      <p className="font-bold text-white text-sm tracking-tight">{p.User.displayName}</p>
+                                      <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Joined {new Date(p.createdAt).toLocaleDateString()}</p>
+                                   </div>
+                                </div>
+                             </td>
+                             <td className="p-8">
+                                <div className="flex items-center gap-2">
+                                   <Star className="w-3.5 h-3.5 text-amber-500" />
+                                   <span className="text-[10px] font-bold text-white uppercase tracking-widest">LVL {p.User.fanLevel}</span>
+                                </div>
+                             </td>
+                             <td className="p-8">
+                                <span className="text-xs font-black text-[#00D2FF] italic">{(p.revenueSharePercent * 100).toFixed(1)}%</span>
+                             </td>
+                             <td className="p-8 text-right">
+                                <span className="text-sm font-black text-white italic tracking-tighter">${(p.amountEarned / 100).toFixed(2)}</span>
+                             </td>
+                          </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
+             ) : (
+               <div className="py-20 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto text-gray-700">
+                     <Users className="w-8 h-8" />
+                  </div>
+                  <p className="text-gray-500 font-bold uppercase tracking-[0.2em] text-[10px]">No External Stakeholders Detected.</p>
+               </div>
+             )}
+          </div>
+       </div>
 
       {/* DISCLOSURE */}
       <footer className="p-10 bg-white/5 rounded-[2rem] border border-white/5">

@@ -78,17 +78,15 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
           const res = await voteOnProposal({
              oppId: selectedOpp.id,
              voteType: selectedOpp.voteType,
-             comment: (e.target as any).elements[0]?.value,
-             userId: 'session-user'
+             comment: (e.target as any).elements[0]?.value
           });
-          if (!res.success) throw new Error('Vote failed');
+          if (!res.success) throw new Error(res.error || 'Vote failed');
        } else {
           const res = await applyForOpportunity({
              opportunityId: selectedOpp.id,
-             artistId: 'session-artist-id', // Would be real artist ID from session
              pitch: (e.target as any).elements[0]?.value
           });
-          if (!res.success) throw new Error('Application failed');
+          if (!res.success) throw new Error(res.error || 'Application failed');
        }
 
        setIsApplying(false);

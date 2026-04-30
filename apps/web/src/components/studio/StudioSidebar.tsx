@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutGrid, DollarSign, Settings, LogOut, Radio, Disc, Users,
-  BarChart3, Briefcase, Palette, Share2, Wrench, GitMerge, Sparkles, Music, Wallet, Menu, X, Trophy
+  BarChart3, Briefcase, Palette, Share2, Wrench, GitMerge, Sparkles, Music, Wallet, Menu, X, Trophy, Package
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -18,6 +18,7 @@ const NAV_GROUPS = [
     items: [
       { href: '/studio/releases', label: 'Releases', icon: Disc },
       { href: '/studio/releases', label: 'Tracks', icon: Music },
+      { href: '/studio/merch', label: 'Merch Drops', icon: Package },
     ],
   },
   {

@@ -406,6 +406,8 @@ model Merch {
   imageUrl       String?
   stockCount     Int?
   isLiveDrop     Boolean      @default(false)
+  isSupporterOnly Boolean      @default(false)
+  minFanLevel    Int          @default(1)
   Organization   Organization @relation(fields: [organizationId], references: [id])
 }
 
