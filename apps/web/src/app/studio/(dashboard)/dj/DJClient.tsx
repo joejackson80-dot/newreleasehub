@@ -5,6 +5,7 @@ import { Radio, Mic, Music, Users, Zap, Play, Square, Volume2, Settings, Message
 import { supabase } from '@/lib/supabase';
 import { sendChatMessage } from '@/app/actions/chat';
 import { getLiveStreamConfig, updateLiveStatus } from '@/app/actions/live';
+import LiveAudioPlayer from '@/components/radio/LiveAudioPlayer';
 
 export default function DJControlRoom({ artist }: { artist: any }) {
   const [isLive, setIsLive] = useState(artist.isLive);
@@ -130,11 +131,16 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                   <div className="absolute inset-0">
                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
                      
-                     {/* Placeholder for real player if status is active */}
+                     {/* Real-time Monitor Player (Muted by default to avoid feedback) */}
                      <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center space-y-4">
                            <Activity className="w-12 h-12 text-[#00D2FF] animate-pulse mx-auto" />
-                           <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Stream Ingest Active</p>
+                           <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Live Ingest Monitor Active</p>
+                           <LiveAudioPlayer 
+                              playbackId={streamConfig?.playbackId} 
+                              isPlaying={isLive} 
+                              volume={0} 
+                           />
                         </div>
                      </div>
 
