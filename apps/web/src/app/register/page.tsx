@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { User, Music, ArrowLeft, ArrowRight, Zap, ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import { User, Music, ArrowLeft, ArrowRight, Zap, ShieldCheck, Heart, Sparkles, Gavel } from 'lucide-react';
 import BrandLogo from '@/components/layout/BrandLogo';
 
 export default function RegisterPage() {

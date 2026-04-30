@@ -11,10 +11,13 @@ export async function getLiveStreamConfig() {
     // Use artist slug as the external_id for Mux
     const stream = await createStationStream(`artist-${artist.slug}`);
     
-    // Update artist status in DB
+    // Update artist status and playback ID in DB
     await prisma.organization.update({
       where: { id: artist.id },
-      data: { isLive: stream.status === 'active' }
+      data: { 
+        isLive: stream.status === 'active',
+        livePlaybackId: stream.playback_ids?.[0]?.id
+      }
     });
 
     return {

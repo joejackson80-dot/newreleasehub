@@ -33,6 +33,7 @@ model Organization {
   totalStreams           Int                    @default(0)
   monthlyListeners       Int                    @default(0)
   artistTier             String                 @default("rising")
+  livePlaybackId         String?                // Mux Playback ID for high-fidelity stream
   createdAt              DateTime               @default(now())
   balanceCents           Int                    @default(0)
   email                  String?                @unique
@@ -320,6 +321,7 @@ model Station {
   genres       String[]
   playlistId   String?     @unique
   nowPlayingId String?
+  playbackId   String?     // Mux Playback ID for high-fidelity live stream
   isLive       Boolean     @default(false)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt

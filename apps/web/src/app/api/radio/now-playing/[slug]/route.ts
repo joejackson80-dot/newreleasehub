@@ -36,6 +36,7 @@ export async function GET(
     // For now, let's just return the current station state
     return NextResponse.json({
       isLive: station.isLive,
+      playbackId: station.playbackId || (station.NowPlaying?.Organization.livePlaybackId),
       nowPlaying: station.NowPlaying ? {
         id: station.NowPlaying.id,
         title: station.NowPlaying.title,

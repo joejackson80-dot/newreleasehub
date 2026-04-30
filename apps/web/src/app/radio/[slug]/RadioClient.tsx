@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { reactToRadio } from '@/app/actions/fan';
 import { toast } from 'react-hot-toast';
 import { supabase } from '@/lib/supabase';
+import LiveAudioPlayer from '@/components/radio/LiveAudioPlayer';
 
 export default function StationPage({ slug }: { slug: string }) {
   const [station, setStation] = useState<any>(null);
@@ -16,6 +17,7 @@ export default function StationPage({ slug }: { slug: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [recentlyPlayed, setRecentlyPlayed] = useState<any[]>([]);
+  const [volume, setVolume] = useState(0.7);
 
   useEffect(() => {
     const fetchStationData = async () => {
@@ -200,8 +202,14 @@ export default function StationPage({ slug }: { slug: string }) {
           <div className="bg-[#031B2E]/50 border border-white/5 rounded-3xl p-6 flex items-center justify-between gap-8">
              <div className="flex items-center gap-4 flex-1">
                 <Volume2 className="w-5 h-5 text-gray-500" />
-                <div className="h-1 bg-white/5 rounded-full flex-1 relative overflow-hidden">
-                   <div className="absolute inset-0 bg-[#00D2FF] w-[70%]" />
+                <div className="h-1 bg-white/5 rounded-full flex-1 relative overflow-hidden cursor-pointer group"
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    setVolume(Math.min(Math.max(x / rect.width, 0), 1));
+                  }}
+                >
+                   <div className="absolute inset-0 bg-[#00D2FF]" style={{ width: `${volume * 100}%` }} />
                 </div>
              </div>
              <div className="flex items-center gap-6">
@@ -273,6 +281,11 @@ export default function StationPage({ slug }: { slug: string }) {
         </div>
 
       </div>
+      <LiveAudioPlayer 
+        playbackId={station?.playbackId} 
+        isPlaying={isPlaying} 
+        volume={volume} 
+      />
     </div>
   );
 }
