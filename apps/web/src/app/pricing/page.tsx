@@ -38,7 +38,7 @@ const ARTIST_PLANS = [
       'Full analytics',
       'Unlimited opportunity applications',
       '50 AI credits/month',
-      'Weekly payouts',
+      'Bi-weekly payouts',
       'Listening parties',
       'Post scheduling'
     ],
@@ -57,7 +57,7 @@ const ARTIST_PLANS = [
       'Unlimited SUPPORTER tiers',
       'Advanced analytics',
       '200 AI credits/month',
-      'Daily payouts',
+      'Weekly payouts',
       'Custom domain support',
       'White-label player',
       'Priority support'
