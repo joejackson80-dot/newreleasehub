@@ -55,6 +55,7 @@ const NAV_GROUPS = [
 
 import StudioSidebar from '@/components/studio/StudioSidebar';
 import StudioBottomNav from '@/components/studio/StudioBottomNav';
+import WalkthroughModal from '@/components/studio/WalkthroughModal';
 
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -69,6 +70,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
       </main>
 
       <StudioBottomNav />
+      <WalkthroughModal />
     </div>
   );
 }

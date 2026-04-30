@@ -6,6 +6,7 @@ import { useAudio } from '@/context/AudioContext';
 import YieldHistory from '@/components/fan/YieldHistory';
 import RadioMonitor from '@/components/fan/RadioMonitor';
 import DiscoveryFeed from '@/components/fan/DiscoveryFeed';
+import FanWalkthroughModal from '@/components/fan/FanWalkthroughModal';
 
 const TABS = ['Feed', 'Discovery', 'Radio', 'Library', 'Messages', 'Following', 'Support', 'Yield', 'Vault', 'Stats', 'Notifications'];
 
@@ -805,6 +806,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
            </div>
         )}
       </div>
+      <FanWalkthroughModal />
     </div>
   );
 }
