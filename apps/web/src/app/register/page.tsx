@@ -37,7 +37,7 @@ export default function RegisterPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                
                {/* ARTIST PATH */}
-               <Link href="/studio/login" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-[#00D2FF4d] hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+               <Link href="/studio/register" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-[#00D2FF4d] hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                      <Music className="w-32 h-32 text-[#00D2FF]" />
                   </div>
@@ -57,7 +57,7 @@ export default function RegisterPage() {
                </Link>
 
                {/* FAN PATH */}
-               <Link href="/login" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-white/20 hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+               <Link href="/register/fan" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-white/20 hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                      <User className="w-32 h-32 text-white" />
                   </div>

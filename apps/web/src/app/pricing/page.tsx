@@ -21,7 +21,7 @@ const ARTIST_PLANS = [
       'Monthly payouts'
     ],
     buttonText: 'Get Started Free',
-    href: '/studio/login',
+    href: '/studio/register',
     color: 'border-white/10'
   },
   {
@@ -43,7 +43,7 @@ const ARTIST_PLANS = [
       'Post scheduling'
     ],
     buttonText: 'Start Pro',
-    href: '/studio/login', // Ideally a stripe checkout link
+    href: '/studio/register', // Ideally a stripe checkout link
     color: 'border-[#00D2FF]'
   },
   {
@@ -63,7 +63,7 @@ const ARTIST_PLANS = [
       'Priority support'
     ],
     buttonText: 'Start Studio',
-    href: '/studio/login', // Ideally a stripe checkout link
+    href: '/studio/register', // Ideally a stripe checkout link
     color: 'border-purple-500/50'
   }
 ];
