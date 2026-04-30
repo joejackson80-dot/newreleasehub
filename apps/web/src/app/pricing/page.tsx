@@ -125,21 +125,21 @@ const FAQS = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-[#020202] text-white pt-24 pb-32 px-6 md:px-10">
-      <div className="max-w-7xl mx-auto space-y-32">
+    <div className="min-h-screen bg-[#020202] text-white pt-20 pb-20 px-4 sm:px-8 lg:px-16">
+      <div className="max-w-7xl mx-auto space-y-24 sm:space-y-32">
         
         {/* HEADER */}
         <section className="text-center space-y-8">
            <div className="space-y-4">
-              <h1 className="text-6xl md:text-8xl font-bold tracking-tighter italic uppercase">Simple pricing.<br /><span className="text-[#00D2FF]">Serious payouts.</span></h1>
-              <p className="text-xl text-gray-500 font-medium uppercase tracking-widest italic">Start free. Upgrade when your music is ready to grow.</p>
+              <h1 className="text-[clamp(2.5rem,10vw,8rem)] font-bold tracking-tighter italic uppercase leading-[0.8] mb-6">Simple pricing.<br /><span className="text-[#00D2FF]">Serious payouts.</span></h1>
+              <p className="text-xs sm:text-xl text-gray-500 font-bold uppercase tracking-widest italic leading-relaxed">Start free. Upgrade when your music is ready to grow.</p>
            </div>
         </section>
 
         {/* ARTIST TIERS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {ARTIST_PLANS.map((tier) => (
-            <div key={tier.name} className={`bg-[#111] border ${tier.color} rounded-[2.5rem] p-10 flex flex-col space-y-10 relative overflow-hidden group hover:bg-white/[0.02] transition-all duration-500 shadow-2xl`}>
+            <div key={tier.name} className={`bg-[#111] border ${tier.color} rounded-[2.5rem] p-8 sm:p-10 flex flex-col space-y-10 relative overflow-hidden group hover:bg-white/[0.02] transition-all duration-500 shadow-2xl`}>
               {tier.popular && (
                 <div className="absolute top-0 right-0 bg-[#00D2FF] text-white text-[9px] font-bold uppercase tracking-widest px-6 py-2 rounded-bl-2xl">
                   Most Popular
@@ -148,10 +148,10 @@ export default function PricingPage() {
               <div className="space-y-4">
                 <h3 className="text-3xl font-bold uppercase tracking-tighter italic">{tier.name}</h3>
                 <div className="flex items-baseline space-x-2">
-                  <span className="text-5xl font-bold tracking-tighter italic text-white">{tier.price}</span>
+                  <span className="text-4xl sm:text-5xl font-bold tracking-tighter italic text-white">{tier.price}</span>
                   <span className="text-gray-600 text-[10px] font-bold uppercase tracking-widest">/ Month</span>
                 </div>
-                <p className="text-gray-500 text-sm font-medium leading-relaxed">{tier.description}</p>
+                <p className="text-gray-500 text-xs sm:text-sm font-medium leading-relaxed">{tier.description}</p>
               </div>
               <ul className="flex-1 space-y-4">
                 {tier.features.map((feat, i) => (
@@ -169,21 +169,21 @@ export default function PricingPage() {
         </div>
 
         {/* EARNINGS COMPARISON */}
-        <section className="bg-white/5 border border-white/10 rounded-[3rem] p-12 text-center space-y-8 backdrop-blur-xl">
-           <h3 className="text-2xl font-bold italic uppercase tracking-tight">If you earn $1,000 in streaming this month:</h3>
+        <section className="bg-white/5 border border-white/10 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-12 text-center space-y-8 backdrop-blur-xl">
+           <h3 className="text-lg sm:text-2xl font-bold italic uppercase tracking-tight">If you earn $1,000 in streaming this month:</h3>
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-2">
-                 <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Indie</p>
-                 <p className="text-3xl font-bold text-white uppercase italic">You keep $750</p>
-              </div>
-              <div className="space-y-2">
-                 <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Pro</p>
-                 <p className="text-3xl font-bold text-white uppercase italic">You keep $850 <span className="text-green-500 text-sm">(+$100)</span></p>
-              </div>
-              <div className="space-y-2">
-                 <p className="text-purple-500 text-[10px] font-bold uppercase tracking-widest">Studio</p>
-                 <p className="text-3xl font-bold text-white uppercase italic">You keep $950 <span className="text-green-500 text-sm">(+$200)</span></p>
-              </div>
+               <div className="space-y-2">
+                  <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Indie</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white uppercase italic">You keep $750</p>
+               </div>
+               <div className="space-y-2">
+                  <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Pro</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white uppercase italic">You keep $850 <span className="text-green-500 text-sm">(+$100)</span></p>
+               </div>
+               <div className="space-y-2">
+                  <p className="text-[#A855F7] text-[10px] font-bold uppercase tracking-widest">Studio</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white uppercase italic">You keep $950 <span className="text-green-500 text-sm">(+$200)</span></p>
+               </div>
            </div>
         </section>
 
@@ -192,9 +192,9 @@ export default function PricingPage() {
         </div>
 
         {/* ENTERPRISE TIERS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {ENTERPRISE_PLANS.map((tier) => (
-            <div key={tier.name} className={`bg-[#111] border ${tier.color} rounded-[2.5rem] p-10 flex flex-col space-y-8 group hover:bg-white/[0.02] transition-all duration-500 shadow-2xl`}>
+            <div key={tier.name} className={`bg-[#111] border ${tier.color} rounded-[2.5rem] p-8 sm:p-10 flex flex-col space-y-8 group hover:bg-white/[0.02] transition-all duration-500 shadow-2xl`}>
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold uppercase tracking-tighter italic">{tier.name}</h3>
                 <div className="flex items-baseline space-x-2">

@@ -36,7 +36,7 @@ export default function ArtistLogin() {
       {/* Aesthetic Background Effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[var(--color-accent-primary)]/10 via-[var(--color-studio-base)] to-[var(--color-studio-base)] pointer-events-none"></div>
 
-      <div className="w-full max-w-md bg-[var(--color-studio-surface)] border border-[var(--color-studio-border)] rounded-2xl p-8 relative z-10 shadow-2xl">
+      <div className="w-full max-w-md bg-[var(--color-studio-surface)] border border-[var(--color-studio-border)] rounded-2xl p-6 sm:p-8 relative z-10 shadow-2xl">
         <div className="text-center mb-8">
            <Link href="/" className="inline-flex items-center space-x-2 text-gray-500 hover:text-white transition-colors mb-8">
               <ArrowLeft className="w-4 h-4" />
@@ -45,7 +45,7 @@ export default function ArtistLogin() {
            <div className="flex justify-center mb-10">
               <Link href="/" className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
            </div>
-          <h1 className="text-3xl font-bold text-white uppercase italic tracking-tighter">Artist Studio</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Artist Studio</h1>
           <p className="text-[#00D2FF] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Command Center Authentication</p>
         </div>
 
@@ -74,7 +74,7 @@ export default function ArtistLogin() {
           </div>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-widest p-4 rounded-xl text-center">
+            <div className="bg-red-5001a border border-red-50033 text-red-500 text-[10px] font-bold uppercase tracking-widest p-4 rounded-xl text-center">
               {error}
             </div>
           )}

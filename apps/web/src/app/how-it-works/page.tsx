@@ -25,8 +25,8 @@ export default function HowItWorksPage() {
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white">
       
       {/* HERO SECTION */}
-      <section className="relative pt-40 pb-24 overflow-hidden border-b border-white/5">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#00D2FF]/5 rounded-full blur-[120px] -z-0"></div>
+      <section className="relative pt-32 pb-20 overflow-hidden border-b border-white/5 px-4 sm:px-8">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full sm:w-[1000px] h-[600px] bg-[#00D2FF0d] rounded-full blur-[100px] sm:blur-[120px] -z-0"></div>
         
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 text-center space-y-10">
           <div className="inline-flex items-center space-x-3 text-[#00D2FF] bg-[#00D2FF]/5 border border-[#00D2FF]/10 px-6 py-2 rounded-full">
@@ -34,12 +34,12 @@ export default function HowItWorksPage() {
             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The New Music Economy</span>
           </div>
           
-          <h1 className="text-6xl md:text-9xl font-bold tracking-tighter uppercase italic leading-[0.8] animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <h1 className="text-[clamp(3.5rem,15vw,8rem)] font-bold tracking-tighter uppercase italic leading-[0.8] animate-in fade-in slide-in-from-bottom-8 duration-700">
             Built for<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Independence.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Independence.</span>
           </h1>
           
-          <p className="text-gray-500 text-xl md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed italic animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+          <p className="text-zinc-500 text-lg sm:text-2xl font-medium max-w-3xl mx-auto leading-relaxed italic animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 px-4 sm:px-0">
             "The old industry was built on gatekeepers. New Release Hub is built on direct connection, transparent data, and fair math."
           </p>
 
@@ -51,13 +51,13 @@ export default function HowItWorksPage() {
       </section>
 
       {/* THE THREE PILLARS */}
-      <section className="py-32 border-b border-white/5">
+      <section className="py-20 sm:py-32 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
             
             <div className="space-y-8 group">
-              <div className="w-20 h-20 rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF]/50 transition-all">
-                <Music className="w-10 h-10" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF80] transition-all">
+                <Music className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
               <div className="space-y-4">
                 <h3 className="text-3xl font-bold italic uppercase tracking-tighter">1. Release</h3>
@@ -76,8 +76,8 @@ export default function HowItWorksPage() {
             </div>
 
             <div className="space-y-8 group">
-              <div className="w-20 h-20 rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF]/50 transition-all">
-                <Users className="w-10 h-10" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF80] transition-all">
+                <Users className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
               <div className="space-y-4">
                 <h3 className="text-3xl font-bold italic uppercase tracking-tighter">2. Connect</h3>
@@ -96,8 +96,8 @@ export default function HowItWorksPage() {
             </div>
 
             <div className="space-y-8 group">
-              <div className="w-20 h-20 rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF]/50 transition-all">
-                <DollarSign className="w-10 h-10" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF80] transition-all">
+                <DollarSign className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
               <div className="space-y-4">
                 <h3 className="text-3xl font-bold italic uppercase tracking-tighter">3. Earn</h3>
@@ -125,7 +125,7 @@ export default function HowItWorksPage() {
           <div className="space-y-12">
             <div className="space-y-4">
               <h2 className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">The Artist Journey</h2>
-              <h3 className="text-5xl md:text-6xl font-bold italic uppercase tracking-tighter leading-none">From Bedroom to<br />Business.</h3>
+              <h3 className="text-[clamp(2.5rem,10vw,4rem)] font-bold italic uppercase tracking-tighter leading-[0.9]">From Bedroom to<br />Business.</h3>
             </div>
             
             <div className="space-y-10">
@@ -174,8 +174,8 @@ export default function HowItWorksPage() {
              <DollarSign className="w-10 h-10" />
           </div>
           <div className="space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold italic uppercase tracking-tighter">The Math Behind the Music.</h2>
-            <p className="text-gray-500 text-lg leading-relaxed font-medium">
+            <h2 className="text-[clamp(2.2rem,8vw,4rem)] font-bold italic uppercase tracking-tighter leading-[0.9]">The Math Behind the Music.</h2>
+            <p className="text-zinc-500 text-lg leading-relaxed font-medium">
               We've replaced the opaque streaming model with a transparent, dual-pool royalty engine. No hidden fees, no complicated accounting.
             </p>
           </div>
@@ -214,7 +214,7 @@ export default function HowItWorksPage() {
       <section className="py-40 relative overflow-hidden">
         <div className="absolute inset-0 bg-[#00D2FF]/5"></div>
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-12">
-           <h2 className="text-6xl md:text-8xl font-bold italic uppercase tracking-tighter leading-none">
+           <h2 className="text-[clamp(3rem,12vw,6rem)] font-bold italic uppercase tracking-tighter leading-[0.8]">
              Stop streaming.<br />
              <span className="text-[#00D2FF]">Start building.</span>
            </h2>

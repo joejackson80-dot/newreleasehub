@@ -60,34 +60,34 @@ export default function FanAuthPage() {
       <div className="hidden md:flex md:w-1/2 bg-[#050505] border-r border-white/5 relative items-center justify-center overflow-hidden">
          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
          <div className="relative z-10 p-20 space-y-12 max-w-xl">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter uppercase italic leading-[0.9]">
-               Support<br />The Scene.
-            </h1>
-            <div className="space-y-6">
-               <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#00D2FF]/10 flex items-center justify-center shrink-0 mt-1">
-                     <Music className="w-4 h-4 text-[#00D2FF]" />
-                  </div>
-                  <div>
-                     <h3 className="font-bold text-sm uppercase tracking-widest">Ad-Free Streaming</h3>
-                     <p className="text-gray-500 text-sm mt-1 leading-relaxed">Listen to high-fidelity audio from independent artists globally, without interruptions.</p>
-                  </div>
-               </div>
-               <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#00D2FF]/10 flex items-center justify-center shrink-0 mt-1">
-                     <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
-                  </div>
-                  <div>
-                     <h3 className="font-bold text-sm uppercase tracking-widest">True support</h3>
-                     <p className="text-gray-500 text-sm mt-1 leading-relaxed">Your subscription directly funds the artists you love, completely bypassing major label cuts.</p>
-                  </div>
-               </div>
-            </div>
+             <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter uppercase italic leading-[0.9]">
+                Support<br />The Scene.
+             </h1>
+             <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                   <div className="w-10 h-10 rounded-full bg-[#00D2FF1a] flex items-center justify-center shrink-0 mt-1">
+                      <Music className="w-4 h-4 text-[#00D2FF]" />
+                   </div>
+                   <div>
+                      <h3 className="font-bold text-sm uppercase tracking-widest">Ad-Free Streaming</h3>
+                      <p className="text-zinc-500 text-sm mt-1 leading-relaxed">Listen to high-fidelity audio from independent artists globally, without interruptions.</p>
+                   </div>
+                </div>
+                <div className="flex items-start gap-4">
+                   <div className="w-10 h-10 rounded-full bg-[#00D2FF1a] flex items-center justify-center shrink-0 mt-1">
+                      <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
+                   </div>
+                   <div>
+                      <h3 className="font-bold text-sm uppercase tracking-widest">True support</h3>
+                      <p className="text-zinc-500 text-sm mt-1 leading-relaxed">Your subscription directly funds the artists you love, completely bypassing major label cuts.</p>
+                   </div>
+                </div>
+             </div>
          </div>
       </div>
 
       {/* RIGHT SIDE - FORM */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-8 md:p-20 relative">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-12 md:p-20 relative">
          <div className="w-full max-w-md space-y-12">
             
             <div className="flex flex-col space-y-12">
@@ -101,17 +101,17 @@ export default function FanAuthPage() {
                      <ShieldCheck className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Secure Network Entry</span>
                   </div>
-                  <h2 className="text-4xl md:text-6xl font-bold tracking-tighter uppercase italic leading-[0.8]">
+                  <h2 className="text-[clamp(2.5rem,10vw,4rem)] md:text-6xl font-bold tracking-tighter uppercase italic leading-[0.8]">
                      {isLogin ? 'Welcome<br />Back.' : 'Join the<br />Network.'}
                   </h2>
-                  <p className="text-gray-500 font-medium italic">
+                  <p className="text-zinc-500 font-medium italic text-sm">
                      {isLogin ? '"Re-entering the New Release Hub Professional Collective."' : '"Registering as an authorized platform participant."'}
                   </p>
                </div>
             </div>
 
             {error && (
-              <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest text-center">
+              <div className="p-4 rounded-2xl bg-red-5001a border border-red-50033 text-red-400 text-[10px] font-bold uppercase tracking-widest text-center">
                 {error}
               </div>
             )}
@@ -165,7 +165,7 @@ export default function FanAuthPage() {
                <button 
                  type="submit" 
                  disabled={isLoading}
-                 className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#00D2FF]/20 flex items-center justify-center space-x-3 disabled:opacity-50"
+                 className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#00D2FF33] flex items-center justify-center space-x-3 disabled:opacity-50"
                >
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

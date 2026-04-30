@@ -30,7 +30,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white p-8 md:p-12 space-y-12 selection:bg-[#00D2FF] selection:text-black">
+    <div className="min-h-screen bg-[#020202] text-white p-6 sm:p-8 md:p-12 space-y-12 selection:bg-[#00D2FF] selection:text-black">
       
       {/* HEADER */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
@@ -39,8 +39,8 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                <Activity className="w-5 h-5" />
                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Forensic Analytics Engine</span>
             </div>
-            <h1 className="text-6xl font-black italic uppercase tracking-tighter">Insights.</h1>
-            <p className="text-zinc-500 font-medium italic max-w-xl">
+            <h1 className="text-[clamp(3.5rem,12vw,6rem)] font-black italic uppercase tracking-tighter leading-none">Insights.</h1>
+            <p className="text-zinc-500 font-medium italic max-w-xl text-sm sm:text-base">
                Monitor live listener behavior, forensic stream auditing, and global network equity in high-fidelity.
             </p>
          </div>
@@ -64,23 +64,23 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
       </header>
 
       {/* CORE METRICS */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
          {[
            { label: 'Total Streams', value: stats?.totalStreams?.toLocaleString() || '0', sub: 'Verified & Suspicious', icon: Activity, color: 'text-white' },
            { label: 'Verified Plays', value: stats?.verifiedStreams?.toLocaleString() || '0', sub: 'Protocol Authorized', icon: ShieldAlert, color: 'text-[#00D2FF]' },
            { label: 'Unique Listeners', value: artist?.supporterCount?.toLocaleString() || '0', sub: 'Network Equity', icon: Users, color: 'text-white' },
            { label: 'Retention Score', value: '84%', sub: 'Forensic Measurement', icon: Zap, color: 'text-purple-400' }
          ].map((stat, i) => (
-           <div key={i} className="bg-[#0A0A0A] border border-white/10 p-8 rounded-[2.5rem] space-y-4 relative group hover:border-[#00D2FF]/40 transition-all cursor-default">
+           <div key={i} className="bg-[#0A0A0A] border border-white/10 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 relative group hover:border-[#00D2FF66] transition-all cursor-default overflow-hidden">
               <div className="flex items-center justify-between">
-                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
-                 <span className="text-[9px] font-black text-zinc-700 uppercase tracking-widest">NRH-V1.4</span>
+                 <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
+                 <span className="text-[8px] sm:text-[9px] font-black text-zinc-700 uppercase tracking-widest">NRH-V1.4</span>
               </div>
               <div className="space-y-1">
-                 <h3 className={`text-4xl font-black italic tracking-tighter ${stat.color}`}>{stat.value}</h3>
-                 <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</p>
+                 <h3 className={`text-2xl sm:text-4xl font-black italic tracking-tighter ${stat.color}`}>{stat.value}</h3>
+                 <p className="text-[8px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</p>
               </div>
-              <p className="text-[9px] font-bold text-zinc-700 uppercase tracking-widest absolute bottom-4 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p className="hidden sm:block text-[9px] font-black text-zinc-700 uppercase tracking-widest absolute bottom-4 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
                 {stat.sub}
               </p>
            </div>
@@ -110,7 +110,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                {stats?.dailyStreams?.map((s: any, i: number) => (
                  <div key={i} className="flex-1 group relative">
                     <div 
-                      className="w-full bg-gradient-to-t from-[#00D2FF]/40 to-[#00D2FF] rounded-t-lg transition-all group-hover:scale-y-105" 
+                      className="w-full bg-gradient-to-t from-[#00D2FF66] to-[#00D2FF] rounded-t-lg transition-all group-hover:scale-y-105" 
                       style={{ height: `${Math.max(10, (s.count / (Math.max(...stats.dailyStreams.map((x:any)=>x.count)) || 1)) * 100)}%` }}
                     />
                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -131,7 +131,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
          </div>
 
          {/* GLOBAL DENSITY */}
-         <div className="bg-[#0A0A0A] border border-white/5 rounded-[3.5rem] p-10 space-y-8 relative overflow-hidden">
+         <div className="bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] sm:rounded-[3.5rem] p-8 sm:p-10 space-y-8 relative overflow-hidden">
             <div className="space-y-1">
                <h3 className="text-xl font-black italic uppercase tracking-tighter">Global Density</h3>
                <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Listener Distribution</p>
@@ -149,7 +149,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                     </div>
                     <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                        <div 
-                         className="h-full bg-[#00D2FF] transition-all duration-1000 shadow-[0_0_10px_rgba(0,210,255,0.4)]" 
+                         className="h-full bg-[#00D2FF] transition-all duration-1000 shadow-[0_0_10px_rgba(0,210,255,16)]" 
                          style={{ width: `${((count as number) / stats.totalStreams) * 100}%` }}
                        />
                     </div>
@@ -167,8 +167,8 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
          
          {/* FRAUD AUDIT */}
-         <div className="bg-[#0A0A0A] border border-white/5 rounded-[3.5rem] p-12 flex flex-col md:flex-row gap-12 items-center">
-            <div className="relative w-48 h-48 shrink-0">
+         <div className="bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] sm:rounded-[3.5rem] p-8 sm:p-12 flex flex-col sm:flex-row gap-8 sm:gap-12 items-center">
+            <div className="relative w-32 h-32 sm:w-48 sm:h-48 shrink-0">
                <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                   <circle cx="50" cy="50" r="45" fill="none" stroke="#1a1a1a" strokeWidth="8" />
                   <circle 
@@ -179,14 +179,14 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                   />
                </svg>
                <div className="absolute inset-0 flex flex-col items-center justify-center space-y-1">
-                  <span className="text-3xl font-black italic text-white tracking-tighter">
+                  <span className="text-2xl sm:text-3xl font-black italic text-white tracking-tighter">
                     {Math.round((stats?.fraudMetrics?.clean / (stats?.totalStreams || 1)) * 100)}%
                   </span>
                   <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">Clean Score</span>
                </div>
             </div>
 
-            <div className="space-y-6 flex-1">
+            <div className="space-y-6 flex-1 w-full text-center sm:text-left">
                <div className="space-y-1">
                   <h3 className="text-xl font-black italic uppercase tracking-tighter">Forensic Audit</h3>
                   <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Real-time Fraud Detection</p>

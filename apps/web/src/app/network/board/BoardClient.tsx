@@ -113,10 +113,10 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-12 pb-32">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-8 pb-20">
       
       {/* PAGE HEADER */}
-      <header className="pt-12 pb-16 sm:pb-24 px-4 sm:px-10 max-w-7xl mx-auto space-y-12">
+      <header className="pt-8 pb-16 sm:pb-24 px-4 sm:px-10 max-w-7xl mx-auto space-y-12">
          
          {/* LOGO */}
          <div className="flex">
@@ -129,13 +129,13 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                   <Briefcase className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Independent Growth Board</span>
                </div>
-               <h1 className="text-[clamp(3.5rem,15vw,6rem)] md:text-8xl font-bold tracking-tighter uppercase leading-[0.8] italic break-words">
-                  New<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Opportunities.</span>
-               </h1>
-               <p className="text-gray-500 max-w-xl font-medium leading-relaxed italic text-sm sm:text-base">
-                  "Verified sync deals, performance grants, and high-value collaboration requests — exclusively for the New Release Hub artist community."
-               </p>
+                <h1 className="text-[clamp(3.5rem,15vw,6rem)] md:text-8xl font-black tracking-tighter uppercase leading-[0.8] italic break-words">
+                   New<br />
+                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Opportunities.</span>
+                </h1>
+                <p className="text-zinc-500 max-w-xl font-medium leading-relaxed italic text-sm sm:text-base">
+                   "Verified sync deals, performance grants, and high-value collaboration requests — exclusively for the New Release Hub artist community."
+                </p>
             </div>
             <Link
               href="/studio/login?intent=opportunity-poster"
@@ -164,13 +164,13 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
                <div className="relative w-full lg:w-64">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                  <input 
-                    type="text" 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search opportunities..." 
-                    className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#00D2FF]" 
-                  />
+                   <input 
+                     type="text" 
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                     placeholder="Search opportunities..." 
+                     className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#00D2FF66]" 
+                   />
                </div>
                <button className="hidden sm:flex p-3 bg-black border border-white/10 rounded-xl text-gray-500 hover:text-white transition-colors">
                  <Filter className="w-4 h-4" />
@@ -185,7 +185,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
              {filteredOpps.map(opp => {
                const typeStr = opp.type.toUpperCase();
-               const colorClass = TYPE_COLORS[typeStr] || 'text-gray-400 bg-white/5 border-white/10';
+               const colorClass = TYPE_COLORS[typeStr] || 'text-zinc-400 bg-white/05 border-white/10';
                const Icon = TYPE_ICONS[typeStr] || Briefcase;
 
                // Fake countdown logic if missing
@@ -206,10 +206,10 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
 
                    <h3 className="text-xl font-bold mb-2 line-clamp-2">{opp.title}</h3>
                    
-                   <div className="flex items-center gap-2 mb-4">
-                     <span className="text-xs text-gray-400">{opp.posterName || 'Network Partner'}</span>
-                     {opp.posterIsVerified && <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />}
-                   </div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">{opp.posterName || 'Network Partner'}</span>
+                      {opp.posterIsVerified && <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />}
+                    </div>
 
                    {opp.description && (
                      <div className="mb-6">
@@ -223,12 +223,12 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                    )}
 
                    <div className="mt-auto space-y-8">
-                     {opp.budget && (
-                       <div className="mb-8">
-                         <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Budget / Reward</p>
-                         <p className="font-medium text-green-400">{opp.budget}</p>
-                       </div>
-                     )}
+                      {opp.budget && (
+                        <div className="mb-8">
+                          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Budget / Reward</p>
+                          <p className="font-black italic text-emerald-500 uppercase tracking-tight">{opp.budget}</p>
+                        </div>
+                      )}
 
                      {opp.genreTargets && opp.genreTargets.length > 0 && (
                        <div className="flex flex-wrap gap-2">
@@ -248,18 +248,18 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                         
                         {typeStr === 'PROPOSAL' ? (
                           <div className="flex items-center gap-3">
-                             <button 
-                               onClick={() => setSelectedOpp({...opp, voteType: 'YES'})}
-                               className="px-4 py-2 rounded-lg bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-widest hover:bg-green-500/20 transition-all"
-                             >
-                               Vote Yes
-                             </button>
-                             <button 
-                               onClick={() => setSelectedOpp({...opp, voteType: 'NO'})}
-                               className="px-4 py-2 rounded-lg bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/20 transition-all"
-                             >
-                               Vote No
-                             </button>
+                              <button 
+                                onClick={() => setSelectedOpp({...opp, voteType: 'YES'})}
+                                className="px-4 py-2 rounded-lg bg-emerald-5001a text-emerald-500 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-50033 transition-all"
+                              >
+                                Vote Yes
+                              </button>
+                              <button 
+                                onClick={() => setSelectedOpp({...opp, voteType: 'NO'})}
+                                className="px-4 py-2 rounded-lg bg-rose-5001a text-rose-500 text-[10px] font-bold uppercase tracking-widest hover:bg-rose-50033 transition-all"
+                              >
+                                Vote No
+                              </button>
                           </div>
                         ) : (
                           <button 
@@ -294,22 +294,22 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
       {/* APPLICATION MODAL */}
       {selectedOpp && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
-           <div className="relative w-full max-w-lg bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] p-10 space-y-8 shadow-2xl">
-              <button 
-                onClick={() => setSelectedOpp(null)}
-                className="absolute top-8 right-8 text-gray-500 hover:text-white"
-              >
-                <X className="w-6 h-6" />
-              </button>
+            <div className="relative w-full max-w-lg bg-[#0A0A0A] border border-white/10 rounded-[2rem] sm:rounded-[2.5rem] p-8 sm:p-10 space-y-8 shadow-2xl">
+               <button 
+                 onClick={() => setSelectedOpp(null)}
+                 className="absolute top-6 right-6 sm:top-8 sm:right-8 text-zinc-500 hover:text-white"
+               >
+                 <X className="w-6 h-6" />
+               </button>
 
               {isSuccess ? (
-                <div className="py-12 text-center space-y-6">
-                   <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF1a] text-[#00D2FF]' : 'bg-green-500/10 text-green-500'} rounded-2xl flex items-center justify-center mx-auto`}>
-                      <ShieldCheck className="w-8 h-8" />
-                   </div>
-                   <h3 className="text-2xl font-bold uppercase italic tracking-tighter">
-                      {selectedOpp.type === 'PROPOSAL' ? 'Forensic Vote Cast.' : 'Application Sent!'}
-                   </h3>
+                 <div className="py-12 text-center space-y-6">
+                    <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF1a] text-[#00D2FF]' : 'bg-emerald-5001a text-emerald-500'} rounded-2xl flex items-center justify-center mx-auto`}>
+                       <ShieldCheck className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-2xl font-black italic uppercase tracking-tighter">
+                       {selectedOpp.type === 'PROPOSAL' ? 'Forensic Vote Cast.' : 'Application Sent!'}
+                    </h3>
                    <p className="text-gray-500 text-sm font-medium">
                       {selectedOpp.type === 'PROPOSAL' 
                         ? 'Your vote has been recorded on the network. Results will be audited upon the closing of the proposal.' 
@@ -330,12 +330,12 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                          <div className="space-y-6">
                             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-4">
                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Selected Action</p>
-                               <div className="flex items-center gap-3">
-                                  <div className={`w-3 h-3 rounded-full ${selectedOpp.voteType === 'YES' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                  <span className="text-xl font-bold italic uppercase tracking-tighter">
-                                     Vote {selectedOpp.voteType === 'YES' ? 'YES' : 'NO'}
-                                  </span>
-                               </div>
+                                <div className="flex items-center gap-3">
+                                   <div className={`w-3 h-3 rounded-full ${selectedOpp.voteType === 'YES' ? 'bg-emerald-500' : 'bg-rose-500'}`}></div>
+                                   <span className="text-xl font-black italic uppercase tracking-tighter">
+                                      Vote {selectedOpp.voteType === 'YES' ? 'YES' : 'NO'}
+                                   </span>
+                                </div>
                             </div>
                             <div className="space-y-2">
                                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Reason / Comment (Optional)</label>

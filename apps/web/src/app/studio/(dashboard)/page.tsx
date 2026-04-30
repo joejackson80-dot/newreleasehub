@@ -11,7 +11,7 @@ export default async function StudioOverviewPage() {
   const releaseCount = (org.Releases || []).length;
 
   return (
-    <div className="p-8 md:p-12 space-y-16">
+    <div className="p-6 sm:p-8 md:p-12 space-y-12 sm:space-y-16">
       
       {/* INSTITUTIONAL COMMAND CENTER HEADER */}
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-10">
@@ -20,8 +20,8 @@ export default async function StudioOverviewPage() {
                <Link href="/" className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
             </div>
             <div className="space-y-2">
-               <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white uppercase italic leading-none">Studio<br />Command Center.</h1>
-               <p className="text-sm text-gray-500 font-medium italic">"Operating as {org.name} on the New Release Hub Professional Network."</p>
+                <h1 className="text-[clamp(2.5rem,10vw,4rem)] md:text-6xl font-bold tracking-tighter text-white uppercase italic leading-[0.8] mb-4">Studio<br />Command Center.</h1>
+                <p className="text-xs sm:text-sm text-gray-500 font-medium italic">"Operating as {org.name} on the New Release Hub Professional Network."</p>
             </div>
          </div>
          <div className="flex items-center space-x-6 pb-2">
@@ -131,36 +131,36 @@ export default async function StudioOverviewPage() {
       {/* QUICK ACTIONS */}
       <section className="space-y-6">
         <h2 className="text-lg font-bold text-white tracking-tight">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Link href="/studio/releases" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
-            <div className="w-10 h-10 rounded-lg bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center group-hover:bg-[#00D2FF] group-hover:text-white transition-colors">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+          <Link href="/studio/releases" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-[#00D2FF1a] text-[#00D2FF] flex items-center justify-center group-hover:bg-[#00D2FF] group-hover:text-white transition-colors flex-shrink-0">
               <Upload className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest">Upload Release</span>
+            <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Upload Release</span>
           </Link>
-          <Link href="/studio/dj" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
-            <div className="w-10 h-10 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
+          <Link href="/studio/dj" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors flex-shrink-0">
               <Radio className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest">Go Live</span>
+            <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Go Live</span>
           </Link>
-          <Link href="/network/board" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
-            <div className="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors">
+          <Link href="/network/board" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors flex-shrink-0">
               <Briefcase className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest">Opportunities</span>
+            <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Opportunities</span>
           </Link>
-          <Link href="/studio/messages" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors">
+          <Link href="/studio/messages" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors flex-shrink-0">
               <MessageCircle className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest">Direct Messages</span>
+            <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Messages</span>
           </Link>
-          <Link href="/studio/supporters" className="bg-[#111] border border-white/5 p-4 rounded-xl flex items-center space-x-3 hover:bg-white/5 transition-colors group">
-            <div className="w-10 h-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors">
+          <Link href="/studio/supporters" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors flex-shrink-0">
               <Users className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest">Manage Tiers</span>
+            <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Manage Tiers</span>
           </Link>
         </div>
       </section>
@@ -172,23 +172,23 @@ export default async function StudioOverviewPage() {
            <Link href="/studio/collabs" className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:underline">View All Requests</Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-           <div className="bg-[#111] border border-white/5 p-8 rounded-3xl space-y-6 hover:border-[#00D2FF]/20 transition-all group">
+           <div className="bg-[#111] border border-white/5 p-6 sm:p-8 rounded-3xl space-y-6 hover:border-[#00D2FF4d] transition-all group">
               <div className="flex items-center justify-between">
                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&q=80" className="w-full h-full object-cover" />
                     </div>
-                    <div>
-                       <p className="text-xs font-bold text-white uppercase italic">Nova Rae</p>
+                    <div className="min-w-0">
+                       <p className="text-xs font-bold text-white uppercase italic truncate">Nova Rae</p>
                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Vocalist</p>
                     </div>
                  </div>
-                 <div className="bg-[#00D2FF]/10 px-3 py-1 rounded-lg text-[#00D2FF] text-[9px] font-bold uppercase tracking-widest italic">94% Match</div>
+                 <div className="bg-[#00D2FF1a] px-3 py-1 rounded-lg text-[#00D2FF] text-[9px] font-bold uppercase tracking-widest italic whitespace-nowrap">94% Match</div>
               </div>
               <p className="text-xs text-gray-400 font-medium italic">"Hey! Loved your last set. I have a demo that would be perfect for your production style..."</p>
-              <div className="flex items-center space-x-4">
-                 <button className="flex-1 py-3 rounded-xl bg-white text-black font-bold text-[9px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">Accept</button>
-                 <button className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[9px] uppercase tracking-widest">Decline</button>
+              <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                 <button className="w-full sm:flex-1 py-3 rounded-xl bg-white text-black font-bold text-[9px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">Accept</button>
+                 <button className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[9px] uppercase tracking-widest">Decline</button>
               </div>
            </div>
            

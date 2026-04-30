@@ -93,8 +93,8 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   const tierCapitalized = org.artistTier.charAt(0).toUpperCase() + org.artistTier.slice(1);
 
   const tierBadgeColor =
-    org.artistTier === 'legend' ? 'border-amber-500/50 text-amber-400 bg-amber-500/10' :
-    org.artistTier === 'established' ? 'border-[#00D2FF]/50 text-[#00D2FF] bg-[#00D2FF]/10' :
+    org.artistTier === 'legend' ? 'border-amber-50033 text-amber-400 bg-amber-5001a' :
+    org.artistTier === 'established' ? 'border-[#00D2FF4d] text-[#00D2FF] bg-[#00D2FF1a]' :
     'border-white/20 text-gray-400 bg-white/5';
 
   return (
@@ -103,12 +103,12 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       {/* ── HEADER PHOTO ── */}
       <div className="relative">
         <div className="h-[200px] sm:h-[280px] w-full bg-zinc-900 overflow-hidden relative">
-          {org.headerImageUrl ? (
+           {org.headerImageUrl ? (
             <img src={org.headerImageUrl} alt={`${org.name} header`} className="w-full h-full object-cover opacity-60" />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-r from-[#00D2FF]/20 to-purple-600/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#00D2FF1a] to-[#9333ea1a]" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#02020266] to-transparent" />
         </div>
 
         {/* ── PROFILE IDENTITY ── */}
@@ -136,8 +136,8 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                     {tierCapitalized}
                   </span>
                 </div>
-                {org.FoundingSlot && (
-                  <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border border-[#00D2FF]/50 text-[#00D2FF] bg-[#00D2FF]/20 flex items-center gap-1.5">
+                 {org.FoundingSlot && (
+                  <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border border-[#00D2FF66] text-[#00D2FF] bg-[#00D2FF33] flex items-center gap-1.5">
                     <Star className="w-3 h-3 fill-current" />
                     Founding Artist #{org.FoundingSlot.slotNumber}
                   </span>
@@ -208,30 +208,13 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                     <Globe className="w-4 h-4" />
                   </Link>
                 )}
-                {socialLinks.spotify && (
+                 {socialLinks.spotify && (
                   <Link href={`https://open.spotify.com/search/${encodeURIComponent(org.name)}`} target="_blank"
-                    className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/30 transition-all">
+                    className="w-9 h-9 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/30 transition-all">
                     <ExternalLink className="w-4 h-4" />
                   </Link>
                 )}
               </div>
-            </div>
-
-            {/* ACTION BUTTONS */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
-              <Link href={`/fan/checkout?artist=${org.id}`}
-                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all flex items-center justify-center gap-2 shadow-lg">
-                <Heart className="w-4 h-4" />
-                Become a Supporter
-              </Link>
-              <Link href={`/studio/collab/new?artist=${org.slug}`}
-                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-[#00D2FF]/10 border border-[#00D2FF]/30 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/20 transition-all flex items-center justify-center gap-2">
-                <Users className="w-4 h-4" />
-                Collab Request
-              </Link>
-              <button className="w-full sm:w-auto px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
-                Follow
-              </button>
             </div>
           </div>
         </div>
@@ -239,19 +222,19 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
 
       {/* ── LIVE BANNER ── */}
       {isLive && (
-        <div className="max-w-7xl mx-auto px-8 mt-10">
-          <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 mt-10">
+          <div className="bg-rose-5001a border border-rose-5004d rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-red-500 flex items-center justify-center animate-pulse">
+              <div className="w-12 h-12 rounded-xl bg-rose-500 flex items-center justify-center animate-pulse">
                 <Radio className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-red-400 font-bold text-sm uppercase tracking-widest">Live Now</p>
-                <p className="text-red-200 text-sm">{org.liveListenerCount.toLocaleString()} listeners tuned in right now</p>
+                <p className="text-rose-400 font-bold text-sm uppercase tracking-widest">Live Now</p>
+                <p className="text-rose-200 text-sm">{org.liveListenerCount.toLocaleString()} listeners tuned in right now</p>
               </div>
             </div>
             <Link href={`/${slug}/live`}
-              className="px-8 py-3 rounded-xl bg-red-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-red-600 transition-all">
+              className="w-full sm:w-auto px-8 py-3 rounded-xl bg-rose-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-rose-600 transition-all text-center">
               Join the Stream
             </Link>
           </div>
@@ -311,14 +294,14 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               const isFull = tier.maxSlots !== null && currentSlots >= tier.maxSlots;
               const slotsRemaining = tier.maxSlots ? tier.maxSlots - currentSlots : null;
               const isAlmostFull = slotsRemaining !== null && slotsRemaining <= 10;
-              const isPopular = tier.sortOrder === 2; // Assuming sortOrder 2 is popular for now or based on some logic
+              const isPopular = tier.sortOrder === 2;
 
               return (
-                <div key={tier.id}
+                 <div key={tier.id}
                   className={`rounded-2xl p-6 relative overflow-hidden border transition-all ${
                     isPopular
-                      ? 'bg-[#00D2FF]/10 border-[#00D2FF]/40 shadow-lg shadow-[#00D2FF]/10'
-                      : 'bg-[#111] border-white/5 hover:border-white/20'
+                      ? 'bg-[#00D2FF1a] border-[#00D2FF66] shadow-lg shadow-[#00D2FF1a]'
+                      : 'bg-[#111] border-white/05 hover:border-white/20'
                   }`}
                 >
                   {isPopular && (
@@ -367,15 +350,15 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                     </div>
                   )}
 
-                  {isFull ? (
-                    <button className="w-full py-3 rounded-xl bg-white/5 text-gray-500 font-bold text-xs uppercase tracking-widest cursor-not-allowed">
+                   {isFull ? (
+                    <button className="w-full py-3 rounded-xl bg-white/05 text-zinc-500 font-bold text-xs uppercase tracking-widest cursor-not-allowed">
                       Full — Join Waitlist
                     </button>
                   ) : (
                     <Link href={`/checkout?tier=${tier.id}`}
                       className={`block w-full py-3 rounded-xl text-center font-bold text-xs uppercase tracking-widest transition-all ${
                         isPopular
-                          ? 'bg-[#00D2FF] text-white hover:bg-[#00B8E0] shadow-lg shadow-[#00D2FF]/30'
+                          ? 'bg-[#00D2FF] text-white hover:bg-[#00B8E0] shadow-lg shadow-[#00D2FF4d]'
                           : 'bg-white/10 text-white hover:bg-white hover:text-black'
                       }`}>
                       Join {tier.name}

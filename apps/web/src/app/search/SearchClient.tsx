@@ -33,7 +33,7 @@ export default function SearchClient() {
   }, [q, activeFilter]);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white pt-20 pb-32">
+    <div className="min-h-screen bg-[#020202] text-white pt-16 pb-20">
       <div className="max-w-7xl mx-auto px-4 md:px-10 space-y-12">
         
         {/* SEARCH HEADER */}
@@ -44,21 +44,21 @@ export default function SearchClient() {
                     <Search className="w-5 h-5" />
                     <span className="text-xs font-bold uppercase tracking-widest">Network Search</span>
                  </div>
-                 <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none italic uppercase">
-                    Results for:<br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">"{q}"</span>
-                 </h1>
+                  <h1 className="text-[clamp(2.5rem,10vw,5rem)] font-black tracking-tighter leading-[0.9] italic uppercase">
+                     Results for:<br />
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600 leading-none">"{q}"</span>
+                  </h1>
               </div>
            </div>
 
            {/* FILTERS */}
-           <div className="flex flex-wrap items-center gap-4 border-b border-white/5 pb-8">
-              {['All', 'Artists', 'Releases', 'Hubs', 'Opportunities'].map(filter => (
-                <button 
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${activeFilter === filter ? 'bg-[#00D2FF] text-white' : 'text-gray-500 hover:text-white bg-white/5 border border-white/10'}`}
-                >
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 border-b border-white/5 pb-8">
+               {['All', 'Artists', 'Releases', 'Hubs', 'Opportunities'].map(filter => (
+                 <button 
+                   key={filter}
+                   onClick={() => setActiveFilter(filter)}
+                   className={`px-5 py-2.5 sm:px-6 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-all ${activeFilter === filter ? 'bg-[#00D2FF] text-white shadow-[0_0_20px_rgba(0,210,255,33)]' : 'text-zinc-500 hover:text-white bg-white/05 border border-white/10'}`}
+                 >
                   {filter}
                 </button>
               ))}
@@ -79,13 +79,13 @@ export default function SearchClient() {
                   {item.type === 'artist' && (
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
-                            <div className="w-20 h-20 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                              <img src={item.img} className="w-full h-full object-cover" />
-                            </div>
-                            <div className="text-right">
-                              <span className="bg-[#00D2FF]/10 text-[#00D2FF] border border-[#00D2FF]/20 px-3 py-1 rounded text-[9px] font-bold uppercase tracking-widest">{item.badge}</span>
-                              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">Artist</p>
-                            </div>
+                             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                               <img src={item.img} className="w-full h-full object-cover" />
+                             </div>
+                             <div className="text-right">
+                               <span className="bg-[#00D2FF1a] text-[#00D2FF] border border-[#00D2FF33] px-3 py-1 rounded text-[9px] font-bold uppercase tracking-widest">{item.badge}</span>
+                               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-2">Artist</p>
+                             </div>
                         </div>
                         <div className="space-y-2">
                             <h3 className="text-2xl font-bold italic tracking-tighter uppercase">{item.name}</h3>
@@ -107,13 +107,13 @@ export default function SearchClient() {
                                   <Play className="w-8 h-8 text-white fill-white" />
                               </div>
                             </div>
-                            <div className="text-right">
-                              <div className="flex items-center space-x-1 justify-end text-green-500">
-                                  <Zap className="w-3 h-3" />
-                                  <span className="text-[9px] font-bold uppercase tracking-widest">{item.status}</span>
-                              </div>
-                              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">Release</p>
-                            </div>
+                             <div className="text-right">
+                               <div className="flex items-center space-x-1 justify-end text-emerald-500">
+                                   <Zap className="w-3 h-3" />
+                                   <span className="text-[9px] font-bold uppercase tracking-widest">{item.status}</span>
+                               </div>
+                               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-2">Release</p>
+                             </div>
                         </div>
                         <div className="space-y-2">
                             <h3 className="text-2xl font-bold italic tracking-tighter uppercase line-clamp-1">{item.title}</h3>
@@ -134,11 +134,11 @@ export default function SearchClient() {
                             </div>
                             <div className="text-right">
                                <div className="flex items-center space-x-1.5 justify-end">
-                                  <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></div>
-                                  <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest italic">Live Now</span>
-                               </div>
-                               <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Artist Hub</p>
-                            </div>
+                                   <div className="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></div>
+                                   <span className="text-[10px] font-bold text-rose-500 uppercase tracking-widest italic">Live Now</span>
+                                </div>
+                                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Artist Hub</p>
+                             </div>
                         </div>
                         <div className="space-y-2">
                             <h3 className="text-2xl font-bold italic tracking-tighter uppercase">{item.name}</h3>
@@ -156,10 +156,10 @@ export default function SearchClient() {
                             <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 text-purple-400">
                               <Award className="w-6 h-6" />
                             </div>
-                            <div className="text-right">
-                              <span className="text-xs font-bold text-amber-500">{item.deadline}</span>
-                              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">Opportunity</p>
-                            </div>
+                             <div className="text-right">
+                               <span className="text-xs font-bold text-amber-500">{item.deadline}</span>
+                               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-2">Opportunity</p>
+                             </div>
                         </div>
                         <div className="space-y-2 flex-1">
                             <h3 className="text-2xl font-bold italic tracking-tighter uppercase line-clamp-2 leading-tight">{item.title}</h3>
