@@ -10,7 +10,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
         
         {/* HEADER */}
         <header className="space-y-4">
-           <div className="flex items-center space-x-3 text-[#F1F5F9]">
+           <div className="flex items-center space-x-3 text-[#00D2FF]">
               <User className="w-5 h-5" />
               <span className="text-xs font-bold uppercase tracking-widest">Network Identity</span>
            </div>
@@ -31,7 +31,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
                     <input 
                        type="text" 
                        defaultValue={user?.displayName || ''}
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#F1F5F9] transition-all"
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
                     />
                  </div>
                  <div className="space-y-2">
@@ -39,7 +39,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
                     <input 
                        type="email" 
                        defaultValue={user?.email || ''}
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#F1F5F9] transition-all"
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
                     />
                  </div>
               </div>
@@ -67,7 +67,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
                           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Expires 12/28</p>
                        </div>
                     </div>
-                    <button className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest hover:underline">Update</button>
+                    <button className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:underline">Update</button>
                  </div>
                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
                     <p className="text-xs text-gray-400 font-medium">Manage active artist Support and revenue shares.</p>
@@ -89,7 +89,7 @@ export default function FanSettingsPage({ user }: { user: any }) {
                     <p className="text-sm font-bold text-white">Two-Factor Authentication</p>
                     <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Protect your revenue shares</p>
                  </div>
-                 <div className="w-12 h-6 bg-[#F1F5F9] rounded-full relative cursor-pointer">
+                 <div className="w-12 h-6 bg-[#00D2FF] rounded-full relative cursor-pointer">
                     <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
                  </div>
               </div>

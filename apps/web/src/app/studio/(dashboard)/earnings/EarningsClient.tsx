@@ -63,7 +63,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="w-12 h-12 text-[#F1F5F9] animate-spin" />
+        <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
         <p className="text-gray-500 font-bold uppercase tracking-[0.3em] text-[10px]">Retrieving Financial Records...</p>
       </div>
     );
@@ -97,7 +97,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
            </div>
 
            <div className="space-y-4">
-             <div className="flex items-center space-x-3 text-[#F1F5F9]">
+             <div className="flex items-center space-x-3 text-[#00D2FF]">
                <ShieldCheck className="w-4 h-4 fill-current" />
                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Settlement Hub</span>
              </div>
@@ -106,14 +106,14 @@ export default function EarningsPage({ artist }: { artist: any }) {
         </div>
         <div className="flex items-center space-x-4">
            {stripeStatus?.connected ? (
-             <button className="px-8 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#F1F5F9] hover:text-white transition-all shadow-2xl">
+             <button className="px-8 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all shadow-2xl">
                 Withdraw Funds
              </button>
            ) : (
              <button 
                onClick={handleLinkPayout}
                disabled={isLinking}
-               className="px-8 py-4 rounded-xl bg-[#F1F5F9] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-2xl flex items-center gap-2"
+               className="px-8 py-4 rounded-xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-2xl flex items-center gap-2"
              >
                 {isLinking ? <Loader2 className="w-3 h-3 animate-spin" /> : <CreditCard className="w-3 h-3" />}
                 Link Payout Account
@@ -156,7 +156,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
             </div>
             <div className="flex items-center gap-4">
                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#F1F5F9]"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#00D2FF]"></div>
                   <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Settled Revenue</span>
                </div>
             </div>
@@ -174,7 +174,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
                               initial={{ height: 0 }}
                               animate={{ height: `${height}%` }}
                               transition={{ delay: i * 0.1, duration: 1, ease: 'circOut' }}
-                              className="w-full bg-gradient-to-t from-[#F1F5F9]/20 to-[#F1F5F9] rounded-t-xl group-hover:to-white transition-all relative"
+                              className="w-full bg-gradient-to-t from-[#00D2FF]/20 to-[#00D2FF] rounded-t-xl group-hover:to-white transition-all relative"
                            >
                               <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                                  <span className="text-xs font-bold text-white bg-black border border-white/10 px-3 py-1 rounded-lg">${d.value.toLocaleString()}</span>
@@ -220,7 +220,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Growth Pool</p>
             <div className="space-y-1">
                <h2 className="text-4xl font-bold italic tracking-tighter text-white">Level: {earningsLevel}</h2>
-               <p className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest">Phase 8 Performance Multiplier Active</p>
+               <p className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">Phase 8 Performance Multiplier Active</p>
             </div>
          </div>
       </div>
@@ -282,7 +282,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
        <div className="space-y-8">
           <div className="flex items-center justify-between border-b border-white/5 pb-6">
              <div className="flex items-center space-x-3">
-                <Users className="w-5 h-5 text-[#F1F5F9]" />
+                <Users className="w-5 h-5 text-[#00D2FF]" />
                 <h3 className="text-xl font-bold italic uppercase tracking-tight text-white">Participation Ledger</h3>
              </div>
              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{participation.length} Holders Verified</p>
@@ -323,7 +323,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
                                 </div>
                              </td>
                              <td className="p-8">
-                                <span className="text-xs font-black text-[#F1F5F9] italic">{(p.revenueSharePercent * 100).toFixed(1)}%</span>
+                                <span className="text-xs font-black text-[#00D2FF] italic">{(p.revenueSharePercent * 100).toFixed(1)}%</span>
                              </td>
                              <td className="p-8 text-right">
                                 <span className="text-sm font-black text-white italic tracking-tighter">${(p.amountEarned / 100).toFixed(2)}</span>

@@ -69,7 +69,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
       {/* HEADER */}
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-10">
          <div className="space-y-8">
-            <div className="flex items-center space-x-3 text-[#F1F5F9]">
+            <div className="flex items-center space-x-3 text-[#00D2FF]">
                <Package className="w-5 h-5" />
                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Asset Logistics Terminal</span>
             </div>
@@ -77,7 +77,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
          </div>
          <button 
            onClick={() => setShowAddModal(true)}
-           className="px-8 py-4 rounded-xl bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-[#F1F5F9] hover:text-white transition-all shadow-2xl flex items-center gap-2"
+           className="px-8 py-4 rounded-xl bg-white text-black font-black text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all shadow-2xl flex items-center gap-2"
          >
             <Plus className="w-4 h-4" /> Initialize New Drop
          </button>
@@ -86,7 +86,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
       {/* INVENTORY GRID */}
       {loading ? (
         <div className="py-20 flex flex-col items-center justify-center space-y-4">
-           <Loader2 className="w-12 h-12 text-[#F1F5F9] animate-spin" />
+           <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest animate-pulse">Syncing Network Inventory...</p>
         </div>
       ) : (
@@ -115,7 +115,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                         </div>
                       )}
                       {item.minFanLevel > 1 && (
-                        <div className="bg-[#F1F5F9] text-white px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-1">
+                        <div className="bg-[#00D2FF] text-white px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-1">
                            <Star className="w-3 h-3" /> LVL {item.minFanLevel}+
                         </div>
                       )}
@@ -144,7 +144,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                 <Package className="w-16 h-16 text-white/5 mx-auto" />
                 <div className="space-y-2">
                    <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em]">Zero Institutional Assets Detected</p>
-                   <button onClick={() => setShowAddModal(true)} className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest hover:underline">Initialize First Product</button>
+                   <button onClick={() => setShowAddModal(true)} className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest hover:underline">Initialize First Product</button>
                 </div>
              </div>
            )}
@@ -182,7 +182,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                             required
                             value={formData.title}
                             onChange={e => setFormData({...formData, title: e.target.value})}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#F1F5F9]/40 focus:outline-none transition-all"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#00D2FF]/40 focus:outline-none transition-all"
                             placeholder="Institutional Hoodie v1"
                           />
                        </div>
@@ -193,7 +193,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                             required
                             value={formData.description}
                             onChange={e => setFormData({...formData, description: e.target.value})}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#F1F5F9]/40 focus:outline-none transition-all h-24"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#00D2FF]/40 focus:outline-none transition-all h-24"
                             placeholder="High-fidelity master recording commemorative apparel."
                           />
                        </div>
@@ -204,7 +204,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                             type="number"
                             value={formData.priceCents}
                             onChange={e => setFormData({...formData, priceCents: parseInt(e.target.value)})}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#F1F5F9]/40 focus:outline-none transition-all"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#00D2FF]/40 focus:outline-none transition-all"
                           />
                        </div>
 
@@ -214,7 +214,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                             type="number"
                             value={formData.stockCount}
                             onChange={e => setFormData({...formData, stockCount: parseInt(e.target.value)})}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#F1F5F9]/40 focus:outline-none transition-all"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-sm font-medium focus:border-[#00D2FF]/40 focus:outline-none transition-all"
                           />
                        </div>
 
@@ -226,7 +226,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                                   type="checkbox"
                                   checked={formData.isSupporterOnly}
                                   onChange={e => setFormData({...formData, isSupporterOnly: e.target.checked})}
-                                  className="w-6 h-6 rounded-lg bg-white/5 border border-white/10 checked:bg-[#F1F5F9] transition-all"
+                                  className="w-6 h-6 rounded-lg bg-white/5 border border-white/10 checked:bg-[#00D2FF] transition-all"
                                 />
                                 <div className="space-y-1">
                                    <p className="text-xs font-bold text-white uppercase italic">Supporter Only</p>
@@ -239,7 +239,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                                 <select 
                                   value={formData.minFanLevel}
                                   onChange={e => setFormData({...formData, minFanLevel: parseInt(e.target.value)})}
-                                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-[#F1F5F9]/40 focus:outline-none transition-all"
+                                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-[#00D2FF]/40 focus:outline-none transition-all"
                                 >
                                    {[1, 5, 10, 20, 50].map(lvl => (
                                      <option key={lvl} value={lvl} className="bg-[#0A0A0A]">Level {lvl}+</option>
@@ -252,7 +252,7 @@ export default function MerchManagerClient({ org }: { org: any }) {
                        <button 
                          type="submit"
                          disabled={isSubmitting}
-                         className="md:col-span-2 py-6 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-[0.3em] hover:bg-[#F1F5F9] hover:text-white transition-all shadow-2xl mt-4 flex items-center justify-center gap-3"
+                         className="md:col-span-2 py-6 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-[0.3em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-2xl mt-4 flex items-center justify-center gap-3"
                        >
                           {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShieldCheck className="w-5 h-5" />}
                           Finalize Drop Protocol

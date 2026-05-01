@@ -46,13 +46,13 @@ export default function FanLibraryClient({ user }: { user: any }) {
   const [selectedAsset, setSelectedAsset] = useState<any>(null);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] pt-12 pb-32">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] pt-12 pb-32">
       
       {/* HEADER */}
       <header className="max-w-7xl mx-auto px-4 md:px-10 space-y-12 pt-12">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
             <div className="space-y-4">
-               <div className="flex items-center space-x-3 text-[#F1F5F9]">
+               <div className="flex items-center space-x-3 text-[#00D2FF]">
                   <Disc className="w-5 h-5" />
                   <span className="text-xs font-bold uppercase tracking-widest">Digital Asset Library</span>
                </div>
@@ -62,10 +62,10 @@ export default function FanLibraryClient({ user }: { user: any }) {
                </h1>
             </div>
             <div className="flex items-center bg-[#111] p-1.5 rounded-2xl border border-white/5">
-               <button onClick={() => setViewMode('grid')} className={`p-2.5 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-[#F1F5F9] text-white shadow-lg' : 'text-gray-500 hover:text-white'}`}>
+               <button onClick={() => setViewMode('grid')} className={`p-2.5 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-[#00D2FF] text-white shadow-lg' : 'text-gray-500 hover:text-white'}`}>
                   <LayoutGrid className="w-4 h-4" />
                </button>
-               <button onClick={() => setViewMode('list')} className={`p-2.5 rounded-xl transition-all ${viewMode === 'list' ? 'bg-[#F1F5F9] text-white shadow-lg' : 'text-gray-500 hover:text-white'}`}>
+               <button onClick={() => setViewMode('list')} className={`p-2.5 rounded-xl transition-all ${viewMode === 'list' ? 'bg-[#00D2FF] text-white shadow-lg' : 'text-gray-500 hover:text-white'}`}>
                   <List className="w-4 h-4" />
                </button>
             </div>
@@ -79,7 +79,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
                {MOCK_LIBRARY.map((asset) => (
                   <div key={asset.id} className="bg-[#111] border border-white/5 rounded-[3rem] p-10 space-y-10 hover:border-white/20 transition-all group relative overflow-hidden shadow-2xl">
                      <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                        <Award className="w-24 h-24 text-[#F1F5F9]" />
+                        <Award className="w-24 h-24 text-[#00D2FF]" />
                      </div>
                      <div className="space-y-6 relative z-10">
                         <div className="w-20 h-20 rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
@@ -97,7 +97,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
                      <div className="grid grid-cols-2 gap-6 relative z-10 border-t border-white/5 pt-10">
                         <div className="space-y-1">
                            <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Your Participation</p>
-                           <p className="text-xl font-bold italic tracking-tighter text-[#F1F5F9]">{asset.participation}%</p>
+                           <p className="text-xl font-bold italic tracking-tighter text-[#00D2FF]">{asset.participation}%</p>
                         </div>
                         <div className="space-y-1">
                            <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Yield to Date</p>
@@ -114,7 +114,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
                            <motion.div 
                               initial={{ width: 0 }}
                               animate={{ width: asset.velocity === 'High' ? '90%' : '60%' }}
-                              className="h-full bg-gradient-to-r from-[#F1F5F9] to-purple-500 rounded-full"
+                              className="h-full bg-gradient-to-r from-[#00D2FF] to-purple-500 rounded-full"
                            />
                         </div>
                      </div>
@@ -142,7 +142,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
                         <div className="flex items-center space-x-12">
                            <div className="text-right">
                               <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Participation</p>
-                              <p className="text-lg font-bold italic text-[#F1F5F9]">{asset.participation}%</p>
+                              <p className="text-lg font-bold italic text-[#00D2FF]">{asset.participation}%</p>
                            </div>
                            <div className="text-right">
                               <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Earnings</p>
@@ -177,7 +177,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
                </div>
             </div>
             <div className="relative group">
-               <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 to-[#F1F5F9]/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+               <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 to-[#00D2FF]/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                <div className="relative bg-[#111] p-12 rounded-[3rem] border border-white/5 space-y-10 shadow-2xl">
                   <div className="flex justify-between items-center text-[10px] font-bold text-gray-600 uppercase tracking-widest italic">Asset Performance</div>
                   <div className="space-y-6">
@@ -194,7 +194,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
                      </div>
                      <div className="space-y-1 text-right">
                         <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Next Settlement</p>
-                        <p className="text-sm font-bold text-[#F1F5F9]">Nov 01, 2026</p>
+                        <p className="text-sm font-bold text-[#00D2FF]">Nov 01, 2026</p>
                      </div>
                   </div>
                </div>

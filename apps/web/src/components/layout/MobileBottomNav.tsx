@@ -27,7 +27,7 @@ export default function MobileBottomNav() {
                 href={item.href}
                 className="flex-1 relative py-4 flex flex-col items-center gap-1 group"
               >
-                 <div className={`relative z-10 transition-all duration-300 ${isActive ? 'text-[#F1F5F9] scale-110' : 'text-gray-500'}`}>
+                 <div className={`relative z-10 transition-all duration-300 ${isActive ? 'text-[#00D2FF] scale-110' : 'text-gray-500'}`}>
                     <item.icon className="w-6 h-6" strokeWidth={isActive ? 2.5 : 2} />
                  </div>
                  <span className={`text-[8px] font-black uppercase tracking-widest transition-all ${isActive ? 'text-white opacity-100' : 'text-gray-600 opacity-60'}`}>

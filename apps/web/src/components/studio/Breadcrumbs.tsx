@@ -26,7 +26,7 @@ export default function Breadcrumbs() {
           <React.Fragment key={path}>
             <ChevronRight className="w-3 h-3 text-gray-800" />
             {isLast ? (
-              <span className="text-[#F1F5F9] italic">{label}</span>
+              <span className="text-[#00D2FF] italic">{label}</span>
             ) : (
               <Link href={href} className="hover:text-white transition-colors">
                 {label}

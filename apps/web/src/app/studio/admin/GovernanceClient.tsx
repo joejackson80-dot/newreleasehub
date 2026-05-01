@@ -29,7 +29,7 @@ export default function GovernanceClient({
       {/* HEADER */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-white/5 pb-12">
         <div className="space-y-4">
-          <div className="flex items-center space-x-3 text-[#F1F5F9]">
+          <div className="flex items-center space-x-3 text-[#00D2FF]">
             <Lock className="w-5 h-5" />
             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">NRH Institutional Governance</span>
           </div>
@@ -52,7 +52,7 @@ export default function GovernanceClient({
       {/* STATS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-6 group hover:border-[#F1F5F9]/20 transition-all">
+          <div key={i} className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-6 group hover:border-[#00D2FF]/20 transition-all">
             <div className="flex justify-between items-start">
               <div className={`p-4 rounded-2xl bg-white/5 ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
@@ -132,7 +132,7 @@ export default function GovernanceClient({
                     pendingPayouts.map((p: any) => (
                       <div key={p.id} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl flex items-center justify-between group hover:bg-white/[0.04] transition-all">
                         <div className="flex items-center space-x-6">
-                           <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#F1F5F9]">
+                           <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF]">
                               <DollarSign className="w-6 h-6" />
                            </div>
                            <div>
@@ -160,7 +160,7 @@ export default function GovernanceClient({
                                   }
                                 }}
                                 disabled={isProcessing === p.id}
-                                className="px-6 py-3 rounded-xl bg-[#F1F5F9] text-black text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(241,245,249,0.2)] disabled:opacity-50"
+                                className="px-6 py-3 rounded-xl bg-[#00D2FF] text-black text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(0,210,255,0.2)] disabled:opacity-50"
                               >
                                  {isProcessing === p.id ? 'Processing...' : 'Authorize'}
                               </button>

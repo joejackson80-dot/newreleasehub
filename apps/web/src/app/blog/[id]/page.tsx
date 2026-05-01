@@ -57,7 +57,7 @@ export default function BlogPostPage() {
   const post = MOCK_POSTS.find(p => p.id === id) || MOCK_POSTS[0];
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white pb-32">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white pb-32">
       
       {/* ── HEADER ── */}
       <div className="relative h-[60vh] sm:h-[70vh] w-full overflow-hidden">
@@ -70,7 +70,7 @@ export default function BlogPostPage() {
                   <Link href="/blog" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white hover:text-black transition-all">
                      <ChevronLeft className="w-5 h-5" />
                   </Link>
-                  <span className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-[0.3em]">{post.category}</span>
+                  <span className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">{post.category}</span>
                </div>
                <h1 className="text-[clamp(2.5rem,8vw,5rem)] font-black tracking-tighter uppercase leading-[0.9] italic">
                   {post.title}
@@ -103,25 +103,25 @@ export default function BlogPostPage() {
          {/* SIDEBAR */}
          <div className="lg:col-span-1 flex lg:flex-col items-center justify-center lg:justify-start gap-8 sticky top-32 h-fit order-2 lg:order-1">
             <button className="flex flex-col items-center gap-2 text-zinc-500 hover:text-white transition-colors group">
-               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#F1F5F91a] group-hover:border-[#F1F5F933]">
+               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00D2FF1a] group-hover:border-[#00D2FF33]">
                   <Heart className="w-5 h-5" />
                </div>
                <span className="text-[9px] font-bold uppercase tracking-widest">2.4k</span>
             </button>
             <button className="flex flex-col items-center gap-2 text-zinc-500 hover:text-white transition-colors group">
-               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#F1F5F91a] group-hover:border-[#F1F5F933]">
+               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00D2FF1a] group-hover:border-[#00D2FF33]">
                   <MessageCircle className="w-5 h-5" />
                </div>
                <span className="text-[9px] font-bold uppercase tracking-widest">128</span>
             </button>
             <button className="flex flex-col items-center gap-2 text-zinc-500 hover:text-white transition-colors group">
-               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#F1F5F91a] group-hover:border-[#F1F5F933]">
+               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00D2FF1a] group-hover:border-[#00D2FF33]">
                   <Share2 className="w-5 h-5" />
                </div>
                <span className="text-[9px] font-bold uppercase tracking-widest">Share</span>
             </button>
             <button className="flex flex-col items-center gap-2 text-zinc-500 hover:text-white transition-colors group">
-               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#F1F5F91a] group-hover:border-[#F1F5F933]">
+               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#00D2FF1a] group-hover:border-[#00D2FF33]">
                   <Bookmark className="w-5 h-5" />
                </div>
                <span className="text-[9px] font-bold uppercase tracking-widest">Save</span>
@@ -133,7 +133,7 @@ export default function BlogPostPage() {
             prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter prose-headings:font-black
             prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-8 prose-h2:text-white
             prose-p:text-lg prose-p:leading-relaxed prose-p:text-zinc-400 prose-p:font-medium prose-p:italic
-            prose-blockquote:border-l-4 prose-blockquote:border-[#F1F5F9] prose-blockquote:bg-[#F1F5F90d] prose-blockquote:py-8 prose-blockquote:px-10 prose-blockquote:rounded-r-3xl prose-blockquote:not-italic prose-blockquote:text-2xl prose-blockquote:font-bold prose-blockquote:text-white prose-blockquote:my-12
+            prose-blockquote:border-l-4 prose-blockquote:border-[#00D2FF] prose-blockquote:bg-[#00D2FF0d] prose-blockquote:py-8 prose-blockquote:px-10 prose-blockquote:rounded-r-3xl prose-blockquote:not-italic prose-blockquote:text-2xl prose-blockquote:font-bold prose-blockquote:text-white prose-blockquote:my-12
          ">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
             
@@ -143,7 +143,7 @@ export default function BlogPostPage() {
                      <h4 className="text-2xl font-black italic uppercase tracking-tighter">Ready to own your masters?</h4>
                      <p className="text-zinc-500 font-medium text-sm">Join the network and start building your independent empire today.</p>
                   </div>
-                  <Link href="/studio/login" className="px-12 py-5 rounded-full bg-[#F1F5F9] text-white font-black text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-xl shadow-[#F1F5F933] whitespace-nowrap">
+                  <Link href="/studio/login" className="px-12 py-5 rounded-full bg-[#00D2FF] text-white font-black text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-xl shadow-[#00D2FF33] whitespace-nowrap">
                      Get Started
                   </Link>
                </div>

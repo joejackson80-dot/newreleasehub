@@ -8,7 +8,7 @@ export default function PlaceholderPage({ params }: { params?: any }) {
          <h1 className="text-5xl font-bold tracking-tighter italic uppercase">Coming Soon.</h1>
          <p className="text-gray-500 font-medium leading-relaxed">
             We're building something great. Questions? Email{' '}
-            <a href="mailto:info@newreleasehub.com" className="text-white hover:text-[#F1F5F9] transition-colors">
+            <a href="mailto:info@newreleasehub.com" className="text-white hover:text-[#00D2FF] transition-colors">
                info@newreleasehub.com
             </a>
          </p>

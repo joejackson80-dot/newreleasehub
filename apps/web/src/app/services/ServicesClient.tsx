@@ -71,7 +71,7 @@ export default function ServicesClient() {
       <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-12">
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter italic mb-4">
-            Network <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F1F5F9] to-[#3a7bd5]">Services</span>
+            Network <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D2FF] to-[#3a7bd5]">Services</span>
           </h1>
           <p className="text-gray-400 font-medium max-w-xl mx-auto">
             Scale your release with institutional-grade engineering, visual arts, and promotional campaigns.
@@ -101,7 +101,7 @@ export default function ServicesClient() {
                  placeholder="Search services..." 
                  value={searchQuery}
                  onChange={(e) => setSearchQuery(e.target.value)}
-                 className="w-full bg-black border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#F1F5F9]"
+                 className="w-full bg-black border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#00D2FF]"
                />
             </div>
           </div>
@@ -109,19 +109,19 @@ export default function ServicesClient() {
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
              {filteredServices.map(service => (
-               <div key={service.id} className="bg-[#111] border border-white/5 rounded-3xl p-8 hover:border-[#F1F5F9]/30 transition-all group flex flex-col h-full">
+               <div key={service.id} className="bg-[#111] border border-white/5 rounded-3xl p-8 hover:border-[#00D2FF]/30 transition-all group flex flex-col h-full">
                   <div className="flex justify-between items-start mb-6">
-                     <div className="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center text-[#F1F5F9] group-hover:scale-110 transition-transform">
+                     <div className="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center text-[#00D2FF] group-hover:scale-110 transition-transform">
                         <service.icon className="w-5 h-5" />
                      </div>
-                     <span className="bg-[#F1F5F9]/10 text-[#F1F5F9] px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-[#F1F5F9]/20">
+                     <span className="bg-[#00D2FF]/10 text-[#00D2FF] px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">
                         {service.category}
                      </span>
                   </div>
                   
                   <div className="flex-1 space-y-4">
                      <div>
-                       <h3 className="text-xl font-bold text-white tracking-tight leading-tight group-hover:text-[#F1F5F9] transition-colors">{service.name}</h3>
+                       <h3 className="text-xl font-bold text-white tracking-tight leading-tight group-hover:text-[#00D2FF] transition-colors">{service.name}</h3>
                        <p className="text-xs text-gray-500 font-medium mt-1">by <span className="text-gray-400">{service.provider}</span></p>
                      </div>
                      

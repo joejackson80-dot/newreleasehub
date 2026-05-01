@@ -44,7 +44,7 @@ export default function BlogPage() {
         {/* HEADER */}
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/5 pb-12">
           <div className="space-y-4">
-             <div className="inline-flex items-center space-x-3 text-[#F1F5F9]">
+             <div className="inline-flex items-center space-x-3 text-[#00D2FF]">
                 <Tag className="w-5 h-5" />
                 <span className="text-xs font-bold uppercase tracking-widest">Industry Journal</span>
              </div>
@@ -58,7 +58,7 @@ export default function BlogPage() {
                 <input 
                   type="text" 
                   placeholder="Search articles..." 
-                  className="bg-white/5 border border-white/10 rounded-full px-8 py-3 text-[10px] font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#F1F5F9] transition-all w-64"
+                  className="bg-white/5 border border-white/10 rounded-full px-8 py-3 text-[10px] font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#00D2FF] transition-all w-64"
                 />
                 <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700" />
              </div>
@@ -74,7 +74,7 @@ export default function BlogPage() {
               <div className="p-12 lg:p-20 flex flex-col justify-between space-y-12">
                  <div className="space-y-6">
                     <div className="flex items-center space-x-4">
-                       <span className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-[0.3em]">{MOCK_POSTS[0].category}</span>
+                       <span className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">{MOCK_POSTS[0].category}</span>
                        <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
                        <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">{MOCK_POSTS[0].date}</span>
                     </div>
@@ -91,7 +91,7 @@ export default function BlogPage() {
                           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{MOCK_POSTS[0].readTime} Read</p>
                        </div>
                     </div>
-                    <Link href={`/blog/${MOCK_POSTS[0].id}`} className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:bg-[#F1F5F9] hover:text-white transition-all group-hover:translate-x-2">
+                    <Link href={`/blog/${MOCK_POSTS[0].id}`} className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:bg-[#00D2FF] hover:text-white transition-all group-hover:translate-x-2">
                        <ArrowRight className="w-6 h-6" />
                     </Link>
                  </div>
@@ -109,7 +109,7 @@ export default function BlogPage() {
                 <div className="space-y-6">
                    <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                         <span className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest">{post.category}</span>
+                         <span className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">{post.category}</span>
                          <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
                          <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">{post.date}</span>
                       </div>
@@ -118,9 +118,9 @@ export default function BlogPage() {
                          <button className="text-gray-500 hover:text-white transition-colors"><Share2 className="w-4 h-4" /></button>
                       </div>
                    </div>
-                   <h3 className="text-3xl font-bold tracking-tighter uppercase leading-tight italic group-hover:text-[#F1F5F9] transition-colors">{post.title}</h3>
+                   <h3 className="text-3xl font-bold tracking-tighter uppercase leading-tight italic group-hover:text-[#00D2FF] transition-colors">{post.title}</h3>
                    <p className="text-gray-500 font-medium leading-relaxed line-clamp-2">{post.excerpt}</p>
-                   <Link href={`/blog/${post.id}`} className="inline-flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-white group-hover:text-[#F1F5F9] transition-colors">
+                   <Link href={`/blog/${post.id}`} className="inline-flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-white group-hover:text-[#00D2FF] transition-colors">
                       <span>Read Full Article</span>
                       <ChevronRight className="w-4 h-4" />
                    </Link>
@@ -140,9 +140,9 @@ export default function BlogPage() {
               <input 
                 type="email" 
                 placeholder="your@email.com" 
-                className="flex-1 bg-white/5 border border-white/10 rounded-full px-8 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#F1F5F9] transition-all"
+                className="flex-1 bg-white/5 border border-white/10 rounded-full px-8 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
               />
-              <button className="px-10 py-4 rounded-full bg-[#F1F5F9] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#F1F5F9]/20">Join</button>
+              <button className="px-10 py-4 rounded-full bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#00D2FF]/20">Join</button>
            </form>
         </section>
 

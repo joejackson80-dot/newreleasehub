@@ -34,7 +34,7 @@ export default function ForensicPage() {
           {[
             { label: 'Fraud Detection Rate', value: '99.7%', icon: ShieldAlert, color: 'text-emerald-500' },
             { label: 'Flagged This Month', value: '0', icon: FileWarning, color: 'text-amber-500' },
-            { label: 'Streams Audited', value: '0', icon: Activity, color: 'text-[#F1F5F9]' },
+            { label: 'Streams Audited', value: '0', icon: Activity, color: 'text-[#00D2FF]' },
           ].map((stat, i) => (
             <div key={i} className="bg-[#0A0A0A] border border-white/5 rounded-3xl p-8 space-y-4">
               <stat.icon className={`w-6 h-6 ${stat.color}`} />
@@ -56,7 +56,7 @@ export default function ForensicPage() {
             <input 
               type="text" 
               placeholder="Search by Artist ID, IP Address, or Device Fingerprint..."
-              className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-white placeholder:text-gray-700 outline-none focus:border-[#F1F5F9]/50 transition-colors"
+              className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-white placeholder:text-gray-700 outline-none focus:border-[#00D2FF]/50 transition-colors"
             />
             <button className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-white hover:bg-white/10 transition-all">
               Analyze

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --color-brand: #F1F5F9;
+  --color-brand: #00D2FF;
   --color-brand-hover: #00E5FF;
   --color-bg-dark: #020202;
   --color-bg-light: #F5F7FA;
@@ -14,7 +14,7 @@
   --color-studio-surface: #0A0A0A;
   --color-studio-elevated: #111111;
   --color-studio-border: rgba(255, 255, 255, 0.08);
-  --color-accent-primary: #F1F5F9;
+  --color-accent-primary: #00D2FF;
   --color-accent-glow: rgba(0, 210, 255, 0.3);
 }
 

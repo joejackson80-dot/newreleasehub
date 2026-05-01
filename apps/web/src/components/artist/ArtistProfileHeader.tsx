@@ -11,7 +11,7 @@ import Link from 'next/link';
 export default function ArtistProfileHeader({ org }: { org: any }) {
   const tierBadgeColor =
     org.artistTier === 'legend' ? 'border-amber-500/50 text-amber-400 bg-amber-500/10' :
-    org.artistTier === 'established' ? 'border-[#F1F5F9]/50 text-[#F1F5F9] bg-[#F1F5F9]/10' :
+    org.artistTier === 'established' ? 'border-[#00D2FF]/50 text-[#00D2FF] bg-[#00D2FF]/10' :
     'border-white/20 text-gray-400 bg-white/5';
 
   const socialLinks = org.socialLinksJson ? JSON.parse(org.socialLinksJson) : {};
@@ -44,7 +44,7 @@ export default function ArtistProfileHeader({ org }: { org: any }) {
             {org.profileImageUrl && (
               <img src={org.profileImageUrl} alt={org.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
             )}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#F1F5F9]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#00D2FF]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </motion.div>
 
           {/* TEXT CONTENT */}
@@ -60,7 +60,7 @@ export default function ArtistProfileHeader({ org }: { org: any }) {
                       animate={{ opacity: [0.5, 1, 0.5] }}
                       transition={{ duration: 4, repeat: Infinity }}
                     >
-                      <CheckCircle2 className="w-8 h-8 text-[#F1F5F9]" />
+                      <CheckCircle2 className="w-8 h-8 text-[#00D2FF]" />
                     </motion.div>
                   )}
                   <span className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.3em] rounded-xl border ${tierBadgeColor}`}>
@@ -88,7 +88,7 @@ export default function ArtistProfileHeader({ org }: { org: any }) {
                  { label: 'Supporters', val: org.supporterCount.toLocaleString(), icon: Users },
                  { label: 'Global Streams', val: org.totalStreams.toLocaleString(), icon: Disc },
                  { label: 'Network Rank', val: '#1,204', icon: Star },
-                 { label: 'Equity Score', val: '9.4', icon: Zap, color: 'text-[#F1F5F9]' }
+                 { label: 'Equity Score', val: '9.4', icon: Zap, color: 'text-[#00D2FF]' }
                ].map((stat, i) => (
                  <div key={i} className="space-y-1">
                     <div className="flex items-center gap-2 text-zinc-600">
@@ -103,12 +103,12 @@ export default function ArtistProfileHeader({ org }: { org: any }) {
             {/* SOCIAL ACTIONS */}
             <div className="flex items-center justify-center md:justify-start gap-3 pt-4">
                {socialLinks.instagram && (
-                 <Link href={`https://instagram.com/${socialLinks.instagram}`} target="_blank" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-[#F1F5F9]/50 transition-all">
+                 <Link href={`https://instagram.com/${socialLinks.instagram}`} target="_blank" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-[#00D2FF]/50 transition-all">
                     <Camera className="w-4 h-4" />
                  </Link>
                )}
                {socialLinks.website && (
-                 <Link href={socialLinks.website} target="_blank" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-[#F1F5F9]/50 transition-all">
+                 <Link href={socialLinks.website} target="_blank" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-[#00D2FF]/50 transition-all">
                     <Globe className="w-4 h-4" />
                  </Link>
                )}

@@ -48,17 +48,17 @@ export default async function StudioOverviewPage() {
           </div>
           <div className="relative z-10">
             <p className="text-3xl font-bold text-white">88<span className="text-gray-500 text-sm font-normal">/100</span></p>
-            <p className="text-xs text-[#F1F5F9] mt-2 font-bold uppercase tracking-widest">Institutional Grade</p>
+            <p className="text-xs text-[#00D2FF] mt-2 font-bold uppercase tracking-widest">Institutional Grade</p>
           </div>
         </div>
 
         <div className="bg-[#111] border border-white/5 p-6 rounded-2xl space-y-4 hover:border-white/10 transition-colors relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-             <Award className="w-16 h-16 text-[#F1F5F9]" />
+             <Award className="w-16 h-16 text-[#00D2FF]" />
           </div>
           <div className="flex justify-between items-start relative z-10">
             <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Plan</h3>
-            <Award className="w-4 h-4 text-[#F1F5F9]" />
+            <Award className="w-4 h-4 text-[#00D2FF]" />
           </div>
           <div className="relative z-10">
             <p className="text-xl font-bold text-white uppercase tracking-tighter italic">
@@ -87,7 +87,7 @@ export default async function StudioOverviewPage() {
         <div className="bg-[#111] border border-white/5 p-6 rounded-2xl space-y-4 hover:border-white/10 transition-colors">
           <div className="flex justify-between items-start">
             <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Monthly Listeners</h3>
-            <Activity className="w-4 h-4 text-[#F1F5F9]" />
+            <Activity className="w-4 h-4 text-[#00D2FF]" />
           </div>
           <div>
             <p className="text-3xl font-bold text-white">{org.monthlyListeners.toLocaleString()}</p>
@@ -134,7 +134,7 @@ export default async function StudioOverviewPage() {
         <h2 className="text-lg font-bold text-white tracking-tight">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           <Link href="/studio/releases" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
-            <div className="w-10 h-10 rounded-lg bg-[#F1F5F91a] text-[#F1F5F9] flex items-center justify-center group-hover:bg-[#F1F5F9] group-hover:text-white transition-colors flex-shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-[#00D2FF1a] text-[#00D2FF] flex items-center justify-center group-hover:bg-[#00D2FF] group-hover:text-white transition-colors flex-shrink-0">
               <Upload className="w-5 h-5" />
             </div>
             <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Upload Release</span>
@@ -176,10 +176,10 @@ export default async function StudioOverviewPage() {
       <section className="space-y-6">
         <div className="flex items-center justify-between">
            <h2 className="text-lg font-bold text-white tracking-tight">Creative Pipeline</h2>
-           <Link href="/studio/collabs" className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest hover:underline">View All Requests</Link>
+           <Link href="/studio/collabs" className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:underline">View All Requests</Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-           <div className="bg-[#111] border border-white/5 p-6 sm:p-8 rounded-3xl space-y-6 hover:border-[#F1F5F94d] transition-all group">
+           <div className="bg-[#111] border border-white/5 p-6 sm:p-8 rounded-3xl space-y-6 hover:border-[#00D2FF4d] transition-all group">
               <div className="flex items-center justify-between">
                  <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
@@ -190,11 +190,11 @@ export default async function StudioOverviewPage() {
                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Vocalist</p>
                     </div>
                  </div>
-                 <div className="bg-[#F1F5F91a] px-3 py-1 rounded-lg text-[#F1F5F9] text-[9px] font-bold uppercase tracking-widest italic whitespace-nowrap">94% Match</div>
+                 <div className="bg-[#00D2FF1a] px-3 py-1 rounded-lg text-[#00D2FF] text-[9px] font-bold uppercase tracking-widest italic whitespace-nowrap">94% Match</div>
               </div>
               <p className="text-xs text-gray-400 font-medium italic">"Hey! Loved your last set. I have a demo that would be perfect for your production style..."</p>
               <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-                 <button className="w-full sm:flex-1 py-3 rounded-xl bg-white text-black font-bold text-[9px] uppercase tracking-widest hover:bg-[#F1F5F9] hover:text-white transition-all">Accept</button>
+                 <button className="w-full sm:flex-1 py-3 rounded-xl bg-white text-black font-bold text-[9px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">Accept</button>
                  <button className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[9px] uppercase tracking-widest">Decline</button>
               </div>
            </div>
@@ -215,7 +215,7 @@ export default async function StudioOverviewPage() {
           <div className="divide-y divide-white/5">
             {[
               { text: "New SUPPORTER joined the 'Inner Circle' tier.", time: "2 hours ago", icon: Users, color: "text-purple-400" },
-              { text: "Your latest release 'Midnight Echo' passed 10,000 streams.", time: "1 day ago", icon: Activity, color: "text-[#F1F5F9]" },
+              { text: "Your latest release 'Midnight Echo' passed 10,000 streams.", time: "1 day ago", icon: Activity, color: "text-[#00D2FF]" },
               { text: "Payout of $450.00 processed to your connected Stripe account.", time: "3 days ago", icon: DollarSign, color: "text-green-400" },
               { text: "Opportunity 'Netflix Sync Request' is closing soon.", time: "4 days ago", icon: Briefcase, color: "text-orange-400" },
             ].map((activity, i) => (

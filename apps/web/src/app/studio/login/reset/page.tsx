@@ -37,8 +37,8 @@ export default function ArtistPasswordResetPage() {
       <div className="min-h-screen bg-[var(--color-studio-base)] flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[var(--color-accent-primary)]/10 via-[var(--color-studio-base)] to-[var(--color-studio-base)] pointer-events-none"></div>
         <div className="w-full max-w-md bg-[var(--color-studio-surface)] border border-[var(--color-studio-border)] rounded-2xl p-6 sm:p-12 relative z-10 shadow-2xl text-center space-y-6">
-          <div className="w-20 h-20 bg-[#F1F5F9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-10 h-10 text-[#F1F5F9]" />
+          <div className="w-20 h-20 bg-[#00D2FF]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle className="w-10 h-10 text-[#00D2FF]" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Access Restored</h1>
           <p className="text-gray-400 text-xs font-medium">Your command center password has been updated.</p>
@@ -67,7 +67,7 @@ export default function ArtistPasswordResetPage() {
               <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
            </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Recover Access</h1>
-          <p className="text-[#F1F5F9] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Reset Command Center Password</p>
+          <p className="text-[#00D2FF] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Reset Command Center Password</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">

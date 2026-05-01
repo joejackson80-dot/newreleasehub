@@ -35,14 +35,14 @@ export default function RadioManagerClient({ org }: { org: any }) {
     <div className="p-8 md:p-12 space-y-12">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-white uppercase italic">NRH Radio <span className="text-[#F1F5F9]">Manager.</span></h1>
+          <h1 className="text-4xl font-bold tracking-tight text-white uppercase italic">NRH Radio <span className="text-[#00D2FF]">Manager.</span></h1>
           <p className="text-sm text-gray-500 font-medium mt-1">Control your airplay, track performance, and earn from every rotation.</p>
         </div>
         <div className="flex items-center gap-4">
            <button className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">
              Authorize All
            </button>
-           <button className="px-6 py-3 rounded-xl bg-[#F1F5F9] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-lg">
+           <button className="px-6 py-3 rounded-xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-lg">
              Radio Guidelines
            </button>
         </div>
@@ -51,7 +51,7 @@ export default function RadioManagerClient({ org }: { org: any }) {
       {/* RADIO STATS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {[
-          { label: 'Total Radio Plays', value: totalPlays.toLocaleString(), icon: Radio, color: 'text-[#F1F5F9]' },
+          { label: 'Total Radio Plays', value: totalPlays.toLocaleString(), icon: Radio, color: 'text-[#00D2FF]' },
           { label: 'Est. Radio Earnings', value: `$${estimatedEarnings}`, icon: Zap, color: 'text-yellow-500' },
           { label: 'Active in Rotation', value: releases.filter((r: any) => r.authorizedForRadio).length, icon: CheckCircle2, color: 'text-green-500' },
           { label: 'Network Reach', value: '142 Countries', icon: BarChart3, color: 'text-purple-500' },
@@ -134,9 +134,9 @@ export default function RadioManagerClient({ org }: { org: any }) {
       </div>
 
       {/* COMPLIANCE FOOTER */}
-      <div className="bg-[#021220] border border-[#F1F5F9]/20 rounded-[2.5rem] p-10 flex items-center justify-between">
+      <div className="bg-[#021220] border border-[#00D2FF]/20 rounded-[2.5rem] p-10 flex items-center justify-between">
          <div className="flex items-center gap-6">
-            <div className="w-14 h-14 rounded-2xl bg-[#F1F5F9]/10 text-[#F1F5F9] flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center">
                <ShieldCheck className="w-7 h-7" />
             </div>
             <div>
@@ -146,7 +146,7 @@ export default function RadioManagerClient({ org }: { org: any }) {
          </div>
          <div className="text-right">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Network Rate</p>
-            <p className="text-2xl font-bold text-[#F1F5F9] mt-1">$0.005 <span className="text-xs text-gray-600">/ play</span></p>
+            <p className="text-2xl font-bold text-[#00D2FF] mt-1">$0.005 <span className="text-xs text-gray-600">/ play</span></p>
          </div>
       </div>
     </div>

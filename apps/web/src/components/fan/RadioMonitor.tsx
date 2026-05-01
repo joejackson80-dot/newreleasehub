@@ -67,7 +67,7 @@ export default function RadioMonitor() {
                             <div>
                                <h4 className="text-lg font-bold italic uppercase tracking-tighter text-white">{station.name}</h4>
                                <div className="flex items-center gap-2">
-                                  <Users className="w-3 h-3 text-[#F1F5F9]" />
+                                  <Users className="w-3 h-3 text-[#00D2FF]" />
                                   <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{station.liveListenerCount} Tuning In</span>
                                </div>
                             </div>
@@ -90,7 +90,7 @@ export default function RadioMonitor() {
        )}
 
        <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex items-center gap-6">
-          <ShieldCheck className="w-6 h-6 text-[#F1F5F9]" />
+          <ShieldCheck className="w-6 h-6 text-[#00D2FF]" />
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
              NRH Radio utilizes institutional-grade low-latency streaming. Listeners earn 2x Yield XP during verified live sessions.
           </p>

@@ -22,14 +22,14 @@ export const metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white">
       
       {/* HERO SECTION */}
       <section className="relative pt-32 pb-20 overflow-hidden border-b border-white/5 px-4 sm:px-8">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full sm:w-[1000px] h-[600px] bg-[#F1F5F90d] rounded-full blur-[100px] sm:blur-[120px] -z-0"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full sm:w-[1000px] h-[600px] bg-[#00D2FF0d] rounded-full blur-[100px] sm:blur-[120px] -z-0"></div>
         
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 text-center space-y-10">
-          <div className="inline-flex items-center space-x-3 text-[#F1F5F9] bg-[#F1F5F9]/5 border border-[#F1F5F9]/10 px-6 py-2 rounded-full">
+          <div className="inline-flex items-center space-x-3 text-[#00D2FF] bg-[#00D2FF]/5 border border-[#00D2FF]/10 px-6 py-2 rounded-full">
             <Zap className="w-4 h-4 fill-current" />
             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The New Music Economy</span>
           </div>
@@ -56,7 +56,7 @@ export default function HowItWorksPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
             
             <div className="space-y-8 group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#F1F5F9] group-hover:border-[#F1F5F980] transition-all">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF80] transition-all">
                 <Music className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
               <div className="space-y-4">
@@ -67,7 +67,7 @@ export default function HowItWorksPage() {
                 <ul className="space-y-3 pt-4">
                   {['High-fidelity streaming', 'Custom release dates', 'Instant Hub updates'].map((item, i) => (
                     <li key={i} className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                      <div className="w-1 h-1 rounded-full bg-[#F1F5F9]"></div>
+                      <div className="w-1 h-1 rounded-full bg-[#00D2FF]"></div>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
             </div>
 
             <div className="space-y-8 group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#F1F5F9] group-hover:border-[#F1F5F980] transition-all">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF80] transition-all">
                 <Users className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
               <div className="space-y-4">
@@ -87,7 +87,7 @@ export default function HowItWorksPage() {
                 <ul className="space-y-3 pt-4">
                   {['Custom SUPPORTER Tiers', 'Direct fan messaging', 'Live Session Deck'].map((item, i) => (
                     <li key={i} className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                      <div className="w-1 h-1 rounded-full bg-[#F1F5F9]"></div>
+                      <div className="w-1 h-1 rounded-full bg-[#00D2FF]"></div>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -96,7 +96,7 @@ export default function HowItWorksPage() {
             </div>
 
             <div className="space-y-8 group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#F1F5F9] group-hover:border-[#F1F5F980] transition-all">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center text-[#00D2FF] group-hover:border-[#00D2FF80] transition-all">
                 <DollarSign className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
               <div className="space-y-4">
@@ -107,7 +107,7 @@ export default function HowItWorksPage() {
                 <ul className="space-y-3 pt-4">
                   {['High-yield royalties', 'Monthly SUPPORTER income', 'Transparent splits'].map((item, i) => (
                     <li key={i} className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                      <div className="w-1 h-1 rounded-full bg-[#F1F5F9]"></div>
+                      <div className="w-1 h-1 rounded-full bg-[#00D2FF]"></div>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -124,7 +124,7 @@ export default function HowItWorksPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-12">
             <div className="space-y-4">
-              <h2 className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-[0.3em]">The Artist Journey</h2>
+              <h2 className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">The Artist Journey</h2>
               <h3 className="text-[clamp(2.5rem,10vw,4rem)] font-bold italic uppercase tracking-tighter leading-[0.9]">From Bedroom to<br />Business.</h3>
             </div>
             
@@ -136,7 +136,7 @@ export default function HowItWorksPage() {
                 { title: 'Monetize Everything', desc: 'From streams to support to merch, track every dollar through your real-time analytics dashboard.', icon: BarChart3 },
               ].map((step, i) => (
                 <div key={i} className="flex space-x-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#F1F5F9] font-bold text-sm">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] font-bold text-sm">
                     {i + 1}
                   </div>
                   <div className="space-y-2">
@@ -157,7 +157,7 @@ export default function HowItWorksPage() {
                 />
              </div>
              <div className="absolute -bottom-10 -left-10 bg-white text-black p-10 rounded-[3rem] shadow-2xl max-w-xs space-y-4 hidden md:block">
-                <ShieldCheck className="w-10 h-10 text-[#F1F5F9]" />
+                <ShieldCheck className="w-10 h-10 text-[#00D2FF]" />
                 <p className="text-xs font-bold leading-relaxed">
                   "NRH is the first platform that actually treats artists like business owners, not just content creators."
                 </p>
@@ -170,7 +170,7 @@ export default function HowItWorksPage() {
       {/* REVENUE LINK SECTION */}
       <section className="py-32 border-y border-white/5">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-12">
-          <div className="w-20 h-20 bg-[#F1F5F9]/10 rounded-full flex items-center justify-center mx-auto text-[#F1F5F9]">
+          <div className="w-20 h-20 bg-[#00D2FF]/10 rounded-full flex items-center justify-center mx-auto text-[#00D2FF]">
              <DollarSign className="w-10 h-10" />
           </div>
           <div className="space-y-6">
@@ -190,7 +190,7 @@ export default function HowItWorksPage() {
       <section className="py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="text-center space-y-4 mb-20">
-             <p className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest">Common Questions</p>
+             <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Common Questions</p>
              <h2 className="text-5xl uppercase italic tracking-tighter">Everything else.</h2>
           </div>
           
@@ -212,11 +212,11 @@ export default function HowItWorksPage() {
 
       {/* FINAL CTA */}
       <section className="py-40 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#F1F5F9]/5"></div>
+        <div className="absolute inset-0 bg-[#00D2FF]/5"></div>
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-12">
            <h2 className="text-[clamp(3rem,12vw,6rem)] font-bold italic uppercase tracking-tighter leading-[0.8]">
              Stop streaming.<br />
-             <span className="text-[#F1F5F9]">Start building.</span>
+             <span className="text-[#00D2FF]">Start building.</span>
            </h2>
            <p className="text-gray-400 text-xl font-medium">
              Join the movement of independent artists taking back control.

@@ -55,7 +55,7 @@ export default function ReleaseDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white pt-32 pb-32">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white pt-32 pb-32">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 space-y-24">
          
          {/* ── RELEASE HERO ── */}
@@ -70,7 +70,7 @@ export default function ReleaseDetailPage() {
                     onClick={handlePlay}
                     className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   >
-                     <div className="w-24 h-24 rounded-full bg-[#F1F5F9] flex items-center justify-center text-white scale-75 group-hover:scale-100 transition-transform shadow-2xl">
+                     <div className="w-24 h-24 rounded-full bg-[#00D2FF] flex items-center justify-center text-white scale-75 group-hover:scale-100 transition-transform shadow-2xl">
                         {isThisPlaying ? <Pause className="w-10 h-10 fill-current" /> : <Play className="w-10 h-10 fill-current ml-2" />}
                      </div>
                   </button>
@@ -101,7 +101,7 @@ export default function ReleaseDetailPage() {
             {/* RIGHT: INFO */}
             <div className="lg:col-span-7 space-y-12">
                <div className="space-y-6">
-                  <Link href={`/${slug}`} className="inline-flex items-center space-x-3 text-zinc-500 hover:text-[#F1F5F9] transition-colors group">
+                  <Link href={`/${slug}`} className="inline-flex items-center space-x-3 text-zinc-500 hover:text-[#00D2FF] transition-colors group">
                      <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                      <span className="text-[11px] font-black uppercase tracking-[0.3em]">Back to Artist Hub</span>
                   </Link>
@@ -117,7 +117,7 @@ export default function ReleaseDetailPage() {
 
                <div className="flex flex-wrap gap-10 items-center border-y border-white/5 py-10">
                   <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-[#F1F5F9]">
+                     <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-[#00D2FF]">
                         <Calendar className="w-5 h-5" />
                      </div>
                      <div>
@@ -126,7 +126,7 @@ export default function ReleaseDetailPage() {
                      </div>
                   </div>
                   <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-[#F1F5F9]">
+                     <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-[#00D2FF]">
                         <Disc className="w-5 h-5" />
                      </div>
                      <div>
@@ -153,7 +153,7 @@ export default function ReleaseDetailPage() {
                <div className="pt-6">
                   <button 
                     onClick={handlePlay}
-                    className="w-full sm:w-auto px-16 py-6 rounded-full bg-white text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-[#F1F5F9] hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 group"
+                    className="w-full sm:w-auto px-16 py-6 rounded-full bg-white text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 group"
                   >
                      {isThisPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current" />}
                      <span>{isThisPlaying ? 'Stop Session' : 'Start Session'}</span>
@@ -177,7 +177,7 @@ export default function ReleaseDetailPage() {
                        <div className="flex items-center gap-6">
                           <span className="text-zinc-600 font-black text-sm w-4">{i + 1}</span>
                           <div>
-                             <h5 className="font-bold uppercase tracking-tight group-hover:text-[#F1F5F9] transition-colors">{track.title}</h5>
+                             <h5 className="font-bold uppercase tracking-tight group-hover:text-[#00D2FF] transition-colors">{track.title}</h5>
                              <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">Master ID: 0x{Math.random().toString(16).slice(2, 10)}</p>
                           </div>
                        </div>

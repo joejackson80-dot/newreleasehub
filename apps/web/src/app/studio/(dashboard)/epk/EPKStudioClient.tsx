@@ -61,7 +61,7 @@ export default function StudioEPKPage({ artist }: { artist: any }) {
              <button 
                onClick={handleSave}
                disabled={isSaving}
-               className="px-8 py-4 rounded-xl bg-[#F1F5F9] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-2xl flex items-center gap-2"
+               className="px-8 py-4 rounded-xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-2xl flex items-center gap-2"
              >
                 {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
                 Save Changes
@@ -81,13 +81,13 @@ export default function StudioEPKPage({ artist }: { artist: any }) {
                       <h3 className="text-sm font-bold text-white uppercase tracking-widest italic">Institutional Bio</h3>
                       <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Used by press & booking agents</p>
                    </div>
-                   <ShieldCheck className="w-4 h-4 text-[#F1F5F9]" />
+                   <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
                 </div>
                 <textarea 
                   value={formData.officialBio}
                   onChange={(e) => setFormData({ ...formData, officialBio: e.target.value })}
                   placeholder="Draft your professional institutional narrative here..."
-                  className="w-full h-64 bg-[#111] border border-white/5 rounded-3xl p-8 text-sm text-gray-300 placeholder-gray-800 focus:outline-none focus:border-[#F1F5F9]/40 transition-all leading-relaxed"
+                  className="w-full h-64 bg-[#111] border border-white/5 rounded-3xl p-8 text-sm text-gray-300 placeholder-gray-800 focus:outline-none focus:border-[#00D2FF]/40 transition-all leading-relaxed"
                 />
              </section>
 
@@ -95,13 +95,13 @@ export default function StudioEPKPage({ artist }: { artist: any }) {
              <section className="space-y-6">
                 <h3 className="text-sm font-bold text-white uppercase tracking-widest italic">Press Assets (High-Res)</h3>
                 <div className="grid grid-cols-2 gap-4">
-                   <div className="aspect-square bg-[#111] border border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center space-y-3 group hover:border-[#F1F5F9]/40 transition-all cursor-pointer">
+                   <div className="aspect-square bg-[#111] border border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center space-y-3 group hover:border-[#00D2FF]/40 transition-all cursor-pointer">
                       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-700 group-hover:text-white transition-colors">
                          <Camera className="w-6 h-6" />
                       </div>
                       <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Upload Profile</span>
                    </div>
-                   <div className="aspect-square bg-[#111] border border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center space-y-3 group hover:border-[#F1F5F9]/40 transition-all cursor-pointer">
+                   <div className="aspect-square bg-[#111] border border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center space-y-3 group hover:border-[#00D2FF]/40 transition-all cursor-pointer">
                       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-700 group-hover:text-white transition-colors">
                          <Download className="w-6 h-6" />
                       </div>
@@ -138,14 +138,14 @@ export default function StudioEPKPage({ artist }: { artist: any }) {
 
                 <div className="pt-6 border-t border-white/5">
                    <Link href="/network/board" className="flex items-center justify-between group">
-                      <span className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest">Apply for Grants</span>
+                      <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">Apply for Grants</span>
                       <ChevronRight className="w-4 h-4 text-gray-600 group-hover:translate-x-1 transition-transform" />
                    </Link>
                 </div>
              </div>
 
              <div className="bg-white/5 border border-white/5 rounded-[2.5rem] p-10 space-y-6">
-                <div className="flex items-center gap-3 text-[#F1F5F9]">
+                <div className="flex items-center gap-3 text-[#00D2FF]">
                    <Globe className="w-5 h-5" />
                    <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Global Visibility</h4>
                 </div>

@@ -24,7 +24,7 @@ function NotifyForm({ type }: { type: string }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="your@email.com"
-        className="flex-1 w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold tracking-widest text-white placeholder-gray-700 focus:outline-none focus:border-[#F1F5F9] transition-all"
+        className="flex-1 w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold tracking-widest text-white placeholder-gray-700 focus:outline-none focus:border-[#00D2FF] transition-all"
       />
       <button
         type="submit"
@@ -113,7 +113,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white font-sans pt-8 pb-20">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-8 pb-20">
       
       {/* PAGE HEADER */}
       <header className="pt-8 pb-16 sm:pb-24 px-4 sm:px-10 max-w-7xl mx-auto space-y-12">
@@ -125,7 +125,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
 
          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 sm:gap-10">
             <div className="space-y-6">
-               <div className="flex items-center space-x-3 text-[#F1F5F9]">
+               <div className="flex items-center space-x-3 text-[#00D2FF]">
                   <Briefcase className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Independent Growth Board</span>
                </div>
@@ -169,7 +169,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                      value={searchQuery}
                      onChange={(e) => setSearchQuery(e.target.value)}
                      placeholder="Search opportunities..." 
-                     className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#F1F5F966]" 
+                     className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#00D2FF66]" 
                    />
                </div>
                <button className="hidden sm:flex p-3 bg-black border border-white/10 rounded-xl text-gray-500 hover:text-white transition-colors">
@@ -208,7 +208,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                    
                     <div className="flex items-center gap-2 mb-4">
                       <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">{opp.posterName || 'Network Partner'}</span>
-                      {opp.posterIsVerified && <ShieldCheck className="w-4 h-4 text-[#F1F5F9]" />}
+                      {opp.posterIsVerified && <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />}
                     </div>
 
                    {opp.description && (
@@ -216,7 +216,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                        <p className="text-sm text-gray-500 line-clamp-3">
                          {opp.description}
                        </p>
-                       <button className="text-xs font-bold text-[#F1F5F9] uppercase tracking-widest mt-2 hover:text-white transition-colors">
+                       <button className="text-xs font-bold text-[#00D2FF] uppercase tracking-widest mt-2 hover:text-white transition-colors">
                          Read more
                        </button>
                      </div>
@@ -264,7 +264,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                         ) : (
                           <button 
                             onClick={() => setSelectedOpp(opp)}
-                            className="flex items-center gap-2 text-[#F1F5F9] hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+                            className="flex items-center gap-2 text-[#00D2FF] hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
                           >
                             Apply Now <ArrowRight className="w-4 h-4" />
                           </button>
@@ -277,7 +277,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
            </div>
          ) : (
            <div className="py-32 text-center space-y-10 bg-[#111] border border-dashed border-white/10 rounded-[3rem] px-4">
-              <div className="w-20 h-20 bg-[#F1F5F9]/10 rounded-2xl flex items-center justify-center mx-auto text-[#F1F5F9]">
+              <div className="w-20 h-20 bg-[#00D2FF]/10 rounded-2xl flex items-center justify-center mx-auto text-[#00D2FF]">
                  <Briefcase className="w-8 h-8" />
               </div>
               <div className="space-y-4 max-w-md mx-auto">
@@ -304,7 +304,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
 
               {isSuccess ? (
                  <div className="py-12 text-center space-y-6">
-                    <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#F1F5F91a] text-[#F1F5F9]' : 'bg-[#10b9811a] text-emerald-500'} rounded-2xl flex items-center justify-center mx-auto`}>
+                    <div className={`w-16 h-16 ${selectedOpp.type === 'PROPOSAL' ? 'bg-[#00D2FF1a] text-[#00D2FF]' : 'bg-[#10b9811a] text-emerald-500'} rounded-2xl flex items-center justify-center mx-auto`}>
                        <ShieldCheck className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl font-black italic uppercase tracking-tighter">
@@ -319,7 +319,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
               ) : (
                 <>
                    <div className="space-y-2">
-                      <span className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest">
+                      <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">
                          {selectedOpp.type === 'PROPOSAL' ? 'Governance Participation' : 'Apply for Opportunity'}
                       </span>
                       <h3 className="text-3xl font-bold italic tracking-tighter uppercase">{selectedOpp.title}</h3>
@@ -341,7 +341,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Reason / Comment (Optional)</label>
                                <textarea 
                                  placeholder="Add a comment to your vote..."
-                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#F1F5F966] transition-all h-32 resize-none"
+                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#00D2FF66] transition-all h-32 resize-none"
                                />
                             </div>
                          </div>
@@ -352,11 +352,11 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
                                <textarea 
                                  required
                                  placeholder="Tell the partner why you're a good fit..."
-                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#F1F5F966] transition-all h-32 resize-none"
+                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:border-[#00D2FF66] transition-all h-32 resize-none"
                                />
                             </div>
-                            <div className="p-4 bg-[#F1F5F91a] rounded-2xl border border-[#F1F5F9]/20 flex items-center gap-4">
-                               <Music className="w-5 h-5 text-[#F1F5F9]" />
+                            <div className="p-4 bg-[#00D2FF1a] rounded-2xl border border-[#00D2FF]/20 flex items-center gap-4">
+                               <Music className="w-5 h-5 text-[#00D2FF]" />
                                <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Your Latest Master will be attached automatically.</p>
                             </div>
                          </div>

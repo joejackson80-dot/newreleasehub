@@ -12,7 +12,7 @@ export default function NetworkStatusBar() {
              <span>Institutional Network: Online</span>
           </div>
           <div className="hidden md:flex items-center space-x-2">
-             <Activity className="w-3 h-3 text-[#F1F5F9]" />
+             <Activity className="w-3 h-3 text-[#00D2FF]" />
              <span>TPS: 2,404</span>
           </div>
           <div className="hidden lg:flex items-center space-x-2">

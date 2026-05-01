@@ -84,7 +84,7 @@ export default function ProposalCreatorClient() {
       
       {/* HEADER */}
       <header className="max-w-4xl space-y-6">
-         <div className="flex items-center gap-3 text-[#F1F5F9]">
+         <div className="flex items-center gap-3 text-[#00D2FF]">
             <Gavel className="w-5 h-5" />
             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Protocol Expansion Suite</span>
          </div>
@@ -108,7 +108,7 @@ export default function ProposalCreatorClient() {
                     value={formData.title}
                     onChange={e => setFormData({...formData, title: e.target.value})}
                     placeholder="e.g. Expand Network Fee Rebates for Verified Artists"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-lg font-bold text-white focus:outline-none focus:border-[#F1F5F9]/40 transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-lg font-bold text-white focus:outline-none focus:border-[#00D2FF]/40 transition-all"
                   />
                </div>
 
@@ -118,7 +118,7 @@ export default function ProposalCreatorClient() {
                      <select 
                        value={formData.category}
                        onChange={e => setFormData({...formData, category: e.target.value})}
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-xs font-bold uppercase tracking-widest text-white appearance-none focus:outline-none focus:border-[#F1F5F9]/40"
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-xs font-bold uppercase tracking-widest text-white appearance-none focus:outline-none focus:border-[#00D2FF]/40"
                      >
                         <option value="NETWORK_EXPANSION">Network Expansion</option>
                         <option value="FEE_STRUCTURE">Fee Structure</option>
@@ -131,7 +131,7 @@ export default function ProposalCreatorClient() {
                      <select 
                        value={formData.duration}
                        onChange={e => setFormData({...formData, duration: e.target.value})}
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-xs font-bold uppercase tracking-widest text-white appearance-none focus:outline-none focus:border-[#F1F5F9]/40"
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-xs font-bold uppercase tracking-widest text-white appearance-none focus:outline-none focus:border-[#00D2FF]/40"
                      >
                         <option value="3">3 Days (Expedited)</option>
                         <option value="7">7 Days (Standard)</option>
@@ -148,7 +148,7 @@ export default function ProposalCreatorClient() {
                     value={formData.description}
                     onChange={e => setFormData({...formData, description: e.target.value})}
                     placeholder="Describe the proposal, its institutional impact, and the expected yield distribution changes..."
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-sm text-zinc-300 focus:outline-none focus:border-[#F1F5F9]/40 transition-all h-64 resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-sm text-zinc-300 focus:outline-none focus:border-[#00D2FF]/40 transition-all h-64 resize-none"
                   />
                </div>
             </div>
@@ -156,7 +156,7 @@ export default function ProposalCreatorClient() {
             <button 
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-6 bg-[#F1F5F9] text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_50px_rgba(241,245,249,0.2)] disabled:opacity-50"
+              className="w-full py-6 bg-[#00D2FF] text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_50px_rgba(0,210,255,0.2)] disabled:opacity-50"
             >
                {isSubmitting ? 'Registering Initiative...' : 'Submit to Protocol Board'}
             </button>
@@ -179,7 +179,7 @@ export default function ProposalCreatorClient() {
                ].map((g, i) => (
                  <div key={i} className="flex gap-6 p-8 bg-white/5 border border-white/5 rounded-[2.5rem]">
                     <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center shrink-0">
-                       <g.icon className="w-5 h-5 text-[#F1F5F9]" />
+                       <g.icon className="w-5 h-5 text-[#00D2FF]" />
                     </div>
                     <div className="space-y-2">
                        <h5 className="font-bold text-white uppercase italic tracking-tight">{g.title}</h5>

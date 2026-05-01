@@ -12,12 +12,12 @@ const FONT_OPTIONS = [
 ];
 
 const HERO_STYLES = ['Minimal', 'Fullscreen', 'Split', 'Centered'];
-const ACCENT_SWATCHES = ['#F1F5F9', '#E63946', '#2EC4B6', '#FF9F1C', '#8338EC', '#06D6A0', '#FFBE0B', '#FB5607'];
+const ACCENT_SWATCHES = ['#00D2FF', '#E63946', '#2EC4B6', '#FF9F1C', '#8338EC', '#06D6A0', '#FFBE0B', '#FB5607'];
 
 export default function CustomizePage() {
   const [tab, setTab] = useState<'appearance' | 'layout' | 'signature' | 'account' | 'broadcast' | 'vault'>('appearance');
   const [bgType, setBgType] = useState<'color' | 'gradient' | 'image'>('color');
-  const [accentColor, setAccentColor] = useState('#F1F5F9');
+  const [accentColor, setAccentColor] = useState('#00D2FF');
   const [selectedFont, setSelectedFont] = useState('Syne');
   const [heroStyle, setHeroStyle] = useState('Minimal');
   const [manifesto, setManifesto] = useState('');
@@ -51,7 +51,7 @@ export default function CustomizePage() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight text-white uppercase italic">Page Customizer.</h1>
           <a href="/marcus-webb" target="_blank"
-            className="flex items-center gap-1.5 text-[10px] text-[#F1F5F9] font-bold uppercase tracking-widest hover:text-white transition-colors">
+            className="flex items-center gap-1.5 text-[10px] text-[#00D2FF] font-bold uppercase tracking-widest hover:text-white transition-colors">
             Live Page <ExternalLink className="w-3 h-3" />
           </a>
         </div>
@@ -111,7 +111,7 @@ export default function CustomizePage() {
                     }`}>
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{f.name}</span>
-                      {selectedFont === f.name && <div className="w-2 h-2 rounded-full bg-[#F1F5F9]" />}
+                      {selectedFont === f.name && <div className="w-2 h-2 rounded-full bg-[#00D2FF]" />}
                     </div>
                     <p className={`text-white text-sm mt-1 ${f.class}`}>{f.preview}</p>
                   </button>
@@ -129,7 +129,7 @@ export default function CustomizePage() {
                 {HERO_STYLES.map(s => (
                   <button key={s} onClick={() => setHeroStyle(s)}
                     className={`p-4 rounded-xl border text-left transition-all ${
-                      heroStyle === s ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]/40 text-white' : 'border-white/10 text-gray-400 hover:text-white bg-[#111]'
+                      heroStyle === s ? 'bg-[#00D2FF]/10 border-[#00D2FF]/40 text-white' : 'border-white/10 text-gray-400 hover:text-white bg-[#111]'
                     }`}>
                     <div className="w-full h-10 bg-white/5 rounded-md mb-2 flex items-center justify-center">
                       <div className={`w-6 h-1 bg-white/30 rounded ${s === 'Centered' ? 'mx-auto' : ''}`} />
@@ -163,7 +163,7 @@ export default function CustomizePage() {
                     }, 1500);
                   }}
                   disabled={isGenerating}
-                  className="text-[9px] font-bold text-[#F1F5F9] uppercase tracking-widest hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                  className="text-[9px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-50"
                 >
                   <Pen className="w-3 h-3" /> {isGenerating ? 'Generating...' : 'AI Bio Gen'}
                 </button>
@@ -198,7 +198,7 @@ export default function CustomizePage() {
                     { id: '2', title: 'Shadow Logic', genre: 'Industrial', bpm: 128 },
                     { id: '3', title: 'Neural Rift', genre: 'Techno', bpm: 130 }
                   ].map(m => (
-                    <div key={m.id} className="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center justify-between group hover:border-[#F1F5F9]/30 transition-all">
+                    <div key={m.id} className="p-4 bg-white/5 border border-white/5 rounded-xl flex items-center justify-between group hover:border-[#00D2FF]/30 transition-all">
                        <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-700">
                              <Music className="w-4 h-4" />
@@ -208,7 +208,7 @@ export default function CustomizePage() {
                              <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">{m.genre} / {m.bpm} BPM</p>
                           </div>
                        </div>
-                       <input type="checkbox" className="w-4 h-4 rounded border-white/10 bg-transparent text-[#F1F5F9]" defaultChecked />
+                       <input type="checkbox" className="w-4 h-4 rounded border-white/10 bg-transparent text-[#00D2FF]" defaultChecked />
                     </div>
                   ))}
                </div>
@@ -218,8 +218,8 @@ export default function CustomizePage() {
 
         {tab === 'broadcast' && (
           <div className="space-y-8">
-            <div className="p-6 bg-[#F1F5F9]/5 border border-[#F1F5F9]/10 rounded-2xl space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#F1F5F9]/10 flex items-center justify-center text-[#F1F5F9]">
+            <div className="p-6 bg-[#00D2FF]/5 border border-[#00D2FF]/10 rounded-2xl space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">
                 <Radio className="w-6 h-6" />
               </div>
               <div>
@@ -230,12 +230,12 @@ export default function CustomizePage() {
                 value={broadcastMsg}
                 onChange={e => setBroadcastMsg(e.target.value)}
                 placeholder="What's the announcement?"
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/30 resize-none"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00D2FF]/30 resize-none"
                 rows={3}
               />
               <button 
                 onClick={() => { alert('Broadcast Sent to Network!'); setBroadcastMsg(''); }}
-                className="w-full py-3 bg-[#F1F5F9] text-white font-bold text-[10px] uppercase tracking-widest rounded-xl hover:scale-[1.02] transition-all shadow-lg"
+                className="w-full py-3 bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-widest rounded-xl hover:scale-[1.02] transition-all shadow-lg"
               >
                 Send Announcement
               </button>
@@ -261,7 +261,7 @@ export default function CustomizePage() {
         {tab === 'account' && (
           <div className="space-y-6">
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#F1F5F9]/10 flex items-center justify-center text-[#F1F5F9]">
+              <div className="w-12 h-12 rounded-xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">
                 <DollarSign className="w-6 h-6" />
               </div>
               <div>
@@ -283,7 +283,7 @@ export default function CustomizePage() {
 
         <button onClick={handleSave}
           className={`w-full py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-            saved ? 'bg-green-500 text-white' : 'bg-[#F1F5F9] text-white hover:bg-[#00B8E0]'
+            saved ? 'bg-green-500 text-white' : 'bg-[#00D2FF] text-white hover:bg-[#00B8E0]'
           }`}>
           <Save className="w-4 h-4" />
           {saved ? 'Saved!' : 'Save Changes'}
@@ -346,16 +346,16 @@ export default function CustomizePage() {
            <div className="px-12 mt-16 space-y-6">
               <div className="flex items-center justify-between">
                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border-b border-white/5 pb-2">Institutional Vault</h3>
-                 <span className="text-[8px] font-black text-[#F1F5F9] uppercase tracking-widest">3 Verified Assets</span>
+                 <span className="text-[8px] font-black text-[#00D2FF] uppercase tracking-widest">3 Verified Assets</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                  {[1, 2].map(i => (
-                    <div key={i} className="p-6 rounded-[2rem] bg-white/5 border border-white/10 space-y-4 hover:border-[#F1F5F9]/40 transition-all cursor-pointer">
+                    <div key={i} className="p-6 rounded-[2rem] bg-white/5 border border-white/10 space-y-4 hover:border-[#00D2FF]/40 transition-all cursor-pointer">
                        <div className="flex items-center justify-between">
                           <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center">
                              <Music className="w-5 h-5 text-gray-500" />
                           </div>
-                          <ShieldCheck className="w-4 h-4 text-[#F1F5F9] opacity-50" />
+                          <ShieldCheck className="w-4 h-4 text-[#00D2FF] opacity-50" />
                        </div>
                        <div className="space-y-1">
                           <h4 className="text-sm font-bold text-white uppercase italic">Master Asset_0{i}</h4>

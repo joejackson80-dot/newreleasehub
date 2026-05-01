@@ -45,7 +45,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                <Globe className="w-4 h-4" />
                <span>Public Hub</span>
             </Link>
-            <Link href={`/${slug}/live`} className="bg-[#F1F5F9] text-white px-8 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-[#F1F5F9]/20">Join Live Session</Link>
+            <Link href={`/${slug}/live`} className="bg-[#00D2FF] text-white px-8 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-[#00D2FF]/20">Join Live Session</Link>
          </div>
       </header>
 
@@ -55,9 +55,9 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
             <div className="space-y-10 md:space-y-12">
                <div className="space-y-4 md:space-y-6">
                   <div className="flex flex-wrap items-center gap-4">
-                    <div className="inline-flex items-center space-x-2 bg-[#F1F5F9]/10 border border-[#F1F5F9]/20 px-4 py-1.5 rounded-full">
-                       <ShieldCheck className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#F1F5F9]" />
-                       <span className="text-[7px] md:text-[8px] font-bold text-[#F1F5F9] uppercase tracking-widest">Verified Artist Hub</span>
+                    <div className="inline-flex items-center space-x-2 bg-[#00D2FF]/10 border border-[#00D2FF]/20 px-4 py-1.5 rounded-full">
+                       <ShieldCheck className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#00D2FF]" />
+                       <span className="text-[7px] md:text-[8px] font-bold text-[#00D2FF] uppercase tracking-widest">Verified Artist Hub</span>
                     </div>
                     {org.ParticipationLicenses.length > 0 && (
                       <div className="inline-flex items-center space-x-2 bg-orange-500/10 border border-orange-500/20 px-4 py-1.5 rounded-full">
