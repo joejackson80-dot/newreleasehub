@@ -109,7 +109,7 @@ export default function MusicNewsFeed() {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-white">NRH Network Index: +14.2% Growth in Direct Supporter Revenue</span>
                   </div>
                   <div className="flex items-center space-x-4">
-                     <Globe className="w-4 h-4 text-blue-500" />
+                     <Globe className="w-4 h-4 text-purple-500" />
                      <span className="text-[10px] font-bold uppercase tracking-widest text-white">Global Ingest: 4,200 New Independent Masters Protected via NRH Ledger</span>
                   </div>
                   <div className="flex items-center space-x-4">

@@ -9,7 +9,7 @@ export default function BrandLogo({ className = "w-10 h-10" }: { className?: str
       <img 
         src="/images/nrh-logo.png" 
         alt="NRH Logo" 
-        className="w-full h-full object-contain relative z-10 filter drop-shadow-[0_0_10px_rgba(168, 85, 247,0.3)]"
+        className="w-full h-full object-contain relative z-10 filter drop-shadow-[0_0_10px_rgba(168,85,247,0.3)] mix-blend-screen"
       />
     </div>
   );

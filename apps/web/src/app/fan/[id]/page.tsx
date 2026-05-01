@@ -68,7 +68,7 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
             {[
               { label: 'Unclaimed Yield', val: `$${(totalSpent * 0.08).toFixed(2)}`, color: 'text-green-500', icon: TrendingUp },
-              { label: 'Contract Integrity', val: '99.9%', color: 'text-blue-500', icon: ShieldCheck },
+              { label: 'Contract Integrity', val: '99.9%', color: 'text-purple-500', icon: ShieldCheck },
               { label: 'Network Rank', val: '#1,204', color: 'text-orange-500', icon: Star },
               { label: 'Daily Appreciation', val: '+0.42%', color: 'text-white', icon: Zap }
             ].map((stat, i) => (
@@ -105,7 +105,7 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
                        className="group relative"
                      >
                        {/* HOLOGRAPHIC BACKGROUND GLOW */}
-                       <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-purple-500/10 to-orange-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                       <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 via-purple-500/10 to-orange-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                        
                        <div className="bg-[#080808] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-white/20 transition-all hover:translate-y-[-8px] shadow-2xl relative z-10">
                           {/* HOLOGRAPHIC SCANNING BAR */}

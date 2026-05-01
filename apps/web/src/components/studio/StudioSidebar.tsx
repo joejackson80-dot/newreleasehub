@@ -156,7 +156,7 @@ export default function StudioSidebar({ org }: { org: any }) {
             <span>Go Live</span>
           </Link>
           <Link href="/studio/customize" onClick={() => setIsOpen(false)}
-            className="flex items-center space-x-2.5 px-3 py-2 rounded-lg text-[#A855F7] hover:text-blue-300 hover:bg-blue-500/10 transition-all text-xs font-medium mt-0.5">
+            className="flex items-center space-x-2.5 px-3 py-2 rounded-lg text-[#A855F7] hover:text-purple-300 hover:bg-purple-500/10 transition-all text-xs font-medium mt-0.5">
             <Palette className="w-3.5 h-3.5" />
             <span>Customize Page</span>
           </Link>

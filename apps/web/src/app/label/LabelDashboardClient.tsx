@@ -36,7 +36,7 @@ export default function LabelDashboardClient({ labelOrg }: { labelOrg: any }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
          {[
            { label: 'Managed Artists', val: '12', icon: Users, color: 'text-purple-400' },
-           { label: 'Portfolio Streams', val: '14.8M', icon: Disc, color: 'text-blue-400' },
+           { label: 'Portfolio Streams', val: '14.8M', icon: Disc, color: 'text-purple-400' },
            { label: 'Active Catalog', val: '242 Masters', icon: ShieldCheck, color: 'text-green-400' },
            { label: 'Institutional Balance', val: '$42,500', icon: DollarSign, color: 'text-amber-400' },
          ].map((stat, i) => (

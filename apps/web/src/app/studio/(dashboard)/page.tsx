@@ -152,7 +152,7 @@ export default async function StudioOverviewPage() {
             <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Opportunities</span>
           </Link>
           <Link href="/studio/messages" className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:space-x-3 space-y-3 sm:space-y-0 hover:bg-white/5 transition-colors group text-center sm:text-left">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors flex-shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors flex-shrink-0">
               <MessageCircle className="w-5 h-5" />
             </div>
             <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-tight">Messages</span>

@@ -49,7 +49,7 @@ export default function FanLoginPage() {
       {/* BACKGROUND VIBE */}
       <div className="fixed inset-0 pointer-events-none">
          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}></div>
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[60vh] bg-gradient-to-b from-blue-500/10 via-transparent to-transparent"></div>
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[60vh] bg-gradient-to-b from-purple-500/10 via-transparent to-transparent"></div>
       </div>
 
       <div className="w-full max-w-md space-y-12 relative z-10">
@@ -135,7 +135,7 @@ export default function FanLoginPage() {
 
         <div className="text-center space-y-6 pt-10">
            <div className="pt-4">
-              <Link href="/studio/login" className="text-[10px] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-[0.2em]">Artist? Access Studio Portal</Link>
+              <Link href="/studio/login" className="text-[10px] font-bold text-purple-400 hover:text-purple-300 uppercase tracking-[0.2em]">Artist? Access Studio Portal</Link>
            </div>
         </div>
       </div>

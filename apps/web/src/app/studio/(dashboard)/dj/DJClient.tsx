@@ -114,7 +114,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
             <button 
                onClick={handleToggleLive}
                disabled={isLoading}
-               className={`px-10 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl disabled:opacity-50 ${isLive ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20' : 'bg-[#A855F7] hover:bg-[#00B8E0] shadow-blue-500/20'}`}
+               className={`px-10 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl disabled:opacity-50 ${isLive ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20' : 'bg-[#A855F7] hover:bg-[#00B8E0] shadow-purple-500/20'}`}
             >
                {isLoading ? 'Processing...' : isLive ? 'End Broadcast' : 'Go Live Now'}
             </button>

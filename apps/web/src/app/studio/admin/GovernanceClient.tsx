@@ -17,7 +17,7 @@ export default function GovernanceClient({
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
 
   const stats = [
-    { label: 'Pool A (Ad Revenue)', value: `$${((pools?.poolATotal || 0) / 100).toLocaleString()}`, icon: Activity, trend: '+12.4%', color: 'text-blue-500' },
+    { label: 'Pool A (Ad Revenue)', value: `$${((pools?.poolATotal || 0) / 100).toLocaleString()}`, icon: Activity, trend: '+12.4%', color: 'text-purple-500' },
     { label: 'Pool C (Subscriptions)', value: `$${((pools?.poolCTotal || 0) / 100).toLocaleString()}`, icon: Zap, trend: '+8.1%', color: 'text-purple-500' },
     { label: 'Pending Settlement', value: `$${(pendingPayouts.reduce((acc: number, p: any) => acc + p.amountCents, 0) / 100).toLocaleString()}`, icon: Clock, trend: 'High Priority', color: 'text-amber-500' },
     { label: 'Fraud Incidents', value: openFraudCases.length, icon: ShieldAlert, trend: 'Low Density', color: 'text-rose-500' },

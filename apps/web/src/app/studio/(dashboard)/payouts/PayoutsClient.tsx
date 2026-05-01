@@ -191,7 +191,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                          </td>
                          <td className="p-8">
                             <div className="flex items-center gap-3">
-                               {r.method === 'STRIPE' ? <CreditCard className="w-4 h-4 text-purple-400" /> : <Building2 className="w-4 h-4 text-blue-400" />}
+                               {r.method === 'STRIPE' ? <CreditCard className="w-4 h-4 text-purple-400" /> : <Building2 className="w-4 h-4 text-purple-400" />}
                                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{r.method}</span>
                             </div>
                          </td>
@@ -274,7 +274,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                           <button 
                             type="button"
                             onClick={() => setMethod('BANK')}
-                            className={`p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 ${method === 'BANK' ? 'bg-blue-500/10 border-blue-500/50 text-blue-400' : 'bg-white/5 border-white/10 text-zinc-500'}`}
+                            className={`p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 ${method === 'BANK' ? 'bg-purple-500/10 border-purple-500/50 text-purple-400' : 'bg-white/5 border-white/10 text-zinc-500'}`}
                           >
                              <Building2 className="w-6 h-6" />
                              <span className="text-[9px] font-bold uppercase tracking-widest">Bank Transfer</span>

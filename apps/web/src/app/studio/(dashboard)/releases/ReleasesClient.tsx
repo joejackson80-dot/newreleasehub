@@ -87,7 +87,7 @@ export default function ReleasesClient({ org }: { org: any }) {
       {/* OWNERSHIP BADGE */}
       <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-8 flex items-center justify-between">
          <div className="flex items-center space-x-6">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 text-[#A855F7] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-purple-500/10 text-[#A855F7] flex items-center justify-center">
                <ShieldCheck className="w-6 h-6" />
             </div>
             <div>

@@ -59,7 +59,7 @@ export default function NetworkPulse() {
               <div className="flex items-center space-x-4">
                  <div className="w-10 h-10 rounded-xl bg-black border border-white/10 flex items-center justify-center">
                     {act.type === 'LICENSE' && <Award className="w-4 h-4 text-orange-500" />}
-                    {act.type === 'BID' && <Zap className="w-4 h-4 text-blue-500" />}
+                    {act.type === 'BID' && <Zap className="w-4 h-4 text-purple-500" />}
                     {act.type === 'CHAT' && <MessageSquare className="w-4 h-4 text-green-500" />}
                     {act.type === 'SALE' && <ShoppingBag className="w-4 h-4 text-purple-500" />}
                  </div>

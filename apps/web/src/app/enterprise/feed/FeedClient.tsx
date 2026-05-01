@@ -97,7 +97,7 @@ export default function EnterpriseFeedClient() {
                         >
                            <div className="flex items-center space-x-6">
                               <div className={`w-12 h-12 rounded-xl flex items-center justify-center border border-white/5 bg-[#050505]`}>
-                                 {item.type === 'IP' && <ShieldCheck className="w-5 h-5 text-blue-400" />}
+                                 {item.type === 'IP' && <ShieldCheck className="w-5 h-5 text-purple-400" />}
                                  {item.type === 'SYNC' && <Globe className="w-5 h-5 text-purple-400" />}
                                  {item.type === 'VELOCITY' && <Zap className="w-5 h-5 text-amber-400" />}
                                  {item.type === 'YIELD' && <Activity className="w-5 h-5 text-green-400" />}

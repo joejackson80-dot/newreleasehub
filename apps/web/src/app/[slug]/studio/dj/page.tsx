@@ -168,7 +168,7 @@ export default function DJController() {
                        <Coffee className="w-4 h-4" />
                        <span className="text-[10px] font-bold uppercase tracking-[0.3em]">The Green Room</span>
                     </div>
-                    <div className={`px-3 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest ${planTier === 'FREE' ? 'bg-zinc-800 text-gray-500' : 'bg-blue-500/10 text-blue-500'}`}>
+                    <div className={`px-3 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest ${planTier === 'FREE' ? 'bg-zinc-800 text-gray-500' : 'bg-purple-500/10 text-purple-500'}`}>
                        {planTier} Account
                     </div>
                  </div>
@@ -192,7 +192,7 @@ export default function DJController() {
                  <div className="space-y-4">
                     <div className="flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-2xl">
                        <div className="flex items-center space-x-3">
-                          <Archive className={`w-4 h-4 ${planTier === 'FREE' ? 'text-gray-700' : 'text-blue-500'}`} />
+                          <Archive className={`w-4 h-4 ${planTier === 'FREE' ? 'text-gray-700' : 'text-purple-500'}`} />
                           <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Session Archiving</span>
                        </div>
                        <span className="text-[9px] font-bold text-gray-500">{planTier === 'FREE' ? 'LOCKED' : 'READY'}</span>

@@ -207,7 +207,7 @@ export default async function HomePage() {
                <div className="relative z-10 grid grid-cols-2 gap-6 rotate-3">
                   {[
                     { name: 'Hip-Hop', color: 'from-orange-500 to-red-600', icon: '🔥' },
-                    { name: 'Electronic', color: 'from-[#A855F7] to-blue-700', icon: '⚡' },
+                    { name: 'Electronic', color: 'from-[#A855F7] to-purple-700', icon: '⚡' },
                     { name: 'Afrobeats', color: 'from-emerald-400 to-green-600', icon: '🌍' },
                     { name: 'Lo-Fi', color: 'from-purple-500 to-indigo-600', icon: '🌙' }
                   ].map((station, i) => (

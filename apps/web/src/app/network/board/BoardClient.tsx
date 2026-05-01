@@ -40,7 +40,7 @@ const TYPE_COLORS: Record<string, string> = {
   SYNC: 'text-purple-400 bg-purple-400/10 border-purple-400/20',
   GIG: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
   GRANT: 'text-teal-400 bg-teal-400/10 border-teal-400/20',
-  COLLAB: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+  COLLAB: 'text-purple-400 bg-purple-400/10 border-purple-400/20',
   PROPOSAL: 'text-orange-400 bg-orange-400/10 border-orange-400/20'
 };
 

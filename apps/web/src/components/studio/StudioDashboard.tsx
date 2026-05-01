@@ -232,7 +232,7 @@ export default function StudioDashboard({ slug, initialOrgData }: Props) {
             <div className="bg-[#050505] border border-[#1f1f1f] p-6 rounded-xl flex flex-col justify-between">
               <div className="flex justify-between items-start">
                 <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Audience Reach</h4>
-                <Users className="w-4 h-4 text-blue-500" />
+                <Users className="w-4 h-4 text-purple-500" />
               </div>
               <p className="text-3xl font-bold text-white mt-4">{Math.floor((stats.fire + stats.cool) * 1.5)}</p>
             </div>
