@@ -182,7 +182,9 @@ export async function registerArtist(data: { email: string, username: string, na
     console.log(`New Artist registered: ${artist.email} (${artist.id})`);
 
     // Send Welcome Email
-    sendWelcomeEmail({ to: artist.email, name: artist.name }).catch(console.error);
+    if (data.email) {
+      sendWelcomeEmail({ to: data.email, name: data.name }).catch(console.error);
+    }
 
     const cookieStore = await cookies();
     cookieStore.set('nrh_artist_session', 'true', {
@@ -238,7 +240,9 @@ export async function registerFan(data: { email: string, username: string, displ
     console.log(`New Fan registered: ${fan.email} (${fan.id})`);
 
     // Send Welcome Email
-    sendWelcomeEmail({ to: fan.email, name: fan.displayName }).catch(console.error);
+    if (data.email) {
+      sendWelcomeEmail({ to: data.email, name: data.displayName }).catch(console.error);
+    }
 
     const cookieStore = await cookies();
     cookieStore.set('nrh_user_session', 'true', {
