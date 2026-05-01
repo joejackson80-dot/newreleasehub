@@ -37,12 +37,18 @@ const NAV_GROUPS = [
     ],
   },
   {
-    label: 'Network',
+    label: 'Governance',
     items: [
-      { href: '/network/board', label: 'Opportunities', icon: Briefcase },
-      { href: '/studio/opportunities', label: 'My Postings', icon: Briefcase },
-      { href: '/studio/collabs', label: 'Collab Requests', icon: GitMerge },
       { href: '/studio/governance/new', label: 'Submit Proposal', icon: Gavel },
+      { href: '/studio/admin', label: 'Network Treasury', icon: Building2 },
+      { href: '/studio/collabs', label: 'Active Deals', icon: GitMerge },
+    ],
+  },
+  {
+    label: 'Network Board',
+    items: [
+      { href: '/network/board', label: 'All Opportunities', icon: Briefcase },
+      { href: '/studio/opportunities', label: 'My Postings', icon: Briefcase },
     ],
   },
   {

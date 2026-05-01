@@ -81,6 +81,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       Followers: true,
       SessionDeck: true,
       FoundingSlot: true,
+      FanArtistRelations: {
+        include: { fan: true },
+        orderBy: { totalPaidCents: 'desc' },
+        take: 10
+      }
     }
   });
 
@@ -286,6 +291,42 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               </div>
             )}
           </div>
+
+          {/* SUPPORTER LEADERBOARD */}
+          {org.FanArtistRelations && org.FanArtistRelations.length > 0 && (
+            <div className="space-y-6 pt-10 border-t border-white/5">
+               <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-black italic uppercase tracking-tighter">Top Supporters</h3>
+                  <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">All-Time</span>
+               </div>
+               <div className="space-y-3">
+                  {org.FanArtistRelations.filter((r: any) => r.totalPaidCents > 0).map((rel: any, i: number) => {
+                    const rankColors = ['text-amber-400', 'text-gray-300', 'text-amber-700'];
+                    return (
+                      <div key={rel.id} className="flex items-center gap-4 group p-3 rounded-2xl hover:bg-white/[0.03] transition-all">
+                         <span className={`text-sm font-black italic w-6 text-center ${rankColors[i] || 'text-zinc-700'}`}>
+                           {i + 1}
+                         </span>
+                         <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black text-white uppercase">
+                           {rel.fan?.displayName?.charAt(0) || '?'}
+                         </div>
+                         <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-black text-white uppercase tracking-widest truncate group-hover:text-[#00D2FF] transition-colors">
+                              {rel.fan?.displayName || 'Anonymous'}
+                            </p>
+                            <p className="text-[8px] font-bold text-zinc-700 uppercase tracking-widest">
+                              {rel.streamCount.toLocaleString()} streams · Supporter #{rel.supporterNumber || '—'}
+                            </p>
+                         </div>
+                         <div className="text-right">
+                            <p className="text-[10px] font-black text-emerald-500 italic">${(rel.totalPaidCents / 100).toFixed(0)}</p>
+                         </div>
+                      </div>
+                    );
+                  })}
+               </div>
+            </div>
+          )}
 
           {/* NETWORK SIGNAL FEED (SIDEBAR) */}
           <div className="space-y-8 pt-12 border-t border-white/5 mb-12">

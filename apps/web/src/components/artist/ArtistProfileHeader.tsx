@@ -70,7 +70,7 @@ export default function ArtistProfileHeader({ org }: { org: any }) {
               </div>
 
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">
-                {org.genres.map(g => (
+                {org.genres.map((g: string) => (
                   <span key={g} className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full">{g}</span>
                 ))}
                 {org.city && (
