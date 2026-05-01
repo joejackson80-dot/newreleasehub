@@ -42,6 +42,7 @@ model Organization {
   subscriptionTier       String                 @default("FREE")
   username               String?                @unique
   isPublic               Boolean                @default(true)
+  role                   String                 @default("artist")
   ArtistRoyalties        ArtistRoyalty[]
   ChatMessages           ChatMessage[]
   CollabDealsAsReceiver  CollabDeal[]           @relation("CollabDealReceiver")

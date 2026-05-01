@@ -11,6 +11,7 @@
  */
 
 import { prisma } from '@/lib/prisma';
+import { sendEmail } from '@/lib/email';
 import { checkAndAwardMilestones } from '@/lib/milestones/detectMilestone';
 
 // ─────────────────────────────────────────────
@@ -491,6 +492,65 @@ async function sendRoyaltyNotifications(
     await prisma.notification.createMany({
       data: [...artistNotifications, ...fanNotifications] as any,
     })
+
+    // Also send actual emails to artists
+    for (const earnings of fullArtistEarnings.filter((e) => e.netPayout > 0)) {
+      try {
+        const org = await prisma.organization.findUnique({
+          where: { id: earnings.artistId },
+          select: { email: true, name: true }
+        })
+        
+        if (org?.email) {
+          await sendEmail({
+            to: org.email,
+            subject: `Your streaming earnings for ${monthName} are ready`,
+            html: `
+              <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
+                <h2>NRH Royalty Settlement</h2>
+                <p>Hello ${org.name},</p>
+                <p>Your streaming earnings for ${monthName} have been processed and credited to your ledger.</p>
+                <p><strong>Total Earnings:</strong> $${(earnings.netPayout / 100).toFixed(2)}</p>
+                <p><strong>Total Streams:</strong> ${(earnings.premiumStreams + earnings.networkStreams).toLocaleString()}</p>
+                <br/>
+                <a href="https://newreleasehub.vercel.app/studio" style="background-color: #00D2FF; color: black; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">View Full Breakdown</a>
+              </div>
+            `
+          })
+        }
+      } catch (err) {
+        console.error('Failed to send email notification to artist:', earnings.artistId, err)
+      }
+    }
+    
+    // Also send emails to fans who earned revenue share
+    for (const [fanId, totalEarned] of Array.from(fanEarnings.entries()).filter(([, amount]) => amount > 0)) {
+      try {
+        const fan = await prisma.user.findUnique({
+          where: { id: fanId },
+          select: { email: true, displayName: true }
+        })
+        
+        if (fan?.email) {
+          await sendEmail({
+            to: fan.email,
+            subject: `You earned money from music you support`,
+            html: `
+              <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
+                <h2>NRH Supporter Yield</h2>
+                <p>Hello ${fan.displayName},</p>
+                <p>Your Supporter revenue shares for ${monthName} have generated yield!</p>
+                <p><strong>Yield Added to Balance:</strong> $${(totalEarned / 100).toFixed(2)}</p>
+                <br/>
+                <a href="https://newreleasehub.vercel.app/fan/me" style="background-color: #00D2FF; color: black; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">View Your Dashboard</a>
+              </div>
+            `
+          })
+        }
+      } catch (err) {
+        console.error('Failed to send email notification to fan:', fanId, err)
+      }
+    }
   }
 }
 

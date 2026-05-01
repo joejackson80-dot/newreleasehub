@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     });
 
     // Send welcome email (async, don't wait to block response)
-    sendWelcomeEmail(email, username).catch(err => console.error('Failed to send welcome email:', err));
+    sendWelcomeEmail({ to: email, name: username }).catch(err => console.error('Failed to send welcome email:', err));
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

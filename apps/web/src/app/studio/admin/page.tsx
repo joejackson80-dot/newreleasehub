@@ -12,11 +12,9 @@ export const metadata = {
 export default async function GovernancePage() {
   const artist = await getSessionArtist();
   
-  // Basic security: Check if the artist has admin privileges (for now, check by email or slug)
-  // In production, use a 'role' field in the database.
-  if (!artist || !['admin', 'staff', 'joe'].includes(artist.slug)) {
-    // redirect('/studio');
-    // For the sake of the demo/build, I'll allow access if we're in development or if explicitly allowed
+  // Security: Check if the organization has admin privileges via RBAC
+  if (!artist || artist.role !== 'admin') {
+    redirect('/studio');
   }
 
   // Fetch critical network data

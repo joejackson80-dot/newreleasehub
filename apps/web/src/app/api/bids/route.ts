@@ -114,12 +114,12 @@ export async function PATCH(req: Request) {
 
       // Send Notification
       if (artist?.email) {
-        sendNewSUPPORTEREmail(
-          artist.email, 
-          artist.name, 
-          fan?.displayName || 'A Fan', 
-          bid.offerAmountCents / 100
-        ).catch(err => console.error('Failed to send SUPPORTER email:', err));
+        sendNewSUPPORTEREmail({
+          to: artist.email, 
+          artistName: artist.name, 
+          fanName: fan?.displayName || 'A Fan', 
+          tierName: `Bid of $${(bid.offerAmountCents / 100).toFixed(2)}`
+        }).catch(err => console.error('Failed to send SUPPORTER email:', err));
       }
     }
 
