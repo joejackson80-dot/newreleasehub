@@ -95,6 +95,50 @@ export async function GET() {
       create: { organizationId: demoArtist.id, userId: demoFan.id }
     });
 
+    // 9. Add Forensic Fraud Data
+    await prisma.fraudIncident.create({
+        data: {
+            artistId: demoArtist.id,
+            type: 'BOT_ATTACK',
+            details: 'Anomalous stream spike from datacenter cluster in Frankfurt.',
+            month: new Date(),
+            excludedStreamCount: 12400,
+            status: 'PENDING'
+        }
+    });
+
+    const asset = await prisma.musicAsset.findFirst({ where: { organizationId: demoArtist.id } });
+    if (asset) {
+        // Create a cluster of suspicious streams
+        const fakeIP = '45.12.34.88';
+        for (let i = 0; i < 20; i++) {
+            await prisma.streamPlay.create({
+                data: {
+                    trackId: asset.id,
+                    artistId: demoArtist.id,
+                    ipAddress: fakeIP,
+                    deviceId: 'bot-node-alpha',
+                    fraudScore: 0.05,
+                    isExcludedFromPool: true,
+                    flagReason: 'HIGH_VELOCITY_IP',
+                }
+            });
+        }
+    }
+
+    // 10. Add Historical Royalty Pool
+    await prisma.monthlyPool.upsert({
+        where: { id: 'demo-pool-1' },
+        update: {},
+        create: {
+            id: 'demo-pool-1',
+            year: 2026,
+            month: 4,
+            totalAmountCents: 124850000, // $1.24M
+            isFinalized: true
+        }
+    });
+
     return NextResponse.json({ success: true, results, demo: { fan: demoFan, artist: demoArtist } });
   } catch (error: any) {
     console.error('Seed error:', error);
