@@ -31,6 +31,20 @@ export default function ArtistLogin() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    setIsSubmitting(true);
+    try {
+      const result = await loginArtist('iamjoejack', 'Password123');
+      if (result.success) {
+        window.location.href = '/studio';
+      }
+    } catch (err) {
+      setError('Demo login failed');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[var(--color-studio-base)] flex items-center justify-center p-4">
       {/* Aesthetic Background Effect */}
@@ -46,7 +60,7 @@ export default function ArtistLogin() {
               <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
            </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Artist Studio</h1>
-          <p className="text-[#00D2FF] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Command Center Authentication</p>
+          <p className="text-[#F1F5F9] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Command Center Authentication</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
@@ -64,7 +78,7 @@ export default function ArtistLogin() {
           <div>
             <div className="flex justify-between mb-2">
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Secret Password</label>
-              <Link href="/studio/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-[#00D2FF] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
+              <Link href="/studio/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-[#F1F5F9] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
             </div>
             <input 
               type="password" 
@@ -93,6 +107,31 @@ export default function ArtistLogin() {
             </button>
           </div>
         </form>
+
+        <div className="mt-8 flex items-center space-x-4">
+          <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
+          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">or continue with</span>
+          <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <button 
+            type="button" 
+            onClick={handleDemoLogin}
+            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+          >
+            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+          </button>
+          <button 
+            type="button" 
+            onClick={handleDemoLogin}
+            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+          >
+            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">A</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
+          </button>
+        </div>
 
         <div className="mt-8 text-center border-t border-[var(--color-studio-border)] pt-8 space-y-4">
            <Link href="/login" className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-[0.2em] block">Switch to Fan Access Portal</Link>

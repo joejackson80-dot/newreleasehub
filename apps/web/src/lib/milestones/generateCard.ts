@@ -51,7 +51,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
             {
               type: 'div',
               props: {
-                style: { position: 'absolute', bottom: '-10%', right: '-10%', width: '50%', height: '50%', backgroundColor: '#00D2FF', opacity: 0.1, borderRadius: '100%', filter: 'blur(100px)' }
+                style: { position: 'absolute', bottom: '-10%', right: '-10%', width: '50%', height: '50%', backgroundColor: '#F1F5F9', opacity: 0.1, borderRadius: '100%', filter: 'blur(100px)' }
               }
             },
             // Header

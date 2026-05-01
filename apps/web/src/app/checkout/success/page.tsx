@@ -25,11 +25,11 @@ function CheckoutSuccessContent() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-8 relative overflow-hidden selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-8 relative overflow-hidden selection:bg-[#F1F5F9] selection:text-white">
       
       {/* BACKGROUND ELEMENTS */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00D2FF]/5 blur-[120px] rounded-full animate-pulse" />
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#F1F5F9]/5 blur-[120px] rounded-full animate-pulse" />
          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-50" />
       </div>
 
@@ -56,9 +56,9 @@ function CheckoutSuccessContent() {
                   initial={{ scale: 0.5, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: 'spring', damping: 12, delay: 0.2 }}
-                  className="bg-[#00D2FF]/10 p-8 rounded-[2.5rem] border border-[#00D2FF]/20 shadow-[0_0_50px_rgba(0,210,255,0.1)]"
+                  className="bg-[#F1F5F9]/10 p-8 rounded-[2.5rem] border border-[#F1F5F9]/20 shadow-[0_0_50px_rgba(241,245,249,0.1)]"
                 >
-                  <ShieldCheck className="w-20 h-20 text-[#00D2FF]" />
+                  <ShieldCheck className="w-20 h-20 text-[#F1F5F9]" />
                 </motion.div>
               </div>
               <div className="space-y-3">
@@ -91,7 +91,7 @@ function CheckoutSuccessContent() {
            </div>
 
            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="flex-1 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all flex items-center justify-center gap-2">
+              <button className="flex-1 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#F1F5F9] hover:text-white transition-all flex items-center justify-center gap-2">
                  <Download className="w-3.5 h-3.5" />
                  Download Certificate
               </button>
@@ -105,7 +105,7 @@ function CheckoutSuccessContent() {
         <div className="pt-4 space-y-6">
            <button 
              onClick={() => router.push('/fan/me/library')}
-             className="group flex items-center space-x-3 mx-auto px-8 py-4 bg-[#00D2FF] rounded-full text-[10px] font-bold uppercase tracking-widest text-white hover:scale-105 transition-all shadow-xl shadow-[#00D2FF]/20"
+             className="group flex items-center space-x-3 mx-auto px-8 py-4 bg-[#F1F5F9] rounded-full text-[10px] font-bold uppercase tracking-widest text-white hover:scale-105 transition-all shadow-xl shadow-[#F1F5F9]/20"
            >
              <span>View in My Library</span>
              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

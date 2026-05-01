@@ -48,7 +48,7 @@ export default function NetworkFeed() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
             transition={{ delay: index * 0.1 }}
-            className="group relative bg-[#0A0A0A] border border-white/5 rounded-3xl p-6 hover:border-[#00D2FF]/30 transition-all shadow-xl overflow-hidden"
+            className="group relative bg-[#0A0A0A] border border-white/5 rounded-3xl p-6 hover:border-[#F1F5F9]/30 transition-all shadow-xl overflow-hidden"
           >
             <div className="flex items-center gap-6">
               <div className="relative shrink-0">
@@ -66,7 +66,7 @@ export default function NetworkFeed() {
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                   <p className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest truncate">{item.artist.name}</p>
+                   <p className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest truncate">{item.artist.name}</p>
                    <span className="text-[8px] font-bold text-gray-600 uppercase tracking-widest whitespace-nowrap">
                      {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                    </span>

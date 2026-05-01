@@ -62,7 +62,7 @@ export default function RootLayout({
       className={`${inter.variable} ${montserrat.variable} h-full antialiased`}
       data-deployment-id="v2-stable-layout"
     >
-      <body className="min-h-full flex flex-col bg-[#020202] font-sans selection:bg-[#00D2FF] selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#020202] font-sans selection:bg-[#F1F5F9] selection:text-white">
         <Toaster
           position="bottom-center"
           toastOptions={{

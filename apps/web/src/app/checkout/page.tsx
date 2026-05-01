@@ -67,7 +67,7 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex flex-col md:flex-row font-sans selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col md:flex-row font-sans selection:bg-[#F1F5F9] selection:text-white">
       
       {/* LEFT: SUMMARY */}
       <div className="w-full md:w-[45%] p-8 md:p-20 flex flex-col justify-center space-y-12 bg-zinc-900/50 border-r border-white/5">
@@ -75,7 +75,7 @@ function CheckoutContent() {
          
          <div className="space-y-6">
             <div className="flex items-center space-x-3">
-               <span className="px-2 py-1 bg-[#00D2FF1a] text-[#00D2FF] text-[8px] font-bold uppercase tracking-widest border border-[#00D2FF33] rounded">Secure Transaction</span>
+               <span className="px-2 py-1 bg-[#F1F5F91a] text-[#F1F5F9] text-[8px] font-bold uppercase tracking-widest border border-[#F1F5F933] rounded">Secure Transaction</span>
             </div>
             <h2 className="text-5xl font-bold uppercase italic tracking-tighter leading-none">Complete<br /><span className="text-gray-500">Authorization.</span></h2>
             <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-sm">
@@ -87,7 +87,7 @@ function CheckoutContent() {
             <div className="flex items-center justify-between pb-6 border-b border-white/5">
                <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-white/5 flex items-center justify-center">
-                     <Star className="w-6 h-6 text-[#00D2FF]" />
+                     <Star className="w-6 h-6 text-[#F1F5F9]" />
                   </div>
                   <div>
                      <p className="font-bold text-white uppercase tracking-tight">{tierData?.name || 'Artist Supporter'}</p>
@@ -102,7 +102,7 @@ function CheckoutContent() {
             </div>
             <div className="flex justify-between items-center pt-2">
                <span className="text-lg font-bold uppercase italic tracking-tighter text-white">Total Due</span>
-               <span className="text-3xl font-black text-[#00D2FF] italic">${tierData?.price || '9.99'}</span>
+               <span className="text-3xl font-black text-[#F1F5F9] italic">${tierData?.price || '9.99'}</span>
             </div>
          </div>
 
@@ -119,8 +119,8 @@ function CheckoutContent() {
                <div className="space-y-3">
                   <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Payment Method</label>
                   <div className="grid grid-cols-2 gap-4">
-                     <div className="border border-[#00D2FF] bg-[#00D2FF]/5 p-4 rounded-2xl flex flex-col items-center justify-center space-y-3 cursor-pointer group">
-                        <CreditCard className="w-6 h-6 text-[#00D2FF]" />
+                     <div className="border border-[#F1F5F9] bg-[#F1F5F9]/5 p-4 rounded-2xl flex flex-col items-center justify-center space-y-3 cursor-pointer group">
+                        <CreditCard className="w-6 h-6 text-[#F1F5F9]" />
                         <span className="text-[9px] font-bold text-white uppercase tracking-widest">Credit Card</span>
                      </div>
                      <div className="border border-white/5 bg-white/5 p-4 rounded-2xl flex flex-col items-center justify-center space-y-3 cursor-not-allowed opacity-50">
@@ -133,23 +133,23 @@ function CheckoutContent() {
                <div className="space-y-4">
                   <div className="space-y-2">
                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Cardholder Name</label>
-                     <input type="text" required placeholder="JOHN DOE" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold uppercase tracking-widest text-white outline-none focus:border-[#00D2FF]" />
+                     <input type="text" required placeholder="JOHN DOE" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold uppercase tracking-widest text-white outline-none focus:border-[#F1F5F9]" />
                   </div>
                   <div className="space-y-2">
                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Card Number</label>
                      <div className="relative">
-                        <input type="text" required placeholder="•••• •••• •••• ••••" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold tracking-[0.2em] text-white outline-none focus:border-[#00D2FF]" />
+                        <input type="text" required placeholder="•••• •••• •••• ••••" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold tracking-[0.2em] text-white outline-none focus:border-[#F1F5F9]" />
                         <CreditCard className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
                      </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                      <div className="space-y-2">
                         <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Expiry</label>
-                        <input type="text" required placeholder="MM / YY" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold tracking-widest text-white outline-none focus:border-[#00D2FF]" />
+                        <input type="text" required placeholder="MM / YY" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold tracking-widest text-white outline-none focus:border-[#F1F5F9]" />
                      </div>
                      <div className="space-y-2">
                         <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">CVC</label>
-                        <input type="text" required placeholder="•••" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold tracking-widest text-white outline-none focus:border-[#00D2FF]" />
+                        <input type="text" required placeholder="•••" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-bold tracking-widest text-white outline-none focus:border-[#F1F5F9]" />
                      </div>
                   </div>
                </div>
@@ -159,7 +159,7 @@ function CheckoutContent() {
                <button 
                   type="submit"
                   disabled={loading}
-                  className="w-full py-5 bg-white text-black font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:bg-[#00D2FF] hover:text-white transition-all duration-300 flex items-center justify-center space-x-3 shadow-2xl disabled:opacity-50"
+                  className="w-full py-5 bg-white text-black font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:bg-[#F1F5F9] hover:text-white transition-all duration-300 flex items-center justify-center space-x-3 shadow-2xl disabled:opacity-50"
                >
                   {loading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -193,7 +193,7 @@ export default function CheckoutPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <Loader2 className="w-10 h-10 text-[#00D2FF] animate-spin" />
+        <Loader2 className="w-10 h-10 text-[#F1F5F9] animate-spin" />
       </div>
     }>
       <CheckoutContent />

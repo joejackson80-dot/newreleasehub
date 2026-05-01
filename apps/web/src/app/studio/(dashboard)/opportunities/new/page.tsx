@@ -34,7 +34,7 @@ export default function NewOpportunityPage() {
            Back to Opportunities
         </Link>
         <div className="space-y-4">
-           <div className="flex items-center space-x-3 text-[#00D2FF]">
+           <div className="flex items-center space-x-3 text-[#F1F5F9]">
               <Plus className="w-5 h-5" />
               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Initialize Initiative</span>
            </div>
@@ -60,7 +60,7 @@ export default function NewOpportunityPage() {
                 name="title"
                 required
                 placeholder="e.g., SYNC: Indie Pop Track for Luxury Brand"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all shadow-inner"
               />
            </div>
 
@@ -70,7 +70,7 @@ export default function NewOpportunityPage() {
               <select 
                 name="type"
                 required
-                className="w-full bg-[#0A0A0A] border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner appearance-none"
+                className="w-full bg-[#0A0A0A] border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all shadow-inner appearance-none"
               >
                  <option value="SYNC">SYNC PLACEMENT</option>
                  <option value="GRANT">FINANCIAL GRANT</option>
@@ -88,7 +88,7 @@ export default function NewOpportunityPage() {
              name="description"
              required
              placeholder="Provide detailed requirements, technical specs, and expectations for applicants..."
-             className="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-6 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all h-48 resize-none shadow-inner"
+             className="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-6 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all h-48 resize-none shadow-inner"
            />
         </div>
 
@@ -99,7 +99,7 @@ export default function NewOpportunityPage() {
               <input 
                 name="budget"
                 placeholder="e.g., $1,500 + ROYALTY"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all shadow-inner"
               />
            </div>
 
@@ -109,7 +109,7 @@ export default function NewOpportunityPage() {
               <input 
                 name="deadline"
                 type="date"
-                className="w-full bg-[#0A0A0A] border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner"
+                className="w-full bg-[#0A0A0A] border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all shadow-inner"
               />
            </div>
 
@@ -119,14 +119,14 @@ export default function NewOpportunityPage() {
               <input 
                 name="genres"
                 placeholder="e.g., INDIE, LO-FI, POP"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all shadow-inner"
               />
            </div>
         </div>
 
         <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#F1F5F9]">
                  <Globe className="w-6 h-6" />
               </div>
               <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-widest max-w-[200px]">

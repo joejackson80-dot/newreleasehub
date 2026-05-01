@@ -16,7 +16,7 @@ export default function MilestonesPage() {
           <p className="text-gray-500 font-medium mt-1">Every milestone is a moment worth sharing.</p>
         </div>
 
-        <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#00D2FF] animate-spin" /></div>}>
+        <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#F1F5F9] animate-spin" /></div>}>
           <MilestonesClient />
         </Suspense>
       </div>

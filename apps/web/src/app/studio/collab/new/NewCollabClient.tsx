@@ -84,7 +84,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
            {[1, 2, 3].map((s) => (
              <div 
                key={s}
-               className={`w-10 h-10 rounded-full flex items-center justify-center z-10 font-bold transition-all ${step >= s ? 'bg-[#00D2FF] text-white scale-110 shadow-[0_0_20px_rgba(51,102,255,0.4)]' : 'bg-[#111] text-gray-500 border border-white/10'}`}
+               className={`w-10 h-10 rounded-full flex items-center justify-center z-10 font-bold transition-all ${step >= s ? 'bg-[#F1F5F9] text-white scale-110 shadow-[0_0_20px_rgba(51,102,255,0.4)]' : 'bg-[#111] text-gray-500 border border-white/10'}`}
              >
                {step > s ? <Check className="w-5 h-5" /> : s}
              </div>
@@ -98,7 +98,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                 <div className="space-y-4">
                   <h2 className="text-3xl font-bold tracking-tighter uppercase italic">Step 1: The Project</h2>
                   {targetArtist ? (
-                    <div className="flex items-center gap-4 bg-[#00D2FF]/10 border border-[#00D2FF]/20 p-4 rounded-2xl">
+                    <div className="flex items-center gap-4 bg-[#F1F5F9]/10 border border-[#F1F5F9]/20 p-4 rounded-2xl">
                       <div className="w-10 h-10 rounded-full bg-zinc-800 overflow-hidden">
                         {targetArtist.profileImageUrl && <img src={targetArtist.profileImageUrl} className="w-full h-full object-cover" />}
                       </div>
@@ -106,7 +106,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-none">Collaborating with</p>
                         <p className="text-lg font-bold text-white uppercase italic">{targetArtist.name}</p>
                       </div>
-                      <button onClick={() => setTargetArtist(null)} className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors">Change</button>
+                      <button onClick={() => setTargetArtist(null)} className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest hover:text-white transition-colors">Change</button>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -115,7 +115,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                         <input 
                           type="text" 
                           placeholder="Search artists..."
-                          className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#00D2FF] transition-all"
+                          className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#F1F5F9] transition-all"
                           value={artistSearch}
                           onChange={(e) => handleArtistSearch(e.target.value)}
                         />
@@ -151,7 +151,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                     <button
                       key={type}
                       onClick={() => setFormData({...formData, collabType: type})}
-                      className={`p-6 rounded-3xl border text-left transition-all ${formData.collabType === type ? 'bg-[#00D2FF]/10 border-[#00D2FF] text-white' : 'bg-[#111]/50 border-white/5 text-gray-400 hover:border-white/20'}`}
+                      className={`p-6 rounded-3xl border text-left transition-all ${formData.collabType === type ? 'bg-[#F1F5F9]/10 border-[#F1F5F9] text-white' : 'bg-[#111]/50 border-white/5 text-gray-400 hover:border-white/20'}`}
                     >
                        <span className="text-[10px] font-bold uppercase tracking-widest block mb-1">Collab Type</span>
                        <span className="font-bold">{type.replace('_', ' ')}</span>
@@ -165,7 +165,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                     <input 
                       type="text" 
                       placeholder="e.g. Summer Anthem 2026"
-                      className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#00D2FF] transition-all"
+                      className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#F1F5F9] transition-all"
                       value={formData.projectTitle}
                       onChange={(e) => setFormData({...formData, projectTitle: e.target.value})}
                     />
@@ -175,7 +175,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                     <input 
                       type="url" 
                       placeholder="https://..."
-                      className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#00D2FF] transition-all"
+                      className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#F1F5F9] transition-all"
                       value={formData.demoUrl}
                       onChange={(e) => setFormData({...formData, demoUrl: e.target.value})}
                     />
@@ -185,7 +185,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                <div className="flex justify-end pt-4">
                   <button 
                     onClick={nextStep}
-                    className="flex items-center gap-2 bg-[#00D2FF] hover:bg-[#2952CC] text-white px-8 py-4 rounded-2xl font-bold transition-all group"
+                    className="flex items-center gap-2 bg-[#F1F5F9] hover:bg-[#2952CC] text-white px-8 py-4 rounded-2xl font-bold transition-all group"
                   >
                     Continue to Deal <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
@@ -204,7 +204,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                   {/* CARD A: FREE OFFER */}
                   <button
                     onClick={() => setFormData({...formData, dealType: 'FREE', requesterSplit: 50, receiverSplit: 50})}
-                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'FREE' ? 'bg-[#00D2FF]/10 border-[#00D2FF]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
+                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'FREE' ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
                   >
                     <div>
                       <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500 mb-4">
@@ -213,28 +213,28 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                       <h3 className="font-bold text-lg">FREE OFFER</h3>
                       <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-widest leading-relaxed">No upfront cost. Negotiation based on revenue splits.</p>
                     </div>
-                    {formData.dealType === 'FREE' && <Check className="w-5 h-5 text-[#00D2FF] mt-4 self-end" />}
+                    {formData.dealType === 'FREE' && <Check className="w-5 h-5 text-[#F1F5F9] mt-4 self-end" />}
                   </button>
 
                   {/* CARD B: 50/50 SPLIT */}
                   <button
                     onClick={() => setFormData({...formData, dealType: 'FIFTY_FIFTY', requesterSplit: 50, receiverSplit: 50})}
-                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'FIFTY_FIFTY' ? 'bg-[#00D2FF]/10 border-[#00D2FF]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
+                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'FIFTY_FIFTY' ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
                   >
                     <div>
-                      <div className="w-10 h-10 rounded-xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF] mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-[#F1F5F9]/10 flex items-center justify-center text-[#F1F5F9] mb-4">
                         <Users className="w-5 h-5" />
                       </div>
                       <h3 className="font-bold text-lg">50/50 SPLIT</h3>
                       <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-widest leading-relaxed">Equal partnership. 50% split on all revenue streams.</p>
                     </div>
-                    {formData.dealType === 'FIFTY_FIFTY' && <Check className="w-5 h-5 text-[#00D2FF] mt-4 self-end" />}
+                    {formData.dealType === 'FIFTY_FIFTY' && <Check className="w-5 h-5 text-[#F1F5F9] mt-4 self-end" />}
                   </button>
 
                   {/* CARD C: PAID FLAT */}
                   <button
                     onClick={() => setFormData({...formData, dealType: 'PAID_FLAT', requesterSplit: 100, receiverSplit: 0})}
-                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'PAID_FLAT' ? 'bg-[#00D2FF]/10 border-[#00D2FF]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
+                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'PAID_FLAT' ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
                   >
                     <div>
                       <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 mb-4">
@@ -243,13 +243,13 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                       <h3 className="font-bold text-lg">PAY FLAT FEE</h3>
                       <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-widest leading-relaxed">One-time payment for the collab. You keep 100% of royalties.</p>
                     </div>
-                    {formData.dealType === 'PAID_FLAT' && <Check className="w-5 h-5 text-[#00D2FF] mt-4 self-end" />}
+                    {formData.dealType === 'PAID_FLAT' && <Check className="w-5 h-5 text-[#F1F5F9] mt-4 self-end" />}
                   </button>
 
                   {/* CARD D: HYBRID */}
                   <button
                     onClick={() => setFormData({...formData, dealType: 'HYBRID'})}
-                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'HYBRID' ? 'bg-[#00D2FF]/10 border-[#00D2FF]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
+                    className={`p-6 rounded-3xl border text-left transition-all flex flex-col justify-between h-full ${formData.dealType === 'HYBRID' ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]' : 'bg-[#111]/50 border-white/5 hover:border-white/20'}`}
                   >
                     <div>
                       <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 mb-4">
@@ -258,7 +258,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                       <h3 className="font-bold text-lg">HYBRID DEAL</h3>
                       <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-widest leading-relaxed">Combine a smaller flat fee with a custom revenue split.</p>
                     </div>
-                    {formData.dealType === 'HYBRID' && <Check className="w-5 h-5 text-[#00D2FF] mt-4 self-end" />}
+                    {formData.dealType === 'HYBRID' && <Check className="w-5 h-5 text-[#F1F5F9] mt-4 self-end" />}
                   </button>
                </div>
 
@@ -271,7 +271,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                            <button 
                              key={amt}
                              onClick={() => setFormData({...formData, feeAmount: amt})}
-                             className={`py-3 rounded-xl border text-[10px] font-bold transition-all ${formData.feeAmount === amt ? 'bg-[#00D2FF] border-[#00D2FF] text-white' : 'bg-[#111] border-white/5 text-gray-500 hover:text-white'}`}
+                             className={`py-3 rounded-xl border text-[10px] font-bold transition-all ${formData.feeAmount === amt ? 'bg-[#F1F5F9] border-[#F1F5F9] text-white' : 'bg-[#111] border-white/5 text-gray-500 hover:text-white'}`}
                            >
                              ${amt}
                            </button>
@@ -280,7 +280,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                       <input 
                         type="number" 
                         placeholder="Custom Amount"
-                        className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#00D2FF] transition-all"
+                        className="w-full bg-[#111] border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-[#F1F5F9] transition-all"
                         value={formData.feeAmount || ''}
                         onChange={(e) => setFormData({...formData, feeAmount: parseInt(e.target.value) || 0})}
                       />
@@ -288,7 +288,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                     
                     <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
                        <div className="flex items-center gap-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                          <Lock className="w-4 h-4 text-[#00D2FF]" /> Secure Escrow Payment
+                          <Lock className="w-4 h-4 text-[#F1F5F9]" /> Secure Escrow Payment
                        </div>
                        <div className="h-12 bg-black/40 rounded-xl border border-white/5 flex items-center px-4 text-gray-700 text-xs font-mono">
                           STRIPE CARD ELEMENT PLACEHOLDER
@@ -305,7 +305,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Revenue Split</label>
                          <div className="text-right">
                            <span className="text-[10px] font-bold text-gray-500 uppercase block">Receiving Artist gets</span>
-                           <span className="text-2xl font-bold text-[#00D2FF]">{formData.receiverSplit}%</span>
+                           <span className="text-2xl font-bold text-[#F1F5F9]">{formData.receiverSplit}%</span>
                          </div>
                        </div>
                        <input 
@@ -313,7 +313,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                          min="0" 
                          max="100" 
                          step="1"
-                         className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#00D2FF]"
+                         className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#F1F5F9]"
                          value={formData.receiverSplit}
                          onChange={(e) => {
                            const val = parseInt(e.target.value);
@@ -337,7 +337,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                   </button>
                   <button 
                     onClick={nextStep}
-                    className="flex items-center gap-2 bg-[#00D2FF] hover:bg-[#2952CC] text-white px-8 py-4 rounded-2xl font-bold transition-all group"
+                    className="flex items-center gap-2 bg-[#F1F5F9] hover:bg-[#2952CC] text-white px-8 py-4 rounded-2xl font-bold transition-all group"
                   >
                     Continue to Pitch <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
@@ -362,7 +362,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                     </div>
                     <textarea 
                       placeholder="Hey, I've been following your work and I think our styles would mash perfectly on this new track..."
-                      className="w-full bg-[#111] border border-white/10 rounded-3xl p-6 text-sm min-h-[200px] focus:outline-none focus:border-[#00D2FF] transition-all resize-none"
+                      className="w-full bg-[#111] border border-white/10 rounded-3xl p-6 text-sm min-h-[200px] focus:outline-none focus:border-[#F1F5F9] transition-all resize-none"
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
                     />
@@ -371,7 +371,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
 
                {/* PREVIEW CARD */}
                <div className="p-8 bg-white/[0.03] border border-white/5 rounded-[32px] space-y-6 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#00D2FF]/5 blur-3xl rounded-full"></div>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#F1F5F9]/5 blur-3xl rounded-full"></div>
                   
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-zinc-800 shrink-0"></div>
@@ -405,7 +405,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
                   <button 
                     onClick={handleSubmit}
                     disabled={!formData.message}
-                    className={`flex items-center gap-2 px-10 py-5 rounded-2xl font-black uppercase tracking-widest transition-all group ${!formData.message ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-[#00D2FF] hover:bg-[#2952CC] text-white shadow-[0_20px_40px_rgba(51,102,255,0.2)]'}`}
+                    className={`flex items-center gap-2 px-10 py-5 rounded-2xl font-black uppercase tracking-widest transition-all group ${!formData.message ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-[#F1F5F9] hover:bg-[#2952CC] text-white shadow-[0_20px_40px_rgba(51,102,255,0.2)]'}`}
                   >
                     Send Request <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </button>
@@ -421,7 +421,7 @@ export default function NewCollabClient({ targetArtist: initialTarget, currentOr
              <p className="text-[10px] text-gray-500 font-medium leading-relaxed">Artists who include a high-quality demo have an 80% higher acceptance rate.</p>
            </div>
            <div className="flex gap-4 items-start">
-             <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Clock className="w-4 h-4 text-[#00D2FF]" /></div>
+             <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Clock className="w-4 h-4 text-[#F1F5F9]" /></div>
              <p className="text-[10px] text-gray-500 font-medium leading-relaxed">Requests expire after 72 hours if not accepted or countered.</p>
            </div>
            <div className="flex gap-4 items-start">

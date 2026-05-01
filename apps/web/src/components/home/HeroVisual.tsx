@@ -8,7 +8,7 @@ export default function HeroVisual() {
     <div className="relative w-full h-full flex items-center justify-center perspective-1000">
       
       {/* BACKGROUND GLOWS */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#00D2FF]/20 rounded-full blur-[120px] animate-pulse"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#F1F5F9]/20 rounded-full blur-[120px] animate-pulse"></div>
       <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-[100px]"></div>
 
       {/* FLOATING RECORD */}
@@ -34,7 +34,7 @@ export default function HeroVisual() {
           {/* VINYL CENTER */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#111] rounded-full border-4 border-white/5 flex items-center justify-center z-20 shadow-2xl">
              <div className="w-16 h-16 rounded-full flex items-center justify-center">
-               <img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(0,210,255,0.6)]" />
+               <img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(241,245,249,0.6)]" />
              </div>
           </div>
 
@@ -67,7 +67,7 @@ export default function HeroVisual() {
         className="absolute bottom-20 left-0 z-20 p-5 bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl space-y-3 shadow-2xl"
       >
         <div className="flex items-center space-x-3">
-           <div className="w-8 h-8 rounded-lg bg-[#00D2FF]/20 text-[#00D2FF] flex items-center justify-center">
+           <div className="w-8 h-8 rounded-lg bg-[#F1F5F9]/20 text-[#F1F5F9] flex items-center justify-center">
               <Zap className="w-4 h-4" />
            </div>
            <div className="space-y-0.5">

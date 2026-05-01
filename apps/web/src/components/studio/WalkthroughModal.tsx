@@ -7,8 +7,8 @@ const STEPS = [
   {
     title: 'Welcome to the Command Center',
     icon: Sparkles,
-    color: 'text-[#00D2FF]',
-    bg: 'bg-[#00D2FF]/10',
+    color: 'text-[#F1F5F9]',
+    bg: 'bg-[#F1F5F9]/10',
     description: 'This is your Studio. Here you control your releases, manage your fan relationships, and track your global network authority. No middlemen. No algorithms.'
   },
   {

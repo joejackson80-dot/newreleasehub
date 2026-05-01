@@ -35,7 +35,7 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
       {/* HOLOGRAM TOGGLE */}
       <button 
         onClick={() => setIsHologram(!isHologram)}
-        className="absolute -top-4 -right-4 bg-[#00D2FF] text-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-[100]"
+        className="absolute -top-4 -right-4 bg-[#F1F5F9] text-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-[100]"
       >
         <Activity className="w-5 h-5" />
       </button>
@@ -64,8 +64,8 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
                <div className="flex justify-between items-center">
                   <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Deck Alpha</span>
                   <div className="flex items-center space-x-2">
-                     <div className="w-2 h-2 rounded-full bg-[#00D2FF] animate-pulse"></div>
-                     <span className="text-[10px] font-bold text-[#00D2FF] font-mono tracking-tighter">{bpm.toFixed(2)}</span>
+                     <div className="w-2 h-2 rounded-full bg-[#F1F5F9] animate-pulse"></div>
+                     <span className="text-[10px] font-bold text-[#F1F5F9] font-mono tracking-tighter">{bpm.toFixed(2)}</span>
                   </div>
                </div>
                <h4 className="text-sm font-bold text-white truncate italic tracking-tight uppercase leading-none">
@@ -80,13 +80,13 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
                {/* EQ & Gain Knobs */}
                <div className="flex flex-col items-center space-y-3">
                   <div className="w-12 h-12 rounded-full bg-[#181818] border-2 border-black shadow-lg relative cursor-pointer active:scale-95 transition-transform group">
-                     <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-white/40 rounded-full group-hover:bg-[#00D2FF]"></div>
+                     <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-white/40 rounded-full group-hover:bg-[#F1F5F9]"></div>
                   </div>
                   <span className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">Gain</span>
                </div>
                <div className="flex flex-col items-center space-y-3">
                   <div className="w-12 h-12 rounded-full bg-[#181818] border-2 border-black shadow-lg relative cursor-pointer active:scale-95 transition-transform group">
-                     <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-white/40 rounded-full group-hover:bg-[#00D2FF]"></div>
+                     <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-white/40 rounded-full group-hover:bg-[#F1F5F9]"></div>
                   </div>
                   <span className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">Master</span>
                </div>
@@ -98,7 +98,7 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
                   <motion.div 
                     drag="y"
                     dragConstraints={{ top: 0, bottom: 160 }}
-                    className="w-8 h-12 bg-[#222] rounded-lg border border-black shadow-xl cursor-ns-resize absolute top-4 z-10 group-hover:bg-[#00D2FF] transition-colors"
+                    className="w-8 h-12 bg-[#222] rounded-lg border border-black shadow-xl cursor-ns-resize absolute top-4 z-10 group-hover:bg-[#F1F5F9] transition-colors"
                   />
                   <div className="h-full w-[2px] bg-white/5 absolute left-1/2 -translate-x-1/2" />
                </div>
@@ -106,7 +106,7 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
                   <motion.div 
                     drag="y"
                     dragConstraints={{ top: 0, bottom: 160 }}
-                    className="w-8 h-12 bg-[#222] rounded-lg border border-black shadow-xl cursor-ns-resize absolute top-12 z-10 group-hover:bg-[#00D2FF] transition-colors"
+                    className="w-8 h-12 bg-[#222] rounded-lg border border-black shadow-xl cursor-ns-resize absolute top-12 z-10 group-hover:bg-[#F1F5F9] transition-colors"
                   />
                   <div className="h-full w-[2px] bg-white/5 absolute left-1/2 -translate-x-1/2" />
                </div>
@@ -114,7 +114,7 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
 
             {/* Transport Controls */}
             <div className="flex items-center space-x-8">
-               <button onClick={onToggle} className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${isPlaying ? 'bg-[#00D2FF] text-white shadow-[0_0_30px_rgba(51,102,255,0.4)]' : 'bg-white text-black hover:scale-105'}`}>
+               <button onClick={onToggle} className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${isPlaying ? 'bg-[#F1F5F9] text-white shadow-[0_0_30px_rgba(51,102,255,0.4)]' : 'bg-white text-black hover:scale-105'}`}>
                   {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
                </button>
                <button onClick={onNext} className="w-14 h-14 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center text-white hover:bg-zinc-800">
@@ -136,7 +136,7 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
 
                <div className="space-y-4 max-h-[200px] overflow-y-auto no-scrollbar">
                   {queue.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between group/item p-3 bg-white/5 rounded-xl border border-white/5 hover:border-[#00D2FF]/30 transition-all">
+                    <div key={item.id} className="flex items-center justify-between group/item p-3 bg-white/5 rounded-xl border border-white/5 hover:border-[#F1F5F9]/30 transition-all">
                        <div className="min-w-0">
                           <p className="text-xs font-bold text-white truncate">{item.title}</p>
                           <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mt-1">Requested by {item.requester}</p>
@@ -167,12 +167,12 @@ export default function VirtualDJDeck({ activeTrack, isPlaying, onToggle, onNext
                </button>
             </div>
 
-            <div className="w-full bg-[#00D2FF]/5 border border-[#00D2FF]/10 rounded-2xl p-4 flex items-center justify-between">
+            <div className="w-full bg-[#F1F5F9]/5 border border-[#F1F5F9]/10 rounded-2xl p-4 flex items-center justify-between">
                <div className="flex items-center space-x-3">
-                  <Activity className="w-4 h-4 text-[#00D2FF]" />
+                  <Activity className="w-4 h-4 text-[#F1F5F9]" />
                   <span className="text-[9px] font-bold text-white uppercase tracking-widest">Master Clock</span>
                </div>
-               <span className="text-[10px] font-bold text-[#00D2FF] font-mono">128.00 SYNC</span>
+               <span className="text-[10px] font-bold text-[#F1F5F9] font-mono">128.00 SYNC</span>
             </div>
          </div>
 

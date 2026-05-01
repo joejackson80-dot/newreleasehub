@@ -29,7 +29,7 @@ export default function MusicNewsFeed() {
       <div className="flex items-center justify-between">
          <div className="flex items-center space-x-3">
             <h2 className="text-lg font-bold text-white tracking-tight">Industry Intelligence</h2>
-            <div className="bg-[#00D2FF1a] px-2 py-1 rounded text-[#00D2FF] text-[8px] font-bold uppercase tracking-widest">Live</div>
+            <div className="bg-[#F1F5F91a] px-2 py-1 rounded text-[#F1F5F9] text-[8px] font-bold uppercase tracking-widest">Live</div>
          </div>
          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1">
             <Globe className="w-3 h-3" />
@@ -40,7 +40,7 @@ export default function MusicNewsFeed() {
       <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden relative">
         {isLoading ? (
           <div className="p-10 flex flex-col items-center justify-center space-y-4 text-gray-500">
-             <Activity className="w-8 h-8 animate-pulse text-[#00D2FF]" />
+             <Activity className="w-8 h-8 animate-pulse text-[#F1F5F9]" />
              <p className="text-[10px] font-bold uppercase tracking-widest">Decrypting Live Feed...</p>
           </div>
         ) : articles.length > 0 ? (
@@ -54,7 +54,7 @@ export default function MusicNewsFeed() {
                 className="flex items-center space-x-4 p-5 sm:p-6 hover:bg-white/5 transition-colors group"
               >
                 <div className="flex-1 min-w-0 pr-4">
-                  <h3 className="text-sm font-bold text-white leading-tight group-hover:text-[#00D2FF] transition-colors line-clamp-2">
+                  <h3 className="text-sm font-bold text-white leading-tight group-hover:text-[#F1F5F9] transition-colors line-clamp-2">
                     {article.title}
                   </h3>
                   <div className="flex items-center space-x-3 mt-2">
@@ -67,7 +67,7 @@ export default function MusicNewsFeed() {
                      </span>
                   </div>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:bg-[#00D2FF] group-hover:text-black transition-all flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:bg-[#F1F5F9] group-hover:text-black transition-all flex-shrink-0">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
               </a>

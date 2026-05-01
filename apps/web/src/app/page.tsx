@@ -32,7 +32,7 @@ export default async function HomePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white">
 
       {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center bg-black overflow-hidden px-4 sm:px-8 lg:px-16 py-20 sm:py-24 lg:py-32">
@@ -49,7 +49,7 @@ export default async function HomePage() {
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-12 animate-in fade-in slide-in-from-bottom-12 duration-1000 flex flex-col items-center lg:items-start text-center lg:text-left">
                <div className="space-y-8">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#F1F5F9]">
                      <Zap className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The Independent Alternative</span>
                   </div>
@@ -62,7 +62,7 @@ export default async function HomePage() {
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
-                  <Link href="/register" className="px-12 py-5 rounded-2xl bg-white text-black font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">Start Building</Link>
+                  <Link href="/register" className="px-12 py-5 rounded-2xl bg-white text-black font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#F1F5F9] hover:text-white transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">Start Building</Link>
                   <Link href="/discover" className="px-12 py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Explore Network</Link>
                </div>
                
@@ -72,7 +72,7 @@ export default async function HomePage() {
                      <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Master Retention</p>
                   </div>
                   <div className="space-y-2">
-                     <p className="text-3xl font-bold italic tracking-tighter text-[#00D2FF]">Real-Time</p>
+                     <p className="text-3xl font-bold italic tracking-tighter text-[#F1F5F9]">Real-Time</p>
                      <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Ledger Settlement</p>
                   </div>
                </div>
@@ -92,7 +92,7 @@ export default async function HomePage() {
             <div className="lg:col-span-2 space-y-16">
                <div className="flex flex-col md:flex-row justify-between items-end gap-8">
                   <div className="space-y-4">
-                     <div className="flex items-center space-x-3 text-[#00D2FF]">
+                     <div className="flex items-center space-x-3 text-[#F1F5F9]">
                         <TrendingUp className="w-5 h-5" />
                         <span className="text-xs font-bold uppercase tracking-widest">Trending this week</span>
                      </div>
@@ -102,7 +102,7 @@ export default async function HomePage() {
                      <input
                         type="text"
                         placeholder="Search Artists..."
-                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#00D2FF33] transition-all w-full md:w-80 text-white"
+                        className="bg-white/5 border border-white/10 rounded-full px-10 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#F1F5F933] transition-all w-full md:w-80 text-white"
                      />
                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
@@ -117,7 +117,7 @@ export default async function HomePage() {
                        <Link 
                          href={`/fan/${hub.slug}`} 
                          key={hub.id} 
-                         className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#00D2FF4d] transition-all duration-500 hover:-translate-y-2 shadow-2xl"
+                         className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#F1F5F94d] transition-all duration-500 hover:-translate-y-2 shadow-2xl"
                        >
                          <div className="aspect-[0.8] relative overflow-hidden">
                            <img 
@@ -142,7 +142,7 @@ export default async function HomePage() {
                                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
                               </div>
                               <div className="flex flex-col items-end">
-                                 <p className="text-[#00D2FF] text-lg font-bold italic tracking-tighter">{(hub.supporterCount || 0).toLocaleString()}</p>
+                                 <p className="text-[#F1F5F9] text-lg font-bold italic tracking-tighter">{(hub.supporterCount || 0).toLocaleString()}</p>
                                  <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
                               </div>
                            </div>
@@ -151,7 +151,7 @@ export default async function HomePage() {
                                  <Play className="w-3.5 h-3.5 text-gray-500" />
                                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{(hub.totalStreams || 0).toLocaleString()} streams</span>
                               </div>
-                              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#00D2FF] transition-colors">
+                              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#F1F5F9] transition-colors">
                                  View Hub
                               </div>
                            </div>
@@ -165,7 +165,7 @@ export default async function HomePage() {
             {/* SIDEBAR FEED */}
             <div className="lg:col-span-1 space-y-12">
                <div className="space-y-4">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#F1F5F9]">
                      <Zap className="w-5 h-5 fill-current" />
                      <span className="text-xs font-bold uppercase tracking-widest">Network Live</span>
                   </div>
@@ -182,7 +182,7 @@ export default async function HomePage() {
          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
             <div className="lg:w-1/2 space-y-12 relative z-10">
                <div className="space-y-6">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#F1F5F9]">
                      <Radio className="w-5 h-5 animate-pulse" />
                      <span className="text-xs font-bold uppercase tracking-widest">24/7 Network Broadcast</span>
                   </div>
@@ -195,19 +195,19 @@ export default async function HomePage() {
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
-                  <Link href="/radio" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-2xl">Enter the Broadcast</Link>
+                  <Link href="/radio" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#F1F5F9] hover:text-white transition-all shadow-2xl">Enter the Broadcast</Link>
                   <div className="flex items-center gap-4 px-8 py-5 rounded-full bg-white/5 border border-white/10 text-gray-500 text-[10px] font-bold uppercase tracking-widest">
-                     <Users className="w-4 h-4 text-[#00D2FF]" />
+                     <Users className="w-4 h-4 text-[#F1F5F9]" />
                      <span>84.2k active listeners</span>
                   </div>
                </div>
             </div>
             <div className="lg:w-1/2 relative">
-               <div className="absolute inset-0 bg-[#00D2FF]/5 blur-[120px] rounded-full"></div>
+               <div className="absolute inset-0 bg-[#F1F5F9]/5 blur-[120px] rounded-full"></div>
                <div className="relative z-10 grid grid-cols-2 gap-6 rotate-3">
                   {[
                     { name: 'Hip-Hop', color: 'from-orange-500 to-red-600', icon: '🔥' },
-                    { name: 'Electronic', color: 'from-[#00D2FF] to-blue-700', icon: '⚡' },
+                    { name: 'Electronic', color: 'from-[#F1F5F9] to-blue-700', icon: '⚡' },
                     { name: 'Afrobeats', color: 'from-emerald-400 to-green-600', icon: '🌍' },
                     { name: 'Lo-Fi', color: 'from-purple-500 to-indigo-600', icon: '🌙' }
                   ].map((station, i) => (
@@ -215,7 +215,7 @@ export default async function HomePage() {
                        <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${station.color} flex items-center justify-center text-xl shadow-lg`}>
                           {station.icon}
                        </div>
-                       <h4 className="text-lg font-bold uppercase italic tracking-tighter text-white group-hover:text-[#00D2FF] transition-colors">{station.name}</h4>
+                       <h4 className="text-lg font-bold uppercase italic tracking-tighter text-white group-hover:text-[#F1F5F9] transition-colors">{station.name}</h4>
                        <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
                           <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Live</span>
@@ -239,7 +239,7 @@ export default async function HomePage() {
       <section className="py-16 sm:py-20 lg:py-32 bg-[#050505] border-y border-white/5 px-4 sm:px-8 lg:px-16">
          <div className="max-w-7xl mx-auto space-y-16 sm:space-y-24">
             <div className="text-center space-y-4">
-               <div className="flex items-center justify-center space-x-3 text-[#00D2FF]">
+               <div className="flex items-center justify-center space-x-3 text-[#F1F5F9]">
                   <Disc className="w-5 h-5 animate-spin-slow" />
                   <span className="text-xs font-bold uppercase tracking-widest">The Independent Cycle</span>
                </div>
@@ -268,7 +268,7 @@ export default async function HomePage() {
                ].map((item, i) => (
                  <div key={i} className="p-10 border border-white/5 rounded-3xl space-y-6 hover:bg-white/5 transition-colors group relative">
                     <div className="absolute top-8 right-8 text-[10px] font-bold text-white/10 uppercase tracking-widest">Step {item.step}</div>
-                     <div className="w-14 h-14 rounded-2xl bg-[#00D2FF1a] flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                     <div className="w-14 h-14 rounded-2xl bg-[#F1F5F91a] flex items-center justify-center text-[#F1F5F9] group-hover:bg-[#F1F5F9] group-hover:text-white transition-all">
                        <item.icon className="w-7 h-7" />
                     </div>
                     <h4 className="text-xl uppercase">{item.title}</h4>
@@ -277,11 +277,11 @@ export default async function HomePage() {
                ))}
             </div>
             <div className="mt-12 text-center flex flex-col sm:flex-row items-center justify-center gap-6">
-               <Link href="/how-it-works" className="text-white font-bold text-xs uppercase tracking-widest hover:text-[#00D2FF] transition-colors">
+               <Link href="/how-it-works" className="text-white font-bold text-xs uppercase tracking-widest hover:text-[#F1F5F9] transition-colors">
                   Learn more about the platform
                </Link>
                <span className="hidden sm:inline text-white/10">|</span>
-               <Link href="/pricing" className="text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:underline">
+               <Link href="/pricing" className="text-[#F1F5F9] font-bold text-xs uppercase tracking-widest hover:underline">
                   See how the money works
                </Link>
             </div>
@@ -292,9 +292,9 @@ export default async function HomePage() {
       <section className="bg-[#020202] py-16 sm:py-20 lg:py-32 border-b border-white/5 px-4 sm:px-8 lg:px-16">
          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
             <div className="lg:col-span-1 space-y-6">
-               <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Industry tools</p>
+               <p className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest">Industry tools</p>
                <h3 className="text-4xl uppercase leading-tight">Everything you need to build a music business.</h3>
-               <Link href="/network/board" className="inline-flex items-center space-x-3 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:translate-x-2 transition-transform">
+               <Link href="/network/board" className="inline-flex items-center space-x-3 text-[#F1F5F9] font-bold text-xs uppercase tracking-widest hover:translate-x-2 transition-transform">
                  <span>Browse Opportunities</span>
                  <ArrowRight className="w-4 h-4" />
                </Link>
@@ -305,7 +305,7 @@ export default async function HomePage() {
               { title: 'Independent Growth', desc: 'Build credibility with sync buyers, booking agents, and venues using our verified performance metrics without compromising your independence.', icon: ShieldCheck }
             ].map((service, i) => (
               <div key={i} className="p-10 border border-white/5 rounded-3xl space-y-6 hover:bg-white/5 transition-colors group">
-                 <div className="w-14 h-14 rounded-2xl bg-[#00D2FF1a] flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                 <div className="w-14 h-14 rounded-2xl bg-[#F1F5F91a] flex items-center justify-center text-[#F1F5F9] group-hover:bg-[#F1F5F9] group-hover:text-white transition-all">
                     <service.icon className="w-7 h-7" />
                  </div>
                  <h4 className="text-xl uppercase">{service.title}</h4>
@@ -319,7 +319,7 @@ export default async function HomePage() {
        <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-8 lg:px-16">
           <div className="max-w-7xl mx-auto">
              <div className="text-center space-y-4 mb-12 sm:mb-20">
-                <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Artist voices</p>
+                <p className="text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest">Artist voices</p>
                 <h2 className="text-[clamp(2rem,6vw,3.5rem)] uppercase leading-none">Real results. Real artists.</h2>
              </div>
              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -341,7 +341,7 @@ export default async function HomePage() {
                  }
                ].map((test, i) => (
                  <div key={i} className="space-y-6">
-                    <div className="text-[#00D2FF] text-6xl font-serif leading-none">&ldquo;</div>
+                    <div className="text-[#F1F5F9] text-6xl font-serif leading-none">&ldquo;</div>
                     <p className="text-xl italic font-medium leading-relaxed text-white">
                       {test.quote}
                     </p>
@@ -357,11 +357,11 @@ export default async function HomePage() {
 
       {/* CALL TO ACTION */}
        <section className="bg-[#111] py-24 sm:py-32 lg:py-40 text-center space-y-12 overflow-hidden relative px-4 sm:px-8">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00D2FF1a] rounded-full blur-[150px] -z-0"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#F1F5F91a] rounded-full blur-[150px] -z-0"></div>
          <div className="relative z-10 space-y-10">
             <h2 className="text-white text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.9] uppercase max-w-4xl mx-auto break-words">
                Ready to own your<br />
-               <span className="text-[#00D2FF]">music career?</span>
+               <span className="text-[#F1F5F9]">music career?</span>
             </h2>
             <p className="text-gray-400 text-xl font-medium max-w-2xl mx-auto">
                Join thousands of independent artists already building on New Release Hub. Free to start. No label required.

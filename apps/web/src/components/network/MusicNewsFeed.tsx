@@ -49,7 +49,7 @@ export default function MusicNewsFeed() {
       {/* SECTION HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-6">
          <div className="space-y-4">
-            <div className="flex items-center space-x-3 text-[#00D2FF]">
+            <div className="flex items-center space-x-3 text-[#F1F5F9]">
                <Newspaper className="w-5 h-5" />
                <span className="text-xs font-bold uppercase tracking-[0.4em]">Global Industry Hub</span>
             </div>
@@ -75,7 +75,7 @@ export default function MusicNewsFeed() {
                <div className="aspect-video rounded-[2rem] overflow-hidden border border-white/5 bg-zinc-900 relative">
                   <img src={news.image} alt="" className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 opacity-60 group-hover:opacity-100" />
                   <div className="absolute top-6 left-6 flex items-center space-x-2 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10">
-                     <div className="w-1.5 h-1.5 bg-[#00D2FF] rounded-full animate-pulse"></div>
+                     <div className="w-1.5 h-1.5 bg-[#F1F5F9] rounded-full animate-pulse"></div>
                      <span className="text-[8px] font-bold uppercase tracking-widest text-white">{news.category}</span>
                   </div>
                </div>
@@ -87,7 +87,7 @@ export default function MusicNewsFeed() {
                         <span>{news.time}</span>
                      </div>
                   </div>
-                  <h3 className="text-lg font-bold leading-tight text-white group-hover:text-[#00D2FF] transition-colors line-clamp-2 italic uppercase tracking-tighter">
+                  <h3 className="text-lg font-bold leading-tight text-white group-hover:text-[#F1F5F9] transition-colors line-clamp-2 italic uppercase tracking-tighter">
                      {news.title}
                   </h3>
                   <a href={news.url} className="inline-flex items-center space-x-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest group-hover:text-white transition-colors">
@@ -113,7 +113,7 @@ export default function MusicNewsFeed() {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-white">Global Ingest: 4,200 New Independent Masters Protected via NRH Ledger</span>
                   </div>
                   <div className="flex items-center space-x-4">
-                     <Zap className="w-4 h-4 text-[#00D2FF]" />
+                     <Zap className="w-4 h-4 text-[#F1F5F9]" />
                      <span className="text-[10px] font-bold uppercase tracking-widest text-white">Live Stats: 84.2K Active Frequencies Authorized</span>
                   </div>
                </div>

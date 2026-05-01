@@ -30,7 +30,7 @@ export default function CookieConsent() {
         >
           <div className="bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-2xl flex items-center justify-between gap-6">
              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#F1F5F9]/10 text-[#F1F5F9] flex items-center justify-center shrink-0">
                    <Shield className="w-5 h-5" />
                 </div>
                 <div>

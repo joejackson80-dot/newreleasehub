@@ -12,14 +12,14 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
     // Fake movement for visual effect
     if (index === 0) return <span className="flex items-center text-green-500 font-bold text-[10px]"><TrendingUp className="w-3 h-3 mr-1" /> 1</span>;
     if (index === 2) return <span className="flex items-center text-red-500 font-bold text-[10px]"><TrendingDown className="w-3 h-3 mr-1" /> 2</span>;
-    if (index === 4) return <span className="flex items-center text-[#00D2FF] font-bold text-[10px]">NEW</span>;
+    if (index === 4) return <span className="flex items-center text-[#F1F5F9] font-bold text-[10px]">NEW</span>;
     return <span className="flex items-center text-gray-500 font-bold text-[10px]"><Minus className="w-3 h-3 mr-1" /></span>;
   };
 
   const formatNumber = (num: number) => num.toLocaleString();
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-12 pb-32">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white font-sans pt-12 pb-32">
       
       {/* PAGE HEADER */}
       <header className="pt-12 pb-24 px-4 md:px-10 max-w-7xl mx-auto space-y-12">
@@ -31,7 +31,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
 
          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
             <div className="space-y-6">
-               <div className="flex items-center space-x-3 text-[#00D2FF]">
+               <div className="flex items-center space-x-3 text-[#F1F5F9]">
                   <BarChart3 className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Live Trending Analytics</span>
                </div>
@@ -82,12 +82,12 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
                               {artist.profileImageUrl && <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover" />}
                            </div>
                            <div className="min-w-0">
-                              <Link href={`/${artist.slug}`} className="font-bold text-lg hover:text-[#00D2FF] transition-colors truncate block">
+                              <Link href={`/${artist.slug}`} className="font-bold text-lg hover:text-[#F1F5F9] transition-colors truncate block">
                                  {artist.name}
                               </Link>
                               <div className="flex items-center gap-2">
                                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate">{artist.genres?.[0] || 'Independent'}</p>
-                                 <span className="text-[9px] font-bold text-[#00D2FF] uppercase tracking-widest bg-[#00D2FF]/10 px-1.5 py-0.5 rounded">{artist.supporterCount} SUPPORTERs</span>
+                                 <span className="text-[9px] font-bold text-[#F1F5F9] uppercase tracking-widest bg-[#F1F5F9]/10 px-1.5 py-0.5 rounded">{artist.supporterCount} SUPPORTERs</span>
                               </div>
                            </div>
                         </div>
@@ -111,7 +111,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
                         <div className="col-span-10 md:col-span-5 flex items-center gap-4">
                            <div className="w-12 h-12 rounded-md bg-zinc-800 flex items-center justify-center shrink-0 border border-white/5 group-hover:border-white/20 transition-colors cursor-pointer relative overflow-hidden">
                               <Music className="w-5 h-5 text-gray-600 group-hover:opacity-0 transition-opacity" />
-                              <div className="absolute inset-0 bg-[#00D2FF] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="absolute inset-0 bg-[#F1F5F9] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                  <Play className="w-5 h-5 text-white fill-current ml-1" />
                               </div>
                            </div>
@@ -123,7 +123,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
                            </div>
                         </div>
                         <div className="col-span-6 md:col-span-3 text-left md:text-right mt-4 md:mt-0">
-                           <p className="font-bold text-[#00D2FF]">{formatNumber(track.playCount)}</p>
+                           <p className="font-bold text-[#F1F5F9]">{formatNumber(track.playCount)}</p>
                            <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Plays</p>
                         </div>
                         <div className="col-span-6 md:col-span-3 flex flex-col items-end mt-4 md:mt-0">
@@ -161,7 +161,7 @@ export default function ChartsClient({ topArtists, topTracks, risingArtists }: a
                {activeTab === 'Top Genres' && (
                   <div className="py-20 text-center">
                      <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <Disc className="w-8 h-8 text-[#00D2FF]" />
+                        <Disc className="w-8 h-8 text-[#F1F5F9]" />
                      </div>
                      <h3 className="text-xl font-bold uppercase mb-2">Hip-Hop & R&B</h3>
                      <p className="text-gray-500 font-medium text-sm">2.4M Total Streams this week</p>

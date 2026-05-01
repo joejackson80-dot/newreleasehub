@@ -93,7 +93,7 @@ export default function AdminOverviewPage() {
             </div>
             <div>
                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Ledger Velocity</p>
-               <p className="text-3xl font-black italic text-[#00D2FF]">$1.2M</p>
+               <p className="text-3xl font-black italic text-[#F1F5F9]">$1.2M</p>
             </div>
          </div>
       </section>

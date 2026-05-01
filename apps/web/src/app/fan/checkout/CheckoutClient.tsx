@@ -87,7 +87,7 @@ export default function CheckoutClient() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#020202] flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
+        <Loader2 className="w-12 h-12 text-[#F1F5F9] animate-spin" />
         <p className="text-gray-500 font-bold uppercase tracking-[0.3em] text-[10px]">Initializing Secure Vault...</p>
       </div>
     );
@@ -119,7 +119,7 @@ export default function CheckoutClient() {
                 className="space-y-12"
               >
                 <div className="space-y-4">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#F1F5F9]">
                     <ShieldCheck className="w-5 h-5" />
                     <span className="text-xs font-bold uppercase tracking-[0.3em]">Institutional Grade Security</span>
                   </div>
@@ -141,7 +141,7 @@ export default function CheckoutClient() {
                         <div className="flex justify-between items-start relative z-10">
                           <div className="space-y-2">
                              <h4 className="text-2xl font-bold italic uppercase tracking-tight">{tier.name}</h4>
-                             <p className={`text-[10px] font-bold uppercase tracking-widest ${selectedTier?.id === tier.id ? 'text-gray-500' : 'text-[#00D2FF]'}`}>
+                             <p className={`text-[10px] font-bold uppercase tracking-widest ${selectedTier?.id === tier.id ? 'text-gray-500' : 'text-[#F1F5F9]'}`}>
                                 {tier.revenueSharePercent}% Revenue Participation
                              </p>
                           </div>
@@ -191,7 +191,7 @@ export default function CheckoutClient() {
                    <p className="text-gray-500 text-lg max-w-md mx-auto">Your participation in {artist?.name}'s revenue is now secured. You are now SUPPORTER #{supporterNumber}.</p>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                   <button onClick={() => router.push(`/${artist?.slug}`)} className="px-10 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">Return to Hub</button>
+                   <button onClick={() => router.push(`/${artist?.slug}`)} className="px-10 py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#F1F5F9] hover:text-white transition-all">Return to Hub</button>
                    <button onClick={() => router.push('/fan/me')} className="px-10 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Go to Dashboard</button>
                 </div>
               </motion.div>
@@ -220,7 +220,7 @@ export default function CheckoutClient() {
                     </div>
                     <div className="flex justify-between items-center text-sm font-medium">
                        <span className="text-gray-500 uppercase tracking-widest text-[10px] font-bold">Participation bps</span>
-                       <span className="text-[#00D2FF] font-bold italic">{((selectedTier?.revenueSharePercent || 0) * 100).toFixed(0)} bps</span>
+                       <span className="text-[#F1F5F9] font-bold italic">{((selectedTier?.revenueSharePercent || 0) * 100).toFixed(0)} bps</span>
                     </div>
                     <div className="h-px bg-white/5" />
                     <div className="flex justify-between items-center">
@@ -244,7 +244,7 @@ export default function CheckoutClient() {
                  <button 
                   onClick={handleComplete}
                   disabled={isProcessing}
-                  className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#00B8E0] transition-all shadow-[0_0_50px_rgba(51,102,255,0.3)] flex items-center justify-center space-x-3"
+                  className="w-full py-5 rounded-2xl bg-[#F1F5F9] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#00B8E0] transition-all shadow-[0_0_50px_rgba(51,102,255,0.3)] flex items-center justify-center space-x-3"
                  >
                     {isProcessing ? (
                       <>
@@ -261,7 +261,7 @@ export default function CheckoutClient() {
               </div>
 
               <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-8 flex items-start space-x-6">
-                 <Zap className="w-5 h-5 text-[#00D2FF] mt-1 shrink-0" />
+                 <Zap className="w-5 h-5 text-[#F1F5F9] mt-1 shrink-0" />
                  <p className="text-xs text-gray-500 leading-relaxed font-medium italic">
                     "By authorizing this settlement, you enter into a legally binding Revenue Participation License. You will receive a direct share of {artist?.name}'s platform earnings."
                  </p>

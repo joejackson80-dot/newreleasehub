@@ -24,7 +24,7 @@ export default function YieldHistory() {
 
   if (loading) return (
     <div className="flex flex-col items-center justify-center py-20 space-y-4">
-      <Loader2 className="w-8 h-8 text-[#00D2FF] animate-spin" />
+      <Loader2 className="w-8 h-8 text-[#F1F5F9] animate-spin" />
       <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Compiling Yield Ledger...</p>
     </div>
   );
@@ -56,7 +56,7 @@ export default function YieldHistory() {
          </div>
          <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 space-y-2">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Active Positions</p>
-            <p className="text-4xl font-black italic text-[#00D2FF]">{data.stats.activePositions}</p>
+            <p className="text-4xl font-black italic text-[#F1F5F9]">{data.stats.activePositions}</p>
          </div>
          <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 space-y-2">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Next Distribution</p>
@@ -106,7 +106,7 @@ export default function YieldHistory() {
                           </div>
                        </td>
                        <td className="p-8">
-                          <span className="text-xs font-black text-[#00D2FF] italic">{(share.revenueSharePercent * 100).toFixed(1)}%</span>
+                          <span className="text-xs font-black text-[#F1F5F9] italic">{(share.revenueSharePercent * 100).toFixed(1)}%</span>
                        </td>
                        <td className="p-8">
                           <div className="flex items-center gap-2">

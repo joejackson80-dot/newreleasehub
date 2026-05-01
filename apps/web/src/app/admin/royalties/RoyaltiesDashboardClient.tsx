@@ -94,7 +94,7 @@ export default function RoyaltiesDashboardClient({ initialPools }: { initialPool
                       <tr key={pool.id} className="hover:bg-white/[0.02] transition-all group">
                          <td className="py-8 pl-8">
                             <div className="flex items-center gap-4">
-                               <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#00D2FF]">
+                               <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#F1F5F9]">
                                   <Calendar className="w-5 h-5" />
                                </div>
                                <div>
@@ -116,13 +116,13 @@ export default function RoyaltiesDashboardClient({ initialPools }: { initialPool
                             <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Counted Plays</p>
                          </td>
                          <td className="py-8">
-                            <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border ${pool.status === 'PAID' ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-[#00D2FF]/10 border-[#00D2FF]/20 text-[#00D2FF]'}`}>
+                            <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border ${pool.status === 'PAID' ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-[#F1F5F9]/10 border-[#F1F5F9]/20 text-[#F1F5F9]'}`}>
                                {pool.status}
                             </span>
                          </td>
                          <td className="py-8 pr-8 text-right">
                             <p className="text-xs font-bold text-gray-500">{pool.calculatedAt ? new Date(pool.calculatedAt).toLocaleDateString() : 'Pending'}</p>
-                            <button className="text-[10px] font-bold uppercase tracking-widest text-[#00D2FF] hover:text-white transition-colors mt-2">View Report <ArrowRight className="w-3 h-3 inline ml-1" /></button>
+                            <button className="text-[10px] font-bold uppercase tracking-widest text-[#F1F5F9] hover:text-white transition-colors mt-2">View Report <ArrowRight className="w-3 h-3 inline ml-1" /></button>
                          </td>
                       </tr>
                     ))}

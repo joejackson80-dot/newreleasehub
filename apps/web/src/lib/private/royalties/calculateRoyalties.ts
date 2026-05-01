@@ -513,7 +513,7 @@ async function sendRoyaltyNotifications(
                 <p><strong>Total Earnings:</strong> $${(earnings.netPayout / 100).toFixed(2)}</p>
                 <p><strong>Total Streams:</strong> ${(earnings.premiumStreams + earnings.networkStreams).toLocaleString()}</p>
                 <br/>
-                <a href="https://newreleasehub.vercel.app/studio" style="background-color: #00D2FF; color: black; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">View Full Breakdown</a>
+                <a href="https://newreleasehub.vercel.app/studio" style="background-color: #F1F5F9; color: black; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">View Full Breakdown</a>
               </div>
             `
           })
@@ -542,7 +542,7 @@ async function sendRoyaltyNotifications(
                 <p>Your Supporter revenue shares for ${monthName} have generated yield!</p>
                 <p><strong>Yield Added to Balance:</strong> $${(totalEarned / 100).toFixed(2)}</p>
                 <br/>
-                <a href="https://newreleasehub.vercel.app/fan/me" style="background-color: #00D2FF; color: black; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">View Your Dashboard</a>
+                <a href="https://newreleasehub.vercel.app/fan/me" style="background-color: #F1F5F9; color: black; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">View Your Dashboard</a>
               </div>
             `
           })

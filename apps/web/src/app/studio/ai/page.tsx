@@ -80,7 +80,7 @@ export default function AIStudioPage() {
                 {IMAGE_TOOLS.map(t => (
                   <button key={t} onClick={() => setImageTool(t)}
                     className={`py-2 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border ${
-                      imageTool === t ? 'bg-[#00D2FF] text-white border-[#00D2FF]' : 'border-white/10 text-gray-500 hover:text-white hover:border-white/20'
+                      imageTool === t ? 'bg-[#F1F5F9] text-white border-[#F1F5F9]' : 'border-white/10 text-gray-500 hover:text-white hover:border-white/20'
                     }`}>
                     {t === 'DALL-E 3' ? 'DALL·E 3' : t}
                   </button>
@@ -92,7 +92,7 @@ export default function AIStudioPage() {
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Usage Type</label>
               <select value={imageUsage} onChange={e => setImageUsage(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00D2FF]">
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F1F5F9]">
                 {IMAGE_USAGES.map(u => <option key={u} className="bg-[#111]">{u}</option>)}
               </select>
             </div>
@@ -102,7 +102,7 @@ export default function AIStudioPage() {
               <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Prompt</label>
               <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={4}
                 placeholder={`Describe your ${imageUsage.toLowerCase()}. Example: "Late night R&B vibes, moody blue lighting, close-up portrait, cinematic quality..."`}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00D2FF] resize-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F1F5F9] resize-none"
               />
             </div>
 
@@ -113,7 +113,7 @@ export default function AIStudioPage() {
                 {STYLE_CHIPS.map(s => (
                   <button key={s} onClick={() => toggleStyle(s)}
                     className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all border ${
-                      styles.includes(s) ? 'bg-[#00D2FF] text-white border-[#00D2FF]' : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-white'
+                      styles.includes(s) ? 'bg-[#F1F5F9] text-white border-[#F1F5F9]' : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-white'
                     }`}>
                     {s}
                   </button>
@@ -122,7 +122,7 @@ export default function AIStudioPage() {
             </div>
 
             <button onClick={handleGenerate} disabled={!prompt || generating}
-              className="w-full py-4 rounded-xl bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#00D2FF]/20">
+              className="w-full py-4 rounded-xl bg-[#F1F5F9] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#F1F5F9]/20">
               {generating ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</> : <><Sparkles className="w-4 h-4" /> Generate (1 credit)</>}
             </button>
           </div>
@@ -160,7 +160,7 @@ export default function AIStudioPage() {
             {WRITING_TEMPLATES.map(t => (
               <button key={t.id} onClick={() => setWritingTemplate(t)}
                 className={`w-full text-left p-4 rounded-xl border transition-all ${
-                  writingTemplate.id === t.id ? 'bg-[#00D2FF]/10 border-[#00D2FF]/30 text-white' : 'border-white/5 text-gray-400 hover:text-white hover:border-white/10 bg-[#111]'
+                  writingTemplate.id === t.id ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]/30 text-white' : 'border-white/5 text-gray-400 hover:text-white hover:border-white/10 bg-[#111]'
                 }`}>
                 <p className="text-xs font-bold">{t.label}</p>
                 <p className="text-[10px] text-gray-500 mt-0.5">{t.desc}</p>
@@ -172,11 +172,11 @@ export default function AIStudioPage() {
               <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Tell us about your project</label>
               <textarea value={writingInput} onChange={e => setWritingInput(e.target.value)} rows={5}
                 placeholder={`Describe what you need for your ${writingTemplate.label.toLowerCase()}...`}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00D2FF] resize-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F1F5F9] resize-none"
               />
             </div>
             <button onClick={handleWriting} disabled={!writingInput || writingLoading}
-              className="px-8 py-3 rounded-xl bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all disabled:opacity-50 flex items-center gap-2">
+              className="px-8 py-3 rounded-xl bg-[#F1F5F9] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all disabled:opacity-50 flex items-center gap-2">
               {writingLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Writing...</> : <><FileText className="w-4 h-4" /> Generate</>}
             </button>
             {writingOutput && (

@@ -100,7 +100,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
 
   const tierBadgeColor =
     org.artistTier === 'legend' ? 'border-[#f59e0b33] text-amber-400 bg-[#f59e0b1a]' :
-    org.artistTier === 'established' ? 'border-[#00D2FF4d] text-[#00D2FF] bg-[#00D2FF1a]' :
+    org.artistTier === 'established' ? 'border-[#F1F5F94d] text-[#F1F5F9] bg-[#F1F5F91a]' :
     'border-white/20 text-gray-400 bg-white/5';
 
   return (
@@ -112,7 +112,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       <div className="max-w-7xl mx-auto px-6 md:px-12 -mt-12 mb-20">
          <div className="bg-[#0A0A0A]/80 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] p-8 flex flex-wrap items-center justify-between gap-8 shadow-2xl">
             <div className="flex items-center gap-6">
-               <div className="w-12 h-12 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">
+               <div className="w-12 h-12 rounded-2xl bg-[#F1F5F9]/10 flex items-center justify-center text-[#F1F5F9]">
                   <Activity className="w-6 h-6" />
                </div>
                <div>
@@ -173,7 +173,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
             <div className="flex items-center justify-between mb-8 sm:mb-10">
               <h3 className="text-2xl sm:text-3xl font-bold uppercase tracking-tighter">Latest Releases</h3>
               {liveReleases.length > 3 && (
-                <Link href={`/${slug}/discography`} className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white flex items-center gap-2">
+                <Link href={`/${slug}/discography`} className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest hover:text-white flex items-center gap-2">
                   All <ArrowRight className="w-4 h-4" />
                 </Link>
               )}
@@ -213,7 +213,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                  <div key={tier.id}
                   className={`rounded-[2.5rem] p-10 relative overflow-hidden border transition-all ${
                     isPopular
-                      ? 'bg-white/5 border-[#00D2FF]/50 shadow-[0_20px_80px_rgba(0,210,255,0.15)]'
+                      ? 'bg-white/5 border-[#F1F5F9]/50 shadow-[0_20px_80px_rgba(241,245,249,0.15)]'
                       : 'bg-[#0A0A0A] border-white/5 hover:border-white/10'
                   }`}
                 >
@@ -222,7 +222,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                        <h4 className="font-black italic uppercase tracking-tighter text-2xl text-white">{tier.name}</h4>
                        {isPopular && <Star className="w-5 h-5 text-amber-500 fill-current" />}
                     </div>
-                    <p className="text-[#00D2FF] font-black italic text-4xl tracking-tighter">
+                    <p className="text-[#F1F5F9] font-black italic text-4xl tracking-tighter">
                       ${(tier.priceCents / 100).toFixed(2)}
                       <span className="text-[10px] text-zinc-600 font-black uppercase tracking-widest ml-2">Monthly Subscription</span>
                     </p>
@@ -234,8 +234,8 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
 
                   <ul className="space-y-4 mb-10">
                     {tier.revenueSharePercent > 0 && (
-                      <li className="flex items-center gap-4 bg-[#00D2FF]/5 border border-[#00D2FF]/10 p-4 rounded-2xl">
-                        <Zap className="w-5 h-5 text-[#00D2FF]" />
+                      <li className="flex items-center gap-4 bg-[#F1F5F9]/5 border border-[#F1F5F9]/10 p-4 rounded-2xl">
+                        <Zap className="w-5 h-5 text-[#F1F5F9]" />
                         <div>
                            <p className="text-xs font-black text-white uppercase tracking-widest">{tier.revenueSharePercent * 100}% Royalty Stake</p>
                            <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Calculated on gross platform revenue</p>
@@ -243,11 +243,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                       </li>
                     )}
                     <li className="flex items-center gap-3 text-[10px] font-black text-zinc-400 uppercase tracking-widest italic">
-                       <CheckCircle2 className="w-3.5 h-3.5 text-[#00D2FF]" />
+                       <CheckCircle2 className="w-3.5 h-3.5 text-[#F1F5F9]" />
                        Institutional Asset Verification
                     </li>
                     <li className="flex items-center gap-3 text-[10px] font-black text-zinc-400 uppercase tracking-widest italic">
-                       <CheckCircle2 className="w-3.5 h-3.5 text-[#00D2FF]" />
+                       <CheckCircle2 className="w-3.5 h-3.5 text-[#F1F5F9]" />
                        48-Hour Network Early Access
                     </li>
                   </ul>
@@ -260,7 +260,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                       </div>
                       <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-1000 ${isFull ? 'bg-rose-500' : 'bg-[#00D2FF]'}`}
+                          className={`h-full rounded-full transition-all duration-1000 ${isFull ? 'bg-rose-500' : 'bg-[#F1F5F9]'}`}
                           style={{ width: `${Math.min((currentSlots / tier.maxSlots) * 100, 100)}%` }}
                         />
                       </div>
@@ -275,8 +275,8 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                     <Link href={`/checkout?tier=${tier.id}`}
                       className={`block w-full py-6 rounded-2xl text-center font-black uppercase tracking-widest text-xs transition-all ${
                         isPopular
-                          ? 'bg-[#00D2FF] text-white hover:bg-white hover:text-black shadow-[0_10px_40px_rgba(0,210,255,0.3)]'
-                          : 'bg-white text-black hover:bg-[#00D2FF] hover:text-white'
+                          ? 'bg-[#F1F5F9] text-white hover:bg-white hover:text-black shadow-[0_10px_40px_rgba(241,245,249,0.3)]'
+                          : 'bg-white text-black hover:bg-[#F1F5F9] hover:text-white'
                       }`}>
                       Authorize Access
                     </Link>
@@ -311,7 +311,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                            {rel.fan?.displayName?.charAt(0) || '?'}
                          </div>
                          <div className="flex-1 min-w-0">
-                            <p className="text-[10px] font-black text-white uppercase tracking-widest truncate group-hover:text-[#00D2FF] transition-colors">
+                            <p className="text-[10px] font-black text-white uppercase tracking-widest truncate group-hover:text-[#F1F5F9] transition-colors">
                               {rel.fan?.displayName || 'Anonymous'}
                             </p>
                             <p className="text-[8px] font-bold text-zinc-700 uppercase tracking-widest">
@@ -332,7 +332,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
           <div className="space-y-8 pt-12 border-t border-white/5 mb-12">
              <div className="flex items-center justify-between">
                 <h3 className="text-lg font-black italic uppercase tracking-tighter">Network Signal</h3>
-                <div className="w-2 h-2 rounded-full bg-[#00D2FF] animate-pulse"></div>
+                <div className="w-2 h-2 rounded-full bg-[#F1F5F9] animate-pulse"></div>
              </div>
              <div className="space-y-6">
                 {[
@@ -342,7 +342,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                 ].map((log, i) => (
                   <div key={i} className="flex justify-between items-start group cursor-pointer">
                      <div className="space-y-1">
-                        <p className="text-[10px] font-black text-white uppercase tracking-widest group-hover:text-[#00D2FF] transition-colors">{log.user}</p>
+                        <p className="text-[10px] font-black text-white uppercase tracking-widest group-hover:text-[#F1F5F9] transition-colors">{log.user}</p>
                         <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">{log.action}</p>
                      </div>
                      <span className="text-[8px] font-black text-zinc-800 uppercase tracking-widest">{log.time}</span>

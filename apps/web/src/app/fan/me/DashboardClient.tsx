@@ -143,7 +143,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
              </div>
 
              <div className="space-y-3">
-               <div className="flex items-center space-x-3 text-[#00D2FF]">
+               <div className="flex items-center space-x-3 text-[#F1F5F9]">
                   <ShieldCheck className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Network Terminal</span>
                </div>
@@ -155,7 +155,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Fan Level</p>
                <div className="flex items-center gap-3">
                   <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden">
-                     <div className="h-full bg-gradient-to-r from-purple-500 to-[#00D2FF]" style={{ width: `${(user.fanXP / (user.fanLevel * 500)) * 100}%` }}></div>
+                     <div className="h-full bg-gradient-to-r from-purple-500 to-[#F1F5F9]" style={{ width: `${(user.fanXP / (user.fanLevel * 500)) * 100}%` }}></div>
                   </div>
                   <span className="text-xl font-bold italic tracking-tighter text-white">LVL {user.fanLevel}</span>
                </div>
@@ -170,7 +170,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                   <Bell className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
                 </button>
                 {unreadNotifs > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#00D2FF] border-4 border-black rounded-full text-[8px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#F1F5F9] border-4 border-black rounded-full text-[8px] font-bold flex items-center justify-center">
                     {unreadNotifs}
                   </span>
                 )}
@@ -195,7 +195,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                  }`}>
                  {t}
                  {t === 'Notifications' && unreadNotifs > 0 && (
-                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#00D2FF] rounded-full text-[8px] font-bold flex items-center justify-center text-white">
+                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#F1F5F9] rounded-full text-[8px] font-bold flex items-center justify-center text-white">
                      {unreadNotifs}
                    </span>
                  )}
@@ -217,7 +217,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                <div className="bg-[#111] border border-white/5 rounded-3xl p-12 text-center flex flex-col items-center justify-center space-y-4">
                   <Music className="w-12 h-12 text-white/10" />
                   <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Your feed is currently silent.</p>
-                  <Link href="/discover" className="text-[#00D2FF] font-bold text-xs">Explore Artists</Link>
+                  <Link href="/discover" className="text-[#F1F5F9] font-bold text-xs">Explore Artists</Link>
                </div>
             ) : (
                feed.map(post => (
@@ -230,10 +230,10 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                      </Link>
                      <div className="flex-1">
                        <div className="flex items-center gap-2">
-                         <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`} className="font-bold text-sm text-white hover:text-[#00D2FF] transition-colors">
+                         <Link href={`/${post.Organization?.slug || post.artistSlug || ''}`} className="font-bold text-sm text-white hover:text-[#F1F5F9] transition-colors">
                            {post.Organization?.name || post.artistName}
                          </Link>
-                         {(post.Organization?.isVerified || post.isVerified) && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
+                         {(post.Organization?.isVerified || post.isVerified) && <Check className="w-3.5 h-3.5 text-[#F1F5F9]" />}
                          {(post.isSupporterOnly || post.isisSupporterOnly) && (
                            <span className="text-[9px] font-bold text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
                              SUPPORTER Only
@@ -328,7 +328,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
         {activeTab === 'Library' && (
           <div className="space-y-4">
             {isLoadingLibrary ? (
-               <div className="text-center py-20 text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest animate-pulse">Loading Library...</div>
+               <div className="text-center py-20 text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest animate-pulse">Loading Library...</div>
             ) : libraryTracks.length === 0 ? (
                <div className="bg-[#111] border border-white/5 rounded-3xl p-12 text-center flex flex-col items-center justify-center space-y-4 hover:border-white/10 transition-colors">
                   <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-gray-500">
@@ -338,7 +338,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                      <p className="text-white font-bold text-lg">Your Library is Empty</p>
                      <p className="text-gray-500 text-sm mt-1 max-w-sm mx-auto leading-relaxed">Start exploring the Discover feed and click the heart icon on any track to save it to your collection.</p>
                   </div>
-                  <Link href="/discover" className="mt-4 px-8 py-3 bg-[#00D2FF] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#00B8E0] transition-colors shadow-lg">
+                  <Link href="/discover" className="mt-4 px-8 py-3 bg-[#F1F5F9] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#00B8E0] transition-colors shadow-lg">
                      Go to Discover
                   </Link>
                </div>
@@ -351,16 +351,16 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                         <div className="w-12 h-12 rounded-xl bg-zinc-900 shrink-0 overflow-hidden relative cursor-pointer shadow-lg" onClick={() => handlePlayTrack(track)}>
                            {track.imageUrl && <img src={track.imageUrl} alt={track.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />}
                            <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity ${isThisPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                              {isThisPlaying ? <Pause className="w-4 h-4 text-[#00D2FF] fill-current" /> : <Play className="w-4 h-4 text-white fill-current ml-0.5" />}
+                              {isThisPlaying ? <Pause className="w-4 h-4 text-[#F1F5F9] fill-current" /> : <Play className="w-4 h-4 text-white fill-current ml-0.5" />}
                            </div>
                         </div>
                         <div className="flex-1 min-w-0">
-                           <p className="font-bold text-white truncate text-sm hover:text-[#00D2FF] cursor-pointer transition-colors" onClick={() => handlePlayTrack(track)}>{track.title}</p>
+                           <p className="font-bold text-white truncate text-sm hover:text-[#F1F5F9] cursor-pointer transition-colors" onClick={() => handlePlayTrack(track)}>{track.title}</p>
                            <Link href={`/${track.Organization?.slug || ''}`} className="text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors truncate block mt-0.5">
                               {track.Organization?.name || 'Unknown Artist'}
                            </Link>
                         </div>
-                        <div className="hidden sm:block text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest text-right bg-[#00D2FF]/10 px-3 py-1.5 rounded-lg">
+                        <div className="hidden sm:block text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest text-right bg-[#F1F5F9]/10 px-3 py-1.5 rounded-lg">
                            Saved
                         </div>
                      </div>
@@ -441,7 +441,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                         </div>
                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
                            <span className="text-gray-500 italic">Network Rank</span>
-                           <span className="text-[#00D2FF]">Top 15%</span>
+                           <span className="text-[#F1F5F9]">Top 15%</span>
                         </div>
                      </div>
                   </div>
@@ -456,11 +456,11 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
               {subscriptions.length === 0 ? (
                 <div className="col-span-full text-center py-20 bg-white/5 border border-dashed border-white/10 rounded-3xl">
                    <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px] mb-2">No Active Stakes</p>
-                   <Link href="/discover" className="text-[#00D2FF] hover:text-white transition-colors font-bold text-xs">Explore Artists</Link>
+                   <Link href="/discover" className="text-[#F1F5F9] hover:text-white transition-colors font-bold text-xs">Explore Artists</Link>
                 </div>
               ) : subscriptions.map(sub => (
                 <div key={sub.id} className="relative group">
-                   <div className="absolute inset-0 bg-gradient-to-tr from-[#00D2FF]/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                   <div className="absolute inset-0 bg-gradient-to-tr from-[#F1F5F9]/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                    <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 hover:border-white/20 transition-all relative z-10 space-y-8">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center gap-4">
@@ -487,7 +487,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          <div className="grid grid-cols-2 gap-6">
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Revenue Share</p>
-                               <p className="text-sm font-bold text-[#00D2FF]">{sub.revenueSharePercent * 100}%</p>
+                               <p className="text-sm font-bold text-[#F1F5F9]">{sub.revenueSharePercent * 100}%</p>
                             </div>
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Yield (Est.)</p>
@@ -525,12 +525,12 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
         {activeTab === 'Stats' && (
           <div className="space-y-8 animate-in fade-in duration-700">
             {isLoadingStats ? (
-              <div className="text-center py-20 text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest animate-pulse">Synchronizing Terminal Data...</div>
+              <div className="text-center py-20 text-[#F1F5F9] text-[10px] font-bold uppercase tracking-widest animate-pulse">Synchronizing Terminal Data...</div>
             ) : (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    { label: 'Total Streams', value: fanStats?.totalStreamsAllTime || 0, icon: Play, color: 'text-[#00D2FF]' },
+                    { label: 'Total Streams', value: fanStats?.totalStreamsAllTime || 0, icon: Play, color: 'text-[#F1F5F9]' },
                     { label: 'Unique Artists', value: fanStats?.uniqueArtistsAllTime || 0, icon: Users, color: 'text-purple-400' },
                     { label: 'Listening Hours', value: (fanStats?.totalListeningHrs || 0).toFixed(1), icon: Clock, color: 'text-green-400' },
                     { label: 'Streak', value: `${fanStats?.listeningStreak || 0} Days`, icon: Star, color: 'text-orange-400' },
@@ -552,7 +552,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                    <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-10 space-y-8 relative overflow-hidden group">
                       <div className="absolute top-0 right-0 p-8 opacity-[0.05] group-hover:scale-110 transition-transform">
-                         <TrendingUp className="w-20 h-20 text-[#00D2FF]" />
+                         <TrendingUp className="w-20 h-20 text-[#F1F5F9]" />
                       </div>
                       <div className="space-y-1">
                          <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Verified Yield Projection</h4>
@@ -570,12 +570,12 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                             <div className="h-full bg-white/20" style={{ width: '85%' }}></div>
                          </div>
-                         <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-[#00D2FF]">
+                         <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-[#F1F5F9]">
                             <span>Network Target (+12%)</span>
                             <span className="text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 12).toFixed(0)}</span>
                          </div>
                          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full bg-[#00D2FF]" style={{ width: '100%' }}></div>
+                            <div className="h-full bg-[#F1F5F9]" style={{ width: '100%' }}></div>
                          </div>
                       </div>
                       <p className="text-[9px] text-gray-700 font-medium leading-relaxed italic uppercase tracking-wider">
@@ -602,7 +602,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                                     <span>{loc.val}%</span>
                                  </div>
                                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-white/10 group-hover:bg-[#00D2FF]/40 transition-colors" style={{ width: `${loc.val}%` }}></div>
+                                    <div className="h-full bg-white/10 group-hover:bg-[#F1F5F9]/40 transition-colors" style={{ width: `${loc.val}%` }}></div>
                                  </div>
                               </div>
                             ))}
@@ -610,9 +610,9 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          <div className="flex items-center justify-center">
                             <div className="relative w-32 h-32">
                                <div className="absolute inset-0 border-[10px] border-white/5 rounded-full" />
-                               <div className="absolute inset-0 border-[10px] border-[#00D2FF] rounded-full border-t-transparent border-l-transparent rotate-45" />
+                               <div className="absolute inset-0 border-[10px] border-[#F1F5F9] rounded-full border-t-transparent border-l-transparent rotate-45" />
                                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                  <Globe className="w-6 h-6 text-[#00D2FF] mb-1" />
+                                  <Globe className="w-6 h-6 text-[#F1F5F9] mb-1" />
                                   <span className="text-[9px] font-black text-white uppercase">Global</span>
                                </div>
                             </div>
@@ -631,7 +631,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          You were among the first 100 supporters for {fanStats?.firstDiscoveries || 0} artists in your portfolio. Your Early Access Multiplier is currently <span className="text-emerald-500 font-black">1.25x</span>.
                       </p>
                    </div>
-                   <Link href="/governance" className="px-8 py-4 rounded-xl bg-white text-black font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#00D2FF] hover:text-white transition-all shadow-xl">
+                   <Link href="/governance" className="px-8 py-4 rounded-xl bg-white text-black font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#F1F5F9] hover:text-white transition-all shadow-xl">
                       Manage Equity
                    </Link>
                 </div>
@@ -654,8 +654,8 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <Link href={`/${sub.Organization.slug}`} className="font-bold text-white hover:text-[#00D2FF] transition-colors truncate">{sub.Organization.name}</Link>
-                      {sub.Organization.isVerified && <Check className="w-3.5 h-3.5 text-[#00D2FF]" />}
+                      <Link href={`/${sub.Organization.slug}`} className="font-bold text-white hover:text-[#F1F5F9] transition-colors truncate">{sub.Organization.name}</Link>
+                      {sub.Organization.isVerified && <Check className="w-3.5 h-3.5 text-[#F1F5F9]" />}
                     </div>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{sub.Tier.name} Tier</span>
@@ -667,7 +667,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                     </div>
                   </div>
                   <Link href={`/${sub.Organization.slug}`}
-                    className="px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all shadow-xl">
+                    className="px-6 py-3 rounded-xl bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[#F1F5F9] hover:text-white transition-all shadow-xl">
                     Enter Hub
                   </Link>
                 </div>
@@ -687,9 +687,9 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
           <div className="space-y-3">
             {MOCK_NOTIFICATIONS.map(n => (
               <div key={n.id}
-                className={`p-5 rounded-2xl border transition-all ${n.unread ? 'bg-[#00D2FF]/5 border-[#00D2FF]/20' : 'bg-[#111] border-white/5'}`}>
+                className={`p-5 rounded-2xl border transition-all ${n.unread ? 'bg-[#F1F5F9]/5 border-[#F1F5F9]/20' : 'bg-[#111] border-white/5'}`}>
                 <div className="flex items-start gap-3">
-                  {n.unread && <div className="w-2 h-2 rounded-full bg-[#00D2FF] mt-1.5 shrink-0" />}
+                  {n.unread && <div className="w-2 h-2 rounded-full bg-[#F1F5F9] mt-1.5 shrink-0" />}
                   <div className="flex-1">
                     <p className="font-bold text-sm text-white">{n.title}</p>
                     <p className="text-xs text-gray-400 mt-0.5">{n.body}</p>
@@ -778,7 +778,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                                    <Play className="w-6 h-6 fill-current ml-1" />
                                 </button>
                              </div>
-                             <div className="absolute top-4 right-4 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 text-[8px] font-bold text-[#00D2FF] uppercase tracking-widest">Vault Exclusive</div>
+                             <div className="absolute top-4 right-4 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 text-[8px] font-bold text-[#F1F5F9] uppercase tracking-widest">Vault Exclusive</div>
                           </div>
                           <div className="space-y-1">
                              <h4 className="font-bold text-white truncate">{release.title}</h4>

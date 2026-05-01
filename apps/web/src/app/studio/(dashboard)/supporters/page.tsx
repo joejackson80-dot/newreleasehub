@@ -12,7 +12,7 @@ export default async function SupporterTiersManagerPage() {
           <h1 className="text-3xl font-bold tracking-tight text-white">SUPPORTER Tiers</h1>
           <p className="text-sm text-gray-500 font-medium mt-1">Configure your funding tiers and revenue participation shares.</p>
         </div>
-        <button className="bg-[#00D2FF] text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all flex items-center gap-2 w-full md:w-auto justify-center">
+        <button className="bg-[#F1F5F9] text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all flex items-center gap-2 w-full md:w-auto justify-center">
           <Plus className="w-4 h-4" />
           <span>Create New Tier</span>
         </button>
@@ -20,11 +20,11 @@ export default async function SupporterTiersManagerPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {org.SupporterTiers.map(tier => (
-          <div key={tier.id} className="bg-[#111] border border-white/5 rounded-2xl p-6 relative group hover:border-[#00D2FF]/50 transition-colors flex flex-col h-full">
+          <div key={tier.id} className="bg-[#111] border border-white/5 rounded-2xl p-6 relative group hover:border-[#F1F5F9]/50 transition-colors flex flex-col h-full">
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h4 className="font-bold text-lg text-white">{tier.name}</h4>
-                <p className="text-[#00D2FF] font-bold text-2xl mt-1">${(tier.priceCents / 100).toFixed(2)}<span className="text-xs text-gray-500 font-medium">/mo</span></p>
+                <p className="text-[#F1F5F9] font-bold text-2xl mt-1">${(tier.priceCents / 100).toFixed(2)}<span className="text-xs text-gray-500 font-medium">/mo</span></p>
               </div>
               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-black px-2 py-1 rounded border border-white/5">
                 {tier.maxSlots ? `/ ${tier.maxSlots}` : 'Unlimited'} Slots

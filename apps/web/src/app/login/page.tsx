@@ -29,6 +29,20 @@ export default function FanLoginPage() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    setIsSubmitting(true);
+    try {
+      const result = await loginFan('johndoe', 'Password123');
+      if (result.success) {
+        window.location.href = '/fan/me';
+      }
+    } catch (err) {
+      setError('Demo login failed');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-10 font-sans selection:bg-white selection:text-black">
       
@@ -99,16 +113,24 @@ export default function FanLoginPage() {
               <div className="flex-1 h-px bg-white/5"></div>
            </div>
 
-           <div className="grid grid-cols-2 gap-4">
-              <button type="button" className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group">
-                  <Globe className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                 <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
-              </button>
-              <button type="button" className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group">
-                  <Zap className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                 <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
-              </button>
-           </div>
+            <div className="grid grid-cols-2 gap-4">
+               <button 
+                type="button" 
+                onClick={handleDemoLogin}
+                className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"
+               >
+                   <Globe className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+               </button>
+               <button 
+                type="button" 
+                onClick={handleDemoLogin}
+                className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"
+               >
+                   <Zap className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
+               </button>
+            </div>
         </form>
 
         <div className="text-center space-y-6 pt-10">

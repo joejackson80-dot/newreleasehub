@@ -18,7 +18,7 @@ export default function ArtistRegisterPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
-
+    
     try {
       const result = await registerArtist({ email, username, name, password });
       if (result.success) {
@@ -28,6 +28,21 @@ export default function ArtistRegisterPage() {
       }
     } catch (err: any) {
       setError('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setIsSubmitting(true);
+    try {
+      const { loginArtist } = await import('@/app/actions/auth');
+      const result = await loginArtist('iamjoejack', 'Password123');
+      if (result.success) {
+        window.location.href = '/studio';
+      }
+    } catch (err) {
+      setError('Demo login failed');
     } finally {
       setIsSubmitting(false);
     }
@@ -48,7 +63,7 @@ export default function ArtistRegisterPage() {
               <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
            </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Join Studio</h1>
-          <p className="text-[#00D2FF] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Initialize Command Center</p>
+          <p className="text-[#F1F5F9] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Initialize Command Center</p>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-5">
@@ -115,6 +130,31 @@ export default function ArtistRegisterPage() {
             </button>
           </div>
         </form>
+
+        <div className="mt-8 flex items-center space-x-4">
+          <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
+          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">or continue with</span>
+          <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <button 
+            type="button" 
+            onClick={handleDemoLogin}
+            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+          >
+            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+          </button>
+          <button 
+            type="button" 
+            onClick={handleDemoLogin}
+            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+          >
+            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">A</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
+          </button>
+        </div>
 
         <div className="mt-8 text-center border-t border-[var(--color-studio-border)] pt-8 space-y-4">
            <Link href="/studio/login" className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-[0.2em] block">Already have access? Sign In</Link>

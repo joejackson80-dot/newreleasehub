@@ -100,7 +100,7 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
         {/* HEADER */}
         <header className="flex flex-col md:flex-row justify-between items-end gap-10">
            <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-[#00D2FF]">
+              <div className="flex items-center space-x-3 text-[#F1F5F9]">
                  <Zap className="w-5 h-5" />
                  <span className="text-xs font-bold uppercase tracking-widest">Discovery Hub</span>
               </div>
@@ -120,7 +120,7 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
                    value={searchQuery}
                    onChange={(e) => setSearchQuery(e.target.value)}
                    placeholder="Search artists or tracks..." 
-                   className="w-full bg-[#111] border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#00D2FF] transition-all" 
+                   className="w-full bg-[#111] border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#F1F5F9] transition-all" 
                  />
               </div>
               <button className="p-4 bg-[#111] border border-white/10 rounded-2xl text-gray-500 hover:text-white transition-colors">
@@ -136,7 +136,7 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
                  <button
                    key={genre}
                    onClick={() => setActiveGenre(genre)}
-                   className={`text-[10px] font-bold uppercase tracking-widest px-6 py-3 rounded-xl transition-all whitespace-nowrap ${activeGenre === genre ? 'bg-[#00D2FF] text-white' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
+                   className={`text-[10px] font-bold uppercase tracking-widest px-6 py-3 rounded-xl transition-all whitespace-nowrap ${activeGenre === genre ? 'bg-[#F1F5F9] text-white' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
                  >
                    {genre}
                  </button>
@@ -152,16 +152,16 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
         <section className="space-y-10">
            <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold uppercase tracking-tighter italic">Featured Artists</h2>
-              <Link href="/network/charts" className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors">View All Charts</Link>
+              <Link href="/network/charts" className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest hover:text-white transition-colors">View All Charts</Link>
            </div>
            {filteredArtists.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
                  {filteredArtists.map((artist: any) => (
                     <Link key={artist.id} href={`/${artist.slug}`} className="group space-y-4">
-                       <div className="aspect-square rounded-3xl overflow-hidden bg-zinc-900 relative border border-white/5 group-hover:border-[#00D2FF]/50 transition-all">
+                       <div className="aspect-square rounded-3xl overflow-hidden bg-zinc-900 relative border border-white/5 group-hover:border-[#F1F5F9]/50 transition-all">
                           {artist.profileImageUrl && <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />}
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                             <div className="w-12 h-12 rounded-full bg-[#00D2FF] flex items-center justify-center text-white">
+                             <div className="w-12 h-12 rounded-full bg-[#F1F5F9] flex items-center justify-center text-white">
                                 <Play className="w-6 h-6 fill-current ml-1" />
                              </div>
                           </div>
@@ -197,16 +197,16 @@ export default function DiscoverClient({ featuredArtists, latestReleases, genres
                         >
                            {release.coverArtUrl && <img src={release.coverArtUrl} alt={release.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />}
                            <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity ${isThisPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                              {isThisPlaying ? <Pause className="w-6 h-6 text-[#00D2FF] fill-current" /> : <Play className="w-6 h-6 text-white fill-current ml-1" />}
+                              {isThisPlaying ? <Pause className="w-6 h-6 text-[#F1F5F9] fill-current" /> : <Play className="w-6 h-6 text-white fill-current ml-1" />}
                            </div>
                         </div>
                         <div className="flex-1 min-w-0 space-y-2">
-                           <h4 className="font-bold text-lg truncate hover:text-[#00D2FF] transition-colors cursor-pointer" onClick={(e) => handlePlay(e, release)}>{release.title}</h4>
-                           <Link href={`/${release.Organization?.slug || ''}`} className="text-[10px] font-bold text-gray-500 hover:text-[#00D2FF] uppercase tracking-widest transition-colors block truncate">
+                           <h4 className="font-bold text-lg truncate hover:text-[#F1F5F9] transition-colors cursor-pointer" onClick={(e) => handlePlay(e, release)}>{release.title}</h4>
+                           <Link href={`/${release.Organization?.slug || ''}`} className="text-[10px] font-bold text-gray-500 hover:text-[#F1F5F9] uppercase tracking-widest transition-colors block truncate">
                               {release.Organization?.name || 'Unknown Artist'}
                            </Link>
                            <div className="flex items-center justify-between pt-4">
-                              <span className="text-[9px] font-bold text-[#00D2FF] uppercase tracking-widest">{release.type || 'Single'}</span>
+                              <span className="text-[9px] font-bold text-[#F1F5F9] uppercase tracking-widest">{release.type || 'Single'}</span>
                               <div className="flex items-center space-x-3">
                                  <button onClick={(e) => toggleLike(e, release.id)} className={`p-2 transition-colors ${likedTracks.has(release.id) ? 'text-pink-500' : 'text-gray-600 hover:text-pink-400'}`} title="Save to Library">
                                     <Heart className={`w-4 h-4 ${likedTracks.has(release.id) ? 'fill-current' : ''}`} />

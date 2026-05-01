@@ -36,7 +36,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans pb-32">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#F1F5F9] selection:text-white font-sans pb-32">
       
       {/* INSTITUTIONAL HEADER */}
       <header className="pt-20 pb-16 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto space-y-12">
@@ -47,7 +47,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
 
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10">
             <div className="space-y-6">
-               <div className="flex items-center space-x-3 text-[#00D2FF]">
+               <div className="flex items-center space-x-3 text-[#F1F5F9]">
                   <Gavel className="w-4 h-4 fill-current" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Decentralized Governance Matrix</span>
                </div>
@@ -63,14 +63,14 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
             <div className="bg-[#111] border border-white/5 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 w-full lg:min-w-[300px]">
                <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Your Vote Weight</span>
-                  <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
+                  <ShieldCheck className="w-4 h-4 text-[#F1F5F9]" />
                </div>
                <div className="flex items-end gap-3">
                   <h2 className="text-4xl sm:text-5xl font-black italic tracking-tighter text-white">x{user?.fanLevel || 1}</h2>
                   <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Based on LVL {user?.fanLevel || 1}</p>
                </div>
                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#00D2FF]" style={{ width: '60%' }}></div>
+                  <div className="h-full bg-[#F1F5F9]" style={{ width: '60%' }}></div>
                </div>
             </div>
          </div>
@@ -100,7 +100,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/05 pb-6 gap-6">
             <h3 className="text-xl font-black italic uppercase tracking-tighter text-white">Active Initiatives</h3>
             <div className="flex gap-2">
-               <span className="px-4 py-2 bg-white/05 border border-white/10 rounded-full text-[9px] font-bold text-[#00D2FF] uppercase tracking-widest">All Categories</span>
+               <span className="px-4 py-2 bg-white/05 border border-white/10 rounded-full text-[9px] font-bold text-[#F1F5F9] uppercase tracking-widest">All Categories</span>
                <span className="px-4 py-2 bg-white/05 border border-white/10 rounded-full text-[9px] font-bold text-gray-500 uppercase tracking-widest">Ending Soon</span>
             </div>
          </div>
@@ -117,7 +117,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
                         <div className="flex items-center justify-between">
                            <div className="flex items-center gap-3">
                               <img src={p.Organization.profileImageUrl || '/images/default-avatar.png'} alt={p.Organization.name} className="w-10 h-10 rounded-xl object-cover border border-white/10" />
-                              <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest italic">{p.Organization.name}</span>
+                              <span className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest italic">{p.Organization.name}</span>
                            </div>
                            <div className="flex items-center gap-2 px-3 py-1 bg-white/05 rounded-full">
                               <Clock className="w-3 h-3 text-gray-500" />
@@ -224,7 +224,7 @@ export default function GovernanceClient({ initialProposals, user }: { initialPr
                <p className="text-[10px] text-zinc-500 font-medium leading-relaxed uppercase tracking-[0.2em]">
                   Governance votes are irreversible once registered in the protocol ledger. Your vote weight is dynamically calculated based on your current Fan Level. Misuse of governance rights may result in temporary protocol suspension. 
                   <br /><br />
-                  <span className="text-[#00D2FF]">View the Full Network Whitepaper for compliance details.</span>
+                  <span className="text-[#F1F5F9]">View the Full Network Whitepaper for compliance details.</span>
                </p>
             </div>
          </div>

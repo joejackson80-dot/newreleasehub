@@ -40,7 +40,7 @@ export default function SearchClient() {
         <header className="space-y-8 pt-12">
            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
               <div className="space-y-4">
-                 <div className="flex items-center space-x-3 text-[#00D2FF]">
+                 <div className="flex items-center space-x-3 text-[#F1F5F9]">
                     <Search className="w-5 h-5" />
                     <span className="text-xs font-bold uppercase tracking-widest">Network Search</span>
                  </div>
@@ -57,7 +57,7 @@ export default function SearchClient() {
                  <button 
                    key={filter}
                    onClick={() => setActiveFilter(filter)}
-                   className={`px-5 py-2.5 sm:px-6 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-all ${activeFilter === filter ? 'bg-[#00D2FF] text-white shadow-[0_0_20px_rgba(0,210,255,33)]' : 'text-zinc-500 hover:text-white bg-white/05 border border-white/10'}`}
+                   className={`px-5 py-2.5 sm:px-6 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest transition-all ${activeFilter === filter ? 'bg-[#F1F5F9] text-white shadow-[0_0_20px_rgba(241,245,249,33)]' : 'text-zinc-500 hover:text-white bg-white/05 border border-white/10'}`}
                  >
                   {filter}
                 </button>
@@ -68,7 +68,7 @@ export default function SearchClient() {
         {/* RESULTS GRID */}
         {loading ? (
           <div className="py-32 flex flex-col items-center justify-center space-y-4">
-            <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
+            <Loader2 className="w-12 h-12 text-[#F1F5F9] animate-spin" />
             <p className="text-gray-500 font-bold uppercase tracking-[0.3em]">Scanning Network...</p>
           </div>
         ) : (
@@ -83,7 +83,7 @@ export default function SearchClient() {
                                <img src={item.img} className="w-full h-full object-cover" />
                              </div>
                              <div className="text-right">
-                               <span className="bg-[#00D2FF1a] text-[#00D2FF] border border-[#00D2FF33] px-3 py-1 rounded text-[9px] font-bold uppercase tracking-widest">{item.badge}</span>
+                               <span className="bg-[#F1F5F91a] text-[#F1F5F9] border border-[#F1F5F933] px-3 py-1 rounded text-[9px] font-bold uppercase tracking-widest">{item.badge}</span>
                                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-2">Artist</p>
                              </div>
                         </div>
@@ -93,7 +93,7 @@ export default function SearchClient() {
                         </div>
                         <Link href={`/${item.slug}`} className="flex items-center justify-between pt-6 border-t border-white/5 group/link">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover/link:text-white transition-colors">View Profile</span>
-                            <ArrowRight className="w-4 h-4 text-gray-800 group-hover/link:text-[#00D2FF] transition-all group-hover/link:translate-x-1" />
+                            <ArrowRight className="w-4 h-4 text-gray-800 group-hover/link:text-[#F1F5F9] transition-all group-hover/link:translate-x-1" />
                         </Link>
                       </div>
                   )}
@@ -129,7 +129,7 @@ export default function SearchClient() {
                   {item.type === 'hub' && (
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
-                            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#00D2FF] shadow-[0_0_20px_rgba(51,102,255,0.3)]">
+                            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#F1F5F9] shadow-[0_0_20px_rgba(51,102,255,0.3)]">
                               <img src={item.img} className="w-full h-full object-cover" />
                             </div>
                             <div className="text-right">
@@ -144,7 +144,7 @@ export default function SearchClient() {
                             <h3 className="text-2xl font-bold italic tracking-tighter uppercase">{item.name}</h3>
                             <p className="text-xs text-gray-400 font-medium">Stage Scene: {item.scene || 'Professional Studio'}</p>
                         </div>
-                        <Link href={`/${item.slug}/live`} className="w-full py-4 rounded-2xl bg-[#00D2FF] text-white text-center font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#2952CC] transition-all flex items-center justify-center gap-2">
+                        <Link href={`/${item.slug}/live`} className="w-full py-4 rounded-2xl bg-[#F1F5F9] text-white text-center font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#2952CC] transition-all flex items-center justify-center gap-2">
                             Enter Hub <Radio className="w-3 h-3" />
                         </Link>
                       </div>
@@ -163,7 +163,7 @@ export default function SearchClient() {
                         </div>
                         <div className="space-y-2 flex-1">
                             <h3 className="text-2xl font-bold italic tracking-tighter uppercase line-clamp-2 leading-tight">{item.title}</h3>
-                            <p className="text-xs text-[#00D2FF] font-bold uppercase tracking-widest">{item.category}</p>
+                            <p className="text-xs text-[#F1F5F9] font-bold uppercase tracking-widest">{item.category}</p>
                         </div>
                         <Link href="/network/board" className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white text-center font-bold text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all mt-auto">
                             Apply Now

@@ -65,7 +65,7 @@ export default function StationPage({ slug }: { slug: string }) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#010A14] flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-[#00D2FF]/20 border-t-[#00D2FF] rounded-full animate-spin" />
+        <div className="w-16 h-16 border-4 border-[#F1F5F9]/20 border-t-[#F1F5F9] rounded-full animate-spin" />
       </div>
     );
   }
@@ -82,9 +82,9 @@ export default function StationPage({ slug }: { slug: string }) {
           <button className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-all">
             <Share2 className="w-4 h-4" />
           </button>
-          <div className="px-4 py-2 rounded-xl bg-[#00D2FF]/10 border border-[#00D2FF]/20 flex items-center gap-2">
-            <Users className="w-4 h-4 text-[#00D2FF]" />
-            <span className="text-xs font-bold text-[#00D2FF]">1,420 listening</span>
+          <div className="px-4 py-2 rounded-xl bg-[#F1F5F9]/10 border border-[#F1F5F9]/20 flex items-center gap-2">
+            <Users className="w-4 h-4 text-[#F1F5F9]" />
+            <span className="text-xs font-bold text-[#F1F5F9]">1,420 listening</span>
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function StationPage({ slug }: { slug: string }) {
                </span>
              </div>
              <h1 className="text-6xl font-bold uppercase tracking-tighter leading-none italic">
-               NRH {slug?.toString().replace('-', ' ')} <span className="text-[#00D2FF]">Radio.</span>
+               NRH {slug?.toString().replace('-', ' ')} <span className="text-[#F1F5F9]">Radio.</span>
              </h1>
              <p className="text-gray-500 text-lg font-medium max-w-xl leading-relaxed">
                Broadcasting the finest independent {slug} artists from the NRH network directly to your ears. 100% master rights retained by artists.
@@ -112,7 +112,7 @@ export default function StationPage({ slug }: { slug: string }) {
 
           {/* NOW PLAYING CARD */}
           <div className="relative group">
-            <div className="absolute inset-0 bg-[#00D2FF]/10 blur-3xl opacity-20 -z-10 group-hover:opacity-40 transition-opacity" />
+            <div className="absolute inset-0 bg-[#F1F5F9]/10 blur-3xl opacity-20 -z-10 group-hover:opacity-40 transition-opacity" />
             <div className="bg-[#021220] border border-white/5 rounded-[3rem] p-10 flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
               
               {/* Cover Art */}
@@ -121,7 +121,7 @@ export default function StationPage({ slug }: { slug: string }) {
                   <img src={nowPlaying.imageUrl} alt={nowPlaying.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-[#031B2E] flex items-center justify-center">
-                    <Disc className="w-20 h-20 text-[#00D2FF]/20" />
+                    <Disc className="w-20 h-20 text-[#F1F5F9]/20" />
                   </div>
                 )}
                 {isPlaying && (
@@ -131,7 +131,7 @@ export default function StationPage({ slug }: { slug: string }) {
                         key={i}
                         animate={{ height: ['20%', '100%', '40%', '90%', '20%'] }}
                         transition={{ repeat: Infinity, duration: 0.5 + (i * 0.1), ease: 'easeInOut' }}
-                        className="w-1 bg-[#00D2FF] rounded-full"
+                        className="w-1 bg-[#F1F5F9] rounded-full"
                       />
                     ))}
                   </div>
@@ -145,7 +145,7 @@ export default function StationPage({ slug }: { slug: string }) {
                     {nowPlaying?.title || 'Waiting for signal...'}
                   </h2>
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                    <Link href={`/${nowPlaying?.artistSlug}`} className="text-[#00D2FF] text-xl font-bold hover:underline">
+                    <Link href={`/${nowPlaying?.artistSlug}`} className="text-[#F1F5F9] text-xl font-bold hover:underline">
                       {nowPlaying?.artist || 'Unknown Artist'}
                     </Link>
                     <span className="w-1.5 h-1.5 bg-white/20 rounded-full" />
@@ -160,7 +160,7 @@ export default function StationPage({ slug }: { slug: string }) {
                   >
                     {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
                   </button>
-                  <button className="px-8 py-4 rounded-full bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF]/80 transition-all shadow-[0_0_20px_rgba(0,210,255,0.3)]">
+                  <button className="px-8 py-4 rounded-full bg-[#F1F5F9] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#F1F5F9]/80 transition-all shadow-[0_0_20px_rgba(241,245,249,0.3)]">
                     Become a Supporter
                   </button>
                   <button className="px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
@@ -184,10 +184,10 @@ export default function StationPage({ slug }: { slug: string }) {
                         onClick={async () => {
                           const res = await reactToRadio(slug, r.key);
                           if (res.success) {
-                             toast.success(`${r.emoji} Sent!`, { icon: r.emoji, style: { background: '#021220', color: '#fff', border: '1px solid #00D2FF' } });
+                             toast.success(`${r.emoji} Sent!`, { icon: r.emoji, style: { background: '#021220', color: '#fff', border: '1px solid #F1F5F9' } });
                           }
                         }}
-                        className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl hover:bg-[#00D2FF]/10 hover:border-[#00D2FF]/30 transition-all hover:-translate-y-1 active:scale-90"
+                        className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl hover:bg-[#F1F5F9]/10 hover:border-[#F1F5F9]/30 transition-all hover:-translate-y-1 active:scale-90"
                       >
                         {r.emoji}
                       </button>
@@ -209,7 +209,7 @@ export default function StationPage({ slug }: { slug: string }) {
                     setVolume(Math.min(Math.max(x / rect.width, 0), 1));
                   }}
                 >
-                   <div className="absolute inset-0 bg-[#00D2FF]" style={{ width: `${volume * 100}%` }} />
+                   <div className="absolute inset-0 bg-[#F1F5F9]" style={{ width: `${volume * 100}%` }} />
                 </div>
              </div>
              <div className="flex items-center gap-6">
@@ -241,7 +241,7 @@ export default function StationPage({ slug }: { slug: string }) {
                       <p className="text-sm font-bold text-white truncate">{track.title}</p>
                       <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{track.artist}</p>
                     </div>
-                    <button className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-[#00D2FF] hover:text-white">
+                    <button className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-[#F1F5F9] hover:text-white">
                       <Play className="w-3.5 h-3.5 fill-current" />
                     </button>
                   </div>
@@ -256,9 +256,9 @@ export default function StationPage({ slug }: { slug: string }) {
           </section>
 
           {/* STATION PERKS */}
-          <section className="bg-gradient-to-br from-[#021220] to-[#010A14] border border-[#00D2FF]/20 rounded-[2.5rem] p-8 space-y-6">
+          <section className="bg-gradient-to-br from-[#021220] to-[#010A14] border border-[#F1F5F9]/20 rounded-[2.5rem] p-8 space-y-6">
              <div className="flex items-center gap-3">
-               <ShieldCheck className="w-6 h-6 text-[#00D2FF]" />
+               <ShieldCheck className="w-6 h-6 text-[#F1F5F9]" />
                <h4 className="text-sm font-bold uppercase tracking-widest text-white">Radio Governance</h4>
              </div>
              <p className="text-xs text-gray-400 leading-relaxed font-medium">
@@ -271,7 +271,7 @@ export default function StationPage({ slug }: { slug: string }) {
                  { label: 'Network Integrity Verified', icon: Info }
                ].map((item, i) => (
                  <li key={i} className="flex items-center gap-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                   <item.icon className="w-3.5 h-3.5 text-[#00D2FF]" />
+                   <item.icon className="w-3.5 h-3.5 text-[#F1F5F9]" />
                    {item.label}
                  </li>
                ))}

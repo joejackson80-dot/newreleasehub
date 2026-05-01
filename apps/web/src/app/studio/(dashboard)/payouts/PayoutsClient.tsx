@@ -75,7 +75,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
       {/* HEADER */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-[#00D2FF]">
+            <div className="flex items-center gap-3 text-[#F1F5F9]">
                <Wallet className="w-5 h-5" />
                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Institutional Settlement Console</span>
             </div>
@@ -92,7 +92,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
             </div>
             <button 
               onClick={() => setShowModal(true)}
-              className="px-10 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 transition-all shadow-[0_0_50px_rgba(0,210,255,0.2)]"
+              className="px-10 py-5 bg-[#F1F5F9] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 transition-all shadow-[0_0_50px_rgba(241,245,249,0.2)]"
             >
                Request Settlement
             </button>
@@ -171,7 +171,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                   {isLoading ? (
                     <tr>
                        <td colSpan={5} className="p-20 text-center">
-                          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-[#00D2FF] animate-pulse">
+                          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-[#F1F5F9] animate-pulse">
                              <Wallet className="w-6 h-6" />
                           </div>
                           <p className="mt-4 text-[9px] font-black text-zinc-700 uppercase tracking-[0.4em]">Syncing Ledger...</p>
@@ -238,7 +238,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                  </button>
 
                  <div className="space-y-2">
-                    <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">Settlement Request</span>
+                    <span className="text-[10px] font-bold text-[#F1F5F9] uppercase tracking-widest">Settlement Request</span>
                     <h3 className="text-4xl font-black italic uppercase tracking-tighter">Withdraw Funds.</h3>
                  </div>
 
@@ -254,7 +254,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                             value={withdrawAmount}
                             onChange={(e) => setWithdrawAmount(e.target.value)}
                             placeholder="0.00"
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pl-12 pr-6 text-2xl font-black italic text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pl-12 pr-6 text-2xl font-black italic text-white focus:outline-none focus:border-[#F1F5F9]/50 transition-all"
                           />
                        </div>
                        <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Max Available: ${(balance / 100).toLocaleString()}</p>
@@ -266,7 +266,7 @@ export default function PayoutsClient({ artist }: { artist: any }) {
                           <button 
                             type="button"
                             onClick={() => setMethod('STRIPE')}
-                            className={`p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 ${method === 'STRIPE' ? 'bg-[#00D2FF]/10 border-[#00D2FF]/50 text-[#00D2FF]' : 'bg-white/5 border-white/10 text-zinc-500'}`}
+                            className={`p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 ${method === 'STRIPE' ? 'bg-[#F1F5F9]/10 border-[#F1F5F9]/50 text-[#F1F5F9]' : 'bg-white/5 border-white/10 text-zinc-500'}`}
                           >
                              <CreditCard className="w-6 h-6" />
                              <span className="text-[9px] font-bold uppercase tracking-widest">Stripe Connect</span>

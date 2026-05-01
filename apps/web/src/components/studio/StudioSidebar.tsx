@@ -82,7 +82,7 @@ export default function StudioSidebar({ org }: { org: any }) {
     <div className="flex flex-col h-full bg-[#050505] border-r border-[#1a1a1a]">
       <div className="px-6 py-6 border-b border-[#1a1a1a] flex items-center justify-between">
         <Link href="/studio">
-          <h2 className="text-sm font-bold text-white tracking-tight hover:text-[#00D2FF] transition-colors uppercase">
+          <h2 className="text-sm font-bold text-white tracking-tight hover:text-[#F1F5F9] transition-colors uppercase">
             NRH <span className="text-gray-500 font-light normal-case">Studio</span>
           </h2>
         </Link>
@@ -105,21 +105,21 @@ export default function StudioSidebar({ org }: { org: any }) {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all text-xs font-medium relative group ${
                       pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))
-                        ? 'text-[#00D2FF] bg-[#00D2FF]/5' 
+                        ? 'text-[#F1F5F9] bg-[#F1F5F9]/5' 
                         : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     {(pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))) && (
                       <motion.div 
                         layoutId="nav-glow"
-                        className="absolute inset-0 bg-[#00D2FF]/5 rounded-lg shadow-[inset_0_0_20px_rgba(0,210,255,0.1)] border border-[#00D2FF]/20"
+                        className="absolute inset-0 bg-[#F1F5F9]/5 rounded-lg shadow-[inset_0_0_20px_rgba(241,245,249,0.1)] border border-[#F1F5F9]/20"
                         transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                       />
                     )}
                     <div className="flex items-center space-x-2.5 relative z-10">
                       <item.icon className={`w-3.5 h-3.5 shrink-0 transition-colors ${
                         pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))
-                          ? 'text-[#00D2FF]' 
+                          ? 'text-[#F1F5F9]' 
                           : 'text-gray-500 group-hover:text-white'
                       }`} />
                       <span>{item.label}</span>
@@ -156,7 +156,7 @@ export default function StudioSidebar({ org }: { org: any }) {
             <span>Go Live</span>
           </Link>
           <Link href="/studio/customize" onClick={() => setIsOpen(false)}
-            className="flex items-center space-x-2.5 px-3 py-2 rounded-lg text-[#00D2FF] hover:text-blue-300 hover:bg-blue-500/10 transition-all text-xs font-medium mt-0.5">
+            className="flex items-center space-x-2.5 px-3 py-2 rounded-lg text-[#F1F5F9] hover:text-blue-300 hover:bg-blue-500/10 transition-all text-xs font-medium mt-0.5">
             <Palette className="w-3.5 h-3.5" />
             <span>Customize Page</span>
           </Link>
@@ -165,7 +165,7 @@ export default function StudioSidebar({ org }: { org: any }) {
 
       <div className="p-4 border-t border-[#1a1a1a] bg-[#050505]">
         <div className="flex items-center space-x-2.5 mb-3">
-          <div className="w-7 h-7 rounded-full bg-[#00D2FF]/20 border border-[#00D2FF]/30 flex items-center justify-center font-bold text-[10px] text-[#00D2FF] shrink-0 uppercase">
+          <div className="w-7 h-7 rounded-full bg-[#F1F5F9]/20 border border-[#F1F5F9]/30 flex items-center justify-center font-bold text-[10px] text-[#F1F5F9] shrink-0 uppercase">
             {org?.name?.charAt(0) || 'A'}
           </div>
           <div className="min-w-0">
