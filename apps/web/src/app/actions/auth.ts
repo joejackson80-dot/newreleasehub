@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { sendWelcomeEmail } from '@/lib/email';
 
 export async function loginArtist(identifier: string, password: string) {
   try {
@@ -152,8 +153,8 @@ export async function registerArtist(data: { email: string, username: string, na
     const existing = await prisma.organization.findFirst({
       where: {
         OR: [
-          { email: data.email },
-          { username: data.username }
+          { email: { equals: data.email, mode: 'insensitive' } },
+          { username: { equals: data.username, mode: 'insensitive' } }
         ]
       }
     });
@@ -163,18 +164,25 @@ export async function registerArtist(data: { email: string, username: string, na
     }
 
     const passwordHash = await bcrypt.hash(data.password, 10);
+    // Sanitize slug: replace spaces/special chars with hyphens
+    const slug = data.username.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
     const artist = await prisma.organization.create({
       data: {
         email: data.email,
         username: data.username,
         name: data.name,
-        slug: data.username.toLowerCase(),
+        slug: slug,
         passwordHash,
         planTier: data.planTier || 'FREE',
-        isPublic: false, // Start hidden until they set up their profile
+        isPublic: false,
       }
     });
+
+    console.log(`New Artist registered: ${artist.email} (${artist.id})`);
+
+    // Send Welcome Email
+    sendWelcomeEmail({ to: artist.email, name: artist.name }).catch(console.error);
 
     const cookieStore = await cookies();
     cookieStore.set('nrh_artist_session', 'true', {
@@ -205,8 +213,8 @@ export async function registerFan(data: { email: string, username: string, displ
     const existing = await prisma.user.findFirst({
       where: {
         OR: [
-          { email: data.email },
-          { username: data.username }
+          { email: { equals: data.email, mode: 'insensitive' } },
+          { username: { equals: data.username, mode: 'insensitive' } }
         ]
       }
     });
@@ -226,6 +234,11 @@ export async function registerFan(data: { email: string, username: string, displ
         role: 'fan',
       }
     });
+
+    console.log(`New Fan registered: ${fan.email} (${fan.id})`);
+
+    // Send Welcome Email
+    sendWelcomeEmail({ to: fan.email, name: fan.displayName }).catch(console.error);
 
     const cookieStore = await cookies();
     cookieStore.set('nrh_user_session', 'true', {

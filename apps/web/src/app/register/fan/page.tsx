@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Mail, Globe, Zap, ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { registerFan } from '@/app/actions/auth';
+import toast from 'react-hot-toast';
 
 export default function FanRegisterPage() {
   const [email, setEmail] = useState('');
@@ -20,12 +21,15 @@ export default function FanRegisterPage() {
     try {
       const result = await registerFan({ email, username, displayName, password });
       if (result.success) {
+        toast.success('Account created! Welcome to the network.');
         window.location.href = '/fan/me';
       } else {
         setError(result.error || 'Registration failed');
+        toast.error(result.error || 'Registration failed');
       }
     } catch (err: any) {
       setError('An error occurred. Please try again.');
+      toast.error('Network error during registration');
     } finally {
       setIsSubmitting(false);
     }

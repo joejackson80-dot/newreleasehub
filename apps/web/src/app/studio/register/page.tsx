@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { registerArtist } from '@/app/actions/auth';
+import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -22,12 +23,15 @@ export default function ArtistRegisterPage() {
     try {
       const result = await registerArtist({ email, username, name, password });
       if (result.success) {
+        toast.success('Artist profile initialized successfully.');
         window.location.href = '/studio';
       } else {
         setError(result.error || 'Registration failed');
+        toast.error(result.error || 'Registration failed');
       }
     } catch (err: any) {
       setError('An error occurred. Please try again.');
+      toast.error('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
