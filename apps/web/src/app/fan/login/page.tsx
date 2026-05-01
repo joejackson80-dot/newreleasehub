@@ -178,6 +178,35 @@ export default function FanAuthPage() {
                </button>
             </form>
 
+            {/* DEMO ACCESS SECTION */}
+            <div className="pt-8 border-t border-white/5 space-y-4">
+              <div className="flex items-center space-x-2 text-gray-500 justify-center">
+                <span className="h-px bg-white/5 flex-1"></span>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Platform Test Access</span>
+                <span className="h-px bg-white/5 flex-1"></span>
+              </div>
+              <button 
+                onClick={async () => {
+                  setIsLoading(true);
+                  try {
+                    const result = await loginFan('johndoe@example.com', 'Password123');
+                    if (result.success) {
+                      localStorage.setItem('nrh_user', 'authenticated');
+                      router.push('/fan/me');
+                    }
+                  } catch (err) {
+                    setError('Demo login failed');
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+                className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-center space-x-3"
+              >
+                <Users className="w-4 h-4 text-[#A855F7]" />
+                <span>One-Click Demo Access</span>
+              </button>
+            </div>
+
             <div className="text-center">
                <button onClick={() => { setIsLogin(!isLogin); setError(''); }} className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-widest transition-colors">
                   {isLogin ? "Don't have an account? Sign up" : "Already have an account? Log in"}

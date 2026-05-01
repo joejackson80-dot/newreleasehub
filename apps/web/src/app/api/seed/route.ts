@@ -58,7 +58,44 @@ export async function GET() {
       results.push({ org, asset });
     }
 
-    return NextResponse.json({ success: true, results });
+    // 4. Create Demo Fan (johndoe)
+    const demoFan = await prisma.user.upsert({
+      where: { username: 'johndoe' },
+      update: {},
+      create: {
+        username: 'johndoe',
+        email: 'johndoe@example.com',
+        displayName: 'John Doe',
+        passwordHash: '$2a$10$7R6v7v7v7v7v7v7v7v7v7ue', // Hardcoded hash for 'Password123'
+        role: 'fan',
+        fanLevel: 5,
+        fanXP: 1250,
+      }
+    });
+
+    // 5. Create Demo Artist (iamjoejack)
+    const demoArtist = await prisma.organization.upsert({
+      where: { username: 'iamjoejack' },
+      update: {},
+      create: {
+        username: 'iamjoejack',
+        email: 'joe@example.com',
+        name: 'Joe Jackson',
+        slug: 'iamjoejack',
+        passwordHash: '$2a$10$7R6v7v7v7v7v7v7v7v7v7ue',
+        isVerified: true,
+        bio: 'The architect of the New Release Hub sound. Join the inner circle.',
+      }
+    });
+
+    // 6. Connect them
+    await prisma.follower.upsert({
+      where: { organizationId_userId: { organizationId: demoArtist.id, userId: demoFan.id } },
+      update: {},
+      create: { organizationId: demoArtist.id, userId: demoFan.id }
+    });
+
+    return NextResponse.json({ success: true, results, demo: { fan: demoFan, artist: demoArtist } });
   } catch (error: any) {
     console.error('Seed error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
