@@ -100,7 +100,7 @@ export default function LabelDashboardClient({ labelOrg }: { labelOrg: any }) {
                           <p className="text-sm font-bold text-white italic">{artist.equity}</p>
                        </td>
                        <td className="px-8 py-6 text-center">
-                          <p className="text-sm font-bold text-[#00D2FF] italic">{artist.earnings}</p>
+                          <p className="text-sm font-bold text-[#A855F7] italic">{artist.earnings}</p>
                        </td>
                        <td className="px-8 py-6 text-right">
                           <button className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-widest bg-white/5 px-4 py-2 rounded-lg border border-white/10 transition-all">

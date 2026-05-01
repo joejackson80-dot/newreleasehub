@@ -45,7 +45,7 @@ export default function ArtistReleasesClient({ releases, slug, artistName }: { r
                 </div>
               )}
               <div className={`absolute inset-0 bg-black/50 transition-opacity flex items-center justify-center ${isThisPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                <div className={`w-12 h-12 rounded-full bg-[#00D2FF] flex items-center justify-center text-white transition-transform ${isThisPlaying ? 'scale-100' : 'scale-75 group-hover:scale-100'}`}>
+                <div className={`w-12 h-12 rounded-full bg-[#A855F7] flex items-center justify-center text-white transition-transform ${isThisPlaying ? 'scale-100' : 'scale-75 group-hover:scale-100'}`}>
                   {isThisPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
                 </div>
               </div>
@@ -56,7 +56,7 @@ export default function ArtistReleasesClient({ releases, slug, artistName }: { r
               )}
             </div>
             <Link href={`/${slug}/${release.id}`}>
-              <h4 className="font-bold truncate text-white hover:text-[#00D2FF] transition-colors">{release.title}</h4>
+              <h4 className="font-bold truncate text-white hover:text-[#A855F7] transition-colors">{release.title}</h4>
               <div className="flex items-center justify-between mt-1">
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{release.type}</span>
                 <span className="text-[10px] text-gray-600">{new Date(release.releaseDate).getFullYear()}</span>

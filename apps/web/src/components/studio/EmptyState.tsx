@@ -30,7 +30,7 @@ export default function EmptyState({ icon: Icon, title, description, actionText,
       {actionText && (
         <button 
           onClick={onAction}
-          className="px-8 py-4 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[10px] rounded-2xl hover:scale-105 transition-all shadow-[0_0_40px_rgba(0,210,255,0.2)] flex items-center gap-3"
+          className="px-8 py-4 bg-[#A855F7] text-black font-black uppercase tracking-widest text-[10px] rounded-2xl hover:scale-105 transition-all shadow-[0_0_40px_rgba(168, 85, 247,0.2)] flex items-center gap-3"
         >
           <Plus className="w-4 h-4" />
           <span>{actionText}</span>

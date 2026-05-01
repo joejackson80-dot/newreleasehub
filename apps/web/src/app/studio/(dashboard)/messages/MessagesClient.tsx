@@ -91,7 +91,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                  <input 
                    type="text" 
                    placeholder="Search inbound logs..."
-                   className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#00D2FF]"
+                   className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#A855F7]"
                  />
               </div>
            </div>
@@ -110,7 +110,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                        <button 
                          key={conv.user.id}
                          onClick={() => setSelectedConversation(conv)}
-                         className={`w-full p-8 text-left transition-all flex items-start gap-5 group relative ${selectedConversation?.user.id === conv.user.id ? 'bg-[#00D2FF]/5 border-l-2 border-[#00D2FF]' : 'hover:bg-white/5 border-l-2 border-transparent'}`}
+                         className={`w-full p-8 text-left transition-all flex items-start gap-5 group relative ${selectedConversation?.user.id === conv.user.id ? 'bg-[#A855F7]/5 border-l-2 border-[#A855F7]' : 'hover:bg-white/5 border-l-2 border-transparent'}`}
                        >
                           <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-2xl relative">
                              <img src={conv.user.avatarUrl || '/images/default-avatar.png'} alt="" className="w-full h-full object-cover" />
@@ -118,7 +118,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                           </div>
                           <div className="flex-1 min-w-0">
                              <div className="flex items-center justify-between mb-1">
-                                <h4 className="font-bold text-white truncate group-hover:text-[#00D2FF] transition-colors uppercase tracking-tight">{conv.user.displayName || conv.user.username}</h4>
+                                <h4 className="font-bold text-white truncate group-hover:text-[#A855F7] transition-colors uppercase tracking-tight">{conv.user.displayName || conv.user.username}</h4>
                                 <span className="text-[9px] text-gray-600 font-bold uppercase">{new Date(conv.lastMessage.createdAt).toLocaleDateString()}</span>
                              </div>
                              <p className="text-xs text-gray-500 line-clamp-1 italic">"{conv.lastMessage.text}"</p>
@@ -143,7 +143,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                        <div>
                           <h3 className="text-xl font-bold uppercase tracking-tighter italic">{selectedConversation.user.displayName || selectedConversation.user.username}</h3>
                           <div className="flex items-center gap-2">
-                             <ShieldCheck className="w-3 h-3 text-[#00D2FF]" />
+                             <ShieldCheck className="w-3 h-3 text-[#A855F7]" />
                              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Verified Fan Account</span>
                           </div>
                        </div>
@@ -162,7 +162,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                        return (
                           <div key={m.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                              <div className={`max-w-[70%] space-y-2 ${isMine ? 'items-end' : 'items-start'} flex flex-col`}>
-                                <div className={`p-6 rounded-3xl text-sm font-medium leading-relaxed ${isMine ? 'bg-[#00D2FF] text-white rounded-tr-none shadow-[0_0_20px_rgba(0,210,255,0.3)]' : 'bg-[#111] border border-white/5 text-gray-300 rounded-tl-none'}`}>
+                                <div className={`p-6 rounded-3xl text-sm font-medium leading-relaxed ${isMine ? 'bg-[#A855F7] text-white rounded-tr-none shadow-[0_0_20px_rgba(168, 85, 247,0.3)]' : 'bg-[#111] border border-white/5 text-gray-300 rounded-tl-none'}`}>
                                    {m.text}
                                 </div>
                                 <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">{new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -183,11 +183,11 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
                          onChange={(e) => setReplyText(e.target.value)}
                          disabled={isSending}
                          placeholder="Type a professional response..."
-                         className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-sm text-white focus:outline-none focus:border-[#00D2FF]/50 transition-all shadow-inner disabled:opacity-50"
+                         className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-sm text-white focus:outline-none focus:border-[#A855F7]/50 transition-all shadow-inner disabled:opacity-50"
                        />
                        <button 
                          disabled={isSending || !replyText.trim()}
-                         className="w-16 h-16 rounded-2xl bg-white text-black flex items-center justify-center hover:bg-[#00D2FF] hover:text-white transition-all hover:scale-105 active:scale-95 shadow-2xl disabled:opacity-50 disabled:scale-100"
+                         className="w-16 h-16 rounded-2xl bg-white text-black flex items-center justify-center hover:bg-[#A855F7] hover:text-white transition-all hover:scale-105 active:scale-95 shadow-2xl disabled:opacity-50 disabled:scale-100"
                        >
                           {isSending ? <Lock className="w-6 h-6 animate-pulse" /> : <Send className="w-6 h-6" />}
                        </button>
@@ -197,7 +197,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
            ) : (
               <div className="flex-1 flex flex-col items-center justify-center p-20 text-center space-y-10">
                  <div className="w-32 h-32 rounded-[3rem] bg-white/5 flex items-center justify-center relative">
-                    <div className="absolute inset-0 bg-[#00D2FF]/20 blur-3xl opacity-50 animate-pulse"></div>
+                    <div className="absolute inset-0 bg-[#A855F7]/20 blur-3xl opacity-50 animate-pulse"></div>
                     <Lock className="w-12 h-12 text-gray-700 relative z-10" />
                  </div>
                  <div className="space-y-4 max-w-sm">

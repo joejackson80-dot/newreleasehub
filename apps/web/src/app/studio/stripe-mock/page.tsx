@@ -21,7 +21,7 @@ export default function StripeMockSuccess() {
         {status === 'processing' ? (
           <>
             <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto">
-              <Loader2 className="w-10 h-10 text-[#00D2FF] animate-spin" />
+              <Loader2 className="w-10 h-10 text-[#A855F7] animate-spin" />
             </div>
             <div className="space-y-4">
               <h2 className="text-3xl font-bold uppercase italic tracking-tighter">Connecting<br />Stripe...</h2>

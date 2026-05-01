@@ -98,7 +98,7 @@ export default function SubscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white py-32 selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white py-32 selection:bg-[#A855F7] selection:text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
         {/* INSTITUTIONAL LOGO */}
@@ -107,7 +107,7 @@ export default function SubscribePage() {
         </div>
 
         <div className="text-center space-y-12 mb-24">
-          <div className="flex items-center justify-center space-x-3 text-[#00D2FF]">
+          <div className="flex items-center justify-center space-x-3 text-[#A855F7]">
             <Zap className="w-4 h-4 fill-current" />
             <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Professional Network Access</span>
           </div>
@@ -126,19 +126,19 @@ export default function SubscribePage() {
               key={i} 
               className={`p-10 border rounded-3xl flex flex-col space-y-8 transition-all relative ${
                 tier.highlight 
-                  ? 'border-[#00D2FF] bg-[#00D2FF]/5 shadow-[0_0_40px_rgba(51,102,255,0.1)]' 
+                  ? 'border-[#A855F7] bg-[#A855F7]/5 shadow-[0_0_40px_rgba(51,102,255,0.1)]' 
                   : 'border-white/5 bg-white/[0.02] hover:bg-white/[0.04]'
               }`}
             >
               {tier.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#00D2FF] text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#A855F7] text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest">
                   Most Popular
                 </div>
               )}
 
               <div className="space-y-4">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                  tier.highlight ? 'bg-[#00D2FF] text-white' : 'bg-white/5 text-[#00D2FF]'
+                  tier.highlight ? 'bg-[#A855F7] text-white' : 'bg-white/5 text-[#A855F7]'
                 }`}>
                   <tier.icon className="w-6 h-6" />
                 </div>
@@ -153,7 +153,7 @@ export default function SubscribePage() {
               <div className="flex-grow space-y-4 pt-8 border-t border-white/5">
                 {tier.features.map((feature, j) => (
                   <div key={j} className="flex items-start space-x-3 text-sm">
-                    <Check className="w-4 h-4 text-[#00D2FF] mt-0.5" />
+                    <Check className="w-4 h-4 text-[#A855F7] mt-0.5" />
                     <span className="text-white/80">{feature}</span>
                   </div>
                 ))}
@@ -172,7 +172,7 @@ export default function SubscribePage() {
                 disabled={!!loading}
                 className={`w-full py-5 rounded-2xl font-bold uppercase tracking-widest text-center transition-all flex items-center justify-center space-x-2 ${
                   tier.highlight 
-                    ? 'bg-[#00D2FF] text-white hover:bg-[#00D2FF]/90 shadow-lg shadow-[#00D2FF]/20' 
+                    ? 'bg-[#A855F7] text-white hover:bg-[#A855F7]/90 shadow-lg shadow-[#A855F7]/20' 
                     : 'bg-white/5 text-white hover:bg-white/10'
                 } disabled:opacity-50`}
               >
@@ -188,7 +188,7 @@ export default function SubscribePage() {
 
         <div className="mt-32 p-10 border border-white/5 rounded-3xl bg-white/[0.01] flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center space-x-6">
-            <div className="w-16 h-16 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">
+            <div className="w-16 h-16 rounded-2xl bg-[#A855F7]/10 flex items-center justify-center text-[#A855F7]">
               <ShieldCheck className="w-8 h-8" />
             </div>
             <div>
@@ -198,7 +198,7 @@ export default function SubscribePage() {
           </div>
           <Link 
             href="/how-it-works/revenue-sharing" 
-            className="flex items-center space-x-2 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:underline"
+            className="flex items-center space-x-2 text-[#A855F7] font-bold text-xs uppercase tracking-widest hover:underline"
           >
             <span>Learn About Premium & Network Pool</span>
             <ArrowRight className="w-4 h-4" />

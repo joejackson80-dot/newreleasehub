@@ -125,7 +125,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
   }, [slug, orgId, userId]);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white font-sans pb-20 selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white font-sans pb-20 selection:bg-[#A855F7] selection:text-white">
       
       {/* PROFESSIONAL BANNER - INSTITUTIONAL DARK STYLE */}
       <div className="relative h-[480px] bg-black overflow-hidden border-b border-white/5">
@@ -146,12 +146,12 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
                      />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-[#00D2FF] rounded-2xl flex items-center justify-center text-white shadow-xl">
+                  <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-[#A855F7] rounded-2xl flex items-center justify-center text-white shadow-xl">
                      <ShieldCheck className="w-6 h-6" />
                   </div>
                </div>
                <div className="flex-1 space-y-6 pb-2">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#A855F7]">
                      <Star className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Grade Artist</span>
                   </div>
@@ -170,7 +170,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                <div className="flex items-center space-x-4 pb-4">
                   <button 
                     onClick={() => setIsFollowing(!isFollowing)}
-                    className={`px-12 py-5 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all ${isFollowing ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20' : 'bg-[#00D2FF] text-white shadow-[0_0_30px_rgba(0,210,255,0.2)] hover:scale-105'}`}
+                    className={`px-12 py-5 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all ${isFollowing ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20' : 'bg-[#A855F7] text-white shadow-[0_0_30px_rgba(168, 85, 247,0.2)] hover:scale-105'}`}
                   >
                      {isFollowing ? 'Following' : 'Follow Network'}
                   </button>
@@ -211,14 +211,14 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
             </div>
 
             <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl space-y-8 backdrop-blur-xl">
-                <h3 className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">Institutional Audit</h3>
+                <h3 className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">Institutional Audit</h3>
                <Link href={`/${slug}/epk`} className="flex items-center justify-between group">
                   <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Digital EPK</span>
-                  <ArrowRight className="w-4 h-4 text-gray-800 group-hover:text-[#00D2FF] transition-all" />
+                  <ArrowRight className="w-4 h-4 text-gray-800 group-hover:text-[#A855F7] transition-all" />
                </Link>
                <Link href={`/${slug}/reviews`} className="flex items-center justify-between group">
                   <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Audit Report</span>
-                  <ArrowRight className="w-4 h-4 text-gray-800 group-hover:text-[#00D2FF] transition-all" />
+                  <ArrowRight className="w-4 h-4 text-gray-800 group-hover:text-[#A855F7] transition-all" />
                </Link>
             </div>
          </div>
@@ -235,7 +235,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                         playbackId={muxConfig.playbackId}
                         metadataVideoTitle={`Live Session - ${artistName}`}
                         metadataViewerUserId="fan-session"
-                        primaryColor="#00D2FF"
+                        primaryColor="#A855F7"
                         className="w-full h-full"
                         autoPlay
                         muted={false}
@@ -272,7 +272,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                   <div className="absolute top-8 right-8 z-50 flex items-center space-x-4">
                      <button 
                        onClick={() => setShowDecks(!showDecks)}
-                       className={`flex items-center space-x-3 px-6 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all ${showDecks ? 'bg-[#00D2FF] text-white shadow-[0_0_30px_rgba(0,210,255,0.4)]' : 'bg-black/60 backdrop-blur-md border border-white/10 text-white hover:bg-black/80'}`}
+                       className={`flex items-center space-x-3 px-6 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all ${showDecks ? 'bg-[#A855F7] text-white shadow-[0_0_30px_rgba(168, 85, 247,0.4)]' : 'bg-black/60 backdrop-blur-md border border-white/10 text-white hover:bg-black/80'}`}
                      >
                         <Disc className={`w-4 h-4 ${showDecks ? 'animate-spin' : ''}`} />
                         <span>{showDecks ? 'Hide Decks' : 'Show Decks'}</span>
@@ -291,7 +291,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                <div className="p-12 flex flex-col md:flex-row justify-between items-center gap-10">
                   <div className="flex items-center space-x-8">
                      <div className="flex items-center space-x-6">
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] shadow-lg">
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#A855F7] shadow-lg">
                            <Play className="w-8 h-8 fill-current ml-1" />
                         </div>
                         <div>
@@ -318,7 +318,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                     <button 
                       key={tab} 
                       onClick={() => setChatTab(tab as any)}
-                      className={`pb-10 text-[10px] font-bold uppercase tracking-[0.2em] border-b-2 transition-all ${chatTab === tab ? 'text-[#00D2FF] border-[#00D2FF]' : 'text-gray-600 border-transparent hover:text-white'}`}
+                      className={`pb-10 text-[10px] font-bold uppercase tracking-[0.2em] border-b-2 transition-all ${chatTab === tab ? 'text-[#A855F7] border-[#A855F7]' : 'text-gray-600 border-transparent hover:text-white'}`}
                     >
                        {tab}
                     </button>
@@ -331,7 +331,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                        <motion.div key="chat" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
                           {messages.map((m, i) => (
                             <div key={i} className="flex flex-col space-y-2">
-                               <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">{m.user}</span>
+                               <span className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">{m.user}</span>
                                <p className="text-gray-600 font-medium leading-relaxed">{m.text}</p>
                             </div>
                           ))}
@@ -343,12 +343,12 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                    onChange={(e) => setChatInput(e.target.value)}
                                    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                                    placeholder="Join the conversation..." 
-                                   className="w-full bg-[#F5F5F5] border border-black/5 rounded-2xl px-8 py-5 text-sm font-medium focus:outline-none focus:border-[#00D2FF]/20 transition-all"
+                                   className="w-full bg-[#F5F5F5] border border-black/5 rounded-2xl px-8 py-5 text-sm font-medium focus:outline-none focus:border-[#A855F7]/20 transition-all"
                                  />
                                  <button 
                                    onClick={handleSendMessage}
                                    disabled={isSending}
-                                   className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-[#00D2FF] text-white shadow-lg disabled:opacity-50"
+                                   className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-[#A855F7] text-white shadow-lg disabled:opacity-50"
                                  >
                                     <Send className="w-5 h-5" />
                                  </button>
@@ -365,8 +365,8 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                    <ShoppingBag className="w-12 h-12" />
                                  </div>
                                  <h4 className="text-xl mb-1">{item.title}</h4>
-                                 <p className="text-[#00D2FF] text-sm font-bold uppercase tracking-widest">${item.priceCents / 100}</p>
-                                 <button className="w-full mt-8 py-4 rounded-2xl bg-[#111111] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] transition-colors">Buy Now</button>
+                                 <p className="text-[#A855F7] text-sm font-bold uppercase tracking-widest">${item.priceCents / 100}</p>
+                                 <button className="w-full mt-8 py-4 rounded-2xl bg-[#111111] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#A855F7] transition-colors">Buy Now</button>
                              </div>
                            ))}
                         </motion.div>
@@ -384,7 +384,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                  </div>
                                  <div className="space-y-1">
                                     <h3 className="text-4xl font-bold uppercase italic tracking-tighter">support Hub.</h3>
-                                    <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Revenue Participation</p>
+                                    <p className="text-[#A855F7] text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Revenue Participation</p>
                                  </div>
                               </div>
 
@@ -400,7 +400,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                                        <input 
                                          type="number" 
                                          defaultValue={activeLicenses[0]?.feeCents / 100 || 50}
-                                         className="w-full bg-black/40 border border-white/10 rounded-[2rem] pl-16 pr-8 py-6 text-3xl font-bold italic text-white focus:outline-none focus:border-[#00D2FF]/40 transition-all"
+                                         className="w-full bg-black/40 border border-white/10 rounded-[2rem] pl-16 pr-8 py-6 text-3xl font-bold italic text-white focus:outline-none focus:border-[#A855F7]/40 transition-all"
                                        />
                                     </div>
                                     <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">Protocol Minimum: ${activeLicenses[0]?.feeCents / 100 || 50}</p>

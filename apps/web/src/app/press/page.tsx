@@ -11,7 +11,7 @@ export default function PressPage() {
         {/* HEADER */}
         <section className="space-y-8">
            <div className="space-y-4">
-              <div className="inline-flex items-center space-x-3 text-[#00D2FF]">
+              <div className="inline-flex items-center space-x-3 text-[#A855F7]">
                  <Globe className="w-5 h-5" />
                  <span className="text-xs font-bold uppercase tracking-widest">Press & Media</span>
               </div>
@@ -32,7 +32,7 @@ export default function PressPage() {
                  <h2 className="text-4xl font-bold uppercase tracking-tighter italic">Official Media Kit.</h2>
                  <p className="text-gray-400 font-medium leading-relaxed">Download our latest press release, founder bios, and platform statistics (Q4 2026).</p>
               </div>
-              <button className="w-full py-5 rounded-2xl bg-white text-black font-bold text-xs uppercase tracking-[0.3em] hover:bg-[#00D2FF] hover:text-white transition-all flex items-center justify-center space-x-3 shadow-lg relative z-10">
+              <button className="w-full py-5 rounded-2xl bg-white text-black font-bold text-xs uppercase tracking-[0.3em] hover:bg-[#A855F7] hover:text-white transition-all flex items-center justify-center space-x-3 shadow-lg relative z-10">
                  <span>Download .ZIP</span>
                  <Download className="w-4 h-4" />
               </button>
@@ -59,7 +59,7 @@ export default function PressPage() {
                 { source: 'The Verge', quote: "Independent artists are finally finding a way to own their success without label debt.", date: 'Aug 15, 2026' }
               ].map((news, i) => (
                 <div key={i} className="space-y-6 border-l border-white/10 pl-8">
-                   <p className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">{news.source} • {news.date}</p>
+                   <p className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">{news.source} • {news.date}</p>
                    <p className="text-lg font-medium italic text-gray-300">"{news.quote}"</p>
                 </div>
               ))}
@@ -74,7 +74,7 @@ export default function PressPage() {
            </div>
            <div className="flex justify-center">
               <Link href="mailto:info@newreleasehub.com" className="inline-flex items-center space-x-4 bg-white/5 border border-white/10 px-8 py-4 rounded-full hover:bg-white/10 transition-all group">
-                 <Mail className="w-5 h-5 text-[#00D2FF]" />
+                 <Mail className="w-5 h-5 text-[#A855F7]" />
                  <span className="text-xs font-bold uppercase tracking-widest text-white">info@newreleasehub.com</span>
                  <ArrowRight className="w-4 h-4 text-gray-600 group-hover:translate-x-1 transition-transform" />
               </Link>

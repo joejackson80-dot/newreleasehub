@@ -21,7 +21,7 @@ export default function DiscographyPage() {
   const artistName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white pt-32 pb-32 px-6 sm:px-10 lg:px-20">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#A855F7] selection:text-white pt-32 pb-32 px-6 sm:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto space-y-16">
          
          {/* HEADER */}
@@ -43,7 +43,7 @@ export default function DiscographyPage() {
                   <input 
                     type="text" 
                     placeholder="Search catalog..." 
-                    className="w-full bg-[#111] border border-white/5 rounded-2xl pl-12 pr-4 py-3.5 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-[#00D2FF66] transition-all"
+                    className="w-full bg-[#111] border border-white/5 rounded-2xl pl-12 pr-4 py-3.5 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-[#A855F766] transition-all"
                   />
                </div>
                <div className="flex items-center gap-2 w-full sm:w-auto">

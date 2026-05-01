@@ -60,7 +60,7 @@ export default function CareersPage() {
              { title: 'High Impact', desc: 'Build tools that actually change lives. Your code and designs directly support thousands of artists.', icon: Users }
            ].map((perk, i) => (
              <div key={i} className="space-y-6 group">
-                <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center group-hover:border-[#00D2FF] transition-all duration-500">
+                <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center group-hover:border-[#A855F7] transition-all duration-500">
                    <perk.icon className="w-6 h-6 text-gray-600 group-hover:text-white transition-colors" />
                 </div>
                 <h3 className="text-2xl font-bold italic tracking-tighter uppercase">{perk.title}</h3>
@@ -77,7 +77,7 @@ export default function CareersPage() {
                  <p className="text-gray-500 font-medium">Join our mission to democratize the music industry.</p>
               </div>
               <div className="flex items-center space-x-6 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                 <button className="text-white border-b-2 border-[#00D2FF] pb-1">All Roles</button>
+                 <button className="text-white border-b-2 border-[#A855F7] pb-1">All Roles</button>
                  <button className="hover:text-white transition-colors pb-1">Engineering</button>
                  <button className="hover:text-white transition-colors pb-1">Design</button>
                  <button className="hover:text-white transition-colors pb-1">Legal</button>
@@ -90,11 +90,11 @@ export default function CareersPage() {
                    <div key={i} className="group p-10 flex flex-col md:flex-row items-center justify-between hover:bg-white/[0.02] transition-colors gap-8">
                       <div className="space-y-4 flex-1">
                          <div className="flex items-center space-x-4">
-                            <span className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest leading-none">{job.department}</span>
+                            <span className="text-[#A855F7] text-[10px] font-bold uppercase tracking-widest leading-none">{job.department}</span>
                             <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
                             <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest leading-none">{job.type}</span>
                          </div>
-                         <h4 className="text-3xl font-bold italic tracking-tight uppercase group-hover:text-[#00D2FF] transition-colors">{job.title}</h4>
+                         <h4 className="text-3xl font-bold italic tracking-tight uppercase group-hover:text-[#A855F7] transition-colors">{job.title}</h4>
                       </div>
                       <div className="flex items-center space-x-12">
                          <div className="flex items-center space-x-2 text-gray-500">
@@ -115,7 +115,7 @@ export default function CareersPage() {
         <section className="text-center space-y-8 py-20">
            <p className="text-gray-500 font-medium">Don't see a role that fits?</p>
            <h3 className="text-4xl font-bold uppercase tracking-tighter italic">We're always looking for geniuses.</h3>
-           <Link href="/contact" className="inline-flex items-center space-x-3 text-[#00D2FF] font-bold text-xs uppercase tracking-widest hover:translate-x-2 transition-transform">
+           <Link href="/contact" className="inline-flex items-center space-x-3 text-[#A855F7] font-bold text-xs uppercase tracking-widest hover:translate-x-2 transition-transform">
               <span>Send us a general application</span>
               <ArrowRight className="w-4 h-4" />
            </Link>

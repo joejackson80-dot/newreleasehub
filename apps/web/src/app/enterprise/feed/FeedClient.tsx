@@ -21,13 +21,13 @@ export default function EnterpriseFeedClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-[#00D2FF] selection:text-white font-sans pt-12 pb-32">
+    <div className="min-h-screen bg-[#050505] text-white selection:bg-[#A855F7] selection:text-white font-sans pt-12 pb-32">
       
       {/* ENTERPRISE HEADER */}
       <header className="px-4 md:px-10 max-w-7xl mx-auto space-y-8 pt-12">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
             <div className="space-y-4">
-               <div className="flex items-center space-x-3 text-[#00D2FF]">
+               <div className="flex items-center space-x-3 text-[#A855F7]">
                   <Database className="w-5 h-5" />
                   <span className="text-xs font-bold uppercase tracking-widest">Enterprise Data Hub</span>
                </div>
@@ -63,7 +63,7 @@ export default function EnterpriseFeedClient() {
                <div key={i} className="bg-[#111] border border-white/5 p-6 rounded-2xl space-y-2 hover:border-white/20 transition-all group">
                   <div className="flex justify-between items-center">
                      <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">{stat.label}</p>
-                     <stat.icon className="w-3.5 h-3.5 text-gray-700 group-hover:text-[#00D2FF] transition-colors" />
+                     <stat.icon className="w-3.5 h-3.5 text-gray-700 group-hover:text-[#A855F7] transition-colors" />
                   </div>
                   <p className="text-3xl font-bold italic group-hover:translate-x-1 transition-transform">{stat.value}</p>
                </div>
@@ -120,12 +120,12 @@ export default function EnterpriseFeedClient() {
 
          {/* SIDEBAR TOOLS */}
          <div className="space-y-8">
-            <div className="bg-gradient-to-br from-[#00D2FF]/20 to-purple-500/20 border border-white/10 rounded-3xl p-10 space-y-6">
+            <div className="bg-gradient-to-br from-[#A855F7]/20 to-purple-500/20 border border-white/10 rounded-3xl p-10 space-y-6">
                <h3 className="text-xl font-bold uppercase tracking-tighter italic">Label Intelligence</h3>
                <p className="text-xs text-gray-400 leading-relaxed font-medium">
                   Use our institutional data models to predict roster success and optimize revenue share allocations across your entire enterprise.
                </p>
-               <button className="w-full py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all shadow-xl">
+               <button className="w-full py-4 rounded-xl bg-white text-black font-bold text-[10px] uppercase tracking-widest hover:bg-[#A855F7] hover:text-white transition-all shadow-xl">
                   Run Roster Audit
                </button>
             </div>
@@ -146,12 +146,12 @@ export default function EnterpriseFeedClient() {
                </div>
             </div>
 
-            <Link href="/studio/login" className="flex items-center justify-between p-6 bg-[#020202] border border-white/10 rounded-2xl group hover:border-[#00D2FF] transition-all">
+            <Link href="/studio/login" className="flex items-center justify-between p-6 bg-[#020202] border border-white/10 rounded-2xl group hover:border-[#A855F7] transition-all">
                <div className="flex items-center space-x-4">
                   <LayoutDashboard className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-white">Management Portal</span>
                </div>
-               <ArrowUpRight className="w-4 h-4 text-gray-800 group-hover:text-[#00D2FF] transition-all" />
+               <ArrowUpRight className="w-4 h-4 text-gray-800 group-hover:text-[#A855F7] transition-all" />
             </Link>
          </div>
 

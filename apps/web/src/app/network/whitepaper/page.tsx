@@ -7,7 +7,7 @@ import FadeIn from '@/components/ui/FadeIn';
 
 export default function NetworkWhitepaper() {
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#A855F7] selection:text-white font-sans overflow-x-hidden">
       
       {/* HERO */}
       <section className="relative py-48 px-10 border-b border-white/5 overflow-hidden">
@@ -23,7 +23,7 @@ export default function NetworkWhitepaper() {
                <div className="space-y-12">
                   <div className="space-y-6">
                      <div className="inline-flex items-center space-x-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-                        <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
+                        <ShieldCheck className="w-4 h-4 text-[#A855F7]" />
                         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Institutional Protocol v1.0.4</span>
                      </div>
                      <h1 className="text-[clamp(2.5rem,9vw,5.5rem)] font-bold tracking-tighter leading-[0.8] italic uppercase">
@@ -69,8 +69,8 @@ export default function NetworkWhitepaper() {
 
          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="bg-[#111] border border-white/5 rounded-[3rem] p-12 space-y-8">
-               <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-[#00D2FF]" />
+               <div className="w-14 h-14 rounded-2xl bg-[#A855F7]/10 flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-[#A855F7]" />
                </div>
                <div className="space-y-4">
                   <h4 className="text-2xl font-bold italic tracking-tight text-white uppercase">Engagement Velocity (EV)</h4>
@@ -115,8 +115,8 @@ export default function NetworkWhitepaper() {
               { title: 'Asset Appreciation', desc: 'As an artist\'s Verified Score rises, the inherent value of support positions increases within the secondary market.' },
               { title: 'Governance Power', desc: 'Holders of high-yield positions acquire weighted voting rights on institutional network proposals.' }
             ].map((mech, i) => (
-              <div key={i} className="space-y-6 p-8 border-l border-white/5 hover:border-[#00D2FF] transition-all group">
-                 <h4 className="text-xl font-bold italic tracking-tight text-white uppercase group-hover:text-[#00D2FF] transition-colors">{mech.title}</h4>
+              <div key={i} className="space-y-6 p-8 border-l border-white/5 hover:border-[#A855F7] transition-all group">
+                 <h4 className="text-xl font-bold italic tracking-tight text-white uppercase group-hover:text-[#A855F7] transition-colors">{mech.title}</h4>
                  <p className="text-xs text-gray-600 leading-relaxed font-medium">{mech.desc}</p>
               </div>
             ))}

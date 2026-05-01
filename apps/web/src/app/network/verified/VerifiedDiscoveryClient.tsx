@@ -57,7 +57,7 @@ export default function VerifiedDiscoveryClient() {
         {/* HEADER */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
            <div className="space-y-6">
-              <div className="flex items-center space-x-3 text-[#00D2FF]">
+              <div className="flex items-center space-x-3 text-[#A855F7]">
                  <BarChart3 className="w-5 h-5" />
                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Intelligence Terminal</span>
               </div>
@@ -82,19 +82,19 @@ export default function VerifiedDiscoveryClient() {
         <section className="space-y-8">
            <div className="flex flex-col lg:flex-row gap-6">
               <div className="relative flex-1 group">
-                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600 group-focus-within:text-[#00D2FF] transition-colors" />
+                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600 group-focus-within:text-[#A855F7] transition-colors" />
                  <input 
                    type="text" 
                    placeholder="SEARCH THE NETWORK MATRIX..."
                    value={query}
                    onChange={(e) => setQuery(e.target.value)}
-                   className="w-full bg-[#0A0A0A] border border-white/5 rounded-3xl py-6 pl-16 pr-8 text-xs font-bold uppercase tracking-[0.2em] focus:outline-none focus:border-[#00D2FF]/30 transition-all shadow-2xl"
+                   className="w-full bg-[#0A0A0A] border border-white/5 rounded-3xl py-6 pl-16 pr-8 text-xs font-bold uppercase tracking-[0.2em] focus:outline-none focus:border-[#A855F7]/30 transition-all shadow-2xl"
                  />
               </div>
               
               <button 
                 onClick={() => setShowFilters(!showFilters)}
-                className={`px-8 py-6 rounded-3xl border transition-all flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest ${showFilters ? 'bg-[#00D2FF] border-[#00D2FF] text-white' : 'bg-[#0A0A0A] border-white/5 text-gray-400 hover:border-white/20'}`}
+                className={`px-8 py-6 rounded-3xl border transition-all flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest ${showFilters ? 'bg-[#A855F7] border-[#A855F7] text-white' : 'bg-[#0A0A0A] border-white/5 text-gray-400 hover:border-white/20'}`}
               >
                  <SlidersHorizontal className="w-4 h-4" />
                  Verified Filters
@@ -133,7 +133,7 @@ export default function VerifiedDiscoveryClient() {
                              <button 
                                key={opt.id} 
                                onClick={() => setSortBy(opt.id)}
-                               className={`px-4 py-4 rounded-xl text-[9px] font-bold uppercase tracking-widest text-left transition-all border ${sortBy === opt.id ? 'bg-[#00D2FF]/10 border-[#00D2FF]/40 text-[#00D2FF]' : 'bg-white/5 border-transparent text-gray-500 hover:border-white/10'}`}
+                               className={`px-4 py-4 rounded-xl text-[9px] font-bold uppercase tracking-widest text-left transition-all border ${sortBy === opt.id ? 'bg-[#A855F7]/10 border-[#A855F7]/40 text-[#A855F7]' : 'bg-white/5 border-transparent text-gray-500 hover:border-white/10'}`}
                              >
                                {opt.label}
                              </button>
@@ -149,7 +149,7 @@ export default function VerifiedDiscoveryClient() {
                               <span className="text-[9px] font-bold text-white uppercase">100+</span>
                            </div>
                            <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                              <div className="h-full bg-[#00D2FF]" style={{ width: '40%' }}></div>
+                              <div className="h-full bg-[#A855F7]" style={{ width: '40%' }}></div>
                            </div>
                         </div>
                      </div>
@@ -170,14 +170,14 @@ export default function VerifiedDiscoveryClient() {
                  </div>
                  <div className="hidden sm:flex items-center gap-4 text-[9px] font-bold text-gray-600 uppercase tracking-widest">
                     <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> HIGH GROWTH</div>
-                    <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#00D2FF]"></div> VERIFIED EQUITY</div>
+                    <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#A855F7]"></div> VERIFIED EQUITY</div>
                  </div>
               </div>
             </div>
 
            {loading ? (
              <div className="py-40 flex flex-col items-center justify-center space-y-6">
-                <Loader2 className="w-12 h-12 text-[#00D2FF] animate-spin" />
+                <Loader2 className="w-12 h-12 text-[#A855F7] animate-spin" />
                 <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.4em] animate-pulse">Running Verified Diagnostics...</p>
              </div>
            ) : viewMode === 'grid' ? (
@@ -188,15 +188,15 @@ export default function VerifiedDiscoveryClient() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="group bg-[#0A0A0A] border border-white/5 rounded-[3rem] p-10 space-y-10 hover:border-[#00D2FF]/30 transition-all shadow-2xl relative overflow-hidden"
+                    className="group bg-[#0A0A0A] border border-white/5 rounded-[3rem] p-10 space-y-10 hover:border-[#A855F7]/30 transition-all shadow-2xl relative overflow-hidden"
                   >
                      <div className="flex justify-between items-start relative z-10">
                         <div className="relative">
-                           <div className="w-20 h-20 rounded-[2rem] bg-zinc-900 border border-white/10 overflow-hidden group-hover:border-[#00D2FF]/40 transition-colors">
+                           <div className="w-20 h-20 rounded-[2rem] bg-zinc-900 border border-white/10 overflow-hidden group-hover:border-[#A855F7]/40 transition-colors">
                               {artist.profileImageUrl && <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />}
                            </div>
                            {artist.isVerified && (
-                             <div className="absolute -bottom-2 -right-2 bg-[#00D2FF] text-white p-2 rounded-xl shadow-xl">
+                             <div className="absolute -bottom-2 -right-2 bg-[#A855F7] text-white p-2 rounded-xl shadow-xl">
                                 <ShieldCheck className="w-4 h-4" />
                              </div>
                            )}
@@ -214,7 +214,7 @@ export default function VerifiedDiscoveryClient() {
                               <TrendingUp className="w-3 h-3" /> +12% MoM
                            </span>
                         </div>
-                        <h4 className="text-3xl font-black italic uppercase tracking-tighter text-white group-hover:text-[#00D2FF] transition-colors">{artist.name}</h4>
+                        <h4 className="text-3xl font-black italic uppercase tracking-tighter text-white group-hover:text-[#A855F7] transition-colors">{artist.name}</h4>
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic">{artist.city || 'Global Network'}</p>
                      </div>
 
@@ -237,7 +237,7 @@ export default function VerifiedDiscoveryClient() {
                      </Link>
 
                      {/* BG GLOW */}
-                     <div className="absolute top-0 right-0 w-32 h-32 bg-[#00D2FF]/5 blur-3xl rounded-full group-hover:bg-[#00D2FF]/10 transition-all"></div>
+                     <div className="absolute top-0 right-0 w-32 h-32 bg-[#A855F7]/5 blur-3xl rounded-full group-hover:bg-[#A855F7]/10 transition-all"></div>
                   </motion.div>
                 ))}
              </div>
@@ -281,13 +281,13 @@ export default function VerifiedDiscoveryClient() {
                               <td className="p-8">
                                  <div className="flex items-center gap-3">
                                     <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                       <div className="h-full bg-[#00D2FF]" style={{ width: `${artist.verifiedScore}%` }}></div>
+                                       <div className="h-full bg-[#A855F7]" style={{ width: `${artist.verifiedScore}%` }}></div>
                                     </div>
                                     <span className="text-sm font-black italic text-white">{artist.verifiedScore}</span>
                                  </div>
                               </td>
                               <td className="p-8 text-right">
-                                 <Link href={`/fan/${artist.slug}`} className="inline-flex items-center gap-2 text-[10px] font-black text-white uppercase tracking-widest hover:text-[#00D2FF] transition-colors">
+                                 <Link href={`/fan/${artist.slug}`} className="inline-flex items-center gap-2 text-[10px] font-black text-white uppercase tracking-widest hover:text-[#A855F7] transition-colors">
                                     Analyze <ArrowUpRight className="w-3 h-3" />
                                  </Link>
                               </td>

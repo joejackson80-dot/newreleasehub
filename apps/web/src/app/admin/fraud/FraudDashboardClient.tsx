@@ -16,7 +16,7 @@ export default function FraudDashboardClient({ flaggedIncidents, topStreamers, e
     { label: 'Network Integrity', value: '99.8%', icon: ShieldCheck, color: 'text-emerald-500' },
     { label: 'Flagged Clusters', value: ipClusters.length, icon: Network, color: 'text-orange-500' },
     { label: 'Excluded Streams', value: excludedStreams.length, icon: Ban, color: 'text-red-500' },
-    { label: 'Detected Rings', value: Math.floor(ipClusters.length / 3), icon: Zap, color: 'text-[#00D2FF]' },
+    { label: 'Detected Rings', value: Math.floor(ipClusters.length / 3), icon: Zap, color: 'text-[#A855F7]' },
   ];
 
   return (
@@ -274,7 +274,7 @@ export default function FraudDashboardClient({ flaggedIncidents, topStreamers, e
                               <tr key={streamer.deviceId} className="group hover:bg-white/[0.01] transition-colors">
                                  <td className="py-8">
                                     <div className="flex items-center gap-3">
-                                       <Fingerprint className="w-4 h-4 text-gray-600 group-hover:text-[#00D2FF] transition-colors" />
+                                       <Fingerprint className="w-4 h-4 text-gray-600 group-hover:text-[#A855F7] transition-colors" />
                                        <code className="text-xs text-white font-bold">{streamer.deviceId.slice(0, 16)}...</code>
                                     </div>
                                  </td>
@@ -320,7 +320,7 @@ export default function FraudDashboardClient({ flaggedIncidents, topStreamers, e
               </p>
            </div>
            <div className="flex-1 flex justify-center md:justify-end">
-              <button className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:underline whitespace-nowrap">View Network Whitepaper →</button>
+              <button className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest hover:underline whitespace-nowrap">View Network Whitepaper →</button>
            </div>
         </section>
 

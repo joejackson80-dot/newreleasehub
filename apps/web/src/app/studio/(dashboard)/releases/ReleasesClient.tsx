@@ -16,7 +16,7 @@ export default function ReleasesClient({ org }: { org: any }) {
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#00D2FF] text-white px-6 py-3 rounded-xl flex items-center gap-2 w-full md:w-auto justify-center font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-lg"
+          className="bg-[#A855F7] text-white px-6 py-3 rounded-xl flex items-center gap-2 w-full md:w-auto justify-center font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all shadow-lg"
         >
           <Plus className="w-4 h-4" />
           <span>Upload New Release</span>
@@ -38,15 +38,15 @@ export default function ReleasesClient({ org }: { org: any }) {
             {org.Releases.map((release: any) => (
               <tr key={release.id} className="hover:bg-white/[0.02] transition-colors group">
                 <td className="px-8 py-6 flex items-center gap-5">
-                  <div className="w-12 h-12 bg-zinc-800 rounded-xl overflow-hidden shrink-0 border border-white/5 shadow-inner relative group-hover:border-[#00D2FF]/30 transition-colors">
+                  <div className="w-12 h-12 bg-zinc-800 rounded-xl overflow-hidden shrink-0 border border-white/5 shadow-inner relative group-hover:border-[#A855F7]/30 transition-colors">
                     {release.coverArtUrl ? (
                       <img src={release.coverArtUrl} alt={release.title} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-[#00D2FF]/5"><Disc className="w-6 h-6 text-[#00D2FF]/50" /></div>
+                      <div className="w-full h-full flex items-center justify-center bg-[#A855F7]/5"><Disc className="w-6 h-6 text-[#A855F7]/50" /></div>
                     )}
                   </div>
                   <div>
-                    <p className="font-bold text-white group-hover:text-[#00D2FF] transition-colors">{release.title}</p>
+                    <p className="font-bold text-white group-hover:text-[#A855F7] transition-colors">{release.title}</p>
                     <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-1">ID: {release.id.slice(0, 8)}</p>
                   </div>
                 </td>
@@ -87,7 +87,7 @@ export default function ReleasesClient({ org }: { org: any }) {
       {/* OWNERSHIP BADGE */}
       <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-8 flex items-center justify-between">
          <div className="flex items-center space-x-6">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 text-[#00D2FF] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-blue-500/10 text-[#A855F7] flex items-center justify-center">
                <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
@@ -95,7 +95,7 @@ export default function ReleasesClient({ org }: { org: any }) {
                <p className="text-[10px] text-gray-500 font-medium mt-1 uppercase tracking-widest">You retain 100% ownership of all uploaded master recordings.</p>
             </div>
          </div>
-         <Link href="/press" className="text-[10px] font-bold text-gray-500 hover:text-[#00D2FF] transition-colors uppercase tracking-widest">Learn about IP →</Link>
+         <Link href="/press" className="text-[10px] font-bold text-gray-500 hover:text-[#A855F7] transition-colors uppercase tracking-widest">Learn about IP →</Link>
       </div>
 
       <UploadReleaseModal 

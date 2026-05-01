@@ -60,7 +60,7 @@ export default function ArtistLogin() {
               <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
            </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Artist Studio</h1>
-          <p className="text-[#00D2FF] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Command Center Authentication</p>
+          <p className="text-[#A855F7] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Command Center Authentication</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
@@ -78,7 +78,7 @@ export default function ArtistLogin() {
           <div>
             <div className="flex justify-between mb-2">
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Secret Password</label>
-              <Link href="/studio/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-[#00D2FF] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
+              <Link href="/studio/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-[#A855F7] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
             </div>
             <input 
               type="password" 

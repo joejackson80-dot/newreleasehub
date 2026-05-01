@@ -46,7 +46,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
         {/* PROFILE BASICS */}
         <section className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-8">
            <div className="flex items-center space-x-3 mb-2">
-              <User className="w-5 h-5 text-[#00D2FF]" />
+              <User className="w-5 h-5 text-[#A855F7]" />
               <h2 className="text-sm font-bold text-white uppercase tracking-widest">Public Profile</h2>
            </div>
 
@@ -69,7 +69,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
                          type="text" 
                          value={formData.name}
                          onChange={e => setFormData({...formData, name: e.target.value})}
-                         className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#00D2FF] outline-none transition-colors" 
+                         className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#A855F7] outline-none transition-colors" 
                        />
                     </div>
                     <div className="space-y-2">
@@ -89,7 +89,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
                       rows={4}
                       value={formData.bio}
                       onChange={e => setFormData({...formData, bio: e.target.value})}
-                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#00D2FF] outline-none transition-colors" 
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#A855F7] outline-none transition-colors" 
                       placeholder="Tell the network your story..."
                     />
                  </div>
@@ -100,7 +100,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
         {/* LOCATION & BIO */}
         <section className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-8">
            <div className="flex items-center space-x-3 mb-2">
-              <Globe className="w-5 h-5 text-[#00D2FF]" />
+              <Globe className="w-5 h-5 text-[#A855F7]" />
               <h2 className="text-sm font-bold text-white uppercase tracking-widest">Origin & Metadata</h2>
            </div>
 
@@ -111,7 +111,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
                     type="text" 
                     value={formData.city}
                     onChange={e => setFormData({...formData, city: e.target.value})}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#00D2FF] outline-none transition-colors" 
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#A855F7] outline-none transition-colors" 
                  />
               </div>
               <div className="space-y-2">
@@ -120,7 +120,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
                     type="text" 
                     value={formData.country}
                     onChange={e => setFormData({...formData, country: e.target.value})}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#00D2FF] outline-none transition-colors" 
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-[#A855F7] outline-none transition-colors" 
                  />
               </div>
            </div>
@@ -130,7 +130,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
         <section className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-8">
            <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                 <LinkIcon className="w-5 h-5 text-[#00D2FF]" />
+                 <LinkIcon className="w-5 h-5 text-[#A855F7]" />
                  <h2 className="text-sm font-bold text-white uppercase tracking-widest">Social Matrix</h2>
               </div>
               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full">Linked Accounts</span>
@@ -163,7 +163,7 @@ export default function ArtistSettingsClient({ org }: { org: any }) {
            <button 
              type="submit"
              disabled={loading}
-             className="bg-[#00D2FF] text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all flex items-center gap-3 disabled:opacity-50"
+             className="bg-[#A855F7] text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-all flex items-center gap-3 disabled:opacity-50"
            >
              <Save className="w-4 h-4" />
              {loading ? 'Saving Changes...' : 'Update Profile'}

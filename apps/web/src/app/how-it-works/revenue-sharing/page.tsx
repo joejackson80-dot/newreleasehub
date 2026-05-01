@@ -17,7 +17,7 @@ export default function RevenueSharingPage() {
         </Link>
         
         <header className="space-y-8 text-center">
-          <div className="inline-flex items-center space-x-3 text-[#00D2FF] bg-[#00D2FF]/5 border border-[#00D2FF]/10 px-6 py-2 rounded-full">
+          <div className="inline-flex items-center space-x-3 text-[#A855F7] bg-[#A855F7]/5 border border-[#A855F7]/10 px-6 py-2 rounded-full">
             <DollarSign className="w-4 h-4" />
             <span className="text-[10px] font-bold uppercase tracking-widest">The Economic Protocol</span>
           </div>
@@ -33,15 +33,15 @@ export default function RevenueSharingPage() {
         {/* POOLS SECTION */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
            <div className="p-10 bg-[#0A0A0A] border border-white/5 rounded-[3rem] space-y-6 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#00D2FF]/5 blur-3xl rounded-full"></div>
-              <div className="w-16 h-16 rounded-2xl bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#A855F7]/5 blur-3xl rounded-full"></div>
+              <div className="w-16 h-16 rounded-2xl bg-[#A855F7]/10 text-[#A855F7] flex items-center justify-center">
                  <Users className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold italic tracking-tighter uppercase">Premium Pool: Subscriptions</h3>
               <p className="text-gray-500 text-sm leading-relaxed">
                  70% of all platform subscription revenue is allocated to the Premium Pool. This pool is distributed based on net streaming performance, excluding bot and fraudulent activity.
               </p>
-              <div className="pt-6 border-t border-white/5 flex items-center justify-between text-[#00D2FF]">
+              <div className="pt-6 border-t border-white/5 flex items-center justify-between text-[#A855F7]">
                  <span className="text-[10px] font-bold uppercase tracking-widest">Target Share</span>
                  <span className="text-xl font-black italic">70%</span>
               </div>
@@ -92,7 +92,7 @@ export default function RevenueSharingPage() {
 
         {/* VERIFICATION */}
         <section className="text-center space-y-10">
-           <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-[#00D2FF]">
+           <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-[#A855F7]">
               <ShieldCheck className="w-10 h-10" />
            </div>
            <div className="space-y-4">
@@ -101,7 +101,7 @@ export default function RevenueSharingPage() {
                  All calculations are performed monthly and verified against our Anti-Fraud Engine. Payments are processed via Stripe Connect for immediate transparency.
               </p>
            </div>
-           <Link href="/press" className="inline-block text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors">Read the Network Whitepaper →</Link>
+           <Link href="/press" className="inline-block text-[10px] font-bold text-[#A855F7] uppercase tracking-widest hover:text-white transition-colors">Read the Network Whitepaper →</Link>
         </section>
 
       </div>

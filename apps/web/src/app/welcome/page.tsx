@@ -47,15 +47,15 @@ export default function WelcomePage() {
           {[1, 2, 3].map(s => (
             <React.Fragment key={s}>
               <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
-                step > s ? 'bg-[#00D2FF] border-[#00D2FF]' :
-                step === s ? 'border-[#00D2FF] bg-[#00D2FF]/10' : 'border-white/10 bg-white/5'
+                step > s ? 'bg-[#A855F7] border-[#A855F7]' :
+                step === s ? 'border-[#A855F7] bg-[#A855F7]/10' : 'border-white/10 bg-white/5'
               }`}>
                 {step > s
                   ? <Check className="w-4 h-4 text-white" />
                   : <span className="text-[10px] font-bold text-gray-400">{s}</span>
                 }
               </div>
-              {s < 3 && <div className={`flex-1 h-px transition-all ${step > s ? 'bg-[#00D2FF]' : 'bg-white/10'}`} />}
+              {s < 3 && <div className={`flex-1 h-px transition-all ${step > s ? 'bg-[#A855F7]' : 'bg-white/10'}`} />}
             </React.Fragment>
           ))}
         </div>
@@ -65,8 +65,8 @@ export default function WelcomePage() {
       {step === 1 && (
         <div className="w-full max-w-2xl space-y-10">
           <div className="text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 border border-[#00D2FF]/20 flex items-center justify-center mx-auto">
-              <Music className="w-6 h-6 text-[#00D2FF]" />
+            <div className="w-14 h-14 rounded-2xl bg-[#A855F7]/10 border border-[#A855F7]/20 flex items-center justify-center mx-auto">
+              <Music className="w-6 h-6 text-[#A855F7]" />
             </div>
             <h1 className="text-[clamp(1.5rem,6vw,2.5rem)] font-bold uppercase tracking-tighter italic">What do you listen to?</h1>
             <p className="text-gray-500 font-medium">Select at least one genre to personalize your feed.</p>
@@ -77,7 +77,7 @@ export default function WelcomePage() {
               <button key={g} onClick={() => toggleGenre(g)}
                 className={`px-5 py-2.5 rounded-full border text-sm font-bold transition-all ${
                   selectedGenres.includes(g)
-                    ? 'bg-[#00D2FF] border-[#00D2FF] text-white shadow-lg shadow-[#00D2FF]/20'
+                    ? 'bg-[#A855F7] border-[#A855F7] text-white shadow-lg shadow-[#A855F7]/20'
                     : 'border-white/10 text-gray-400 hover:border-white/30 hover:text-white bg-white/5'
                 }`}>
                 {g}
@@ -91,7 +91,7 @@ export default function WelcomePage() {
               disabled={!canProceedStep1}
               className={`px-12 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-3 mx-auto ${
                 canProceedStep1
-                  ? 'bg-white text-black hover:bg-[#00D2FF] hover:text-white'
+                  ? 'bg-white text-black hover:bg-[#A855F7] hover:text-white'
                   : 'bg-white/5 text-gray-600 cursor-not-allowed'
               }`}>
               Continue
@@ -108,8 +108,8 @@ export default function WelcomePage() {
       {step === 2 && (
         <div className="w-full max-w-2xl space-y-10">
           <div className="text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 border border-[#00D2FF]/20 flex items-center justify-center mx-auto">
-              <Users className="w-6 h-6 text-[#00D2FF]" />
+            <div className="w-14 h-14 rounded-2xl bg-[#A855F7]/10 border border-[#A855F7]/20 flex items-center justify-center mx-auto">
+              <Users className="w-6 h-6 text-[#A855F7]" />
             </div>
             <h1 className="text-[clamp(1.5rem,6vw,2.5rem)] font-bold uppercase tracking-tighter italic">Follow 3 artists.</h1>
             <p className="text-gray-500 font-medium">
@@ -133,13 +133,13 @@ export default function WelcomePage() {
               return (
                 <button key={artist.id} onClick={() => toggleFollow(artist.id)}
                   className={`relative group rounded-2xl overflow-hidden border transition-all text-left ${
-                    isFollowed ? 'border-[#00D2FF] ring-1 ring-[#00D2FF]' : 'border-white/5 hover:border-white/20'
+                    isFollowed ? 'border-[#A855F7] ring-1 ring-[#A855F7]' : 'border-white/5 hover:border-white/20'
                   }`}>
                   <div className="aspect-square relative">
                     <img src={artist.photo} alt={artist.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                     {isFollowed && (
-                      <div className="absolute top-3 right-3 w-7 h-7 bg-[#00D2FF] rounded-full flex items-center justify-center shadow-lg">
+                      <div className="absolute top-3 right-3 w-7 h-7 bg-[#A855F7] rounded-full flex items-center justify-center shadow-lg">
                         <Check className="w-4 h-4 text-white" />
                       </div>
                     )}
@@ -150,7 +150,7 @@ export default function WelcomePage() {
                     </div>
                   </div>
                   <div className={`py-2.5 text-center text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    isFollowed ? 'bg-[#00D2FF] text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'
+                    isFollowed ? 'bg-[#A855F7] text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'
                   }`}>
                     {isFollowed ? '✓ Following' : 'Follow'}
                   </div>
@@ -165,7 +165,7 @@ export default function WelcomePage() {
               disabled={!canProceedStep2}
               className={`px-12 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-3 mx-auto ${
                 canProceedStep2
-                  ? 'bg-white text-black hover:bg-[#00D2FF] hover:text-white'
+                  ? 'bg-white text-black hover:bg-[#A855F7] hover:text-white'
                   : 'bg-white/5 text-gray-600 cursor-not-allowed'
               }`}>
               Continue
@@ -212,7 +212,7 @@ export default function WelcomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/fan/me"
-              className="px-10 py-4 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00D2FF] hover:text-white transition-all">
+              className="px-10 py-4 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#A855F7] hover:text-white transition-all">
               Go to My Feed
             </Link>
             <Link href="/discover"

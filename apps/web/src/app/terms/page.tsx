@@ -18,7 +18,7 @@ export default function TermsPage() {
         
         <div className="space-y-16">
           <header className="space-y-4 border-b border-white/10 pb-8">
-            <div className="flex items-center space-x-3 text-[#00D2FF]">
+            <div className="flex items-center space-x-3 text-[#A855F7]">
               <Scale className="w-6 h-6" />
               <span className="text-xs font-bold uppercase tracking-widest">Legal Agreement</span>
             </div>
@@ -27,7 +27,7 @@ export default function TermsPage() {
           </header>
 
           <section className="bg-white/5 border border-white/10 rounded-[2rem] p-10 space-y-6">
-            <h2 className="text-xl font-bold italic uppercase tracking-tighter text-[#00D2FF]">The NRH Manifesto.</h2>
+            <h2 className="text-xl font-bold italic uppercase tracking-tighter text-[#A855F7]">The NRH Manifesto.</h2>
             <div className="prose prose-invert prose-p:text-gray-300 max-w-none text-sm leading-relaxed italic">
               <p>
                 We believe the current music economy is structurally flawed. By participating in New Release Hub, you acknowledge and support our mission to dismantle predatory royalty structures and replace them with fair, direct-to-artist payouts. We prioritize sovereignty over convenience, and integrity over mass-market normalization.
@@ -105,7 +105,7 @@ export default function TermsPage() {
             <p className="text-gray-400">
               For any legal questions regarding these terms, please contact:
               <br /><br />
-              <Link href="mailto:legal@newreleasehub.com" className="text-[#00D2FF] hover:underline">legal@newreleasehub.com</Link>
+              <Link href="mailto:legal@newreleasehub.com" className="text-[#A855F7] hover:underline">legal@newreleasehub.com</Link>
             </p>
           </section>
         </div>

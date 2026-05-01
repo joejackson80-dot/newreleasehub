@@ -96,7 +96,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
             {/* Header */}
             <div className="px-10 py-8 border-b border-white/5 flex items-center justify-between">
                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-[#A855F7]/10 text-[#A855F7] flex items-center justify-center">
                      <Upload className="w-5 h-5" />
                   </div>
                   <div>
@@ -117,13 +117,13 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                         {isFetchingImport && (
                           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-10">
                             <div className="flex items-center gap-3">
-                               <div className="w-4 h-4 rounded-full border-2 border-[#00D2FF] border-t-transparent animate-spin" />
-                               <span className="text-xs font-bold text-[#00D2FF] uppercase tracking-widest">Scanning Metadata...</span>
+                               <div className="w-4 h-4 rounded-full border-2 border-[#A855F7] border-t-transparent animate-spin" />
+                               <span className="text-xs font-bold text-[#A855F7] uppercase tracking-widest">Scanning Metadata...</span>
                             </div>
                           </div>
                         )}
                         <div className="flex items-center gap-3 mb-4">
-                           <Globe className="w-5 h-5 text-[#00D2FF]" />
+                           <Globe className="w-5 h-5 text-[#A855F7]" />
                            <div>
                              <h3 className="text-sm font-bold text-white uppercase tracking-widest">Smart Import</h3>
                              <p className="text-[10px] text-gray-500 font-medium">Paste a Spotify or Apple Music link to auto-fill metadata and artwork.</p>
@@ -135,7 +135,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                              value={importUrl}
                              onChange={(e) => setImportUrl(e.target.value)}
                              placeholder="https://open.spotify.com/album/..." 
-                             className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]" 
+                             className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#A855F7]" 
                            />
                            <button 
                              onClick={handleFetchImport}
@@ -155,7 +155,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder="e.g. Midnight Echoes" 
-                                className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]" 
+                                className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#A855F7]" 
                               />
                            </div>
                            <div className="grid grid-cols-2 gap-4">
@@ -164,7 +164,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                                  <select 
                                    value={type}
                                    onChange={(e) => setType(e.target.value)}
-                                   className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]"
+                                   className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#A855F7]"
                                  >
                                     <option>Single</option>
                                     <option>EP</option>
@@ -176,7 +176,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                                  <select 
                                    value={genre}
                                    onChange={(e) => setGenre(e.target.value)}
-                                   className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#00D2FF]"
+                                   className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-[#A855F7]"
                                  >
                                     <option>Hip-Hop</option>
                                     <option>Electronic</option>
@@ -185,12 +185,12 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                               </div>
                            </div>
                         </div>
-                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-3xl p-8 hover:border-[#00D2FF]/30 transition-colors group cursor-pointer relative overflow-hidden">
+                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-3xl p-8 hover:border-[#A855F7]/30 transition-colors group cursor-pointer relative overflow-hidden">
                            {coverArt ? (
                              <img src={coverArt} alt="Cover Art" className="absolute inset-0 w-full h-full object-cover" />
                            ) : (
                              <>
-                               <ImageIcon className="w-12 h-12 text-gray-600 group-hover:text-[#00D2FF] transition-colors mb-4" />
+                               <ImageIcon className="w-12 h-12 text-gray-600 group-hover:text-[#A855F7] transition-colors mb-4" />
                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest text-center">Drag Artwork Here</p>
                                <p className="text-[10px] text-gray-700 mt-2 font-medium italic">3000 x 3000 recommended</p>
                              </>
@@ -199,13 +199,13 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                      </div>
 
                      <div className="space-y-4">
-                        <label className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 cursor-pointer group hover:border-[#00D2FF]/30 transition-all">
+                        <label className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 cursor-pointer group hover:border-[#A855F7]/30 transition-all">
                            <input 
                               type="checkbox" 
                               checked={authorizedForRadio && isVerified} 
                               onChange={(e) => setAuthorizedForRadio(e.target.checked)}
                               disabled={!isVerified}
-                              className="w-5 h-5 rounded-md border-white/10 bg-white/5 text-[#00D2FF] focus:ring-[#00D2FF] disabled:opacity-50"
+                              className="w-5 h-5 rounded-md border-white/10 bg-white/5 text-[#A855F7] focus:ring-[#A855F7] disabled:opacity-50"
                            />
                            <div className="flex-1">
                               <p className="text-xs font-bold text-white uppercase tracking-widest">Authorize NRH Radio</p>
@@ -226,7 +226,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                         </p>
                      </div>
 
-                     <button onClick={() => setStep(2)} className="w-full py-4 rounded-xl bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-colors shadow-lg">
+                     <button onClick={() => setStep(2)} className="w-full py-4 rounded-xl bg-[#A855F7] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-colors shadow-lg">
                         Next: Add Audio Files
                      </button>
                   </div>
@@ -234,8 +234,8 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
 
                {step === 2 && (
                   <div className="space-y-10">
-                     <div className="border-2 border-dashed border-white/5 rounded-3xl p-12 flex flex-col items-center justify-center space-y-6 hover:border-[#00D2FF]/30 transition-colors cursor-pointer">
-                        <div className="w-20 h-20 rounded-full bg-[#00D2FF]/10 text-[#00D2FF] flex items-center justify-center">
+                     <div className="border-2 border-dashed border-white/5 rounded-3xl p-12 flex flex-col items-center justify-center space-y-6 hover:border-[#A855F7]/30 transition-colors cursor-pointer">
+                        <div className="w-20 h-20 rounded-full bg-[#A855F7]/10 text-[#A855F7] flex items-center justify-center">
                            <Music className="w-10 h-10" />
                         </div>
                         <div className="text-center w-full max-w-xs mx-auto">
@@ -243,9 +243,9 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                               <div className="space-y-4">
                                  <p className="text-sm font-bold text-white uppercase tracking-widest">Encoding Master Audio...</p>
                                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-[#00D2FF] transition-all duration-150" style={{ width: `${uploadProgress}%` }} />
+                                    <div className="h-full bg-[#A855F7] transition-all duration-150" style={{ width: `${uploadProgress}%` }} />
                                  </div>
-                                 <p className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">{uploadProgress}% Complete</p>
+                                 <p className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">{uploadProgress}% Complete</p>
                               </div>
                            ) : (
                               <>
@@ -263,7 +263,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                         <button 
                            onClick={handleUpload}
                            disabled={isUploading}
-                           className="py-4 rounded-xl bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-colors shadow-lg disabled:opacity-50"
+                           className="py-4 rounded-xl bg-[#A855F7] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#00B8E0] transition-colors shadow-lg disabled:opacity-50"
                         >
                            {isUploading ? 'Encoding...' : 'Finalize & Deploy'}
                         </button>
@@ -281,7 +281,7 @@ export default function UploadReleaseModal({ isOpen, onClose, isVerified = false
                         <p className="text-gray-500 text-sm">Your music is now live on the New Release Hub network.</p>
                      </div>
                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/studio/share" className="px-8 py-3 rounded-xl bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest">Share on Social</Link>
+                        <Link href="/studio/share" className="px-8 py-3 rounded-xl bg-[#A855F7] text-white font-bold text-xs uppercase tracking-widest">Share on Social</Link>
                         <button onClick={onClose} className="px-8 py-3 rounded-xl bg-white/5 text-white font-bold text-xs uppercase tracking-widest">Back to Studio</button>
                      </div>
                   </div>

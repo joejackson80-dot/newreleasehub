@@ -117,7 +117,7 @@ export default function GlobalAudioPlayer() {
               <div className="flex items-center p-4 bg-white/5 rounded-2xl border border-white/10">
                 <img src={currentTrack.imageUrl || "/images/default-cover.png"} className="w-12 h-12 rounded-lg object-cover mr-4" alt="" />
                 <div>
-                  <h4 className="text-[#00D2FF] font-bold text-lg leading-tight">{currentTrack.title}</h4>
+                  <h4 className="text-[#A855F7] font-bold text-lg leading-tight">{currentTrack.title}</h4>
                   <p className="text-gray-400 text-sm font-medium">{currentTrack.artist}</p>
                 </div>
               </div>
@@ -148,9 +148,9 @@ export default function GlobalAudioPlayer() {
       <div className="fixed bottom-0 left-0 right-0 z-[1000] bg-zinc-950/90 backdrop-blur-2xl border-t border-white/10 py-3 px-4 md:px-6 flex items-center justify-between shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
          {/* AD OVERLAY (Inline) */}
          {showAd && (
-           <div className="absolute inset-0 bg-[#020202] z-50 flex items-center justify-between px-10 animate-in fade-in duration-500 border-t border-[#00D2FF]/30">
+           <div className="absolute inset-0 bg-[#020202] z-50 flex items-center justify-between px-10 animate-in fade-in duration-500 border-t border-[#A855F7]/30">
              <div className="flex items-center space-x-6">
-               <div className="w-12 h-12 rounded-xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">
+               <div className="w-12 h-12 rounded-xl bg-[#A855F7]/10 flex items-center justify-center text-[#A855F7]">
                  <Volume2 className="w-6 h-6 animate-pulse" />
                </div>
                <div>
@@ -161,7 +161,7 @@ export default function GlobalAudioPlayer() {
 
              <div className="flex flex-col items-center">
                <div className="w-64 h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
-                 <div className="h-full bg-[#00D2FF] transition-all duration-1000" style={{ width: `${(adTimeRemaining / 30) * 100}%` }}></div>
+                 <div className="h-full bg-[#A855F7] transition-all duration-1000" style={{ width: `${(adTimeRemaining / 30) * 100}%` }}></div>
                </div>
                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
                  Music resumes in {adTimeRemaining}s
@@ -169,7 +169,7 @@ export default function GlobalAudioPlayer() {
              </div>
 
              <div className="flex items-center space-x-6">
-               <Link href="/subscribe" className="text-[#00D2FF] font-bold text-[10px] uppercase tracking-widest hover:underline">
+               <Link href="/subscribe" className="text-[#A855F7] font-bold text-[10px] uppercase tracking-widest hover:underline">
                  Upgrade to remove ads
                </Link>
                {adTimeRemaining <= 15 && (
@@ -199,7 +199,7 @@ export default function GlobalAudioPlayer() {
                </div>
                <button 
                  onClick={toggleLike}
-                 className={`hidden sm:block transition-all shrink-0 ${isLiked ? 'text-[#00D2FF] scale-110' : 'text-gray-400 hover:text-white'} ${likeAnimate ? 'scale-125' : ''}`} 
+                 className={`hidden sm:block transition-all shrink-0 ${isLiked ? 'text-[#A855F7] scale-110' : 'text-gray-400 hover:text-white'} ${likeAnimate ? 'scale-125' : ''}`} 
                  title={isLiked ? "Remove from Library" : "Save to Library"}
                >
                   <Heart className="w-4 h-4 transition-all" fill={isLiked ? "currentColor" : "none"} />
@@ -207,7 +207,7 @@ export default function GlobalAudioPlayer() {
                {currentTrack.artistId !== 'nrh-official' && (
                  <Link 
                    href={`/fan/checkout?artist=${currentTrack.artistId}`}
-                   className="hidden lg:flex items-center space-x-1 px-3 py-1 bg-[#00D2FF]/10 border border-[#00D2FF]/30 rounded-full text-[#00D2FF] hover:bg-[#00D2FF]/20 transition-all shrink-0"
+                   className="hidden lg:flex items-center space-x-1 px-3 py-1 bg-[#A855F7]/10 border border-[#A855F7]/30 rounded-full text-[#A855F7] hover:bg-[#A855F7]/20 transition-all shrink-0"
                  >
                     <Star className="w-3 h-3 fill-current" />
                     <span className="text-[9px] font-bold uppercase tracking-widest">Support</span>
@@ -219,7 +219,7 @@ export default function GlobalAudioPlayer() {
          {/* CENTER: Controls */}
          <div className="flex flex-col items-center justify-center flex-1 md:w-1/3 lg:w-2/4 max-w-[600px]">
             <div className="flex items-center justify-end md:justify-center space-x-4 md:space-x-6 mb-0 md:mb-2 w-full md:w-auto">
-               <button onClick={toggleShuffle} className={`hidden md:block p-2 transition-colors ${isShuffle ? 'text-[#00D2FF]' : 'text-gray-400 hover:text-white'}`} title="Shuffle">
+               <button onClick={toggleShuffle} className={`hidden md:block p-2 transition-colors ${isShuffle ? 'text-[#A855F7]' : 'text-gray-400 hover:text-white'}`} title="Shuffle">
                   <Shuffle className="w-4 h-4" />
                </button>
                <button onClick={playPrevious} className="hidden md:block text-gray-300 hover:text-white transition-colors" title="Previous">
@@ -236,7 +236,7 @@ export default function GlobalAudioPlayer() {
                <button onClick={playNext} className="hidden sm:block text-gray-300 hover:text-white transition-colors" title="Next">
                   <SkipForward className="w-5 h-5 fill-current" />
                </button>
-               <button onClick={toggleRepeat} className={`hidden md:block p-2 transition-colors ${repeatMode !== 'off' ? 'text-[#00D2FF]' : 'text-gray-400 hover:text-white'}`} title="Repeat">
+               <button onClick={toggleRepeat} className={`hidden md:block p-2 transition-colors ${repeatMode !== 'off' ? 'text-[#A855F7]' : 'text-gray-400 hover:text-white'}`} title="Repeat">
                   {repeatMode === 'one' ? <Repeat1 className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
                </button>
             </div>
@@ -251,7 +251,7 @@ export default function GlobalAudioPlayer() {
                     seek(percent * duration);
                   }}
                >
-                  <div className="h-full bg-white group-hover:bg-[#00D2FF] relative transition-all duration-100 ease-linear" style={{ width: `${(progress / duration) * 100}%` }}></div>
+                  <div className="h-full bg-white group-hover:bg-[#A855F7] relative transition-all duration-100 ease-linear" style={{ width: `${(progress / duration) * 100}%` }}></div>
                </div>
                <span className="w-10 text-left">{formatTime(duration)}</span>
             </div>
@@ -267,7 +267,7 @@ export default function GlobalAudioPlayer() {
             </button>
             <button 
               onClick={() => setShowQueue(!showQueue)} 
-              className={`p-2 transition-colors ${showQueue ? 'text-[#00D2FF]' : 'hover:text-white'}`}
+              className={`p-2 transition-colors ${showQueue ? 'text-[#A855F7]' : 'hover:text-white'}`}
               title="Queue"
             >
                <List className="w-4 h-4" />
@@ -284,7 +284,7 @@ export default function GlobalAudioPlayer() {
                  className="w-20 h-1.5 bg-white/10 rounded-full cursor-pointer overflow-hidden"
                  onClick={handleVolumeClick}
                >
-                  <div className="h-full bg-gray-300 group-hover:bg-[#00D2FF] transition-all" style={{ width: `${volume * 100}%` }}></div>
+                  <div className="h-full bg-gray-300 group-hover:bg-[#A855F7] transition-all" style={{ width: `${volume * 100}%` }}></div>
                </div>
             </div>
 

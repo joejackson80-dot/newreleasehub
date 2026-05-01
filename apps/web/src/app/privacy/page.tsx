@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             <p className="text-gray-400">
               For any questions regarding your data and privacy, please contact:
               <br /><br />
-              <Link href="mailto:privacy@newreleasehub.com" className="text-[#00D2FF] hover:underline">privacy@newreleasehub.com</Link>
+              <Link href="mailto:privacy@newreleasehub.com" className="text-[#A855F7] hover:underline">privacy@newreleasehub.com</Link>
             </p>
           </section>
         </div>

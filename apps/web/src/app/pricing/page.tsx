@@ -42,7 +42,7 @@ const ARTIST_PLANS = [
     ],
     buttonText: 'Start Pro',
     href: '/studio/register', // Ideally a stripe checkout link
-    color: 'border-[#00D2FF]'
+    color: 'border-[#A855F7]'
   },
   {
     name: 'STUDIO',
@@ -97,7 +97,7 @@ const ENTERPRISE_PLANS = [
       'Consolidated earnings dashboard',
       'Revenue split automation'
     ],
-    color: 'border-[#00D2FF]'
+    color: 'border-[#A855F7]'
   }
 ];
 
@@ -128,7 +128,7 @@ export default function PricingPage() {
         {/* HEADER */}
         <section className="text-center space-y-8">
            <div className="space-y-4">
-              <h1 className="text-[clamp(2.5rem,10vw,8rem)] font-bold tracking-tighter italic uppercase leading-[0.8] mb-6">Simple pricing.<br /><span className="text-[#00D2FF]">Serious payouts.</span></h1>
+              <h1 className="text-[clamp(2.5rem,10vw,8rem)] font-bold tracking-tighter italic uppercase leading-[0.8] mb-6">Simple pricing.<br /><span className="text-[#A855F7]">Serious payouts.</span></h1>
               <p className="text-xs sm:text-xl text-gray-500 font-bold uppercase tracking-widest italic leading-relaxed">Start free. Upgrade when your music is ready to grow.</p>
            </div>
         </section>
@@ -138,7 +138,7 @@ export default function PricingPage() {
           {ARTIST_PLANS.map((tier) => (
             <div key={tier.name} className={`bg-[#111] border ${tier.color} rounded-[2.5rem] p-8 sm:p-10 flex flex-col space-y-10 relative overflow-hidden group hover:bg-white/[0.02] transition-all duration-500 shadow-2xl`}>
               {tier.popular && (
-                <div className="absolute top-0 right-0 bg-[#00D2FF] text-white text-[9px] font-bold uppercase tracking-widest px-6 py-2 rounded-bl-2xl">
+                <div className="absolute top-0 right-0 bg-[#A855F7] text-white text-[9px] font-bold uppercase tracking-widest px-6 py-2 rounded-bl-2xl">
                   Most Popular
                 </div>
               )}
@@ -153,12 +153,12 @@ export default function PricingPage() {
               <ul className="flex-1 space-y-4">
                 {tier.features.map((feat, i) => (
                   <li key={i} className="flex items-start space-x-3 text-xs font-medium">
-                    <Check className="w-4 h-4 text-[#00D2FF] shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-[#A855F7] shrink-0 mt-0.5" />
                     <span className="text-gray-300">{feat}</span>
                   </li>
                 ))}
               </ul>
-              <Link href={tier.href} className={`block w-full py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest text-center transition-all ${tier.popular ? 'bg-[#00D2FF] text-white hover:bg-[#00B8E0]' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'}`}>
+              <Link href={tier.href} className={`block w-full py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest text-center transition-all ${tier.popular ? 'bg-[#A855F7] text-white hover:bg-[#00B8E0]' : 'bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black'}`}>
                 {tier.buttonText}
               </Link>
             </div>
@@ -174,7 +174,7 @@ export default function PricingPage() {
                   <p className="text-2xl sm:text-3xl font-bold text-white uppercase italic">You keep $750</p>
                </div>
                <div className="space-y-2">
-                  <p className="text-[#00D2FF] text-[10px] font-bold uppercase tracking-widest">Pro</p>
+                  <p className="text-[#A855F7] text-[10px] font-bold uppercase tracking-widest">Pro</p>
                   <p className="text-2xl sm:text-3xl font-bold text-white uppercase italic">You keep $850 <span className="text-green-500 text-sm">(+$100)</span></p>
                </div>
                <div className="space-y-2">
@@ -224,7 +224,7 @@ export default function PricingPage() {
               {FAQS.map((faq, i) => (
                 <div key={i} className="space-y-4">
                    <h4 className="text-sm font-bold uppercase tracking-widest flex items-center gap-3">
-                      <HelpCircle className="w-4 h-4 text-[#00D2FF]" />
+                      <HelpCircle className="w-4 h-4 text-[#A855F7]" />
                       {faq.q}
                    </h4>
                    <p className="text-gray-500 text-sm leading-relaxed font-medium">{faq.a}</p>

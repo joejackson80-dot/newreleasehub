@@ -30,12 +30,12 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white p-6 sm:p-8 md:p-12 space-y-12 selection:bg-[#00D2FF] selection:text-black">
+    <div className="min-h-screen bg-[#020202] text-white p-6 sm:p-8 md:p-12 space-y-12 selection:bg-[#A855F7] selection:text-black">
       
       {/* HEADER */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-[#00D2FF]">
+            <div className="flex items-center gap-3 text-[#A855F7]">
                <Activity className="w-5 h-5" />
                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Verified Analytics Engine</span>
             </div>
@@ -52,7 +52,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
             <div className="bg-[#0A0A0A] border border-white/5 p-4 rounded-2xl flex items-center gap-6">
                <div className="text-right">
                   <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Network Authority</p>
-                  <p className="text-xl font-black italic text-[#00D2FF]">TOP 2%</p>
+                  <p className="text-xl font-black italic text-[#A855F7]">TOP 2%</p>
                </div>
                <div className="w-px h-8 bg-white/5" />
                <div className="text-right">
@@ -67,11 +67,11 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
          {[
            { label: 'Total Streams', value: stats?.totalStreams?.toLocaleString() || '0', sub: 'Verified & Suspicious', icon: Activity, color: 'text-white' },
-           { label: 'Verified Plays', value: stats?.verifiedStreams?.toLocaleString() || '0', sub: 'Protocol Authorized', icon: ShieldAlert, color: 'text-[#00D2FF]' },
+           { label: 'Verified Plays', value: stats?.verifiedStreams?.toLocaleString() || '0', sub: 'Protocol Authorized', icon: ShieldAlert, color: 'text-[#A855F7]' },
            { label: 'Unique Listeners', value: artist?.supporterCount?.toLocaleString() || '0', sub: 'Network Equity', icon: Users, color: 'text-white' },
            { label: 'Retention Score', value: '84%', sub: 'Verified Measurement', icon: Zap, color: 'text-purple-400' }
          ].map((stat, i) => (
-           <div key={i} className="bg-[#0A0A0A] border border-white/10 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 relative group hover:border-[#00D2FF66] transition-all cursor-default overflow-hidden">
+           <div key={i} className="bg-[#0A0A0A] border border-white/10 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 relative group hover:border-[#A855F766] transition-all cursor-default overflow-hidden">
               <div className="flex items-center justify-between">
                  <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
                  <span className="text-[8px] sm:text-[9px] font-black text-zinc-700 uppercase tracking-widest">NRH-V1.4</span>
@@ -99,7 +99,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                </div>
                <div className="flex gap-2">
                   {['7D', '14D', '30D', '90D'].map(t => (
-                    <button key={t} className={`px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all ${t === '14D' ? 'bg-[#00D2FF] text-black shadow-lg' : 'bg-white/5 text-zinc-500 hover:text-white'}`}>
+                    <button key={t} className={`px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all ${t === '14D' ? 'bg-[#A855F7] text-black shadow-lg' : 'bg-white/5 text-zinc-500 hover:text-white'}`}>
                        {t}
                     </button>
                   ))}
@@ -110,7 +110,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                {stats?.dailyStreams?.map((s: any, i: number) => (
                  <div key={i} className="flex-1 group relative">
                     <div 
-                      className="w-full bg-gradient-to-t from-[#00D2FF66] to-[#00D2FF] rounded-t-lg transition-all group-hover:scale-y-105" 
+                      className="w-full bg-gradient-to-t from-[#A855F766] to-[#A855F7] rounded-t-lg transition-all group-hover:scale-y-105" 
                       style={{ height: `${Math.max(10, (s.count / (Math.max(...stats.dailyStreams.map((x:any)=>x.count)) || 1)) * 100)}%` }}
                     />
                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -127,7 +127,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
             </div>
 
             {/* DECOR */}
-            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#00D2FF]/5 blur-[100px] rounded-full pointer-events-none" />
+            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#A855F7]/5 blur-[100px] rounded-full pointer-events-none" />
          </div>
 
          {/* GLOBAL DENSITY */}
@@ -141,7 +141,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                {stats?.countryDistribution && Object.entries(stats.countryDistribution).slice(0, 5).map(([country, count]: [string, any], i) => (
                  <div key={country} className="space-y-2 group">
                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                       <span className="text-white flex items-center gap-2 group-hover:text-[#00D2FF] transition-colors">
+                       <span className="text-white flex items-center gap-2 group-hover:text-[#A855F7] transition-colors">
                           <Globe className="w-3 h-3 text-zinc-600" />
                           {country}
                        </span>
@@ -149,7 +149,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                     </div>
                     <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                        <div 
-                         className="h-full bg-[#00D2FF] transition-all duration-1000 shadow-[0_0_10px_rgba(0,210,255,16)]" 
+                         className="h-full bg-[#A855F7] transition-all duration-1000 shadow-[0_0_10px_rgba(168, 85, 247,16)]" 
                          style={{ width: `${((count as number) / stats.totalStreams) * 100}%` }}
                        />
                     </div>
@@ -172,7 +172,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                   <circle cx="50" cy="50" r="45" fill="none" stroke="#1a1a1a" strokeWidth="8" />
                   <circle 
-                    cx="50" cy="50" r="45" fill="none" stroke="#00D2FF" strokeWidth="8" 
+                    cx="50" cy="50" r="45" fill="none" stroke="#A855F7" strokeWidth="8" 
                     strokeDasharray="282.7" 
                     strokeDashoffset={282.7 - (282.7 * (stats?.fraudMetrics?.clean / (stats?.totalStreams || 1)))}
                     className="transition-all duration-1000"
@@ -212,7 +212,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
          {/* REVENUE FORECAST */}
          <div className="bg-gradient-to-br from-zinc-900 to-[#020202] border border-white/10 rounded-[3.5rem] p-12 space-y-8 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
-               <TrendingUp className="w-48 h-48 text-[#00D2FF]" />
+               <TrendingUp className="w-48 h-48 text-[#A855F7]" />
             </div>
             
             <div className="space-y-6 relative z-10">
@@ -236,7 +236,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                   </div>
                   <div className="p-6 bg-white/5 border border-white/10 rounded-3xl space-y-2">
                      <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Supporter Equity</p>
-                     <p className="text-xl font-black italic text-[#00D2FF]">$3,160</p>
+                     <p className="text-xl font-black italic text-[#A855F7]">$3,160</p>
                   </div>
                </div>
             </div>
@@ -253,7 +253,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
                Institutional data is processed every 15 minutes. Verified scores are calculated using a proprietary 12-point authentication matrix. Malicious streaming activity is automatically excluded from revenue pools.
             </p>
          </div>
-         <button className="px-12 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_50px_rgba(0,210,255,0.2)]">
+         <button className="px-12 py-5 bg-[#A855F7] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_50px_rgba(168, 85, 247,0.2)]">
             Upgrade Data Protocol
          </button>
       </footer>

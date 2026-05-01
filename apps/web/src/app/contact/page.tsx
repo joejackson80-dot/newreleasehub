@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-[#020202] text-white pt-24 pb-20 px-6 md:px-10 selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white pt-24 pb-20 px-6 md:px-10 selection:bg-[#A855F7] selection:text-white">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32">
          
          {/* INFO COLUMN */}
@@ -17,7 +17,7 @@ export default function ContactPage() {
                </div>
 
                <div className="space-y-6">
-                  <div className="inline-flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="inline-flex items-center space-x-3 text-[#A855F7]">
                      <MessageSquare className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Global Inquiries</span>
                   </div>
@@ -33,7 +33,7 @@ export default function ContactPage() {
 
            <div className="space-y-10">
               <div className="flex items-start space-x-6">
-                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] shrink-0">
+                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#A855F7] shrink-0">
                     <Mail className="w-5 h-5" />
                  </div>
                  <div className="space-y-1">
@@ -42,7 +42,7 @@ export default function ContactPage() {
                  </div>
               </div>
               <div className="flex items-start space-x-6">
-                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] shrink-0">
+                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#A855F7] shrink-0">
                     <MapPin className="w-5 h-5" />
                  </div>
                  <div className="space-y-1">
@@ -51,7 +51,7 @@ export default function ContactPage() {
                  </div>
               </div>
               <div className="flex items-start space-x-6">
-                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#00D2FF] shrink-0">
+                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#A855F7] shrink-0">
                     <Globe className="w-5 h-5" />
                  </div>
                  <div className="space-y-1">
@@ -72,7 +72,7 @@ export default function ContactPage() {
                     <input 
                       type="text" 
                       placeholder="John Doe"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all"
                     />
                  </div>
                  <div className="space-y-3">
@@ -80,13 +80,13 @@ export default function ContactPage() {
                     <input 
                       type="email" 
                       placeholder="john@example.com"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all"
                     />
                  </div>
               </div>
               <div className="space-y-3">
                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-4">Subject</label>
-                 <select className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all appearance-none">
+                 <select className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all appearance-none">
                     <option className="bg-[#111]">Artist Support</option>
                     <option className="bg-[#111]">Fan Inquiry</option>
                     <option className="bg-[#111]">Business Partnership</option>
@@ -99,10 +99,10 @@ export default function ContactPage() {
                  <textarea 
                    rows={6}
                    placeholder="How can we help you?"
-                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all resize-none"
+                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all resize-none"
                  />
               </div>
-              <button className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#00D2FF]/20 flex items-center justify-center space-x-3">
+              <button className="w-full py-5 rounded-2xl bg-[#A855F7] text-white font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#A855F7]/20 flex items-center justify-center space-x-3">
                  <span>Send Message</span>
                  <Send className="w-4 h-4" />
               </button>

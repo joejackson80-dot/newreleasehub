@@ -42,7 +42,7 @@ export default function EPKClient({ org }: { org: any }) {
             {isDownloading ? (
               <div className="flex items-center space-x-3">
                  <div className="w-12 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#00D2FF] transition-all" style={{ width: `${downloadProgress}%` }} />
+                    <div className="h-full bg-[#A855F7] transition-all" style={{ width: `${downloadProgress}%` }} />
                  </div>
                  <span>{downloadProgress}%</span>
               </div>
@@ -63,7 +63,7 @@ export default function EPKClient({ org }: { org: any }) {
       {/* ANALYTICS PREVIEW SECTION */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
          {[
-           { label: 'Total Streams', val: '4.2M', growth: '+12%', icon: Activity, color: 'text-[#00D2FF]' },
+           { label: 'Total Streams', val: '4.2M', growth: '+12%', icon: Activity, color: 'text-[#A855F7]' },
            { label: 'Active Supporters', val: org.ParticipationLicenses.length.toString(), growth: '+5%', icon: Users, color: 'text-orange-500' },
            { label: 'Avg. Retention', val: '68%', growth: '+2%', icon: BarChart3, color: 'text-green-500' },
            { label: 'Market Reach', val: '42 Countries', growth: 'Global', icon: Globe, color: 'text-purple-500' }
@@ -87,7 +87,7 @@ export default function EPKClient({ org }: { org: any }) {
       <div className="bg-white/[0.02] border border-white/5 rounded-[3rem] p-10 space-y-8">
          <div className="flex justify-between items-end">
             <div className="space-y-2">
-               <div className="flex items-center space-x-2 text-[#00D2FF]">
+               <div className="flex items-center space-x-2 text-[#A855F7]">
                   <TrendingUp className="w-4 h-4" />
                   <span className="text-[10px] font-bold uppercase tracking-widest">Growth Velocity</span>
                </div>
@@ -95,7 +95,7 @@ export default function EPKClient({ org }: { org: any }) {
             </div>
             <div className="flex items-center space-x-4 text-[10px] font-bold uppercase tracking-widest text-gray-600">
                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-[#00D2FF]"></div>
+                  <div className="w-2 h-2 rounded-full bg-[#A855F7]"></div>
                   <span>Revenue</span>
                </div>
                <div className="flex items-center space-x-2">
@@ -108,7 +108,7 @@ export default function EPKClient({ org }: { org: any }) {
             {[30, 45, 35, 60, 50, 80, 65, 90, 75, 100, 85, 110].map((h, i) => (
                <div 
                  key={i} 
-                 className="flex-1 bg-gradient-to-t from-[#00D2FF]/10 to-[#00D2FF]/40 rounded-t-lg hover:to-[#00D2FF] transition-all cursor-pointer relative group" 
+                 className="flex-1 bg-gradient-to-t from-[#A855F7]/10 to-[#A855F7]/40 rounded-t-lg hover:to-[#A855F7] transition-all cursor-pointer relative group" 
                  style={{ height: `${(h / 110) * 100}%` }}
                >
                   <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">

@@ -43,7 +43,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
            <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-[#00D2FF]">
+              <div className="flex items-center space-x-3 text-[#A855F7]">
                  <Users className="w-5 h-5" />
                  <span className="text-xs font-bold uppercase tracking-widest">Studio Collabs</span>
               </div>
@@ -53,7 +53,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
            </div>
            <Link 
              href="/studio/collab/new"
-             className="bg-[#00D2FF] hover:bg-[#2952CC] text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-[0_20px_40px_rgba(51,102,255,0.2)] flex items-center gap-3"
+             className="bg-[#A855F7] hover:bg-[#2952CC] text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-[0_20px_40px_rgba(51,102,255,0.2)] flex items-center gap-3"
            >
              New Request <ArrowUpRight className="w-5 h-5" />
            </Link>
@@ -68,7 +68,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                className={`px-8 py-4 text-[10px] font-bold uppercase tracking-widest transition-all relative ${activeTab === tab ? 'text-white' : 'text-gray-500 hover:text-white'}`}
              >
                {tab}
-               {activeTab === tab && <div className="absolute bottom-0 left-0 w-full h-1 bg-[#00D2FF]"></div>}
+               {activeTab === tab && <div className="absolute bottom-0 left-0 w-full h-1 bg-[#A855F7]"></div>}
              </button>
            ))}
         </div>
@@ -140,7 +140,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                       </div>
                       <div className="flex gap-4 w-full md:w-auto">
                         <button className="flex-1 md:flex-none px-8 py-4 bg-[#111] border border-white/10 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-all">View Agreement</button>
-                        <button className="flex-1 md:flex-none px-8 py-4 bg-[#00D2FF] rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#2952CC] transition-all">Message</button>
+                        <button className="flex-1 md:flex-none px-8 py-4 bg-[#A855F7] rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#2952CC] transition-all">Message</button>
                       </div>
                    </div>
                  ))
@@ -168,7 +168,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                    {otherArtist.profileImageUrl && <img src={otherArtist.profileImageUrl} alt={otherArtist.name} className="w-full h-full object-cover" />}
                 </div>
                 <div className="absolute -bottom-2 -right-2 bg-black border border-white/10 p-2 rounded-xl">
-                   {type === 'incoming' ? <ArrowDownLeft className="w-4 h-4 text-[#00D2FF]" /> : <ArrowUpRight className="w-4 h-4 text-orange-500" />}
+                   {type === 'incoming' ? <ArrowDownLeft className="w-4 h-4 text-[#A855F7]" /> : <ArrowUpRight className="w-4 h-4 text-orange-500" />}
                 </div>
              </div>
              <div>
@@ -176,11 +176,11 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                 <div className="flex items-center gap-2 text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1">
                    <span>{otherArtist.genres?.[0] || 'Independent'}</span>
                    <span>•</span>
-                   <span className="text-[#00D2FF]">{otherArtist.supporterCount} SUPPORTERs</span>
+                   <span className="text-[#A855F7]">{otherArtist.supporterCount} SUPPORTERs</span>
                 </div>
              </div>
              <div className="flex items-center gap-3">
-                {otherArtist.isVerified && <span className="p-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-md"><Check className="w-3 h-3" /></span>}
+                {otherArtist.isVerified && <span className="p-1 bg-[#A855F7]/10 text-[#A855F7] rounded-md"><Check className="w-3 h-3" /></span>}
                 <Link href={`/${otherArtist.slug}`} className="text-[10px] font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1">
                    View Profile <ChevronRight className="w-3 h-3" />
                 </Link>
@@ -191,7 +191,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
           <div className="flex-1 space-y-8">
              <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                 <div className="space-y-1">
-                   <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest">{request.collabType.replace('_', ' ')}</span>
+                   <span className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">{request.collabType.replace('_', ' ')}</span>
                    <h3 className="text-3xl font-bold tracking-tighter italic uppercase">{request.projectTitle || 'Untitled Project'}</h3>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/5">
@@ -211,7 +211,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                 <div className="p-6 bg-black/40 rounded-3xl border border-white/5 space-y-2">
                    <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest block">Your Earnings</span>
                    <div className="flex items-center gap-2">
-                      <Percent className="w-4 h-4 text-[#00D2FF]" />
+                      <Percent className="w-4 h-4 text-[#A855F7]" />
                       <span className="font-bold">{type === 'incoming' ? request.receiverSplitPercent : request.requesterSplitPercent}% Revenue Share</span>
                    </div>
                 </div>
@@ -228,9 +228,9 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                <Link 
                  href={request.demoUrl} 
                  target="_blank"
-                 className="flex items-center gap-3 text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest hover:text-white transition-colors group"
+                 className="flex items-center gap-3 text-[10px] font-bold text-[#A855F7] uppercase tracking-widest hover:text-white transition-colors group"
                >
-                  <div className="w-8 h-8 rounded-full bg-[#00D2FF]/10 flex items-center justify-center group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                  <div className="w-8 h-8 rounded-full bg-[#A855F7]/10 flex items-center justify-center group-hover:bg-[#A855F7] group-hover:text-white transition-all">
                      <Play className="w-4 h-4 fill-current ml-0.5" />
                   </div>
                   Listen to Demo
@@ -241,7 +241,7 @@ export default function CollabsClient({ currentOrg, incoming: initialIncoming, s
                <div className="flex flex-col md:flex-row gap-4 pt-4 border-t border-white/5">
                   <button 
                     onClick={onAccept}
-                    className="flex-1 bg-[#00D2FF] hover:bg-[#2952CC] text-white py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2"
+                    className="flex-1 bg-[#A855F7] hover:bg-[#2952CC] text-white py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2"
                   >
                      <Check className="w-5 h-5" /> Accept Deal
                   </button>

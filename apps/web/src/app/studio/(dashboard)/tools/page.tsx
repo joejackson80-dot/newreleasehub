@@ -8,8 +8,8 @@ export default function ToolsHubPage() {
       description: 'Automatically generate a professional Electronic Press Kit using your existing network data and releases.',
       icon: ImageIcon,
       status: 'Active',
-      color: 'text-[#00D2FF]',
-      bg: 'bg-[#00D2FF]/10',
+      color: 'text-[#A855F7]',
+      bg: 'bg-[#A855F7]/10',
       action: 'Launch Generator'
     },
     {

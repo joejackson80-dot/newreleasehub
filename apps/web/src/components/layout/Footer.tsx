@@ -15,10 +15,10 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-8 sm:space-y-10">
             <Link href="/" className="flex flex-col space-y-6 sm:space-y-8 group">
                <div className="w-14 h-14 rounded-2xl bg-transparent flex items-center justify-center hover:scale-105 transition-transform">
-                  <img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,210,255,0.3)]" />
+                  <img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(168, 85, 247,0.3)]" />
                </div>
                <div className="space-y-1">
-                  <span className="text-lg font-bold tracking-tighter uppercase text-white italic leading-none">New Release Hub<span className="text-[#00D2FF]">.</span></span>
+                  <span className="text-lg font-bold tracking-tighter uppercase text-white italic leading-none">New Release Hub<span className="text-[#A855F7]">.</span></span>
                </div>
             </Link>
             <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-xs italic">
@@ -74,7 +74,7 @@ export default function Footer() {
                  value={email}
                  onChange={(e) => setEmail(e.target.value)}
                  placeholder="your@email.com" 
-                 className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-white placeholder-gray-700 focus:outline-none focus:border-[#00D2FF] transition-all"
+                 className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-white placeholder-gray-700 focus:outline-none focus:border-[#A855F7] transition-all"
                />
                <button 
                  type="submit"

@@ -54,7 +54,7 @@ export default function DiscoveryFeed() {
                    <Link 
                      key={artist.id}
                      href={`/${artist.slug}`}
-                     className="flex items-center gap-4 p-4 bg-[#0A0A0A] border border-white/5 rounded-2xl hover:border-[#00D2FF]/30 transition-all group"
+                     className="flex items-center gap-4 p-4 bg-[#0A0A0A] border border-white/5 rounded-2xl hover:border-[#A855F7]/30 transition-all group"
                    >
                       <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shrink-0">
                          <img src={artist.profileImageUrl} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
@@ -63,7 +63,7 @@ export default function DiscoveryFeed() {
                          <p className="font-bold text-white text-sm truncate">{artist.name}</p>
                          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">+{artist.growth}% Velocity</p>
                       </div>
-                      <div className="text-[#00D2FF] opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="text-[#A855F7] opacity-0 group-hover:opacity-100 transition-opacity">
                          <ArrowRight className="w-4 h-4" />
                       </div>
                    </Link>
@@ -81,7 +81,7 @@ export default function DiscoveryFeed() {
                          <Zap className="w-20 h-20" />
                       </div>
                       <div className="flex justify-between items-start">
-                         <span className="px-2 py-1 rounded bg-[#00D2FF1a] text-[#00D2FF] text-[8px] font-black uppercase tracking-widest border border-[#00D2FF1a]">{opp.category}</span>
+                         <span className="px-2 py-1 rounded bg-[#A855F71a] text-[#A855F7] text-[8px] font-black uppercase tracking-widest border border-[#A855F71a]">{opp.category}</span>
                          <span className="text-[9px] font-bold text-zinc-700 uppercase tracking-widest">{opp.deadline}</span>
                       </div>
                       <div className="space-y-2">
@@ -90,7 +90,7 @@ export default function DiscoveryFeed() {
                       </div>
                       <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                          <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{opp.reward}</p>
-                         <Link href="/network/board" className="text-[9px] font-bold text-white uppercase tracking-widest hover:text-[#00D2FF] transition-colors">View Initiative →</Link>
+                         <Link href="/network/board" className="text-[9px] font-bold text-white uppercase tracking-widest hover:text-[#A855F7] transition-colors">View Initiative →</Link>
                       </div>
                    </div>
                 ))}

@@ -6,7 +6,7 @@ import BrandLogo from '@/components/layout/BrandLogo';
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex flex-col font-sans selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col font-sans selection:bg-[#A855F7] selection:text-white">
       
       {/* HEADER */}
       <div className="p-8 flex justify-between items-center relative z-10">
@@ -20,7 +20,7 @@ export default function RegisterPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
          {/* BACKGROUND VIBE */}
          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#00D2FF1a] rounded-full blur-[120px]"></div>
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#A855F71a] rounded-full blur-[120px]"></div>
          </div>
 
          <div className="max-w-4xl w-full space-y-16 relative z-10">
@@ -37,11 +37,11 @@ export default function RegisterPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                
                {/* ARTIST PATH */}
-               <Link href="/studio/register" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-[#00D2FF4d] hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
+               <Link href="/studio/register" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-[#A855F74d] hover:-translate-y-2 transition-all duration-500 shadow-2xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                     <Music className="w-32 h-32 text-[#00D2FF]" />
+                     <Music className="w-32 h-32 text-[#A855F7]" />
                   </div>
-                  <div className="w-16 h-16 rounded-2xl bg-[#00D2FF1a] flex items-center justify-center text-[#00D2FF] group-hover:bg-[#00D2FF] group-hover:text-white transition-all">
+                  <div className="w-16 h-16 rounded-2xl bg-[#A855F71a] flex items-center justify-center text-[#A855F7] group-hover:bg-[#A855F7] group-hover:text-white transition-all">
                      <Sparkles className="w-8 h-8" />
                   </div>
                   <div className="space-y-4">
@@ -50,7 +50,7 @@ export default function RegisterPage() {
                         Own your masters, build your supporter base, and earn more from every stream. No label required.
                      </p>
                   </div>
-                  <div className="flex items-center space-x-3 text-[#00D2FF] font-bold text-[10px] uppercase tracking-[0.2em]">
+                  <div className="flex items-center space-x-3 text-[#A855F7] font-bold text-[10px] uppercase tracking-[0.2em]">
                      <span>Enter Studio Portal</span>
                      <ArrowRight className="w-4 h-4" />
                   </div>

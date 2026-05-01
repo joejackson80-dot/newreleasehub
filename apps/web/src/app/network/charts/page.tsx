@@ -41,24 +41,24 @@ export default function ChartsPage() {
   }, [activeGenre]);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-black">
+    <div className="min-h-screen bg-[#020202] text-white selection:bg-[#A855F7] selection:text-black">
       {/* BACKGROUND DECOR */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full animate-pulse"></div>
-         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#00D2FF]/5 blur-[120px] rounded-full"></div>
+         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#A855F7]/5 blur-[120px] rounded-full"></div>
       </div>
 
       <div className="relative z-10 px-4 py-16 sm:p-16 max-w-7xl mx-auto space-y-12 sm:space-y-16">
         {/* HEADER SECTION */}
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-6">
-            <div className="flex items-center gap-3 text-[#00D2FF]">
+            <div className="flex items-center gap-3 text-[#A855F7]">
                <BarChart3 className="w-6 h-6" />
                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Network Authority</span>
             </div>
             <div>
               <h1 className="text-[clamp(2.5rem,10vw,7.5rem)] font-black mb-4 uppercase italic tracking-tighter leading-none break-words max-w-full">
-                The <span className="text-[#00D2FF]">Charts.</span>
+                The <span className="text-[#A855F7]">Charts.</span>
               </h1>
               <p className="text-zinc-500 text-[clamp(1rem,2.5vw,1.25rem)] font-medium max-w-2xl leading-relaxed">
                 The definitive measurement of independent music equity. <br className="hidden sm:block" />
@@ -68,13 +68,13 @@ export default function ChartsPage() {
           </div>
           
           <div className="relative group w-full md:min-w-[300px]">
-             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-[#00D2FF] transition-colors" />
+             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-[#A855F7] transition-colors" />
              <input 
                type="text" 
                placeholder="SEARCH ARTISTS..."
                value={searchQuery}
                onChange={(e) => setSearchQuery(e.target.value)}
-               className="w-full bg-[#0A0A0A] border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-base font-bold uppercase tracking-widest focus:outline-none focus:border-[#00D2FF]/50 focus:ring-1 focus:ring-[#00D2FF]/20 transition-all shadow-2xl"
+               className="w-full bg-[#0A0A0A] border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-base font-bold uppercase tracking-widest focus:outline-none focus:border-[#A855F7]/50 focus:ring-1 focus:ring-[#A855F7]/20 transition-all shadow-2xl"
              />
           </div>
         </header>
@@ -83,14 +83,14 @@ export default function ChartsPage() {
         <div className="space-y-4">
            <div className="flex items-center justify-between">
               <span className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.3em]">Filter By Genre</span>
-              <span className="text-[9px] font-black text-[#00D2FF] uppercase tracking-[0.3em]">{GENRES.length} Categories</span>
+              <span className="text-[9px] font-black text-[#A855F7] uppercase tracking-[0.3em]">{GENRES.length} Categories</span>
            </div>
             <nav className="flex overflow-x-auto scrollbar-hide gap-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
               {GENRES.map((genre) => (
                 <button 
                   key={genre}
                   onClick={() => setActiveGenre(genre)}
-                  className={`flex-shrink-0 px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeGenre === genre ? 'bg-[#00D2FF] text-black shadow-[0_0_30px_rgba(0,210,255,0.2)]' : 'bg-[#0A0A0A] border border-white/5 text-zinc-500 hover:text-white hover:border-white/20'}`}
+                  className={`flex-shrink-0 px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeGenre === genre ? 'bg-[#A855F7] text-black shadow-[0_0_30px_rgba(168, 85, 247,0.2)]' : 'bg-[#0A0A0A] border border-white/5 text-zinc-500 hover:text-white hover:border-white/20'}`}
                 >
                   {genre}
                 </button>
@@ -101,7 +101,7 @@ export default function ChartsPage() {
          {/* FEATURED SPOTLIGHT */}
          {!isLoading && artists.length > 0 && (
            <div className="relative group cursor-pointer overflow-hidden rounded-[2.5rem] sm:rounded-[3.5rem] border border-white/10 bg-[#0A0A0A] shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-[#00D2FF]/20 opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-[#A855F7]/20 opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
               <div className="relative p-8 sm:p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-12">
                  <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 text-center sm:text-left">
                     <div className="relative">
@@ -116,7 +116,7 @@ export default function ChartsPage() {
                     </div>
                     <div className="space-y-4">
                       <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                          <span className="px-3 py-1 bg-[#00D2FF]/10 text-[#00D2FF] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#00D2FF]/20">Authority: {artists[0].verifiedScore || 85}</span>
+                          <span className="px-3 py-1 bg-[#A855F7]/10 text-[#A855F7] rounded-full text-[9px] font-black uppercase tracking-widest border border-[#A855F7]/20">Authority: {artists[0].verifiedScore || 85}</span>
                           <span className="text-zinc-600 font-black text-[9px] uppercase tracking-widest italic">Peak Momentum</span>
                       </div>
                       <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-black italic uppercase tracking-tighter leading-none truncate max-w-[280px] sm:max-w-lg">{artists[0].name}</h2>
@@ -167,10 +167,10 @@ export default function ChartsPage() {
                   {isLoading ? (
                     <tr>
                       <td colSpan={6} className="p-20 text-center">
-                        <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-[#00D2FF] animate-pulse">
+                        <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-white/5 flex items-center justify-center mx-auto text-[#A855F7] animate-pulse">
                            <Activity className="w-8 h-8" />
                         </div>
-                        <p className="mt-4 text-[10px] font-black text-[#00D2FF] uppercase tracking-[0.4em] animate-pulse">Synchronizing Live Matrix</p>
+                        <p className="mt-4 text-[10px] font-black text-[#A855F7] uppercase tracking-[0.4em] animate-pulse">Synchronizing Live Matrix</p>
                       </td>
                     </tr>
                   ) : artists.length === 0 ? (
@@ -188,7 +188,7 @@ export default function ChartsPage() {
                          <td className="p-10 text-5xl font-black italic text-zinc-900 group-hover:text-zinc-600 transition-all duration-500">{i + 1}</td>
                          <td className="p-10">
                             <div className="flex flex-col items-start gap-1">
-                               <span className="flex items-center gap-1 text-[#00D2FF] font-black text-[11px] uppercase tracking-widest italic">
+                               <span className="flex items-center gap-1 text-[#A855F7] font-black text-[11px] uppercase tracking-widest italic">
                                   <TrendingUp className="w-3.5 h-3.5" />
                                   +{Math.floor(Math.random() * 5) + 1}
                                </span>
@@ -198,17 +198,17 @@ export default function ChartsPage() {
                          <td className="p-10">
                             <div className="flex items-center gap-6">
                                <div className="relative group/avatar">
-                                  <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#00D2FF66] transition-colors shadow-lg overflow-hidden">
+                                  <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-800 group-hover:border-[#A855F766] transition-colors shadow-lg overflow-hidden">
                                      {activeGenre === 'Top Fans' ? (
                                        artist.avatarUrl ? <img src={artist.avatarUrl} alt={artist.displayName} className="w-full h-full object-cover" /> : <Users className="w-8 h-8" />
                                      ) : (
                                        artist.profileImageUrl ? <img src={artist.profileImageUrl} alt={artist.name} className="w-full h-full object-cover" /> : <Users className="w-8 h-8" />
                                      )}
                                   </div>
-                                  <div className="absolute inset-0 bg-[#00D2FF0d] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                                  <div className="absolute inset-0 bg-[#A855F70d] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                                </div>
                                <div className="space-y-1">
-                                  <p className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#00D2FF] transition-colors">
+                                  <p className="font-black italic uppercase tracking-tight text-xl text-white group-hover:text-[#A855F7] transition-colors">
                                     {activeGenre === 'Top Fans' ? artist.displayName : artist.name}
                                   </p>
                                   <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] italic">
@@ -234,7 +234,7 @@ export default function ChartsPage() {
                                </div>
                                <div className="w-40 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
                                   <div 
-                                     className="h-full bg-gradient-to-r from-purple-600 to-[#00D2FF] shadow-[0_0_15px_rgba(0,210,255,0.4)] transition-all duration-1000"                                     style={{ 
+                                     className="h-full bg-gradient-to-r from-purple-600 to-[#A855F7] shadow-[0_0_15px_rgba(168, 85, 247,0.4)] transition-all duration-1000"                                     style={{ 
                                         width: activeGenre === 'Top Fans' 
                                           ? `${(artist.fanXP / (artist.fanLevel * 500)) * 100}%` 
                                           : `${artist.verifiedScore || 10}%` 
@@ -244,9 +244,9 @@ export default function ChartsPage() {
                             </div>
                          </td>
                          <td className="p-10 text-right">
-                           <Link href={activeGenre === 'Top Fans' ? `/fan/${artist.username}` : `/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#00D2FF80] transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
+                           <Link href={activeGenre === 'Top Fans' ? `/fan/${artist.username}` : `/${artist.slug}`} className="inline-block group/follow relative px-8 py-3 bg-white/5 border border-white/10 hover:border-[#A855F780] transition-all text-[9px] font-black uppercase tracking-widest rounded-xl overflow-hidden">
                              <span className="relative z-10 group-hover/follow:text-white">View Protocol</span>
-                             <div className="absolute inset-0 bg-[#00D2FF] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
+                             <div className="absolute inset-0 bg-[#A855F7] translate-y-full group-hover/follow:translate-y-0 transition-transform duration-300 opacity-20"></div>
                            </Link>
                          </td>
                        </tr>
@@ -259,7 +259,7 @@ export default function ChartsPage() {
               <div className="md:hidden divide-y divide-white/5">
                 {isLoading ? (
                   <div className="p-20 text-center">
-                    <Activity className="w-8 h-8 text-[#00D2FF] animate-pulse mx-auto" />
+                    <Activity className="w-8 h-8 text-[#A855F7] animate-pulse mx-auto" />
                   </div>
                 ) : artists.length === 0 ? (
                   <div className="p-20 text-center">
@@ -289,7 +289,7 @@ export default function ChartsPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-[#00D2FF] font-black italic text-sm">
+                        <p className="text-[#A855F7] font-black italic text-sm">
                           {activeGenre === 'Top Fans' ? artist.fanXP : (artist.verifiedScore || 0)}
                         </p>
                         <p className="text-[7px] font-bold text-zinc-700 uppercase tracking-widest">Score</p>
@@ -318,7 +318,7 @@ export default function ChartsPage() {
                  Release music, grow your SUPPORTERs, and dominate the charts.
               </p>
            </div>
-           <Link href="/studio" className="px-12 py-5 bg-[#00D2FF] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(0,210,255,0.2)]">
+           <Link href="/studio" className="px-12 py-5 bg-[#A855F7] text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(168, 85, 247,0.2)]">
               Join the Network
            </Link>
         </footer>

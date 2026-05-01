@@ -55,7 +55,7 @@ export default function FanAuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex flex-col md:flex-row selection:bg-[#00D2FF] selection:text-white">
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col md:flex-row selection:bg-[#A855F7] selection:text-white">
       {/* LEFT SIDE - VISUAL */}
       <div className="hidden md:flex md:w-1/2 bg-[#050505] border-r border-white/5 relative items-center justify-center overflow-hidden">
          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
@@ -65,8 +65,8 @@ export default function FanAuthPage() {
              </h1>
              <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                   <div className="w-10 h-10 rounded-full bg-[#00D2FF1a] flex items-center justify-center shrink-0 mt-1">
-                      <Music className="w-4 h-4 text-[#00D2FF]" />
+                   <div className="w-10 h-10 rounded-full bg-[#A855F71a] flex items-center justify-center shrink-0 mt-1">
+                      <Music className="w-4 h-4 text-[#A855F7]" />
                    </div>
                    <div>
                       <h3 className="font-bold text-sm uppercase tracking-widest">Ad-Free Streaming</h3>
@@ -74,8 +74,8 @@ export default function FanAuthPage() {
                    </div>
                 </div>
                 <div className="flex items-start gap-4">
-                   <div className="w-10 h-10 rounded-full bg-[#00D2FF1a] flex items-center justify-center shrink-0 mt-1">
-                      <ShieldCheck className="w-4 h-4 text-[#00D2FF]" />
+                   <div className="w-10 h-10 rounded-full bg-[#A855F71a] flex items-center justify-center shrink-0 mt-1">
+                      <ShieldCheck className="w-4 h-4 text-[#A855F7]" />
                    </div>
                    <div>
                       <h3 className="font-bold text-sm uppercase tracking-widest">True support</h3>
@@ -97,7 +97,7 @@ export default function FanAuthPage() {
                </div>
 
                <div className="space-y-4">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#A855F7]">
                      <ShieldCheck className="w-4 h-4 fill-current" />
                      <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Secure Network Entry</span>
                   </div>
@@ -127,7 +127,7 @@ export default function FanAuthPage() {
                          value={displayName}
                          onChange={(e) => setDisplayName(e.target.value)}
                          placeholder="MusicLover99"
-                         className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
+                         className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all"
                        />
                        <Users className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" />
                     </div>
@@ -142,7 +142,7 @@ export default function FanAuthPage() {
                        value={identifier}
                        onChange={(e) => setIdentifier(e.target.value)}
                        placeholder="your@email.com"
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all"
                      />
                      <Mail className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" />
                   </div>
@@ -156,7 +156,7 @@ export default function FanAuthPage() {
                        value={password}
                        onChange={(e) => setPassword(e.target.value)}
                        placeholder="••••••••"
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all"
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all"
                      />
                      <Lock className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" />
                   </div>
@@ -165,7 +165,7 @@ export default function FanAuthPage() {
                <button 
                  type="submit" 
                  disabled={isLoading}
-                 className="w-full py-5 rounded-2xl bg-[#00D2FF] text-white font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#00D2FF33] flex items-center justify-center space-x-3 disabled:opacity-50"
+                 className="w-full py-5 rounded-2xl bg-[#A855F7] text-white font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-[#00B8E0] transition-all shadow-lg shadow-[#A855F733] flex items-center justify-center space-x-3 disabled:opacity-50"
                >
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

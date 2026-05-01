@@ -50,7 +50,7 @@ export default function DMCAPage() {
               New Release Hub LLC<br />
               Attn: Copyright Agent<br />
               Omaha, Nebraska<br /><br />
-              <Link href="mailto:dmca@newreleasehub.com" className="text-[#00D2FF] hover:underline">dmca@newreleasehub.com</Link>
+              <Link href="mailto:dmca@newreleasehub.com" className="text-[#A855F7] hover:underline">dmca@newreleasehub.com</Link>
             </p>
           </section>
         </div>

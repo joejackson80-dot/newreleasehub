@@ -7,8 +7,8 @@ const STEPS = [
   {
     title: 'Welcome to the Network',
     icon: Globe,
-    color: 'text-[#00D2FF]',
-    bg: 'bg-[#00D2FF]/10',
+    color: 'text-[#A855F7]',
+    bg: 'bg-[#A855F7]/10',
     description: 'You are now part of the premier network for independent music. Discover rising talent, build your reputation, and directly support the artists you love.'
   },
   {

@@ -55,7 +55,7 @@ export default function ShareClient({ org }: { org: any }) {
                   onClick={() => setSelectedRelease(release)}
                   className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center gap-4 ${
                     selectedRelease?.id === release.id 
-                      ? 'bg-[#00D2FF]/10 border-[#00D2FF]/30 shadow-[0_0_20px_rgba(0,210,255,0.1)]' 
+                      ? 'bg-[#A855F7]/10 border-[#A855F7]/30 shadow-[0_0_20px_rgba(168, 85, 247,0.1)]' 
                       : 'bg-[#111] border-white/5 hover:border-white/20'
                   }`}
                 >
@@ -69,7 +69,7 @@ export default function ShareClient({ org }: { org: any }) {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className={`font-bold truncate ${selectedRelease?.id === release.id ? 'text-[#00D2FF]' : 'text-white'}`}>
+                    <p className={`font-bold truncate ${selectedRelease?.id === release.id ? 'text-[#A855F7]' : 'text-white'}`}>
                       {release.title}
                     </p>
                     <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest truncate">{release.type || 'Single'}</p>
@@ -120,7 +120,7 @@ export default function ShareClient({ org }: { org: any }) {
                             />
                             <button 
                               onClick={handleCopy}
-                              className="p-3 bg-[#00D2FF]/10 text-[#00D2FF] hover:bg-[#00D2FF]/20 transition-colors rounded-xl border border-[#00D2FF]/20"
+                              className="p-3 bg-[#A855F7]/10 text-[#A855F7] hover:bg-[#A855F7]/20 transition-colors rounded-xl border border-[#A855F7]/20"
                             >
                               {isCopied ? <CheckCircle2 className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                             </button>
@@ -132,7 +132,7 @@ export default function ShareClient({ org }: { org: any }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-4">
                         <div className="flex items-center gap-3 text-white">
-                          <Share2 className="w-5 h-5 text-[#00D2FF]" />
+                          <Share2 className="w-5 h-5 text-[#A855F7]" />
                           <h4 className="font-bold">Auto-Campaigns</h4>
                         </div>
                         <p className="text-xs text-gray-400">Instantly share this release to your connected network.</p>
@@ -146,7 +146,7 @@ export default function ShareClient({ org }: { org: any }) {
                         </div>
                       </div>
                       
-                      <div className="p-6 rounded-2xl bg-gradient-to-br from-purple-900/20 to-[#00D2FF]/10 border border-[#00D2FF]/20 space-y-4">
+                      <div className="p-6 rounded-2xl bg-gradient-to-br from-purple-900/20 to-[#A855F7]/10 border border-[#A855F7]/20 space-y-4">
                          <h4 className="font-bold text-white italic">Analytics Tracking Active</h4>
                          <p className="text-xs text-gray-400">This smart link automatically routes users to their preferred streaming app or allows them to purchase Network Stakes directly.</p>
                       </div>
@@ -168,7 +168,7 @@ export default function ShareClient({ org }: { org: any }) {
                                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-black/40">
                                  <img src={selectedRelease.coverArtUrl} alt="" className="w-48 h-48 rounded-xl shadow-2xl mb-6" />
                                  <p className="font-black text-2xl uppercase tracking-tighter text-white text-center leading-none mb-2">{selectedRelease.title}</p>
-                                 <p className="text-[#00D2FF] font-black uppercase tracking-[0.2em] text-[10px]">Out Now on NRH</p>
+                                 <p className="text-[#A855F7] font-black uppercase tracking-[0.2em] text-[10px]">Out Now on NRH</p>
                                </div>
                              </>
                            )}
@@ -193,7 +193,7 @@ export default function ShareClient({ org }: { org: any }) {
                                     <p className="font-black text-3xl uppercase tracking-tighter text-white leading-none">{org.name}</p>
                                  </div>
                                  <img src={selectedRelease.coverArtUrl} alt="" className="w-full aspect-square rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/10" />
-                                 <div className="bg-[#00D2FF] text-black w-full py-4 rounded-xl text-center font-black uppercase tracking-[0.2em] text-xs">
+                                 <div className="bg-[#A855F7] text-black w-full py-4 rounded-xl text-center font-black uppercase tracking-[0.2em] text-xs">
                                    Listen Now
                                  </div>
                                </div>

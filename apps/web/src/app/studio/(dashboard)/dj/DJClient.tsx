@@ -114,7 +114,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
             <button 
                onClick={handleToggleLive}
                disabled={isLoading}
-               className={`px-10 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl disabled:opacity-50 ${isLive ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20' : 'bg-[#00D2FF] hover:bg-[#00B8E0] shadow-blue-500/20'}`}
+               className={`px-10 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl disabled:opacity-50 ${isLive ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20' : 'bg-[#A855F7] hover:bg-[#00B8E0] shadow-blue-500/20'}`}
             >
                {isLoading ? 'Processing...' : isLive ? 'End Broadcast' : 'Go Live Now'}
             </button>
@@ -134,7 +134,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                      {/* Real-time Monitor Player (Muted by default to avoid feedback) */}
                      <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center space-y-4">
-                           <Activity className="w-12 h-12 text-[#00D2FF] animate-pulse mx-auto" />
+                           <Activity className="w-12 h-12 text-[#A855F7] animate-pulse mx-auto" />
                            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Live Ingest Monitor Active</p>
                            <LiveAudioPlayer 
                               playbackId={streamConfig?.playbackId} 
@@ -146,7 +146,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
 
                      <div className="absolute top-10 left-10 flex items-center space-x-6 z-20">
                         <div className="bg-black/60 backdrop-blur-md border border-white/10 px-6 py-3 rounded-2xl flex items-center space-x-3">
-                           <Users className="w-4 h-4 text-[#00D2FF]" />
+                           <Users className="w-4 h-4 text-[#A855F7]" />
                            <span className="text-xl font-bold tabular-nums italic">{listenerCount.toLocaleString()}</span>
                         </div>
                         <div className="bg-red-500/80 backdrop-blur-md px-6 py-3 rounded-2xl flex items-center space-x-3">
@@ -189,7 +189,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                <div className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-4">
                   <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Stream Server (RTMP)</p>
                   <div className="flex items-center justify-between bg-black/50 border border-white/5 p-4 rounded-2xl">
-                     <code className="text-xs text-[#00D2FF] truncate mr-4">{streamConfig?.rtmpUrl || 'Loading...'}</code>
+                     <code className="text-xs text-[#A855F7] truncate mr-4">{streamConfig?.rtmpUrl || 'Loading...'}</code>
                      <button 
                         onClick={() => copyToClipboard(streamConfig?.rtmpUrl, 'url')}
                         className="p-2 hover:bg-white/5 rounded-lg transition-colors"
@@ -201,7 +201,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                <div className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-4">
                   <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Stream Key</p>
                   <div className="flex items-center justify-between bg-black/50 border border-white/5 p-4 rounded-2xl">
-                     <code className="text-xs text-[#00D2FF] truncate mr-4">
+                     <code className="text-xs text-[#A855F7] truncate mr-4">
                         {streamConfig?.streamKey ? '••••••••••••••••' : 'Loading...'}
                      </code>
                      <button 
@@ -220,10 +220,10 @@ export default function DJControlRoom({ artist }: { artist: any }) {
             <div className="bg-[#111] border border-white/5 rounded-[2.5rem] flex flex-col h-[600px] overflow-hidden shadow-2xl">
                <div className="p-8 border-b border-white/5 flex items-center justify-between bg-[#151515]">
                   <div className="flex items-center space-x-3">
-                     <MessageCircle className="w-4 h-4 text-[#00D2FF]" />
+                     <MessageCircle className="w-4 h-4 text-[#A855F7]" />
                      <h3 className="text-xs font-bold uppercase tracking-widest text-white">Live Network Chat</h3>
                   </div>
-                  <span className="bg-[#00D2FF]/10 text-[#00D2FF] px-3 py-1 rounded-full text-[9px] font-mono font-bold">
+                  <span className="bg-[#A855F7]/10 text-[#A855F7] px-3 py-1 rounded-full text-[9px] font-mono font-bold">
                      {isLive ? 'ACTIVE' : 'STANDBY'}
                   </span>
                </div>
@@ -232,7 +232,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                      messages.map((msg, i) => (
                         <div key={i} className="space-y-1 group">
                            <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-widest italic">{msg.user}</span>
+                              <span className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest italic">{msg.user}</span>
                               <span className="text-[8px] text-gray-700 font-bold uppercase tracking-widest">
                                  {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </span>
@@ -257,12 +257,12 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                         onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                         disabled={!isLive || isSending}
                         placeholder={isLive ? "Broadcast to network..." : "Standby for signal..."}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#00D2FF] transition-all disabled:opacity-50"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-[#A855F7] transition-all disabled:opacity-50"
                      />
                      <button 
                         onClick={handleSendMessage}
                         disabled={!isLive || isSending}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-700 hover:text-[#00D2FF] transition-colors disabled:opacity-50"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-700 hover:text-[#A855F7] transition-colors disabled:opacity-50"
                      >
                         <Heart className={`w-4 h-4 ${isSending ? 'animate-ping' : ''}`} />
                      </button>
@@ -278,7 +278,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
                <p className="text-xs text-gray-500 leading-relaxed font-medium">
                   Your broadcast is being distributed via the NRH High-Fidelity Network. All reactions and support during this set are settled instantly.
                </p>
-               <button className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#00D2FF] transition-colors group">
+               <button className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#A855F7] transition-colors group">
                   <Share2 className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                   <span>Invite Network Partners</span>
                </button>

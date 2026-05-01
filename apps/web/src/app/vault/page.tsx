@@ -61,14 +61,14 @@ export default function VaultPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#00D2FF] flex items-center justify-center relative overflow-hidden font-mono selection:bg-[#00D2FF] selection:text-black">
+    <div className="min-h-screen bg-black text-[#A855F7] flex items-center justify-center relative overflow-hidden font-mono selection:bg-[#A855F7] selection:text-black">
       
       {/* --- BACKGROUND EFFECTS --- */}
       {/* 1. Breathing Ambient Core */}
       <motion.div 
         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-[#00D2FF] rounded-full blur-[150px] opacity-30 pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-[#A855F7] rounded-full blur-[150px] opacity-30 pointer-events-none"
       />
 
       {/* 2. Moving Perspective Grid */}
@@ -76,8 +76,8 @@ export default function VaultPage() {
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
           backgroundImage: `
-            linear-gradient(to right, #00D2FF 1px, transparent 1px),
-            linear-gradient(to bottom, #00D2FF 1px, transparent 1px)
+            linear-gradient(to right, #A855F7 1px, transparent 1px),
+            linear-gradient(to bottom, #A855F7 1px, transparent 1px)
           `,
           backgroundSize: '60px 60px',
           transform: 'perspective(1000px) rotateX(60deg) scale(2) translateY(-100px)',
@@ -103,7 +103,7 @@ export default function VaultPage() {
             animate={{ opacity: 1 }}
             className="absolute inset-0 bg-white z-[100] flex items-center justify-center pointer-events-none"
           >
-             <div className="w-full h-px bg-[#00D2FF] shadow-[0_0_50px_20px_#00D2FF] animate-pulse"></div>
+             <div className="w-full h-px bg-[#A855F7] shadow-[0_0_50px_20px_#A855F7] animate-pulse"></div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -119,13 +119,13 @@ export default function VaultPage() {
         transition={{ duration: 1.5, ease: 'easeInOut' }}
         className="relative z-10 w-full max-w-lg p-6"
       >
-        <div className="bg-black/40 backdrop-blur-3xl border border-[#00D2FF]/30 rounded-3xl p-10 flex flex-col items-center text-center space-y-12 shadow-[0_0_80px_rgba(0,210,255,0.15)] relative overflow-hidden">
+        <div className="bg-black/40 backdrop-blur-3xl border border-[#A855F7]/30 rounded-3xl p-10 flex flex-col items-center text-center space-y-12 shadow-[0_0_80px_rgba(168, 85, 247,0.15)] relative overflow-hidden">
            
            {/* Corner Accents */}
-           <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#00D2FF] rounded-tl-3xl opacity-50"></div>
-           <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#00D2FF] rounded-tr-3xl opacity-50"></div>
-           <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#00D2FF] rounded-bl-3xl opacity-50"></div>
-           <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#00D2FF] rounded-br-3xl opacity-50"></div>
+           <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#A855F7] rounded-tl-3xl opacity-50"></div>
+           <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#A855F7] rounded-tr-3xl opacity-50"></div>
+           <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#A855F7] rounded-bl-3xl opacity-50"></div>
+           <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#A855F7] rounded-br-3xl opacity-50"></div>
 
            {/* --- HOLO VAULT MECHANISM --- */}
            <div className="relative w-56 h-56 flex items-center justify-center">
@@ -142,7 +142,7 @@ export default function VaultPage() {
                   repeat: unlockStage === 0 ? Infinity : 0,
                   ease: "linear"
                 }}
-                className="absolute inset-0 rounded-full border border-dashed border-[#00D2FF]/40"
+                className="absolute inset-0 rounded-full border border-dashed border-[#A855F7]/40"
               />
               
               {/* Middle Targeting Ring */}
@@ -157,7 +157,7 @@ export default function VaultPage() {
                   repeat: unlockStage === 0 ? Infinity : 0,
                   ease: "linear"
                 }}
-                className="absolute inset-6 rounded-full border-2 border-dotted border-[#00D2FF]/80"
+                className="absolute inset-6 rounded-full border-2 border-dotted border-[#A855F7]/80"
               />
 
               {/* Inner Hexagon Core */}
@@ -165,10 +165,10 @@ export default function VaultPage() {
                 animate={{ 
                   scale: unlockStage === 1 ? [1, 0.8, 1.1] : unlockStage === 2 ? 1.3 : 1,
                   rotate: unlockStage === 1 ? [0, 90, 180] : 0,
-                  boxShadow: unlockStage >= 1 ? '0 0 80px #00D2FF, inset 0 0 40px #00D2FF' : '0 0 20px rgba(0,210,255,0.2), inset 0 0 10px rgba(0,210,255,0.1)'
+                  boxShadow: unlockStage >= 1 ? '0 0 80px #A855F7, inset 0 0 40px #A855F7' : '0 0 20px rgba(168, 85, 247,0.2), inset 0 0 10px rgba(168, 85, 247,0.1)'
                 }}
                 transition={{ duration: 0.5, repeat: unlockStage === 1 ? Infinity : 0 }}
-                className="w-28 h-28 bg-[#00D2FF]/5 border border-[#00D2FF]/50 flex items-center justify-center relative z-10 backdrop-blur-md"
+                className="w-28 h-28 bg-[#A855F7]/5 border border-[#A855F7]/50 flex items-center justify-center relative z-10 backdrop-blur-md"
                 style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}
               >
                 <AnimatePresence mode="wait">
@@ -187,9 +187,9 @@ export default function VaultPage() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0, opacity: 0 }}
-                      className="text-[#00D2FF]"
+                      className="text-[#A855F7]"
                     >
-                      <Lock className="w-12 h-12 drop-shadow-[0_0_10px_#00D2FF]" />
+                      <Lock className="w-12 h-12 drop-shadow-[0_0_10px_#A855F7]" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -198,7 +198,7 @@ export default function VaultPage() {
 
            {/* --- SYSTEM TEXT --- */}
            <div className="space-y-2 relative z-10 w-full">
-              <div className="flex items-center justify-between text-[10px] text-[#00D2FF]/60 uppercase tracking-[0.3em] mb-2 border-b border-[#00D2FF]/20 pb-2">
+              <div className="flex items-center justify-between text-[10px] text-[#A855F7]/60 uppercase tracking-[0.3em] mb-2 border-b border-[#A855F7]/20 pb-2">
                  <span>SYS.STS</span>
                  <motion.span 
                    animate={{ opacity: [1, 0, 1] }} 
@@ -209,7 +209,7 @@ export default function VaultPage() {
               </div>
               
               <div className="h-8 flex items-center justify-center">
-                 <h2 className={`text-xl font-black tracking-[0.2em] uppercase ${unlockStage >= 2 ? 'text-white drop-shadow-[0_0_10px_#ffffff]' : 'text-[#00D2FF]'}`}>
+                 <h2 className={`text-xl font-black tracking-[0.2em] uppercase ${unlockStage >= 2 ? 'text-white drop-shadow-[0_0_10px_#ffffff]' : 'text-[#A855F7]'}`}>
                    {glitchText}
                  </h2>
               </div>
@@ -219,8 +219,8 @@ export default function VaultPage() {
            <form onSubmit={handleUnlock} className="w-full relative z-10">
               <div className="relative group">
                 {/* Decorative brackets */}
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00D2FF]/30 text-4xl font-light pointer-events-none group-focus-within:text-[#00D2FF] transition-colors">[</div>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[#00D2FF]/30 text-4xl font-light pointer-events-none group-focus-within:text-[#00D2FF] transition-colors">]</div>
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 text-[#A855F7]/30 text-4xl font-light pointer-events-none group-focus-within:text-[#A855F7] transition-colors">[</div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[#A855F7]/30 text-4xl font-light pointer-events-none group-focus-within:text-[#A855F7] transition-colors">]</div>
                 
                 <input 
                    type="password"
@@ -228,7 +228,7 @@ export default function VaultPage() {
                    onChange={(e) => setCode(e.target.value.toUpperCase())}
                    disabled={unlockStage > 0}
                    placeholder="CODE"
-                   className="w-full bg-transparent border-none px-8 py-4 text-center text-3xl sm:text-4xl font-black tracking-[0.5em] focus:outline-none text-white placeholder-[#00D2FF]/20 transition-all disabled:opacity-0"
+                   className="w-full bg-transparent border-none px-8 py-4 text-center text-3xl sm:text-4xl font-black tracking-[0.5em] focus:outline-none text-white placeholder-[#A855F7]/20 transition-all disabled:opacity-0"
                    maxLength={5}
                    autoComplete="off"
                    autoFocus
@@ -236,12 +236,12 @@ export default function VaultPage() {
 
                 {/* Progress bar overlay during decryption */}
                 {unlockStage === 1 && (
-                  <div className="absolute inset-x-8 top-1/2 -translate-y-1/2 h-2 bg-[#00D2FF]/20 rounded-full overflow-hidden">
+                  <div className="absolute inset-x-8 top-1/2 -translate-y-1/2 h-2 bg-[#A855F7]/20 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: '0%' }}
                       animate={{ width: '100%' }}
                       transition={{ duration: 1.8, ease: "linear" }}
-                      className="h-full bg-[#00D2FF] shadow-[0_0_10px_#00D2FF]"
+                      className="h-full bg-[#A855F7] shadow-[0_0_10px_#A855F7]"
                     />
                   </div>
                 )}
@@ -255,7 +255,7 @@ export default function VaultPage() {
            </form>
 
            {/* --- FOOTER STATUS --- */}
-           <div className="w-full flex justify-between items-center text-[8px] text-[#00D2FF]/50 uppercase tracking-[0.2em]">
+           <div className="w-full flex justify-between items-center text-[8px] text-[#A855F7]/50 uppercase tracking-[0.2em]">
               <span className="flex items-center gap-1">
                  <ShieldAlert className="w-3 h-3" />
                  NRH CORE V.3.0

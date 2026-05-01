@@ -10,10 +10,10 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-[#020202] text-white selection:bg-[#00D2FF] selection:text-white">
+    <div className="bg-[#020202] text-white selection:bg-[#A855F7] selection:text-white">
       {/* ── HERO ── */}
       <section className="relative pt-48 pb-32 px-10 border-b border-white/5 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00D2FF]/5 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#A855F7]/5 to-transparent"></div>
         <div className="max-w-4xl mx-auto relative z-10 space-y-16">
            
            {/* LOGO */}
@@ -22,7 +22,7 @@ export default function AboutPage() {
            </div>
 
            <div className="space-y-8">
-              <div className="inline-flex items-center space-x-3 text-[#00D2FF]">
+              <div className="inline-flex items-center space-x-3 text-[#A855F7]">
                  <Star className="w-4 h-4 fill-current" />
                  <span className="text-[10px] font-bold uppercase tracking-[0.4em]">The New Major Platform</span>
               </div>
@@ -42,7 +42,7 @@ export default function AboutPage() {
          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
             <div className="space-y-10">
                <div className="space-y-4">
-                  <div className="flex items-center space-x-3 text-[#00D2FF]">
+                  <div className="flex items-center space-x-3 text-[#A855F7]">
                      <ShieldCheck className="w-5 h-5" />
                      <span className="text-xs font-bold uppercase tracking-widest">Artist First Protocol</span>
                   </div>
@@ -59,7 +59,7 @@ export default function AboutPage() {
             </div>
             <div className="bg-white/5 border border-white/10 rounded-[3rem] p-12 space-y-12">
                <div className="space-y-6">
-                  <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-[#00D2FF]">Verified Integrity.</h3>
+                  <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-[#A855F7]">Verified Integrity.</h3>
                   <p className="text-gray-400 text-sm leading-relaxed font-medium">
                      Our model is built on the principle of verifiable integrity. We use advanced analytics to protect the financial interests of artists. This includes rigorous analysis of streaming patterns to ensure that every cent of royalty is paid out to legitimate human listeners and authenticated fans.
                   </p>
@@ -87,7 +87,7 @@ export default function AboutPage() {
                { icon: Heart, title: "Direct Funding", body: "support tiers allow your biggest fans to fund your next release directly in exchange for revenue sharing." }
             ].map((item, i) => (
                <div key={i} className="p-10 bg-white/5 border border-white/5 rounded-[2.5rem] space-y-6">
-                  <div className="w-14 h-14 rounded-2xl bg-[#00D2FF]/10 flex items-center justify-center text-[#00D2FF]">
+                  <div className="w-14 h-14 rounded-2xl bg-[#A855F7]/10 flex items-center justify-center text-[#A855F7]">
                      <item.icon className="w-7 h-7" />
                   </div>
                   <h4 className="text-2xl font-bold uppercase italic tracking-tighter">{item.title}</h4>
@@ -102,7 +102,7 @@ export default function AboutPage() {
          <div className="max-w-4xl mx-auto space-y-12">
             <h2 className="text-7xl font-bold tracking-tighter italic uppercase">Stop Renting.<br />Start Owning.</h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-               <Link href="/studio/login" className="px-12 py-5 rounded-full bg-[#00D2FF] text-white font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-[#00D2FF]/20">
+               <Link href="/studio/login" className="px-12 py-5 rounded-full bg-[#A855F7] text-white font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-[#A855F7]/20">
                   Artist Onboarding
                </Link>
                <Link href="/fan/login" className="px-12 py-5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
