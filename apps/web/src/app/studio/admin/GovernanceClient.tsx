@@ -149,8 +149,20 @@ export default function GovernanceClient({
                               <button className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all">
                                  Decline
                               </button>
-                              <button className="px-6 py-3 rounded-xl bg-[#00D2FF] text-black text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(0,210,255,0.2)]">
-                                 Authorize
+                              <button 
+                                onClick={async () => {
+                                  setIsProcessing(p.id);
+                                  const { authorizePayout } = await import('@/app/actions/admin');
+                                  const res = await authorizePayout(p.id);
+                                  setIsProcessing(null);
+                                  if (res.error) {
+                                    alert('Payout Failed: ' + res.error);
+                                  }
+                                }}
+                                disabled={isProcessing === p.id}
+                                className="px-6 py-3 rounded-xl bg-[#00D2FF] text-black text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(0,210,255,0.2)] disabled:opacity-50"
+                              >
+                                 {isProcessing === p.id ? 'Processing...' : 'Authorize'}
                               </button>
                            </div>
                         </div>
