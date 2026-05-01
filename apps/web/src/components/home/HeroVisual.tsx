@@ -33,7 +33,9 @@ export default function HeroVisual() {
           
           {/* VINYL CENTER */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-[#111] rounded-full border-4 border-white/5 flex items-center justify-center z-20 shadow-2xl">
-             <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-black text-2xl italic tracking-tighter">N</div>
+             <div className="w-16 h-16 rounded-full flex items-center justify-center">
+               <img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(0,210,255,0.6)]" />
+             </div>
           </div>
 
           {/* SPINNING LIGHT REFLECTIONS */}

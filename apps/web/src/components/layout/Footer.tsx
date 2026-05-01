@@ -14,7 +14,9 @@ export default function Footer() {
           {/* BRAND (col-span-2) */}
           <div className="lg:col-span-2 space-y-8 sm:space-y-10">
             <Link href="/" className="flex flex-col space-y-6 sm:space-y-8 group">
-               <div className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</div>
+               <div className="w-14 h-14 rounded-2xl bg-transparent flex items-center justify-center hover:scale-105 transition-transform">
+                  <img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,210,255,0.3)]" />
+               </div>
                <div className="space-y-1">
                   <span className="text-lg font-bold tracking-tighter uppercase text-white italic leading-none">New Release Hub<span className="text-[#00D2FF]">.</span></span>
                </div>
