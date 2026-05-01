@@ -120,7 +120,7 @@ export default function BoardClient({ initialOpportunities }: { initialOpportuni
          
          {/* LOGO */}
          <div className="flex">
-            <Link href="/" className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
+            <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
          </div>
 
          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 sm:gap-10">

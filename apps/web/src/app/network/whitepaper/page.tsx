@@ -16,7 +16,7 @@ export default function NetworkWhitepaper() {
          <div className="max-w-4xl mx-auto relative z-10 text-center space-y-20">
             {/* INSTITUTIONAL LOGO */}
             <div className="flex justify-center">
-               <Link href="/" className="w-16 h-16 rounded-[2rem] bg-white text-black flex items-center justify-center font-bold text-3xl tracking-tighter hover:scale-105 transition-transform shadow-[0_0_80px_rgba(255,255,255,0.1)]">N</Link>
+               <Link href="/" className="w-16 h-16 rounded-[2rem] bg-transparent text-black flex items-center justify-center font-bold text-3xl tracking-tighter hover:scale-105 transition-transform shadow-[0_0_80px_rgba(255,255,255,0.1)]"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
             </div>
 
             <FadeIn direction="up">

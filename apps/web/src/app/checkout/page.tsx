@@ -71,7 +71,7 @@ function CheckoutContent() {
       
       {/* LEFT: SUMMARY */}
       <div className="w-full md:w-[45%] p-8 md:p-20 flex flex-col justify-center space-y-12 bg-zinc-900/50 border-r border-white/5">
-         <Link href="/" className="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center font-bold text-xl tracking-tighter mb-12">N</Link>
+         <Link href="/" className="w-10 h-10 rounded-xl bg-transparent text-black flex items-center justify-center font-bold text-xl tracking-tighter mb-12"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
          
          <div className="space-y-6">
             <div className="flex items-center space-x-3">

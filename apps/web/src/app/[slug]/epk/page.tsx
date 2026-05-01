@@ -34,7 +34,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
       {/* INSTITUTIONAL HEADER */}
       <header className="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-6 border-b border-white/5 bg-black/40 backdrop-blur-3xl flex justify-between items-center">
          <div className="flex items-center space-x-4">
-            <Link href="/" className="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center font-bold text-xl tracking-tighter hover:scale-105 transition-transform">N</Link>
+            <Link href="/" className="w-10 h-10 rounded-xl bg-transparent text-black flex items-center justify-center font-bold text-xl tracking-tighter hover:scale-105 transition-transform"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
             <div className="flex flex-col">
                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em] leading-none">Institutional Press Kit</span>
                <span className="text-xs font-bold text-white uppercase tracking-tighter italic mt-1">{org.name}</span>

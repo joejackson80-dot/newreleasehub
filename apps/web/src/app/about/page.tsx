@@ -18,7 +18,7 @@ export default function AboutPage() {
            
            {/* LOGO */}
            <div className="flex">
-              <Link href="/" className="w-16 h-16 rounded-[2rem] bg-white text-black flex items-center justify-center font-bold text-3xl tracking-tighter hover:scale-105 transition-transform shadow-2xl">N</Link>
+              <Link href="/" className="w-16 h-16 rounded-[2rem] bg-transparent text-black flex items-center justify-center font-bold text-3xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
            </div>
 
            <div className="space-y-8">
