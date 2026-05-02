@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { DollarSign, PieChart, TrendingUp, Calendar, ArrowRight, Download, CheckCircle2, ShieldCheck, Banknote, Briefcase } from 'lucide-react';
 
 export default function RoyaltiesDashboardClient({ initialPools }: any) {
