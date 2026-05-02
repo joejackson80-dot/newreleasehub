@@ -583,8 +583,10 @@ model MonthlyPool {
   year             Int
   poolATotal       Int        @default(0)
   poolCTotal       Int        @default(0)
+  totalAmountCents Int        @default(0)
   totalPaidStreams Int        @default(0)
   totalFreeStreams Int        @default(0)
+  isFinalized      Boolean    @default(false)
   status           PoolStatus @default(PENDING)
   calculatedAt     DateTime?
   paidAt           DateTime?
