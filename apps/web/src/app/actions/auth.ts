@@ -8,9 +8,11 @@ import { sendWelcomeEmail } from '@/lib/email';
 export async function loginArtist(identifier: string, password: string) {
   try {
     // DEMO MODE FALLBACK
-    if (identifier === 'iamjoejack' && password === 'Password123') {
+    const isDemo = (identifier === 'iamjoejack' || identifier === 'joe@example.com') && password === 'Password123';
+    
+    if (isDemo) {
       const demoArtist = await prisma.organization.findFirst({
-        where: { username: 'iamjoejack' }
+        where: { OR: [{ username: 'iamjoejack' }, { email: 'joe@example.com' }] }
       });
       
       if (demoArtist) {
@@ -80,9 +82,11 @@ export async function loginArtist(identifier: string, password: string) {
 export async function loginFan(identifier: string, password: string) {
   try {
     // DEMO MODE FALLBACK
-    if (identifier === 'johndoe' && password === 'Password123') {
+    const isDemo = (identifier === 'johndoe' || identifier === 'johndoe@example.com') && password === 'Password123';
+    
+    if (isDemo) {
       const demoFan = await prisma.user.findFirst({
-        where: { username: 'johndoe' }
+        where: { OR: [{ username: 'johndoe' }, { email: 'johndoe@example.com' }] }
       });
       
       if (demoFan) {
@@ -322,6 +326,30 @@ export async function logout() {
   cookieStore.delete('nrh_user_session');
   cookieStore.delete('nrh_user_id');
   return { success: true };
+}
+
+export async function getCurrentSession() {
+  const cookieStore = await cookies();
+  const artistId = cookieStore.get('nrh_artist_id')?.value;
+  const userId = cookieStore.get('nrh_user_id')?.value;
+
+  if (artistId) {
+    const artist = await prisma.organization.findUnique({
+      where: { id: artistId },
+      select: { id: true, name: true, username: true, slug: true, role: true }
+    });
+    if (artist) return { type: 'artist', data: artist };
+  }
+
+  if (userId) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, displayName: true, username: true, role: true }
+    });
+    if (user) return { type: 'user', data: user };
+  }
+
+  return null;
 }
 
 

@@ -67,7 +67,7 @@ export async function GET() {
         email: 'johndoe@example.com',
         displayName: 'John Doe',
         passwordHash: '$2a$10$7R6v7v7v7v7v7v7v7v7v7ue', // Hardcoded hash for 'Password123'
-        role: 'fan',
+        role: 'FAN',
         fanLevel: 5,
         fanXP: 1250,
       }

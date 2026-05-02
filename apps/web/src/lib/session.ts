@@ -26,6 +26,7 @@ export async function getSessionArtist(opts?: {
       SupporterSubscriptions: opts?.includeSupporters ? { where: { status: 'ACTIVE' } } : false,
       SupporterTiers: opts?.includeSupporters ? { orderBy: { priceCents: 'asc' } } : false,
       ParticipationLicenses: opts?.includeParticipation ? { orderBy: { createdAt: 'desc' } } : false,
+      DeviceSessions: true,
     }
   });
 

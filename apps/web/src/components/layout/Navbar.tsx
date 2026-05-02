@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X, Award, Zap, Radio, DollarSign, TrendingUp, Users, Info } from 'lucide-react';
+import { Search, Menu, X, Award, Zap, Radio, DollarSign, TrendingUp, Users, Info, LogOut, User as UserIcon } from 'lucide-react';
 import BrandLogo from './BrandLogo';
+import { getCurrentSession, logout } from '@/app/actions/auth';
 
 const NAV_ITEMS = [
   { label: 'Discover', href: '/discover', icon: Zap },
@@ -17,12 +18,26 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
+    
+    // Check session on mount
+    const checkSession = async () => {
+      const s = await getCurrentSession();
+      setSession(s);
+    };
+    checkSession();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.reload();
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 bg-[#111111]/80 backdrop-blur-md border-b border-white/5 py-4`}>
@@ -64,8 +79,29 @@ export default function Navbar() {
               <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-700" />
            </form>
            <div className="flex items-center space-x-4">
-              <Link href="/login" className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#A855F7] transition-colors">Sign In</Link>
-              <Link href="/register" className="btn-primary py-2.5 px-8 text-[10px] tracking-[0.2em]">Join Free</Link>
+              {session ? (
+                <div className="flex items-center space-x-6">
+                  <Link 
+                    href={session.type === 'artist' ? '/studio' : '/fan/me'} 
+                    className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#A855F7] transition-colors"
+                  >
+                    <UserIcon className="w-3 h-3" />
+                    <span>{session.data.name || session.data.displayName}</span>
+                  </Link>
+                  <button 
+                    onClick={handleLogout}
+                    className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-red-500 transition-colors flex items-center space-x-2"
+                  >
+                    <LogOut className="w-3 h-3" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link href="/login" className="text-[10px] font-bold uppercase tracking-widest text-white hover:text-[#A855F7] transition-colors">Sign In</Link>
+                  <Link href="/register" className="btn-primary py-2.5 px-8 text-[10px] tracking-[0.2em]">Join Free</Link>
+                </>
+              )}
            </div>
         </div>
 
@@ -142,8 +178,28 @@ export default function Navbar() {
              </div>
 
              <div className="p-8 border-t border-white/5 bg-[#0A0A0A] space-y-4">
-                <Link href="/login" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block">Sign In</Link>
-                <Link href="/register" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-[#A855F7] text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block shadow-[0_10px_30px_rgba(168, 85, 247,0.3)]">Join Free</Link>
+                {session ? (
+                  <>
+                    <Link 
+                      href={session.type === 'artist' ? '/studio' : '/fan/me'} 
+                      onClick={() => setIsOpen(false)}
+                      className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block"
+                    >
+                      {session.data.name || session.data.displayName} Dashboard
+                    </Link>
+                    <button 
+                      onClick={() => { handleLogout(); setIsOpen(false); }}
+                      className="w-full py-5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 font-black text-[11px] uppercase tracking-[0.2em] text-center block"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block">Sign In</Link>
+                    <Link href="/register" onClick={() => setIsOpen(false)} className="w-full py-5 rounded-2xl bg-[#A855F7] text-white font-black text-[11px] uppercase tracking-[0.2em] text-center block shadow-[0_10px_30px_rgba(168, 85, 247,0.3)]">Join Free</Link>
+                  </>
+                )}
              </div>
           </motion.div>
         )}

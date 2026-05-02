@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Music, ShieldCheck, Mail, Lock, Users, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { loginFan } from '@/app/actions/auth';
+import { loginFan, registerFan } from '@/app/actions/auth';
 
 export default function FanAuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -23,28 +23,23 @@ export default function FanAuthPage() {
       if (isLogin) {
         const result = await loginFan(identifier, password);
         if (result.success) {
-          // Also set localStorage for client-side components (audio player, etc.)
-          localStorage.setItem('nrh_user', 'authenticated');
-          router.push('/fan/me');
+          window.location.href = '/fan/me';
         } else {
           setError(result.error || 'Invalid credentials');
         }
       } else {
-        // Registration — call API to create user, then log in
-        const res = await fetch('/api/fan/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: displayName, email: identifier, password })
+        // Use server action for registration so cookies are set automatically
+        const result = await registerFan({ 
+          username: displayName.toLowerCase().replace(/\s+/g, ''), 
+          email: identifier, 
+          displayName: displayName,
+          password: password 
         });
-        const data = await res.json();
-        if (data.success) {
-          const loginResult = await loginFan(identifier, password);
-          if (loginResult.success) {
-            localStorage.setItem('nrh_user', 'authenticated');
-            router.push('/fan/me');
-          }
+        
+        if (result.success) {
+          window.location.href = '/fan/me';
         } else {
-          setError(data.error || 'Registration failed');
+          setError(result.error || 'Registration failed');
         }
       }
     } catch (err) {

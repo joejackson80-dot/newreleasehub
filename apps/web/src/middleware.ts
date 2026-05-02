@@ -14,25 +14,22 @@ const limits = {
   general:   new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(100, '60 s'), prefix: 'nrh:general' }),
 }
 
-export async function proxy(request: NextRequest) {
+import { auth } from "@/auth"
+
+export default auth(async function middleware(request) {
   const ip = (request as any).ip ?? request.headers.get('x-forwarded-for') ?? 'unknown'
   const path = request.nextUrl.pathname
+  const session = request.auth;
 
   // Honeypot traps — instant block for common vulnerability scanners
   const honeypots = ['/wp-admin', '/admin', '/.git', '/config', '/.env', '/xmlrpc.php', '/phpmyadmin', '/wp-login.php'];
   if (honeypots.some(hp => path.startsWith(hp) || path.includes(hp))) {
-    console.warn(`[NRH HONEYPOT] Blocked IP ${ip} targeting sensitive path: ${path}`);
-    return new NextResponse('Internal Server Error', { status: 403 });
+    // Exception: /admin is a legitimate path in our app, so only block if it's a typical bot pattern or subpath
+    if (path.startsWith('/admin') && path.length > 6) {
+      console.warn(`[NRH HONEYPOT] Blocked IP ${ip} targeting sensitive path: ${path}`);
+      return new NextResponse('Internal Server Error', { status: 403 });
+    }
   }
-
-  // Vault Gate Protection
-  const isVaultUnlocked = request.cookies.has('nrh_vault_unlocked');
-  const isVaultRoute = path.startsWith('/vault') || path.startsWith('/api/vault');
-  
-  if (!isVaultUnlocked && !isVaultRoute) {
-    return NextResponse.redirect(new URL('/vault', request.url));
-  }
-
 
   // Skip rate limiting if Redis env vars are missing (development safety)
   if (process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
@@ -59,11 +56,15 @@ export async function proxy(request: NextRequest) {
 
   // Protect /studio/* routes
   if (path.startsWith('/studio')) {
-    // Exclude login/register/welcome from protection
     const isPublicStudio = path === '/studio/login' || path === '/studio/register' || path === '/studio/welcome';
     if (!isPublicStudio) {
-      const artistSession = request.cookies.get('artist_id') || request.cookies.get('nrh_artist_session');
-      if (!artistSession) {
+      if (!session) {
+        return NextResponse.redirect(new URL('/studio/login', request.url));
+      }
+      // Optional: Check if role is ARTIST
+      if ((session.user as any)?.role !== 'ARTIST') {
+        // If a fan tries to access studio, send them back or show error
+        // For now, redirect to login with error is complex in middleware, so just redirect to login
         return NextResponse.redirect(new URL('/studio/login', request.url));
       }
     }
@@ -71,22 +72,20 @@ export async function proxy(request: NextRequest) {
 
   // Protect /fan/me routes
   if (path.startsWith('/fan/me')) {
-    const fanSession = request.cookies.get('fan_id');
-    if (!fanSession) {
+    if (!session) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
   // Protect /admin/* routes
   if (path.startsWith('/admin')) {
-    const userRole = request.cookies.get('user_role')?.value;
-    if (userRole !== 'nrh_admin') {
+    if ((session?.user as any)?.role !== 'ADMIN') {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
 
   return NextResponse.next()
-}
+})
 
 export const config = { 
   matcher: [

@@ -50,6 +50,7 @@ import MainLayoutWrapper from "@/components/layout/MainLayoutWrapper";
 import GlobalAudioPlayer from "@/components/layout/GlobalAudioPlayer";
 import { AudioProvider } from "@/context/AudioContext";
 import CookieConsent from "@/components/layout/CookieConsent";
+import AuthSessionProvider from "@/components/providers/SessionProvider";
 
 export default function RootLayout({
   children,
@@ -63,23 +64,25 @@ export default function RootLayout({
       data-deployment-id="v2-stable-layout"
     >
       <body className="min-h-full flex flex-col bg-[#020202] font-sans selection:bg-[#A855F7] selection:text-white">
-        <Toaster
-          position="bottom-center"
-          toastOptions={{
-            style: {
-              background: '#1D1D1B',
-              color: '#F4F3EF',
-              border: '1px solid rgba(255,255,255,0.08)',
-            },
-          }}
-        />
-        <AudioProvider>
-          <MainLayoutWrapper>
-            {children}
-          </MainLayoutWrapper>
-          <GlobalAudioPlayer />
-          <CookieConsent />
-        </AudioProvider>
+        <AuthSessionProvider>
+          <Toaster
+            position="bottom-center"
+            toastOptions={{
+              style: {
+                background: '#1D1D1B',
+                color: '#F4F3EF',
+                border: '1px solid rgba(255,255,255,0.08)',
+              },
+            }}
+          />
+          <AudioProvider>
+            <MainLayoutWrapper>
+              {children}
+            </MainLayoutWrapper>
+            <GlobalAudioPlayer />
+            <CookieConsent />
+          </AudioProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );

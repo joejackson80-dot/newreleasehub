@@ -66,7 +66,7 @@ model Organization {
   Posts                  Post[]
   ServiceOrdersBought    ServiceOrder[]         @relation("ServiceBuyer")
   ServiceProvider        ServiceProvider?
-  Sessions               Session[]
+  DeviceSessions         DeviceSession[]
   SessionArchives        SessionArchive[]
   SentDMs                DirectMessage[]        @relation("SentOrgDMs")
   ReceivedDMs            DirectMessage[]        @relation("ReceivedOrgDMs")
@@ -154,9 +154,12 @@ model Release {
 
 model User {
   id                  String               @id @default(cuid())
-  displayName         String
+  name                String?              // NextAuth field
+  displayName         String?              // Old field
   email               String               @unique
-  avatarUrl           String?
+  emailVerified       DateTime?            // NextAuth field
+  image               String?              // NextAuth field
+  avatarUrl           String?              // Old field
   badges              String[]             @default([])
   crate               String[]             @default([])
   createdAt           DateTime             @default(now())
@@ -164,11 +167,17 @@ model User {
   subscriptionStatus  String               @default("free")
   isActive            Boolean              @default(true)
   passwordHash        String?
-  role                String               @default("fan")
+  role                UserRole             @default(FAN)
   tier                String               @default("LISTENER")
   fanLevel            Int                  @default(1)
   fanXP               Int                  @default(0)
   username            String?              @unique
+  artistId            String?              @unique
+  fanId               String?              @unique
+  
+  accounts            Account[]            // NextAuth relation
+  sessions            Session[]            // NextAuth relation
+  
   AdImpressions       AdImpression[]
   FanRoyaltyShares    FanRoyaltyShare[]
   FanSubscriptions    FanSubscription[]
@@ -735,7 +744,7 @@ model FraudIncident {
   Organization        Organization @relation(fields: [artistId], references: [id])
 }
 
-model Session {
+model DeviceSession {
   id           String       @id @default(cuid())
   userId       String
   deviceId     String       @default("")
@@ -744,6 +753,45 @@ model Session {
   createdAt    DateTime     @default(now())
   expiresAt    DateTime
   Organization Organization @relation(fields: [userId], references: [id])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  FAN
+  ARTIST
+  ENTERPRISE
+  ADMIN
 }
 
 model ServiceProvider {

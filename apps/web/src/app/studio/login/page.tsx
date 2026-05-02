@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loginArtist } from '@/app/actions/auth';
+import { signIn } from 'next-auth/react';
 import { ArrowLeft, ArrowRight, Music2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -18,28 +18,36 @@ export default function ArtistLogin() {
     setError('');
 
     try {
-      const result = await loginArtist(identifier, password);
-      if (result.success) {
-        window.location.href = '/studio';
+      const result = await signIn('credentials', {
+        username: identifier,
+        password: password,
+        role: 'artist',
+        callbackUrl: '/studio',
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Invalid credentials');
+        return;
+      }
+
+      // We need to check the session to verify the role
+      // Since NextAuth signIn with redirect: false doesn't return the user object easily here,
+      // we'll fetch the session or just rely on the callbackUrl if we're sure.
+      // However, the instructions say to check role.
+      
+      const res = await fetch('/api/auth/session');
+      const session = await res.json();
+      
+      if (session?.user?.role === 'FAN') {
+        setError('This is the artist portal. Fan login is at newreleasehub.com/login');
+        // Sign out if they shouldn't be here
+        await fetch('/api/auth/signout', { method: 'POST' });
       } else {
-        setError(result.error || 'Invalid credentials');
+        window.location.href = '/studio';
       }
     } catch (err: any) {
       setError('An error occurred. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleDemoLogin = async () => {
-    setIsSubmitting(true);
-    try {
-      const result = await loginArtist('iamjoejack', 'Password123');
-      if (result.success) {
-        window.location.href = '/studio';
-      }
-    } catch (err) {
-      setError('Demo login failed');
     } finally {
       setIsSubmitting(false);
     }
@@ -117,7 +125,7 @@ export default function ArtistLogin() {
         <div className="mt-6 grid grid-cols-2 gap-4">
           <button 
             type="button" 
-            onClick={handleDemoLogin}
+            onClick={() => signIn('google', { callbackUrl: '/studio' })}
             className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
             <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
@@ -125,7 +133,7 @@ export default function ArtistLogin() {
           </button>
           <button 
             type="button" 
-            onClick={handleDemoLogin}
+            onClick={() => signIn('apple', { callbackUrl: '/studio' })}
             className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
             <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">A</div>

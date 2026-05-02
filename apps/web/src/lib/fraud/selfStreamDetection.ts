@@ -6,7 +6,7 @@ export async function detectSelfStreaming(artistId: string): Promise<{
   suspiciousDeviceIds: string[]
 }> {
   // Get artist's login deviceIds and IPs (from their studio sessions)
-  const artistSessions = await prisma.session.findMany({
+  const artistSessions = await prisma.deviceSession.findMany({
     where: { userId: artistId },
     select: { deviceId: true, ipAddress: true },
     distinct: ['deviceId']
