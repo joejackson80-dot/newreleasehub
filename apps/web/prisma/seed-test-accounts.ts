@@ -149,7 +149,7 @@ async function main() {
       email:       'johndoe@testmail.com',
       passwordHash,
       displayName: 'John Doe',
-      role:        'fan',
+      role:        'FAN',
       tier:        'LISTENER',
       isActive:    true,
     }

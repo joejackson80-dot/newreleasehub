@@ -237,7 +237,7 @@ export async function registerFan(data: { email: string, username: string, displ
         username: data.username,
         displayName: data.displayName,
         passwordHash,
-        role: 'fan',
+        role: 'FAN',
       }
     });
 

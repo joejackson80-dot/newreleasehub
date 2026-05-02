@@ -11,7 +11,7 @@ export async function sendChatMessage(orgId: string, text: string) {
     // Try to get fan session first
     try {
       const fan = await getSessionFan();
-      userDisplayName = fan.displayName;
+      userDisplayName = fan.displayName || fan.username || 'Anonymous Fan';
     } catch (e) {
       // If not fan, try artist
       try {

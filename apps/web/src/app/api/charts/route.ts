@@ -58,7 +58,7 @@ export async function GET(req: Request) {
       }));
     } else if (genre === 'Top Fans') {
       ranking = await prisma.user.findMany({
-        where: { role: 'fan' },
+        where: { role: 'FAN' },
         orderBy: [
           { fanLevel: 'desc' },
           { fanXP: 'desc' }
