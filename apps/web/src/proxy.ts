@@ -40,7 +40,10 @@ export async function proxy(request: NextRequest) {
   }
 
   // ── Rate limiting via Upstash (only when env vars present) ──
-  if (process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
+  // ⚠  /api/auth/* is intentionally excluded — NextAuth OAuth handshakes
+  //    make 3-5 rapid internal requests which would trip any tight limiter.
+  const isAuthRoute = path.startsWith('/api/auth')
+  if (!isAuthRoute && process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
     try {
       // Dynamic import keeps @upstash/* out of the initial bundle
       const { Ratelimit } = await import('@upstash/ratelimit')
@@ -54,8 +57,6 @@ export async function proxy(request: NextRequest) {
       let limiter: InstanceType<typeof Ratelimit>
       if (path.startsWith('/api/discovery') || path.startsWith('/api/charts')) {
         limiter = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(20, '60 s'), prefix: 'nrh:discovery' })
-      } else if (path.startsWith('/api/auth')) {
-        limiter = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(5, '60 s'), prefix: 'nrh:auth' })
       } else if (path.startsWith('/api/studio/earnings') || path.startsWith('/api/royalties')) {
         limiter = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, '60 s'), prefix: 'nrh:royalties' })
       } else {
@@ -68,7 +69,8 @@ export async function proxy(request: NextRequest) {
         return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
       }
     } catch (err) {
-      console.error('Rate limit error:', err)
+      // Fail open — log the error but never block a request due to Redis failure
+      console.warn('[NRH RATE LIMIT] Redis error, failing open:', err)
     }
   }
 
