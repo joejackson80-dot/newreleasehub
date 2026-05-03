@@ -57,7 +57,7 @@ import StudioSidebar from '@/components/studio/StudioSidebar';
 import StudioBottomNav from '@/components/studio/StudioBottomNav';
 import WalkthroughModal from '@/components/studio/WalkthroughModal';
 import Breadcrumbs from '@/components/studio/Breadcrumbs';
-import NetworkStatusBar from '@/components/layout/NetworkStatusBar';
+
 import { getSessionArtist } from '@/lib/session';
 
 export default async function StudioLayout({ children }: { children: React.ReactNode }) {
@@ -69,7 +69,7 @@ export default async function StudioLayout({ children }: { children: React.React
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#020202] pb-20 md:pb-0">
-        <NetworkStatusBar />
+
         <div className="flex-1 overflow-y-auto">
           <div className="px-8 md:px-12 pt-8">
             <Breadcrumbs />

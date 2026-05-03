@@ -237,7 +237,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                       <li className="flex items-center gap-4 bg-[#A855F7]/5 border border-[#A855F7]/10 p-4 rounded-2xl">
                         <Zap className="w-5 h-5 text-[#A855F7]" />
                         <div>
-                           <p className="text-xs font-black text-white uppercase tracking-widest">{tier.revenueSharePercent * 100}% Royalty Stake</p>
+                           <p className="text-xs font-black text-white uppercase tracking-widest">{tier.revenueSharePercent}% Royalty Stake</p>
                            <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Calculated on gross platform revenue</p>
                         </div>
                       </li>

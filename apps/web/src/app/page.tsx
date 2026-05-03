@@ -14,7 +14,7 @@ const ARTIST_IMAGE_POOL = [
 
 import NetworkFeed from '@/components/network/NetworkFeed';
 import HeroVisual from '@/components/home/HeroVisual';
-import MusicNewsFeed from '@/components/network/MusicNewsFeed';
+
 
 export default async function HomePage() {
   const hubs = await prisma.organization.findMany({
@@ -198,7 +198,7 @@ export default async function HomePage() {
                   <Link href="/radio" className="px-12 py-5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#A855F7] hover:text-white transition-all shadow-2xl">Enter the Broadcast</Link>
                   <div className="flex items-center gap-4 px-8 py-5 rounded-full bg-white/5 border border-white/10 text-gray-500 text-[10px] font-bold uppercase tracking-widest">
                      <Users className="w-4 h-4 text-[#A855F7]" />
-                     <span>84.2k active listeners</span>
+                     <span>Active Rotation</span>
                   </div>
                </div>
             </div>
@@ -228,12 +228,6 @@ export default async function HomePage() {
       </section>
 
 
-      {/* MUSIC INDUSTRY NEWS */}
-      <section className="py-24 sm:py-32 lg:py-40 px-6 md:px-16 bg-[#020202]">
-         <div className="max-w-7xl mx-auto">
-            <MusicNewsFeed />
-         </div>
-      </section>
 
       {/* HOW IT WORKS */}
       <section className="py-16 sm:py-20 lg:py-32 bg-[#050505] border-y border-white/5 px-4 sm:px-8 lg:px-16">
