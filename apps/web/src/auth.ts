@@ -13,14 +13,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId:     process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       profile(profile, tokens) {
-        // tokens.params might contain our role hint in some providers, 
-        // but typically we'll use a specific logic in the signIn callback.
+        // We'll return the base profile here.
+        // The role will be refined in the signIn callback where we have more context.
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          role: 'FAN', // Default, will be refined in signIn callback
+          role: 'FAN', 
         }
       }
     }),
@@ -119,29 +119,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { email: user.email! }
         })
         
-        // If they already exist, we DO NOT change their role.
         if (existing) {
-          return true
+          // If the user already exists, we ensure the token and session get their real role
+          (user as any).role = existing.role;
+          return true;
         }
 
-        // Detect intent from referer or implicit role hint passed in authorization params
-        // Since profile/account structure can vary, we'll check if a role was injected
-        const targetRole = (account as any)?.role === 'ARTIST' ? 'ARTIST' : 'FAN';
-
-        // NOTE: In the UI we passed { role: 'ARTIST' } as the 3rd arg to signIn()
-        // which puts it in account.params if configured, but let's be safe.
-        // If we can't detect it, we default to FAN.
+        // If they are brand new, detect the intended role
+        // NextAuth v5 passes authorization params to account.role if we configured it,
+        // but here we'll use a safer fallback: check the referer or just default to FAN.
+        // Actually, we'll use a hack: if we're on the server, we can check the request URL
+        // but since we're in a callback, we'll rely on the default and they can upgrade.
         
-        await prisma.user.upsert({
-          where: { email: user.email! },
-          create: {
-            email: user.email!,
-            name: user.name,
-            image: user.image,
-            role: targetRole as any
-          },
-          update: {}
-        })
+        // BETTER: We'll check if a role hint was passed in the authorization params
+        const targetRole = (account as any)?.role === 'ARTIST' ? 'ARTIST' : 'FAN';
+        (user as any).role = targetRole;
+
+        // Since we're using the PrismaAdapter, NextAuth will create the user.
+        // We just need to make sure the object we return HAS the role.
       }
       return true
     }
