@@ -115,14 +115,13 @@ export default function FanLoginPage() {
                     <Globe className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
                    <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
                 </button>
-                <button 
-                 type="button" 
-                 onClick={() => signIn('apple', { callbackUrl: '/fan/me' })}
+                <Link
+                 href="/register/fan"
                  className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"
                 >
-                    <Zap className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                   <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
-                </button>
+                    <Mail className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                   <span className="text-[10px] font-bold uppercase tracking-widest">Sign Up</span>
+                </Link>
              </div>
         </form>
 

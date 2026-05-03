@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
-import AppleProvider from 'next-auth/providers/apple'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
@@ -13,11 +12,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     GoogleProvider({
       clientId:     process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-
-    AppleProvider({
-      clientId:     process.env.APPLE_ID!,
-      clientSecret: process.env.APPLE_SECRET!,
     }),
 
     CredentialsProvider({
@@ -86,7 +80,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account, profile }) {
       // On Google/Apple sign-in, set default role to FAN
       // Artist OAuth sign-in handled separately below
-      if (account?.provider === 'google' || account?.provider === 'apple') {
+      if (account?.provider === 'google') {
         // User is automatically created by PrismaAdapter
         // Set role to FAN if new user
         const existing = await prisma.user.findUnique({

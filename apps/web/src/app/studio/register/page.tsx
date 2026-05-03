@@ -5,6 +5,7 @@ import { registerArtist } from '@/app/actions/auth';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 
 export default function ArtistRegisterPage() {
   const router = useRouter();
@@ -152,11 +153,11 @@ export default function ArtistRegisterPage() {
           </button>
           <button 
             type="button" 
-            onClick={handleDemoLogin}
+            onClick={() => signIn('google', { callbackUrl: '/studio' })}
             className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
-            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">A</div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Apple</span>
+            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
           </button>
         </div>
 
