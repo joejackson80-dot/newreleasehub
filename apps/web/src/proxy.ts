@@ -88,7 +88,13 @@ export async function proxy(request: NextRequest) {
       path === '/studio/welcome'
 
     if (!isPublicStudio) {
-      if (!token || token.role !== 'ARTIST') {
+      if (!token) {
+        return NextResponse.redirect(new URL('/studio/login', request.url))
+      }
+      if (token.role === 'FAN') {
+        return NextResponse.redirect(new URL('/studio/error/role-mismatch', request.url))
+      }
+      if (token.role !== 'ARTIST' && token.role !== 'ADMIN') {
         return NextResponse.redirect(new URL('/studio/login', request.url))
       }
     }

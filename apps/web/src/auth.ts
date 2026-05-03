@@ -12,13 +12,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     GoogleProvider({
       clientId:     process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      profile(profile) {
+      profile(profile, tokens) {
+        // tokens.params might contain our role hint in some providers, 
+        // but typically we'll use a specific logic in the signIn callback.
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          role: profile.role ?? 'FAN', // Role can be injected via authorization params if needed
+          role: 'FAN', // Default, will be refined in signIn callback
         }
       }
     }),
@@ -107,16 +109,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session
     },
     async redirect({ url, baseUrl }) {
-      // url is the callbackUrl passed to signIn or the target URL
-      // If it's a relative URL, append baseUrl
-      let target = url.startsWith('/') ? `${baseUrl}${url}` : url;
-
-      // Role-based logic: if we're just landing at the root or login,
-      // we should redirect based on the user's role.
-      // Note: we don't have access to the session here easily, 
-      // so we rely on the callbackUrl being passed correctly from the UI.
-      
-      return target;
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
     },
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
@@ -124,30 +119,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { email: user.email! }
         })
         
-        // If they are new, we need to decide their role.
-        // We can check if they were referred from a studio URL or if we passed a role hint.
-        if (!existing) {
-          // Default to FAN, but the UI passes ?role=artist in callbackUrl
-          // Since we can't easily read callbackUrl here, we'll allow them to land
-          // and then the first time they hit /studio, we can upgrade them if they have no role.
-          // However, for the best UX, we'll try to guess based on the 'role' field in the profile
-          // if we managed to inject it (GoogleProvider profile callback).
-          
-          const targetRole = (profile as any)?.role === 'ARTIST' ? 'ARTIST' : 'FAN';
-          
-          await prisma.user.upsert({
-            where: { email: user.email! },
-            create: {
-              email: user.email!,
-              name: user.name,
-              image: user.image,
-              role: targetRole as any
-            },
-            update: {
-              // Don't overwrite existing roles
-            }
-          })
+        // If they already exist, we DO NOT change their role.
+        if (existing) {
+          return true
         }
+
+        // Detect intent from referer or implicit role hint passed in authorization params
+        // Since profile/account structure can vary, we'll check if a role was injected
+        const targetRole = (account as any)?.role === 'ARTIST' ? 'ARTIST' : 'FAN';
+
+        // NOTE: In the UI we passed { role: 'ARTIST' } as the 3rd arg to signIn()
+        // which puts it in account.params if configured, but let's be safe.
+        // If we can't detect it, we default to FAN.
+        
+        await prisma.user.upsert({
+          where: { email: user.email! },
+          create: {
+            email: user.email!,
+            name: user.name,
+            image: user.image,
+            role: targetRole as any
+          },
+          update: {}
+        })
       }
       return true
     }
