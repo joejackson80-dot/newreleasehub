@@ -154,7 +154,7 @@ export async function loginFan(identifier: string, password: string) {
 
 export async function registerArtist(data: { email: string, username: string, name: string, password: string, planTier?: 'FREE' | 'PRO' | 'ELITE' }) {
   try {
-    const existing = await prisma.organization.findFirst({
+    const existingOrg = await prisma.organization.findFirst({
       where: {
         OR: [
           { email: { equals: data.email, mode: 'insensitive' } },
@@ -163,33 +163,56 @@ export async function registerArtist(data: { email: string, username: string, na
       }
     });
 
-    if (existing) {
+    const existingUser = await prisma.user.findUnique({
+      where: { email: data.email }
+    });
+
+    if (existingOrg || existingUser) {
       return { success: false, error: 'Email or username already in use' };
     }
 
     const passwordHash = await bcrypt.hash(data.password, 10);
-    // Sanitize slug: replace spaces/special chars with hyphens
     const slug = data.username.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
-    const artist = await prisma.organization.create({
-      data: {
-        email: data.email,
-        username: data.username,
-        name: data.name,
-        slug: slug,
-        passwordHash,
-        planTier: data.planTier || 'FREE',
-        isPublic: false,
-      }
+    // Create BOTH Organization and User to allow NextAuth login
+    const [artist, user] = await prisma.$transaction([
+      prisma.organization.create({
+        data: {
+          email: data.email,
+          username: data.username,
+          name: data.name,
+          slug: slug,
+          passwordHash,
+          planTier: data.planTier || 'FREE',
+          isPublic: false,
+          role: 'ARTIST'
+        }
+      }),
+      prisma.user.create({
+        data: {
+          email: data.email,
+          username: data.username,
+          name: data.name,
+          passwordHash,
+          role: 'ARTIST',
+          artistId: 'pending' // We'll link these properly later or use email as link
+        }
+      })
+    ]);
+
+    // Update user with the actual artist ID
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { artistId: artist.id }
     });
 
     console.log(`New Artist registered: ${artist.email} (${artist.id})`);
 
-    // Send Welcome Email
     if (data.email) {
       sendWelcomeEmail({ to: data.email, name: data.name }).catch(console.error);
     }
 
+    // Set legacy cookies for backward compatibility if needed
     const cookieStore = await cookies();
     cookieStore.set('nrh_artist_session', 'true', {
       httpOnly: true,

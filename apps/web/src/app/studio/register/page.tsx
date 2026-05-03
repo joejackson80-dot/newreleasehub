@@ -145,7 +145,7 @@ export default function ArtistRegisterPage() {
         <div className="mt-6">
           <button 
             type="button" 
-            onClick={() => signIn('google', { callbackUrl: '/studio' })}
+            onClick={() => signIn('google', { callbackUrl: '/studio?role=artist' })}
             className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
             <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
