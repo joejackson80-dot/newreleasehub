@@ -142,22 +142,14 @@ export default function ArtistRegisterPage() {
           <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4">
-          <button 
-            type="button" 
-            onClick={handleDemoLogin}
-            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
-          >
-            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
-          </button>
+        <div className="mt-6">
           <button 
             type="button" 
             onClick={() => signIn('google', { callbackUrl: '/studio' })}
-            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+            className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
             <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Register with Google</span>
           </button>
         </div>
 
