@@ -66,6 +66,39 @@ export const createSubscriptionSession = async (userId: string, userEmail: strin
   });
 };
 
+export const createSupporterSession = async (userId: string, userEmail: string, artistId: string, tierId: string, priceCents: number, artistName: string, tierName: string) => {
+  return await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: `${tierName} Supporter for ${artistName}`,
+          },
+          unit_amount: priceCents,
+          recurring: {
+            interval: 'month'
+          }
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'subscription',
+    customer_email: userEmail,
+    client_reference_id: userId,
+    metadata: {
+      userId: userId,
+      artistId: artistId,
+      tierId: tierId,
+      type: 'SUPPORTER_SUBSCRIPTION',
+      protocol: 'PROFESSIONAL_V2.4'
+    },
+    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/fan/me?support=success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/fan/checkout?artist=${artistId}`,
+  });
+};
+
 export const createConnectAccount = async (email: string) => {
   return await stripe.accounts.create({
     type: 'express',

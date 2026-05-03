@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       success: true, 
       stats: {
         ...stats,
-        firstDiscoveries: discoveries // Mocking for now based on support count
+        firstDiscoveries: [] // Pending true real-time date logic implementation
       }
     });
   } catch (error: any) {

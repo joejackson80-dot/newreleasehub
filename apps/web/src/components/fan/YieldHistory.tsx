@@ -106,7 +106,7 @@ export default function YieldHistory() {
                           </div>
                        </td>
                        <td className="p-8">
-                          <span className="text-xs font-black text-[#A855F7] italic">{(share.revenueSharePercent * 100).toFixed(1)}%</span>
+                          <span className="text-xs font-black text-[#A855F7] italic">{share.revenueSharePercent.toFixed(1)}%</span>
                        </td>
                        <td className="p-8">
                           <div className="flex items-center gap-2">

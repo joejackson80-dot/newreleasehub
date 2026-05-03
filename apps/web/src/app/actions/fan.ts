@@ -2,6 +2,7 @@
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
 import { checkAndAwardFanBadges } from '@/lib/fan/badges';
+import { createSupporterSession } from '@/lib/stripe';
 
 export async function processFanCheckout(artistId: string, tierId: string) {
   try {
@@ -19,54 +20,20 @@ export async function processFanCheckout(artistId: string, tierId: string) {
       });
     }
 
-    const tier = await prisma.supporterTier.findUnique({ where: { id: tierId } });
-    if (!tier) throw new Error("Tier not found");
+    const tier = await prisma.supporterTier.findUnique({ where: { id: tierId }, include: { Organization: true } });
+    if (!tier || !tier.Organization) throw new Error("Tier not found");
 
-    // Get current supporter count to assign the supporter number
-    const currentCount = await prisma.supporterSubscription.count({
-      where: { artistId }
-    });
+    const session = await createSupporterSession(
+      user.id,
+      user.email,
+      artistId,
+      tierId,
+      tier.priceCents,
+      tier.Organization.name,
+      tier.name
+    );
 
-    const subscription = await prisma.supporterSubscription.create({
-      data: {
-        fanId: user.id,
-        artistId,
-        tierId,
-        supporterNumber: currentCount + 1,
-        priceCents: tier.priceCents,
-        revenueSharePercent: tier.revenueSharePercent,
-        status: 'ACTIVE',
-      }
-    });
-
-    // Update the organization's supporter count
-    await prisma.organization.update({
-      where: { id: artistId },
-      data: { supporterCount: { increment: 1 } }
-    });
-
-    // Award XP to the fan
-    const userUpdate = await prisma.user.findUnique({ where: { id: user.id }, select: { fanXP: true, fanLevel: true } });
-    if (userUpdate) {
-       let newXP = userUpdate.fanXP + 500;
-       let newLevel = userUpdate.fanLevel;
-       const xpNeeded = newLevel * 500;
-       if (newXP >= xpNeeded) {
-          newLevel += 1;
-          newXP -= xpNeeded;
-       }
-       await prisma.user.update({
-          where: { id: user.id },
-          data: { fanXP: newXP, fanLevel: newLevel }
-       });
-       
-       // Check for new badges
-       await checkAndAwardFanBadges(user.id);
-    }
-
-    // We can also create a mock transaction or yield logic later if needed.
-    
-    return { success: true, subscriptionId: subscription.id, supporterNumber: subscription.supporterNumber };
+    return { success: true, checkoutUrl: session.url };
   } catch (error: any) {
     console.error('Fan checkout error:', error);
     return { success: false, error: error.message };

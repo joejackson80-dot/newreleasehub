@@ -76,9 +76,8 @@ export default function CheckoutClient() {
     
     setIsProcessing(false);
     
-    if (result.success) {
-      setSupporterNumber(result.supporterNumber || 0);
-      setStep(2);
+    if (result.success && result.checkoutUrl) {
+      window.location.href = result.checkoutUrl;
     } else {
       toast.error(result.error || "Checkout failed");
     }

@@ -1,5 +1,11 @@
 {
   "github": {
     "silent": false
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/royalties",
+      "schedule": "0 0 1 * *"
+    }
+  ]
 }

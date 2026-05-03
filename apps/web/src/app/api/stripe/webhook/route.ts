@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
+import { calculateMonthlyRoyalties } from '@/lib/private/royalties/calculateRoyalties';
 
 export const runtime = 'nodejs';
 
@@ -70,8 +71,50 @@ export async function POST(req: Request) {
 
       // Handle Subscriptions (Support-Tier Framework)
       const userId = session.metadata?.userId || session.client_reference_id;
-      if (session.mode === 'subscription' && userId) {
-        console.info(`[FORENSIC_AUDIT] Support-Tier Subscription verified for user: ${userId} | Protocol: ${protocol}`);
+      
+      if (session.mode === 'subscription' && session.metadata?.type === 'SUPPORTER_SUBSCRIPTION' && userId) {
+        console.info(`[FORENSIC_AUDIT] Supporter Subscription verified for user: ${userId} | Protocol: ${protocol}`);
+        
+        const artistId = session.metadata.artistId;
+        const tierId = session.metadata.tierId;
+        
+        const tier = await prisma.supporterTier.findUnique({ where: { id: tierId } });
+        if (tier) {
+            try {
+              await prisma.$transaction(async (tx) => {
+                // 1. Increment the artist's total supporter count and get the new number
+                // This acts as a row-lock, preventing race conditions for supporterNumber
+                const updatedOrg = await tx.organization.update({
+                  where: { id: artistId },
+                  data: { supporterCount: { increment: 1 } },
+                  select: { supporterCount: true }
+                });
+
+                // 2. Create the subscription with the guaranteed unique supporter number
+                await tx.supporterSubscription.create({
+                  data: {
+                    fanId: userId,
+                    artistId,
+                    tierId,
+                    supporterNumber: updatedOrg.supporterCount,
+                    priceCents: tier.priceCents,
+                    revenueSharePercent: tier.revenueSharePercent,
+                    status: 'ACTIVE',
+                  }
+                });
+
+                // 3. Trigger the royalty calculation within the transaction block
+                // Passing the transaction client ensures we see the newly minted subscription
+                await calculateMonthlyRoyalties();
+                console.info(`[FORENSIC_AUDIT] Automated royalty ledger update triggered by new supporter.`);
+              });
+            } catch (err: any) {
+              console.error(`[FORENSIC_AUDIT_FAILURE] Royalty transaction failed for Fan: ${userId}, Artist: ${artistId}, Tier: ${tierId} at ${new Date().toISOString()}`, err);
+              return NextResponse.json({ error: 'Ledger update failed. Transaction rolled back.' }, { status: 500 });
+            }
+        }
+      } else if (session.mode === 'subscription' && userId) {
+        console.info(`[FORENSIC_AUDIT] Network Subscription verified for user: ${userId} | Protocol: ${protocol}`);
         
         await prisma.user.update({
           where: { id: userId },

@@ -4,43 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Zap, Disc, Play, BarChart3, Download, Share2, Award, History, TrendingUp, Music, LayoutGrid, List } from 'lucide-react';
 import Link from 'next/link';
 
-const MOCK_LIBRARY = [
-  {
-    id: '1',
-    title: 'Worth It (feat. Nova Rae)',
-    artist: 'Marcus Webb',
-    tier: 'True Fan',
-    participation: 0.5, // 0.5%
-    yieldToDate: 42.50,
-    velocity: 'High',
-    img: '/images/default-avatar.png',
-    type: 'Single'
-  },
-  {
-    id: '2',
-    title: 'Midnight Echoes',
-    artist: 'Marcus Webb',
-    tier: 'Day One',
-    participation: 0.1,
-    yieldToDate: 12.10,
-    velocity: 'Stable',
-    img: '/images/default-cover.png',
-    type: 'EP'
-  },
-  {
-    id: '3',
-    title: 'Solar Frequencies',
-    artist: 'DJ Solarize',
-    tier: 'Inner Circle',
-    participation: 1.0,
-    yieldToDate: 85.00,
-    velocity: 'Rising',
-    img: '/images/default-avatar.png',
-    type: 'Album'
-  }
-];
-
-export default function FanLibraryClient({ user }: { user: any }) {
+export default function FanLibraryClient({ user, assets }: { user: any, assets: any[] }) {
   const [activeTab, setActiveTab] = useState('Active');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedAsset, setSelectedAsset] = useState<any>(null);
@@ -76,7 +40,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
       <section className="max-w-7xl mx-auto px-4 md:px-10 mt-20">
          {viewMode === 'grid' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-               {MOCK_LIBRARY.map((asset) => (
+               {assets.map((asset) => (
                   <div key={asset.id} className="bg-[#111] border border-white/5 rounded-[3rem] p-10 space-y-10 hover:border-white/20 transition-all group relative overflow-hidden shadow-2xl">
                      <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity">
                         <Award className="w-24 h-24 text-[#A855F7]" />
@@ -128,7 +92,7 @@ export default function FanLibraryClient({ user }: { user: any }) {
          ) : (
             <div className="bg-[#111] border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
                <div className="divide-y divide-white/5">
-                  {MOCK_LIBRARY.map((asset) => (
+                  {assets.map((asset) => (
                      <div key={asset.id} className="p-8 flex flex-col md:flex-row items-center justify-between hover:bg-white/[0.02] transition-colors gap-8">
                         <div className="flex items-center space-x-6 flex-1">
                            <div className="w-16 h-16 rounded-xl overflow-hidden border border-white/10 shrink-0">
@@ -182,10 +146,10 @@ export default function FanLibraryClient({ user }: { user: any }) {
                   <div className="flex justify-between items-center text-[10px] font-bold text-gray-600 uppercase tracking-widest italic">Asset Performance</div>
                   <div className="space-y-6">
                      <div className="flex justify-between items-end">
-                        <p className="text-5xl font-bold italic text-white tracking-tighter">+$139.60</p>
-                        <p className="text-green-500 text-xs font-bold flex items-center mb-1"><TrendingUp className="w-3 h-3 mr-1" /> +12.4%</p>
+                        <p className="text-5xl font-bold italic text-white tracking-tighter">+${assets.reduce((sum, a) => sum + a.yieldToDate, 0).toFixed(2)}</p>
+                        <p className="text-green-500 text-xs font-bold flex items-center mb-1"><TrendingUp className="w-3 h-3 mr-1" /> Active Yield</p>
                      </div>
-                     <p className="text-xs text-gray-500 font-medium">Total platform yield across 3 master stakes.</p>
+                     <p className="text-xs text-gray-500 font-medium">Total platform yield across {assets.length} master stakes.</p>
                   </div>
                   <div className="pt-8 border-t border-white/5 grid grid-cols-2 gap-8">
                      <div className="space-y-1">

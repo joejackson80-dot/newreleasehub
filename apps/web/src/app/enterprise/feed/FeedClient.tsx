@@ -4,13 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Globe, Database, ShieldCheck, Zap, ArrowUpRight, Search, Filter, Download, LayoutDashboard, BarChart3, Radio } from 'lucide-react';
 import Link from 'next/link';
 
-const MOCK_DATA_FEED = [
-  { id: '1', artist: 'Hellz Flame', event: 'Master Rights Cleared', value: 'Institutional Grade', time: 'Just now', type: 'IP' },
-  { id: '2', artist: 'Luna Sol', event: 'Global Sync Opportunity Match', value: 'Netflix Originals', time: '2m ago', type: 'SYNC' },
-  { id: '3', artist: 'The Void', event: 'Streaming Velocity Spike', value: '+400% (JP/UK)', time: '5m ago', type: 'VELOCITY' },
-  { id: '4', artist: 'Nova', event: 'New Revenue Share Tier Live', value: '0.5% Allocated', time: '12m ago', type: 'YIELD' },
-  { id: '5', artist: 'Ghost Notes', event: 'Audit Pass', value: '100% Verified', time: '25m ago', type: 'IP' },
-];
+const MOCK_DATA_FEED: any[] = [];
 
 export default function EnterpriseFeedClient() {
   const [pulse, setPulse] = useState(0);
@@ -87,7 +81,7 @@ export default function EnterpriseFeedClient() {
                </div>
                <div className="divide-y divide-white/5">
                   <AnimatePresence mode="popLayout">
-                     {MOCK_DATA_FEED.map((item, i) => (
+                     {MOCK_DATA_FEED.length > 0 ? MOCK_DATA_FEED.map((item, i) => (
                         <motion.div 
                            key={item.id + pulse}
                            initial={{ opacity: 0, x: -10 }}
@@ -112,7 +106,16 @@ export default function EnterpriseFeedClient() {
                               <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mt-1 italic">{item.time}</p>
                            </div>
                         </motion.div>
-                     ))}
+                     )) : (
+                        <motion.div 
+                           initial={{ opacity: 0 }}
+                           animate={{ opacity: 1 }}
+                           className="p-20 text-center space-y-4"
+                        >
+                           <Activity className="w-12 h-12 text-zinc-800 mx-auto" />
+                           <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Awaiting Live Feed Sync</p>
+                        </motion.div>
+                     )}
                   </AnimatePresence>
                </div>
             </div>

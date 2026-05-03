@@ -3,38 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, ArrowRight, Clock, User, Tag, ChevronRight, Share2, Bookmark } from 'lucide-react';
 import Link from 'next/link';
 
-const MOCK_POSTS = [
-  {
-    id: 1,
-    title: "Why Independence is the only path in 2025.",
-    excerpt: "The streaming giants are pivotting. Labels are shrinking. Here is why your master recordings are your most valuable asset.",
-    author: "NRH Editorial",
-    date: "Oct 28, 2026",
-    category: "Manifesto",
-    image: "/images/default-avatar.png",
-    readTime: "8 min"
-  },
-  {
-    id: 2,
-    title: "How Marcus Webb earned $12k in his first month on NRH.",
-    excerpt: "A deep dive into the numbers behind the most successful Support-Tier launch in the platform's history.",
-    author: "Success Stories",
-    date: "Oct 25, 2026",
-    category: "Case Study",
-    image: "/images/default-cover.png",
-    readTime: "12 min"
-  },
-  {
-    id: 3,
-    title: "Understanding Revenue Participation Licenses.",
-    excerpt: "Everything you need to know about the legal framework that powers fan revenue sharing on New Release Hub.",
-    author: "Legal Lab",
-    date: "Oct 22, 2026",
-    category: "Framework",
-    image: "/images/default-cover.png",
-    readTime: "15 min"
-  }
-];
+const MOCK_POSTS: any[] = [];
 
 export default function BlogPage() {
   return (
@@ -65,69 +34,13 @@ export default function BlogPage() {
           </div>
         </header>
 
-        {/* FEATURED POST */}
-        <section className="relative group overflow-hidden rounded-[3rem] border border-white/5 bg-[#111]">
-           <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="aspect-[4/3] lg:aspect-auto overflow-hidden">
-                 <img src={MOCK_POSTS[0].image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Featured post" />
-              </div>
-              <div className="p-12 lg:p-20 flex flex-col justify-between space-y-12">
-                 <div className="space-y-6">
-                    <div className="flex items-center space-x-4">
-                       <span className="text-[#A855F7] text-[10px] font-bold uppercase tracking-[0.3em]">{MOCK_POSTS[0].category}</span>
-                       <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
-                       <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">{MOCK_POSTS[0].date}</span>
-                    </div>
-                    <h2 className="text-4xl lg:text-3xl font-bold tracking-tighter uppercase leading-tight italic">{MOCK_POSTS[0].title}</h2>
-                    <p className="text-gray-400 text-lg font-medium leading-relaxed">{MOCK_POSTS[0].excerpt}</p>
-                 </div>
-                 <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                       <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                          <User className="w-4 h-4 text-gray-500" />
-                       </div>
-                       <div>
-                          <p className="text-xs font-bold text-white uppercase">{MOCK_POSTS[0].author}</p>
-                          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{MOCK_POSTS[0].readTime} Read</p>
-                       </div>
-                    </div>
-                    <Link href={`/blog/${MOCK_POSTS[0].id}`} className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:bg-[#A855F7] hover:text-white transition-all group-hover:translate-x-2">
-                       <ArrowRight className="w-6 h-6" />
-                    </Link>
-                 </div>
-              </div>
-           </div>
-        </section>
-
-        {/* LATEST POSTS */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20 border-t border-white/5">
-           {MOCK_POSTS.slice(1).map((post) => (
-             <div key={post.id} className="group space-y-8">
-                <div className="aspect-video rounded-[2.5rem] overflow-hidden border border-white/5 bg-[#111]">
-                   <img src={post.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={post.title} />
-                </div>
-                <div className="space-y-6">
-                   <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                         <span className="text-[#A855F7] text-[10px] font-bold uppercase tracking-widest">{post.category}</span>
-                         <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
-                         <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">{post.date}</span>
-                      </div>
-                      <div className="flex items-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                         <button className="text-gray-500 hover:text-white transition-colors"><Bookmark className="w-4 h-4" /></button>
-                         <button className="text-gray-500 hover:text-white transition-colors"><Share2 className="w-4 h-4" /></button>
-                      </div>
-                   </div>
-                   <h3 className="text-3xl font-bold tracking-tighter uppercase leading-tight italic group-hover:text-[#A855F7] transition-colors">{post.title}</h3>
-                   <p className="text-gray-500 font-medium leading-relaxed line-clamp-2">{post.excerpt}</p>
-                   <Link href={`/blog/${post.id}`} className="inline-flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-white group-hover:text-[#A855F7] transition-colors">
-                      <span>Read Full Article</span>
-                      <ChevronRight className="w-4 h-4" />
-                   </Link>
-                </div>
-             </div>
-           ))}
-        </section>
+        {/* EMPTY STATE */}
+        {MOCK_POSTS.length === 0 && (
+          <div className="py-20 text-center space-y-4">
+             <Tag className="w-12 h-12 text-zinc-800 mx-auto" />
+             <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">No editorial content available yet.</p>
+          </div>
+        )}
 
         {/* NEWSLETTER CTA */}
         <section className="bg-[#111] border border-white/5 rounded-[3rem] p-12 lg:p-20 text-center space-y-12 relative overflow-hidden">

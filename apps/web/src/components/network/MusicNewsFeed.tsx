@@ -3,44 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Newspaper, ArrowRight, ExternalLink, Globe, Zap, Clock, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const MOCK_NEWS = [
-  {
-    id: 1,
-    title: "The Rise of Direct-to-Fan Equity: How Independent Artists are Bypassing Traditional Label Loans",
-    source: "NRH Editorial",
-    category: "Industry Analysis",
-    time: "2 hours ago",
-    image: "https://images.unsplash.com/photo-1514525253361-bee8718a74a2?auto=format&fit=crop&q=80&w=800",
-    url: "#"
-  },
-  {
-    id: 2,
-    title: "Streaming Revenue Pool C Surpasses $1.2M as Ad Inventory Sales Hit Record Highs",
-    source: "Network Pulse",
-    category: "Financials",
-    time: "5 hours ago",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-    url: "#"
-  },
-  {
-    id: 3,
-    title: "Marcus Webb's 'Neon District' EP Breaks Platform Records for Supporter Conversion",
-    source: "Artist Spotlight",
-    category: "Success Stories",
-    time: "1 day ago",
-    image: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&q=80&w=800",
-    url: "#"
-  },
-  {
-    id: 4,
-    title: "New European Royalty Directive: What Every Independent Producer Needs to Know",
-    source: "Global Law",
-    category: "Legal",
-    time: "1 day ago",
-    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800",
-    url: "#"
-  }
-];
+const MOCK_NEWS: any[] = [];
 
 export default function MusicNewsFeed() {
   return (
@@ -63,7 +26,7 @@ export default function MusicNewsFeed() {
 
       {/* FEATURED NEWS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-         {MOCK_NEWS.map((news, i) => (
+         {MOCK_NEWS.length > 0 ? MOCK_NEWS.map((news, i) => (
             <motion.div 
                key={news.id}
                initial={{ opacity: 0, y: 20 }}
@@ -96,7 +59,11 @@ export default function MusicNewsFeed() {
                   </a>
                </div>
             </motion.div>
-         ))}
+         )) : (
+            <div className="col-span-full py-20 text-center space-y-4 bg-white/5 border border-white/5 rounded-3xl">
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">Awaiting Live Editorial Sync...</p>
+            </div>
+         )}
       </div>
 
       {/* TICKER MARQUEE */}

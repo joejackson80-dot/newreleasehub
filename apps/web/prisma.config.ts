@@ -1,10 +1,12 @@
 import { defineConfig } from '@prisma/config';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
-const DIRECT_URL = "postgresql://postgres.vrqhvndemhajrggcaudm:7TPZTS68BJAF2P2y@aws-1-us-east-2.pooler.supabase.com:5432/postgres";
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 export default defineConfig({
   schema: './prisma/schema.prisma',
   datasource: {
-    url: DIRECT_URL,
+    url: process.env.DIRECT_URL,
   },
 });

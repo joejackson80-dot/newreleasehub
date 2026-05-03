@@ -4,57 +4,18 @@ import { useParams } from 'next/navigation';
 import { ArrowLeft, Clock, User, Share2, Bookmark, MessageCircle, Heart, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
-const MOCK_POSTS = [
-  {
-    id: 1,
-    title: "Why Independence is the only path in 2025.",
-    content: `
-      <p>The music industry is currently undergoing its most significant transformation since the invention of the MP3. As streaming giants pivot towards a more centralized, algorithmic model, independent artists are finding themselves at a crossroads: either continue renting space on platforms that prioritize shareholders over creators, or build a home where they own the infrastructure.</p>
-      
-      <h2>The Commodity of Distribution</h2>
-      <p>Distribution has become a commodity. In 2010, getting your music on Spotify was a badge of honor. In 2025, it's the bare minimum. The value has shifted from *access* to *ownership*. Labels have historically provided the bridge between these two, but at the cost of your masters and your creative freedom.</p>
-      
-      <blockquote>
-        "Independence isn't about doing everything yourself; it's about owning everything you do."
-      </blockquote>
-
-      <h2>The Math of the Future</h2>
-      <p>On traditional DSPs, an artist needs millions of streams just to pay their rent. On New Release Hub, a dedicated community of 500 supporters can generate more monthly income than 5,000,000 monthly listeners on a major streaming service. This is the "New Music Economy" in action.</p>
-      
-      <p>By leveraging revenue participation licenses, artists on NRH aren't just selling a product; they're inviting their fans to become stakeholders in their success. This creates a feedback loop of support that the algorithmic giants simply cannot replicate.</p>
-    `,
-    author: "NRH Editorial",
-    date: "Oct 28, 2026",
-    category: "Manifesto",
-    image: "/images/default-avatar.png",
-    readTime: "8 min"
-  },
-  {
-    id: 2,
-    title: "How Marcus Webb earned $12k in his first month on NRH.",
-    content: `
-      <p>When Marcus Webb joined New Release Hub, he was already an established indie artist with a loyal following. However, like many of his peers, he was struggling to turn that loyalty into a sustainable living through traditional streaming platforms.</p>
-      
-      <h2>The Strategy</h2>
-      <p>Marcus launched his Hub with three clear supporter tiers: "The Studio Pass" ($5/mo), "The Master Class" ($15/mo), and "The Executive Producer" ($50/mo). The key wasn't just the price; it was the transparency.</p>
-      
-      <p>By offering a 2% revenue share on his upcoming album to the "Executive" tier, Marcus didn't just find fans; he found investors. He filled all 50 slots in less than 48 hours.</p>
-      
-      <h2>The Result</h2>
-      <p>Between his monthly subscriptions and the upfront support for his new master recordings, Marcus cleared $12,450 in his first 30 days. More importantly, he did it while retaining 100% ownership of his music.</p>
-    `,
-    author: "Success Stories",
-    date: "Oct 25, 2026",
-    category: "Case Study",
-    image: "/images/default-cover.png",
-    readTime: "12 min"
-  }
-];
+import { notFound } from 'next/navigation';
 
 export default function BlogPostPage() {
   const params = useParams();
   const id = parseInt(params.id as string);
-  const post = MOCK_POSTS.find(p => p.id === id) || MOCK_POSTS[0];
+  
+  // Awaiting real database integration. For now, all IDs trigger a clean 404 instead of showing fake data.
+  const post: any = null;
+
+  if (!post) {
+    notFound();
+  }
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#A855F7] selection:text-white pb-32">

@@ -12,24 +12,7 @@ const TABS = ['Feed', 'Discovery', 'Radio', 'Library', 'Messages', 'Following', 
 
 const MOCK_FEED: any[] = [];
 
-const MOCK_SUPPORTERAGES = [
-  {
-    id: '1', artistName: 'Marcus Webb', artistSlug: 'marcus-webb',
-    artistPhoto: '/images/default-avatar.png',
-    tier: 'True Fan', amount: 15.00, earnedThisMonth: 4.20, revenueShare: 0.5, status: 'active',
-  },
-  {
-    id: '2', artistName: 'Lena Khari', artistSlug: 'lena-khari',
-    artistPhoto: '/images/default-avatar.png',
-    tier: 'Day One', amount: 5.00, earnedThisMonth: 2.10, revenueShare: 0.1, status: 'active',
-  },
-];
-
-const MOCK_NOTIFICATIONS = [
-  { id: '1', type: 'royalty', title: 'Revenue share credited', body: 'You earned $4.20 from Marcus Webb\'s streams this month.', time: '2h ago', unread: true },
-  { id: '2', type: 'release', title: 'New release from Marcus Webb', body: '"Worth It (feat. Nova Rae)" is now available.', time: '5h ago', unread: true },
-  { id: '3', type: 'SUPPORTER', title: 'SUPPORTER milestone', body: 'You are now SUPPORTER #742 of Lena Khari.', time: '2d ago', unread: false },
-];
+const MOCK_NOTIFICATIONS: any[] = [];
 
 const REACTION_EMOJI = [
   { key: 'fire', emoji: '🔥', label: 'Fire' },
@@ -162,7 +145,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
             </div>
             <div className="text-right hidden md:block px-6 border-r border-white/10">
                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Global Balance</p>
-               <p className="text-xl font-bold text-green-400">$24.80</p>
+               <p className="text-xl font-bold text-green-400">${((user.balanceCents || 0) / 100).toFixed(2)}</p>
             </div>
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -378,7 +361,7 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                   <div className="flex justify-between items-start">
                      <div className="space-y-1">
                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Yield History</p>
-                       <p className="text-4xl font-bold text-green-400">+$24.80 <span className="text-sm font-medium text-gray-600 ml-2 tracking-normal italic">(Total Lifetime)</span></p>
+                       <p className="text-4xl font-bold text-green-400">+${((fanStats?.totalEarnedCents || 0) / 100).toFixed(2)} <span className="text-sm font-medium text-gray-600 ml-2 tracking-normal italic">(Total Lifetime)</span></p>
                      </div>
                      <div className="flex items-center gap-2 text-gray-500">
                         <Clock className="w-4 h-4" />
@@ -409,11 +392,9 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                            );
                         })
                      ) : (
-                        [20, 35, 25, 45, 30, 55, 40, 65, 50, 85, 70, 100].map((h, i) => (
-                           <div key={i} className="flex-1 bg-white/5 rounded-t-lg relative group overflow-hidden opacity-20">
-                              <div className="absolute bottom-0 left-0 right-0 bg-gray-500/20" style={{ height: `${h}%` }}></div>
-                           </div>
-                        ))
+                        <div className="w-full h-full flex items-center justify-center border border-dashed border-white/5 rounded-2xl">
+                           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">No Yield History Yet</p>
+                        </div>
                      )}
                   </div>
                   <div className="flex justify-between text-[8px] font-bold text-gray-700 uppercase tracking-widest pt-2">
@@ -487,11 +468,11 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                          <div className="grid grid-cols-2 gap-6">
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Revenue Share</p>
-                               <p className="text-sm font-bold text-[#A855F7]">{sub.revenueSharePercent * 100}%</p>
+                               <p className="text-sm font-bold text-[#A855F7]">{sub.revenueSharePercent}%</p>
                             </div>
                             <div>
                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Yield (Est.)</p>
-                               <p className="text-sm font-bold text-green-400">+$0.00</p>
+                               <p className="text-sm font-bold text-green-400">Pending</p>
                             </div>
                          </div>
                       </div>
@@ -556,30 +537,30 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                       </div>
                       <div className="space-y-1">
                          <h4 className="text-sm font-bold text-white uppercase tracking-widest italic">Verified Yield Projection</h4>
-                         <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Predicted 12-Month Performance</p>
+                         <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Predicted Yield</p>
                       </div>
                       <div className="flex items-end gap-4">
-                         <h2 className="text-5xl font-black italic tracking-tighter text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 12).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
+                         <h2 className="text-5xl font-black italic tracking-tighter text-white">${((fanStats?.totalEarnedCents || 0) / 100 * 12).toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
                          <span className="text-emerald-500 text-xs font-bold uppercase mb-2">/ Potential ARR</span>
                       </div>
                       <div className="space-y-4">
                          <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-gray-500">
                             <span>Conservative (+4%)</span>
-                            <span className="text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 10.5).toFixed(0)}</span>
+                            <span className="text-white">${((fanStats?.totalEarnedCents || 0) / 100 * 10.5).toFixed(0)}</span>
                          </div>
                          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                             <div className="h-full bg-white/20" style={{ width: '85%' }}></div>
                          </div>
                          <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-[#A855F7]">
                             <span>Network Target (+12%)</span>
-                            <span className="text-white">${((fanStats?.totalEarnedCents || 42000) / 100 * 12).toFixed(0)}</span>
+                            <span className="text-white">${((fanStats?.totalEarnedCents || 0) / 100 * 12).toFixed(0)}</span>
                          </div>
                          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                             <div className="h-full bg-[#A855F7]" style={{ width: '100%' }}></div>
                          </div>
                       </div>
                       <p className="text-[9px] text-gray-700 font-medium leading-relaxed italic uppercase tracking-wider">
-                         * Projections based on current stream velocity, historical retention, and network equity multipliers.
+                         * Projections based on current stream velocity, historical retention, and network equity multipliers. Will populate when sufficient data is collected.
                       </p>
                    </div>
 
@@ -590,22 +571,19 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                       </div>
                       <div className="grid grid-cols-2 gap-6">
                          <div className="space-y-4">
-                            {[
-                              { label: 'West Coast', val: 42 },
-                              { label: 'Europe', val: 28 },
-                              { label: 'Lagos', val: 18 },
-                              { label: 'Atlanta', val: 12 }
-                            ].map(loc => (
-                              <div key={loc.label} className="space-y-1">
+                             { fanStats?.countryDistribution ? Object.entries(fanStats.countryDistribution).slice(0, 4).map(([label, val]: any) => (
+                              <div key={label} className="space-y-1">
                                  <div className="flex justify-between text-[8px] font-bold uppercase tracking-widest text-gray-500">
-                                    <span>{loc.label}</span>
-                                    <span>{loc.val}%</span>
+                                    <span>{label}</span>
+                                    <span>{Math.round((val / (fanStats.totalStreamsAllTime || 1)) * 100)}%</span>
                                  </div>
                                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-white/10 group-hover:bg-[#A855F7]/40 transition-colors" style={{ width: `${loc.val}%` }}></div>
+                                    <div className="h-full bg-white/10 group-hover:bg-[#A855F7]/40 transition-colors" style={{ width: `${Math.round((val / (fanStats.totalStreamsAllTime || 1)) * 100)}%` }}></div>
                                  </div>
                               </div>
-                            ))}
+                            )) : (
+                               <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Awaiting Data</div>
+                            )}
                          </div>
                          <div className="flex items-center justify-center">
                             <div className="relative w-32 h-32">

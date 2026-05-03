@@ -7,7 +7,10 @@ import * as path from 'path';
 // Load .env from apps/web root
 dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
 
-const DB_URL = process.env.DATABASE_URL ?? "postgresql://postgres.vrqhvndemhajrggcaudm:7TPZTS68BJAF2P2y@aws-1-us-east-2.pooler.supabase.com:5432/postgres";
+const DB_URL = process.env.DATABASE_URL;
+if (!DB_URL) {
+  throw new Error("DATABASE_URL must be defined");
+}
 const pool = new Pool({ connectionString: DB_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });

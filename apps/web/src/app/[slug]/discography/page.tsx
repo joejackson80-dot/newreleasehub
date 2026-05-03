@@ -1,24 +1,18 @@
-'use client';
 import React from 'react';
-import { useParams } from 'next/navigation';
 import { ChevronLeft, Disc, Filter, Search, Grid, List as ListIcon } from 'lucide-react';
 import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
 import ArtistReleasesClient from '../ArtistReleasesClient';
 
-// Mock data for the discography
-const MOCK_RELEASES = [
-  { id: 'rel-1', title: 'Silicon Soul', type: 'ALBUM', releaseDate: '2026-10-24', coverArtUrl: '/images/default-cover.png', isSupporterOnly: true },
-  { id: 'rel-2', title: 'Deep Logic', type: 'SINGLE', releaseDate: '2026-09-12', coverArtUrl: '/images/default-cover.png' },
-  { id: 'rel-3', title: 'Binary Sunset', type: 'EP', releaseDate: '2026-07-05', coverArtUrl: '/images/default-cover.png' },
-  { id: 'rel-4', title: 'Ghost in the Machine', type: 'SINGLE', releaseDate: '2026-05-20', coverArtUrl: '/images/default-cover.png' },
-  { id: 'rel-5', title: 'System Error', type: 'SINGLE', releaseDate: '2026-03-15', coverArtUrl: '/images/default-cover.png' },
-  { id: 'rel-6', title: 'The Architect', type: 'ALBUM', releaseDate: '2025-11-30', coverArtUrl: '/images/default-cover.png' },
-];
-
-export default function DiscographyPage() {
-  const params = useParams();
-  const slug = params.slug as string;
+export default async function DiscographyPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   const artistName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+  const releases = await prisma.release.findMany({
+    where: { Organization: { slug } },
+    orderBy: { releaseDate: 'desc' }
+  });
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#A855F7] selection:text-white pt-32 pb-32 px-6 sm:px-10 lg:px-20">
@@ -33,7 +27,7 @@ export default function DiscographyPage() {
                </Link>
                <div className="space-y-2">
                   <h1 className="text-5xl md:text-[clamp(2.25rem,8vw,4.5rem)] font-black tracking-tighter italic uppercase leading-[0.8]">Full<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Discography.</span></h1>
-                  <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">Total of {MOCK_RELEASES.length} Verified Assets on the Network</p>
+                  <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">Total of {releases.length} Verified Assets on the Network</p>
                </div>
             </div>
 
@@ -62,14 +56,14 @@ export default function DiscographyPage() {
          {/* RELEASES GRID */}
          <div className="pt-8 border-t border-white/5">
             <ArtistReleasesClient 
-              releases={MOCK_RELEASES} 
+              releases={releases} 
               slug={slug} 
               artistName={artistName} 
             />
          </div>
 
          {/* EMPTY STATE (IF ANY) */}
-         {MOCK_RELEASES.length === 0 && (
+         {releases.length === 0 && (
            <div className="py-40 text-center space-y-6">
               <Disc className="w-16 h-16 text-zinc-800 mx-auto animate-spin-slow" />
               <p className="text-zinc-600 font-bold uppercase tracking-widest text-xs">No assets found in this catalog.</p>

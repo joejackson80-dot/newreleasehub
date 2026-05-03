@@ -202,9 +202,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest relative z-10">Available Settlement</p>
             <div className="space-y-2 relative z-10">
                <h2 className="text-5xl font-bold italic tracking-tighter text-black">${balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
-               <p className="text-[10px] font-bold text-green-600 flex items-center">
-                  <TrendingUp className="w-3 h-3 mr-1" /> +14.2% from last month
-               </p>
+
             </div>
          </div>
 
@@ -220,7 +218,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Growth Pool</p>
             <div className="space-y-1">
                <h2 className="text-4xl font-bold italic tracking-tighter text-white">Level: {earningsLevel}</h2>
-               <p className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">Phase 8 Performance Multiplier Active</p>
+               <p className="text-[10px] font-bold text-[#A855F7] uppercase tracking-widest">Standard Participation Level</p>
             </div>
          </div>
       </div>
@@ -323,7 +321,7 @@ export default function EarningsPage({ artist }: { artist: any }) {
                                 </div>
                              </td>
                              <td className="p-8">
-                                <span className="text-xs font-black text-[#A855F7] italic">{(p.revenueSharePercent * 100).toFixed(1)}%</span>
+                                <span className="text-xs font-black text-[#A855F7] italic">{p.revenueSharePercent.toFixed(1)}%</span>
                              </td>
                              <td className="p-8 text-right">
                                 <span className="text-sm font-black text-white italic tracking-tighter">${(p.amountEarned / 100).toFixed(2)}</span>

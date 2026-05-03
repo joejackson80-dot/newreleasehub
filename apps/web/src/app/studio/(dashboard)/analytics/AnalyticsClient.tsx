@@ -49,17 +49,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
             <button className="p-4 bg-white/5 border border-white/10 rounded-2xl text-zinc-400 hover:text-white transition-all">
                <Download className="w-5 h-5" />
             </button>
-            <div className="bg-[#0A0A0A] border border-white/5 p-4 rounded-2xl flex items-center gap-6">
-               <div className="text-right">
-                  <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Network Authority</p>
-                  <p className="text-xl font-black italic text-[#A855F7]">TOP 2%</p>
-               </div>
-               <div className="w-px h-8 bg-white/5" />
-               <div className="text-right">
-                  <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Growth Velocity</p>
-                  <p className="text-xl font-black italic text-emerald-500">+12.4%</p>
-               </div>
-            </div>
+
          </div>
       </header>
 
@@ -69,7 +59,7 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
            { label: 'Total Streams', value: stats?.totalStreams?.toLocaleString() || '0', sub: 'Verified & Suspicious', icon: Activity, color: 'text-white' },
            { label: 'Verified Plays', value: stats?.verifiedStreams?.toLocaleString() || '0', sub: 'Protocol Authorized', icon: ShieldAlert, color: 'text-[#A855F7]' },
            { label: 'Unique Listeners', value: artist?.supporterCount?.toLocaleString() || '0', sub: 'Network Equity', icon: Users, color: 'text-white' },
-           { label: 'Retention Score', value: '84%', sub: 'Verified Measurement', icon: Zap, color: 'text-purple-400' }
+           { label: 'Avg Playtime', value: Math.round(stats?.avgDuration || 0) + 's', sub: 'Verified Measurement', icon: Zap, color: 'text-purple-400' }
          ].map((stat, i) => (
            <div key={i} className="bg-[#0A0A0A] border border-white/10 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 relative group hover:border-[#A855F766] transition-all cursor-default overflow-hidden">
               <div className="flex items-center justify-between">
@@ -209,37 +199,13 @@ export default function AnalyticsClient({ artist }: { artist: any }) {
             </div>
          </div>
 
-         {/* REVENUE FORECAST */}
-         <div className="bg-gradient-to-br from-zinc-900 to-[#020202] border border-white/10 rounded-[3.5rem] p-12 space-y-8 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
-               <TrendingUp className="w-48 h-48 text-[#A855F7]" />
-            </div>
-            
-            <div className="space-y-6 relative z-10">
-               <div className="space-y-1">
-                  <h3 className="text-xl font-black italic uppercase tracking-tighter">Yield Forecast</h3>
-                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">30-Day Commercial Projection</p>
-               </div>
-               
-               <div className="space-y-2">
-                  <h2 className="text-6xl font-black italic text-white tracking-tighter">$4,280.00</h2>
-                  <div className="flex items-center gap-2 text-emerald-500 font-black italic text-sm uppercase tracking-widest">
-                     <ArrowUpRight className="w-5 h-5" />
-                     Forecast High Authority
-                  </div>
-               </div>
-
-               <div className="grid grid-cols-2 gap-4">
-                  <div className="p-6 bg-white/5 border border-white/10 rounded-3xl space-y-2">
-                     <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Streaming Yield</p>
-                     <p className="text-xl font-black italic text-white">$1,120</p>
-                  </div>
-                  <div className="p-6 bg-white/5 border border-white/10 rounded-3xl space-y-2">
-                     <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Supporter Equity</p>
-                     <p className="text-xl font-black italic text-[#A855F7]">$3,160</p>
-                  </div>
-               </div>
-            </div>
+         {/* REVENUE FORECAST - EMPTY STATE */}
+         <div className="bg-gradient-to-br from-zinc-900 to-[#020202] border border-dashed border-white/10 rounded-[3.5rem] p-12 flex flex-col items-center justify-center text-center space-y-4">
+            <TrendingUp className="w-12 h-12 text-zinc-700 mb-2" />
+            <h3 className="text-xl font-black italic text-white uppercase tracking-tighter">Yield Forecast</h3>
+            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest max-w-sm">
+               Your projected earnings data will appear here once you have active supporters and streaming history.
+            </p>
          </div>
       </section>
 
