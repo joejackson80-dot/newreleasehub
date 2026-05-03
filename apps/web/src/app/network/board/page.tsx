@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import BoardClient from './BoardClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Opportunity Board | New Release Hub',
   description: 'Discover sync placements, performance grants, paid collaborations, and gig opportunities for independent artists.',
