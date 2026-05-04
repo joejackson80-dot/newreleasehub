@@ -144,7 +144,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
             }
           ]
         }
-      } as any,
+      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- Satori's React-like DSL doesn't strictly match standard ReactNode types
       {
         width: 1080,
         height: 1080,
@@ -166,7 +166,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
 
     // 5. Upload to Supabase
     const fileName = `milestone-cards/${artistId}/${milestoneType}.png`
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('milestones')
       .upload(fileName, pngBuffer, {
         contentType: 'image/png',

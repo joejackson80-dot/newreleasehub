@@ -21,7 +21,7 @@ export async function notifyArtistMilestone(artistId: string, milestoneType: str
     'ARTIST',
     'MILESTONE',
     'New Milestone Achieved!',
-    `Congratulations! You've reached the ${milestoneLabel} milestone. View and share your card now.`,
+    `Congratulations! You've reached the ${milestoneLabel} milestone. ${cardImageUrl ? 'View your card here: ' + cardImageUrl : ''}`,
     '/studio/milestones'
   );
 }

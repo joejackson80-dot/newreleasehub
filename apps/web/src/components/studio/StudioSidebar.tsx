@@ -65,20 +65,17 @@ const NAV_GROUPS = [
   },
 ];
 
-export default function StudioSidebar({ org }: { org: any }) {
+interface SidebarContentProps {
+  org: any;
+  pathname: string | null;
+  unviewedMilestones: number;
+  setIsOpen: (open: boolean) => void;
+}
+
+const SidebarContent = ({ org, pathname, unviewedMilestones, setIsOpen }: SidebarContentProps) => {
   const isLabel = org?.planTier === 'ELITE';
-  const [isOpen, setIsOpen] = useState(false);
-  const [unviewedMilestones, setUnviewedMilestones] = useState(0);
-  const pathname = usePathname();
-
-  React.useEffect(() => {
-    fetch('/api/studio/milestones/count')
-      .then(res => res.json())
-      .then(data => setUnviewedMilestones(data.count))
-      .catch(() => {});
-  }, [pathname]);
-
-  const SidebarContent = () => (
+  
+  return (
     <div className="flex flex-col h-full bg-[#050505] border-r border-[#1a1a1a]">
       <div className="px-6 py-6 border-b border-[#1a1a1a] flex items-center justify-between">
         <Link href="/studio">
@@ -97,19 +94,19 @@ export default function StudioSidebar({ org }: { org: any }) {
             <p className="text-[9px] font-bold uppercase tracking-widest text-gray-600 px-3 mb-3">{group.label}</p>
             <div className="space-y-0.5">
               {group.items.map(item => {
-                const isActive = pathname === item.href;
+                const isActive = pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href));
                 return (
                   <Link
                     key={item.href + item.label}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all text-xs font-medium relative group ${
-                      pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))
+                      isActive
                         ? 'text-[#A855F7] bg-[#A855F7]/5' 
                         : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
-                    {(pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))) && (
+                    {isActive && (
                       <motion.div 
                         layoutId="nav-glow"
                         className="absolute inset-0 bg-[#A855F7]/5 rounded-lg shadow-[inset_0_0_20px_rgba(168, 85, 247,0.1)] border border-[#A855F7]/20"
@@ -118,7 +115,7 @@ export default function StudioSidebar({ org }: { org: any }) {
                     )}
                     <div className="flex items-center space-x-2.5 relative z-10">
                       <item.icon className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                        pathname === item.href || (item.href !== '/studio' && pathname?.startsWith(item.href))
+                        isActive
                           ? 'text-[#A855F7]' 
                           : 'text-gray-500 group-hover:text-white'
                       }`} />
@@ -188,6 +185,19 @@ export default function StudioSidebar({ org }: { org: any }) {
       </div>
     </div>
   );
+};
+
+export default function StudioSidebar({ org }: { org: any }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [unviewedMilestones, setUnviewedMilestones] = useState(0);
+  const pathname = usePathname();
+
+  React.useEffect(() => {
+    fetch('/api/studio/milestones/count')
+      .then(res => res.json())
+      .then(data => setUnviewedMilestones(data.count))
+      .catch(() => {});
+  }, [pathname]);
 
   return (
     <>
@@ -203,7 +213,12 @@ export default function StudioSidebar({ org }: { org: any }) {
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 h-full">
-        <SidebarContent />
+        <SidebarContent 
+          org={org} 
+          pathname={pathname} 
+          unviewedMilestones={unviewedMilestones} 
+          setIsOpen={setIsOpen} 
+        />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
@@ -224,7 +239,12 @@ export default function StudioSidebar({ org }: { org: any }) {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="absolute inset-y-0 left-0 w-72"
             >
-              <SidebarContent />
+              <SidebarContent 
+                org={org} 
+                pathname={pathname} 
+                unviewedMilestones={unviewedMilestones} 
+                setIsOpen={setIsOpen} 
+              />
             </motion.div>
           </div>
         )}

@@ -3,7 +3,7 @@ const MUX_TOKEN_SECRET = process.env.MUX_TOKEN_SECRET;
 
 const MUX_API_BASE = 'https://api.mux.com/video/v1'; // Note: Mux Video API handles audio as well
 
-async function muxFetch(path: string, options: any = {}) {
+async function muxFetch(path: string, options: RequestInit = {}) {
   const auth = Buffer.from(`${MUX_TOKEN_ID}:${MUX_TOKEN_SECRET}`).toString('base64');
   const res = await fetch(`${MUX_API_BASE}${path}`, {
     ...options,
@@ -25,7 +25,7 @@ async function muxFetch(path: string, options: any = {}) {
 export async function createStationStream(slug: string) {
   // Check if stream already exists (idempotent)
   const existingStreams = await muxFetch('/live-streams');
-  const existing = existingStreams.data.find((s: any) => s.external_id === slug);
+  const existing = existingStreams.data.find((s: { external_id: string }) => s.external_id === slug);
   
   if (existing) return existing;
 

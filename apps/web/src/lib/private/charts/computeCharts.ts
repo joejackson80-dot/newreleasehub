@@ -8,6 +8,41 @@
 import { prisma } from '@/lib/prisma'
 import { inngest } from '@/lib/inngest/client'
 
+interface ArtistScoreComponent {
+  streamMomentum: number;
+  SUPPORTERDepth: number;
+  fanVelocity: number;
+  engagement: number;
+  consistency: number;
+  profile: number;
+}
+
+interface ScoredArtist {
+  artistId: string;
+  score: number;
+  components: ArtistScoreComponent;
+  globalRank?: number;
+  risingRank?: number;
+}
+
+interface ArtistBase {
+  id: string;
+  slug: string;
+  genres: string[];
+  city: string | null;
+  country: string | null;
+  createdAt: Date | string;
+  supporterCount: number;
+  totalStreams: number;
+  nrhEquityScore: number;
+  genre: string[];
+  followerCount: number;
+  streamCount: number;
+  bio?: string | null;
+  profileImageUrl?: string | null;
+  headerImageUrl?: string | null;
+}
+
 // Helper to chunk arrays
 const chunk = <T>(arr: T[], size: number): T[][] =>
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
@@ -36,7 +71,7 @@ const monthsSince = (date: Date) => {
   return diff / (1000 * 60 * 60 * 24 * 30);
 };
 
-const appendToHistory = (history: any[], entry: any) => {
+const appendToHistory = (history: unknown[], entry: { date: string; score: number }) => {
   const newHistory = [...(Array.isArray(history) ? history : []), entry];
   return newHistory.slice(-52);
 };
@@ -49,7 +84,7 @@ export const computeWeeklyCharts = inngest.createFunction(
     retries: 3,
     triggers: [{ cron: 'TZ=America/Chicago 0 6 * * MON' }],
   },
-  async ({ step }: { step: any }) => {
+  async ({ step }) => {
 
     const weekStart = getWeekStart(new Date())
 
@@ -61,7 +96,8 @@ export const computeWeeklyCharts = inngest.createFunction(
           id: true, slug: true, genres: true, city: true,
           country: true, createdAt: true,
           supporterCount: true, totalStreams: true,
-          nrhEquityScore: true,
+          nrhEquityScore: true, bio: true,
+          profileImageUrl: true, headerImageUrl: true,
           _count: {
             select: { Followers: true }
           }
@@ -77,40 +113,40 @@ export const computeWeeklyCharts = inngest.createFunction(
 
     // Step 2: Compute scores in batches
     const batches = chunk(artists, 100)
-    const scores: { artistId: string, score: number, components: any }[] = []
+    const scores: ScoredArtist[] = []
 
     for (const [i, batch] of batches.entries()) {
       const batchScores = await step.run(`score-batch-${i}`, async () => {
-        return Promise.all(batch.map((artist: any) => computeArtistScore(artist)))
+        return Promise.all(batch.map((artist: unknown) => computeArtistScore(artist as ArtistBase)))
       })
-      scores.push(...batchScores)
+      scores.push(...(batchScores as ScoredArtist[]))
     }
 
     // Step 3: Rank globally
     const globalRanked = scores
-      .sort((a: any, b: any) => b.score - a.score)
-      .map((s: any, i: number) => ({ ...s, globalRank: i + 1 }))
+      .sort((a, b) => b.score - a.score)
+      .map((s, i) => ({ ...s, globalRank: i + 1 }))
 
     // Step 4: Rank by genre (inclusive of all genres tagged)
-    const allGenres = Array.from(new Set(artists.flatMap((a: any) => Array.isArray(a.genre) ? a.genre : [a.genre ?? 'Other'])))
+    const allGenres = Array.from(new Set(artists.flatMap((a) => Array.isArray(a.genre) ? a.genre : [a.genre ?? 'Other'])))
     const genreRanks: Record<string, number> = {} // Only stores the "primary" genre rank for the Org model
     const genreChartData: Record<string, { artistId: string, rank: number }[]> = {}
 
     for (const genre of allGenres as string[]) {
-      const genreArtists = artists.filter((a: any) => 
-        (Array.isArray(a.genre) && a.genre.includes(genre)) || a.genre === genre
+      const genreArtists = artists.filter((a) => 
+        Array.isArray(a.genre) && a.genre.includes(genre)
       )
       if (genreArtists.length === 0) continue
 
       const genreScores = scores
-        .filter((s: any) => genreArtists.some((a: any) => a.id === s.artistId))
-        .sort((a: any, b: any) => b.score - a.score)
+        .filter((s) => genreArtists.some((a) => a.id === s.artistId))
+        .sort((a, b) => b.score - a.score)
       
       genreChartData[genre] = genreScores.map((s, i) => ({ artistId: s.artistId, rank: i + 1 }))
       
       // For the Organization model, we store the rank of their FIRST genre as primary
-      genreScores.forEach((s: any, i: number) => {
-        const artist = artists.find((a: any) => a.id === s.artistId)
+      genreScores.forEach((s, i) => {
+        const artist = artists.find((a) => a.id === s.artistId)
         const primaryGenre = Array.isArray(artist?.genre) ? artist.genre[0] : artist?.genre
         if (primaryGenre === genre) {
           genreRanks[s.artistId] = i + 1
@@ -119,24 +155,24 @@ export const computeWeeklyCharts = inngest.createFunction(
     }
 
     // Step 5: Rank by city
-    const cityGroups = groupBy(artists, (a: any) => a.city ?? 'Unknown')
+    const cityGroups = groupBy(artists, (a) => a.city ?? 'Unknown')
     const cityRanks: Record<string, number> = {}
-    for (const [city, cityArtists] of Object.entries(cityGroups)) {
+    for (const [, cityArtists] of Object.entries(cityGroups)) {
       if (cityArtists.length < 3) continue // need at least 3 for a city chart
       const cityScores = scores
-        .filter((s: any) => (cityArtists as any[]).find((a: any) => a.id === s.artistId))
-        .sort((a: any, b: any) => b.score - a.score)
-      cityScores.forEach((s: any, i: number) => { cityRanks[s.artistId] = i + 1 })
+        .filter((s) => cityArtists.find((a) => a.id === s.artistId))
+        .sort((a, b) => b.score - a.score)
+      cityScores.forEach((s, i) => { cityRanks[s.artistId] = i + 1 })
     }
 
     // Step 6: Rising artists (fastest growing in last 30 days)
     const risingScores = scores
-      .filter((s: any) => {
-        const artist = artists.find((a: any) => a.id === s.artistId)!
-        const ageMonths = monthsSince((artist as any).createdAt)
+      .filter((s) => {
+        const artist = artists.find((a) => a.id === s.artistId)!
+        const ageMonths = monthsSince(new Date(artist.createdAt))
         return ageMonths <= 12 || s.components.fanVelocity > 20
       })
-      .sort((a: any, b: any) => b.components.fanVelocity - a.components.fanVelocity)
+      .sort((a, b) => b.components.fanVelocity - a.components.fanVelocity)
       .slice(0, 50)
       .map((s, i) => ({ ...s, risingRank: i + 1 }))
 
@@ -162,10 +198,10 @@ export const computeWeeklyCharts = inngest.createFunction(
             chartPositionGenre:   genreRanks[scored.artistId] ?? null,
             chartPositionCity:    cityRanks[scored.artistId] ?? null,
             chartPositionRising:  risingEntry?.risingRank ?? null,
-            equityScoreHistory: appendToHistory(historyJson, {
+            equityScoreHistory: appendToHistory(historyJson as unknown[], {
               date: weekStart.toISOString(),
               score: scored.score
-            })
+            }) as any // eslint-disable-line @typescript-eslint/no-explicit-any
           }
         })
 
@@ -181,9 +217,9 @@ export const computeWeeklyCharts = inngest.createFunction(
             cityRank:     cityRanks[scored.artistId] ?? null,
             risingRank:   risingEntry?.risingRank ?? null,
             equityScore:  scored.score,
-            streamCount:  artists.find((a: any) => a.id === scored.artistId)?.streamCount ?? 0,
-            supporterCount:  artists.find((a: any) => a.id === scored.artistId)?.supporterCount ?? 0,
-            followerCount: artists.find((a: any) => a.id === scored.artistId)?.followerCount ?? 0,
+            streamCount:  artists.find((a) => a.id === scored.artistId)?.streamCount ?? 0,
+            supporterCount:  artists.find((a) => a.id === scored.artistId)?.supporterCount ?? 0,
+            followerCount: artists.find((a) => a.id === scored.artistId)?.followerCount ?? 0,
           }
         })
       }
@@ -205,7 +241,7 @@ export const computeWeeklyCharts = inngest.createFunction(
   }
 )
 
-async function computeArtistScore(artist: any) {
+async function computeArtistScore(artist: ArtistBase) {
   const weights = {
     streamMomentum: Number(process.env.CHART_W_STREAM_MOMENTUM ?? '0.30'),
     SUPPORTERDepth:    Number(process.env.CHART_W_SUPPORTER_DEPTH    ?? '0.25'),

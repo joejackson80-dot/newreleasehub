@@ -10,7 +10,7 @@ export const generateAICard = inngest.createFunction(
     concurrency: { limit: 5 },
     triggers: [{ event: 'ai/card.generate.requested' }],
   },
-  async ({ event, step }: { event: any, step: any }) => {
+  async ({ event, step }) => {
     const { artistId, milestoneType } = event.data
 
     const imageUrl = await step.run('generate-image', async () => {

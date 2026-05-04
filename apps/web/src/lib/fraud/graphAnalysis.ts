@@ -32,7 +32,11 @@ export async function detectStreamingRings(
   }
   
   // Find bidirectional high-volume edges (streaming ring signature)
-  const suspectedRings: any[] = []
+  const suspectedRings: Array<{
+    artistIds: string[]
+    mutualStreamCount: number
+    confidence: number
+  }> = []
   const processed = new Set<string>()
   
   for (const [key, count] of edges.entries()) {

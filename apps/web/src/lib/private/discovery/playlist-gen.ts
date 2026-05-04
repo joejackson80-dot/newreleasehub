@@ -47,17 +47,17 @@ export async function generateStationPlaylist(stationId: string) {
   // - Limit to 4 tracks per artist
   // - Flatten and shuffle again but ensure no more than 3 consecutive by same artist
   
-  const artistGroups: Record<string, any[]> = {};
+  const artistGroups: Record<string, (typeof tracks)[0][]> = {};
   filteredTracks.forEach(t => {
     if (!artistGroups[t.organizationId]) artistGroups[t.organizationId] = [];
     artistGroups[t.organizationId].push(t);
   });
 
-  let finalTrackIds: string[] = [];
+  const finalTrackIds: string[] = [];
   const artists = Object.keys(artistGroups);
   
   // Interleave tracks to satisfy rules
-  let maxTracks = 500;
+  const maxTracks = 500;
   let addedCount = 0;
   
   while (addedCount < maxTracks && artists.length > 0) {

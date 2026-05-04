@@ -6,7 +6,10 @@ const chunk = <T>(arr: T[], size: number): T[][] =>
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
     arr.slice(i * size, i * size + size)
   );
-const processArtistRoyalties = async (id: string, tier: any) => {};
+const processArtistRoyalties = async (id: string, tier: string) => {
+  // Logic to be implemented or called here
+  console.log(`Processing royalties for artist ${id} on tier ${tier}`);
+};
 
 export const calculateMonthlyRoyalties = inngest.createFunction(
   {
@@ -18,7 +21,7 @@ export const calculateMonthlyRoyalties = inngest.createFunction(
       { cron: '0 2 1 * *' },  // 2am on the 1st of each month
     ],
   },
-  async ({ event, step }: { event: any, step: any }) => {
+  async ({ step }) => {
     const artists = await step.run('get-all-artists', async () => {
       return prisma.organization.findMany({
         where: { isActive: true },
@@ -30,7 +33,7 @@ export const calculateMonthlyRoyalties = inngest.createFunction(
 
     for (const [i, batch] of batches.entries()) {
       await step.run(`process-batch-${i}`, async () => {
-        for (const artist of (batch as any[])) {
+        for (const artist of batch) {
           await processArtistRoyalties(artist.id, artist.subscriptionTier)
         }
       })

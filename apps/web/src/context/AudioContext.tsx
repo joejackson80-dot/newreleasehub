@@ -68,6 +68,193 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => { isShuffleRef.current = isShuffle; }, [isShuffle]);
   useEffect(() => { repeatModeRef.current = repeatMode; }, [repeatMode]);
 
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  const adIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const pauseTrack = useCallback(() => {
+    audioRef.current?.pause();
+    setIsPlaying(false);
+  }, []);
+
+  const resumeTrack = useCallback(() => {
+    if (showAd) return;
+    audioRef.current?.play();
+    setIsPlaying(true);
+  }, [showAd]);
+
+  const triggerAd = useCallback(() => {
+    pauseTrack();
+    setShowAd(true);
+    setAdTimeRemaining(30);
+    setFreeStreamCount(0);
+
+    adIntervalRef.current = setInterval(() => {
+      setAdTimeRemaining(prev => {
+        if (prev <= 1) {
+          if (adIntervalRef.current) clearInterval(adIntervalRef.current);
+          setShowAd(false);
+          resumeTrack();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [pauseTrack, resumeTrack]);
+
+  const skipAd = useCallback(() => {
+    if (adIntervalRef.current) clearInterval(adIntervalRef.current);
+    setShowAd(false);
+    resumeTrack();
+  }, [resumeTrack]);
+
+  const updateStreamDuration = useCallback(async (seconds: number) => {
+    if (streamPlayId.current) {
+      await fetch('/api/streams/track', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ streamPlayId: streamPlayId.current, durationSeconds: seconds })
+      }).catch(console.error);
+    }
+  }, []);
+
+  const checkStreamThreshold = useCallback(async () => {
+    if (playTimer.current >= 30 && streamPlayId.current && !lastRecordedTime.current) {
+      lastRecordedTime.current = 30;
+      const res = await fetch('/api/streams/track', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          streamPlayId: streamPlayId.current,
+          durationSeconds: 30,
+          countedAsStream: true
+        })
+      }).catch(console.error);
+      if(!res) return;
+      const stream = await res.json();
+
+      if (stream?.poolSource === 'C') {
+        const newCount = freeStreamCount + 1;
+        setFreeStreamCount(newCount);
+        if (newCount >= 3) {
+          triggerAd();
+        }
+      }
+    }
+  }, [freeStreamCount, triggerAd]);
+
+  const playTrack = useCallback(async (track: Track) => {
+    if (audioRef.current) {
+      let deviceId = localStorage.getItem('nrh_device_id');
+      if (!deviceId) {
+        deviceId = 'dev_' + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('nrh_device_id', deviceId);
+      }
+
+      const user = localStorage.getItem('nrh_user');
+      const res = await fetch('/api/streams/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trackId: track.id, artistId: track.artistId, userId: user || null, deviceId })
+      }).catch(console.error);
+      
+      if(res) {
+        const data = await res.json();
+        streamPlayId.current = data.id;
+        
+        // Log listening session for fan stats
+        if (user) {
+          logListeningSession(user, track.id);
+        }
+      }
+      
+      playTimer.current = 0;
+      lastRecordedTime.current = 0;
+
+      setCurrentTrack(track);
+      if(!queueRef.current.find(t => t.id === track.id)) {
+         setQueue(prev => [...prev, track]);
+      }
+      
+      audioRef.current.src = track.audioUrl;
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  }, []);
+
+  const handlePlayNext = useCallback(() => {
+    const q = queueRef.current;
+    const current = currentTrackRef.current;
+    if (!q.length) return;
+    
+    let nextIndex = 0;
+    if (current) {
+      const currentIndex = q.findIndex(t => t.id === current.id);
+      if (isShuffleRef.current) {
+        nextIndex = Math.floor(Math.random() * q.length);
+      } else {
+        nextIndex = currentIndex + 1;
+      }
+    }
+
+    if (nextIndex >= q.length) {
+      if (repeatModeRef.current === 'all') {
+        nextIndex = 0;
+      } else {
+        return; // End of queue
+      }
+    }
+    
+    playTrack(q[nextIndex]);
+  }, [playTrack]);
+
+  const playNext = useCallback(() => handlePlayNext(), [handlePlayNext]);
+
+  const playPrevious = useCallback(() => {
+    const q = queue;
+    const current = currentTrack;
+    if (!q.length || !current) return;
+    
+    if (audioRef.current && audioRef.current.currentTime > 3) {
+      audioRef.current.currentTime = 0;
+      return;
+    }
+
+    let prevIndex = q.findIndex(t => t.id === current.id) - 1;
+    if (prevIndex < 0) {
+      if (repeatMode === 'all') {
+        prevIndex = q.length - 1;
+      } else {
+        prevIndex = 0;
+      }
+    }
+    playTrack(q[prevIndex]);
+  }, [currentTrack, queue, repeatMode, playTrack]);
+
+  const togglePlay = useCallback(() => {
+    if (isPlaying) pauseTrack();
+    else resumeTrack();
+  }, [isPlaying, pauseTrack, resumeTrack]);
+
+  const seek = useCallback((time: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setProgress(time);
+    }
+  }, []);
+
+  const addToQueue = useCallback((track: Track) => {
+    setQueue(prev => [...prev, track]);
+  }, []);
+
+  const toggleShuffle = useCallback(() => setIsShuffle(prev => !prev), []);
+  const toggleRepeat = useCallback(() => setRepeatMode(prev => prev === 'off' ? 'all' : prev === 'all' ? 'one' : 'off'), []);
+
   useEffect(() => {
     audioRef.current = new Audio();
     const audio = audioRef.current;
@@ -113,193 +300,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       audio.pause();
       clearInterval(analyticsInterval);
     };
-  }, []);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  const checkStreamThreshold = async () => {
-    if (playTimer.current >= 30 && streamPlayId.current && !lastRecordedTime.current) {
-      lastRecordedTime.current = 30;
-      const res = await fetch('/api/streams/track', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          streamPlayId: streamPlayId.current,
-          durationSeconds: 30,
-          countedAsStream: true
-        })
-      }).catch(console.error);
-      if(!res) return;
-      const stream = await res.json();
-
-      if (stream?.poolSource === 'C') {
-        const newCount = freeStreamCount + 1;
-        setFreeStreamCount(newCount);
-        if (newCount >= 3) {
-          triggerAd();
-        }
-      }
-    }
-  };
-
-  const adIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const triggerAd = () => {
-    pauseTrack();
-    setShowAd(true);
-    setAdTimeRemaining(30);
-    setFreeStreamCount(0);
-
-    adIntervalRef.current = setInterval(() => {
-      setAdTimeRemaining(prev => {
-        if (prev <= 1) {
-          if (adIntervalRef.current) clearInterval(adIntervalRef.current);
-          setShowAd(false);
-          resumeTrack();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const skipAd = () => {
-    if (adIntervalRef.current) clearInterval(adIntervalRef.current);
-    setShowAd(false);
-    resumeTrack();
-  };
-
-  const updateStreamDuration = async (seconds: number) => {
-    if (streamPlayId.current) {
-      await fetch('/api/streams/track', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ streamPlayId: streamPlayId.current, durationSeconds: seconds })
-      }).catch(console.error);
-    }
-  };
-
-  const playTrack = async (track: Track) => {
-    if (audioRef.current) {
-      let deviceId = localStorage.getItem('nrh_device_id');
-      if (!deviceId) {
-        deviceId = 'dev_' + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem('nrh_device_id', deviceId);
-      }
-
-      const user = localStorage.getItem('nrh_user');
-      const res = await fetch('/api/streams/track', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trackId: track.id, artistId: track.artistId, userId: user || null, deviceId })
-      }).catch(console.error);
-      
-      if(res) {
-        const data = await res.json();
-        streamPlayId.current = data.id;
-        
-        // Log listening session for fan stats
-        if (user) {
-          logListeningSession(user, track.id);
-        }
-      }
-      
-      playTimer.current = 0;
-      lastRecordedTime.current = 0;
-
-      setCurrentTrack(track);
-      if(!queue.find(t => t.id === track.id)) {
-         setQueue(prev => [...prev, track]);
-      }
-      
-      audioRef.current.src = track.audioUrl;
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const handlePlayNext = useCallback(() => {
-    const q = queueRef.current;
-    const current = currentTrackRef.current;
-    if (!q.length) return;
-    
-    let nextIndex = 0;
-    if (current) {
-      const currentIndex = q.findIndex(t => t.id === current.id);
-      if (isShuffleRef.current) {
-        nextIndex = Math.floor(Math.random() * q.length);
-      } else {
-        nextIndex = currentIndex + 1;
-      }
-    }
-
-    if (nextIndex >= q.length) {
-      if (repeatModeRef.current === 'all') {
-        nextIndex = 0;
-      } else {
-        return; // End of queue
-      }
-    }
-    
-    playTrack(q[nextIndex]);
-  }, []);
-
-  const playNext = () => handlePlayNext();
-
-  const playPrevious = () => {
-    const q = queue;
-    const current = currentTrack;
-    if (!q.length || !current) return;
-    
-    if (audioRef.current && audioRef.current.currentTime > 3) {
-      audioRef.current.currentTime = 0;
-      return;
-    }
-
-    let prevIndex = q.findIndex(t => t.id === current.id) - 1;
-    if (prevIndex < 0) {
-      if (repeatMode === 'all') {
-        prevIndex = q.length - 1;
-      } else {
-        prevIndex = 0;
-      }
-    }
-    playTrack(q[prevIndex]);
-  };
-
-  const pauseTrack = () => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
-  };
-
-  const resumeTrack = () => {
-    if (showAd) return;
-    audioRef.current?.play();
-    setIsPlaying(true);
-  };
-
-  const togglePlay = () => {
-    if (isPlaying) pauseTrack();
-    else resumeTrack();
-  };
-
-  const seek = (time: number) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      setProgress(time);
-    }
-  };
-
-  const addToQueue = (track: Track) => {
-    setQueue(prev => [...prev, track]);
-  };
-
-  const toggleShuffle = () => setIsShuffle(prev => !prev);
-  const toggleRepeat = () => setRepeatMode(prev => prev === 'off' ? 'all' : prev === 'all' ? 'one' : 'off');
+  }, [checkStreamThreshold, handlePlayNext, updateStreamDuration]);
 
   return (
     <AudioContext.Provider value={{ 

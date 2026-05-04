@@ -9,10 +9,10 @@ export const processStreamFraudScore = inngest.createFunction(
     idempotency: 'event.data.streamPlayId',
     triggers: [{ event: 'stream/fraud.check.requested' }],
   },
-  async ({ event, step }: { event: any, step: any }) => {
+  async ({ event, step }) => {
     const {
-      streamPlayId, artistId, deviceId, ipAddress,
-      hadMouseMovement, hadKeyboardInput, wasTabVisible,
+      streamPlayId, deviceId,
+      hadMouseMovement, hadKeyboardInput,
       wasAudioMuted, ipIsDatacenter
     } = event.data
 

@@ -10,7 +10,7 @@ export const foundingConversionsCron = inngest.createFunction(
     retries: 3,
     triggers: [{ cron: 'TZ=America/Chicago 0 9 * * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async () => {
     // founding conversion logic here
   }
 )
@@ -23,7 +23,7 @@ export const expireCollabsCron = inngest.createFunction(
     retries: 2,
     triggers: [{ cron: '0 0 * * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async ({ step }) => {
     await step.run('expire-collabs', async () => {
       await prisma.collabRequest.updateMany({
         where: {
@@ -44,7 +44,7 @@ export const generateRadioPlaylistsCron = inngest.createFunction(
     retries: 2,
     triggers: [{ cron: '0 2 * * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async () => {
     // radio playlist generation logic here
   }
 )
@@ -58,7 +58,7 @@ export const djListenerCountCron = inngest.createFunction(
     retries: 1,
     triggers: [{ cron: '* * * * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async () => {
     // listener count update logic here
   }
 )
@@ -76,7 +76,7 @@ export const presaveNotificationsCron = inngest.createFunction(
     retries: 2,
     triggers: [{ cron: '0 * * * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async () => {
     // pre-save notification logic here
   }
 )
@@ -88,7 +88,7 @@ export const weeklyFanStatsResetCron = inngest.createFunction(
     name: 'Weekly Fan Stats Reset',
     triggers: [{ cron: '0 0 * * 1' }],
   },
-  async ({ step }: { step: any }) => {
+  async ({ step }) => {
     await step.run('reset-7d-stats', async () => {
       await prisma.fanArtistRelation.updateMany({
         data: { streamCount7d: 0 }
@@ -107,7 +107,7 @@ export const monthlyFanStatsResetCron = inngest.createFunction(
     name: 'Monthly Fan Stats Reset',
     triggers: [{ cron: '0 0 1 * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async ({ step }) => {
     await step.run('reset-30d-stats', async () => {
       await prisma.fanArtistRelation.updateMany({
         data: { streamCount30d: 0 }
@@ -126,7 +126,7 @@ export const dailyFanStreakCron = inngest.createFunction(
     name: 'Daily Fan Streak Maintenance',
     triggers: [{ cron: '0 0 * * *' }],
   },
-  async ({ step }: { step: any }) => {
+  async ({ step }) => {
     await step.run('update-streaks', async () => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -147,7 +147,7 @@ export const generateFanLeaderboardsCron = inngest.createFunction(
     name: 'Generate Fan Leaderboards',
     triggers: [{ cron: '0 3 * * 1' }],
   },
-  async ({ step }: { step: any }) => {
+  async ({ step }) => {
     const artists = await step.run('get-artists', async () => {
       return prisma.organization.findMany({
         select: { id: true }

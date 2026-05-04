@@ -1,6 +1,6 @@
 import { getDeviceFingerprint } from '@/lib/fraud/fingerprint'
 
-let interactionSignals = {
+const interactionSignals = {
   hadMouseMovement: false,
   hadKeyboardInput: false,
   wasTabVisible: false,

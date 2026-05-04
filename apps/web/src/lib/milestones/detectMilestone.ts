@@ -1,12 +1,12 @@
 import { prisma } from '@/lib/prisma'
-import { MilestoneType } from '@prisma/client'
+import { MilestoneType, Prisma } from '@prisma/client'
 import { generateMilestoneCard } from './generateCard'
 import { notifyArtistMilestone } from '../notifications'
 
 export async function checkAndAwardMilestones(
   artistId: string,
   trigger: 'stream' | 'SUPPORTER' | 'earnings' | 'chart' | 'upload',
-  tx?: any
+  tx?: Prisma.TransactionClient
 ) {
   const db = tx || prisma
   const artist = await db.organization.findUnique({
@@ -24,7 +24,7 @@ export async function checkAndAwardMilestones(
     where: { artistId },
     select: { type: true }
   })
-  const earned = new Set(existing.map((m: any) => m.type))
+  const earned = new Set(existing.map((m: { type: MilestoneType }) => m.type))
 
   const toCheck: { type: MilestoneType, condition: boolean }[] = [
     { type: 'FIRST_SUPPORTER',       condition: artist.supporterCount >= 1 },

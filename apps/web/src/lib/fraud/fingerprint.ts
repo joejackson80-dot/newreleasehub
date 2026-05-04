@@ -1,6 +1,6 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
-let fpPromise: Promise<any> | null = null
+let fpPromise: ReturnType<typeof FingerprintJS.load> | null = null
 
 export async function getDeviceFingerprint(): Promise<string> {
   if (typeof window === 'undefined') return 'server'
@@ -10,6 +10,7 @@ export async function getDeviceFingerprint(): Promise<string> {
   }
   
   const fp = await fpPromise
+  if (!fp) return 'unknown'
   const result = await fp.get()
   return result.visitorId // Unique device hash
 }

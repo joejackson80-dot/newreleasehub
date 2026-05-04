@@ -36,9 +36,9 @@ export async function sendEmail({
     }
 
     return { success: true, data };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Failed to send email:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
   }
 }
 

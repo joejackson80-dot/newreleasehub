@@ -13,7 +13,7 @@ export const sendEmailNotification = inngest.createFunction(
     },
     triggers: [{ event: 'email/notification.send' }],
   },
-  async ({ event }: { event: any }) => {
+  async ({ event }) => {
     const { to, subject, body, type } = event.data
 
     await resend.emails.send({

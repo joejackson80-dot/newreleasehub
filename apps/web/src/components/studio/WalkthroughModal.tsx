@@ -42,7 +42,7 @@ export default function WalkthroughModal() {
     // Check if they've seen it before
     const hasSeen = localStorage.getItem('nrh_studio_walkthrough_v1');
     if (!hasSeen) {
-      setIsOpen(true);
+      setTimeout(() => setIsOpen(true), 0);
     }
   }, []);
 
