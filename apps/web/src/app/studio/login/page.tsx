@@ -81,7 +81,7 @@ export default function ArtistLogin() {
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               placeholder="ENTER CREDENTIALS"
-              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
+              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
             />
           </div>
           <div>

@@ -65,7 +65,7 @@ export default function FanLoginPage() {
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   placeholder="USERNAME OR EMAIL" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
                 />
               </div>
               <div className="relative">
@@ -79,7 +79,7 @@ export default function FanLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="PASSWORD" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
                 />
               </div>
 

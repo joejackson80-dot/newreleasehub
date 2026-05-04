@@ -79,7 +79,7 @@ export default function FanRegisterPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="EMAIL ADDRESS" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
                 />
               </div>
               <div className="relative">
@@ -89,7 +89,7 @@ export default function FanRegisterPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="USERNAME" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
                 />
               </div>
               <div className="relative">
@@ -99,7 +99,7 @@ export default function FanRegisterPage() {
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="DISPLAY NAME" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
                 />
               </div>
               <div className="relative">
@@ -109,7 +109,7 @@ export default function FanRegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="PASSWORD" 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold uppercase tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-8 py-5 text-xs font-bold tracking-widest text-white placeholder-gray-800 focus:outline-none focus:border-white/20 transition-all"
                   minLength={8}
                 />
               </div>

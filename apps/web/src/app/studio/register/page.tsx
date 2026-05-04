@@ -80,7 +80,7 @@ export default function ArtistRegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ENTER EMAIL"
-              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
+              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
             />
           </div>
           <div>
@@ -91,7 +91,7 @@ export default function ArtistRegisterPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="ENTER STAGE NAME"
-              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
+              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
             />
           </div>
           <div>
@@ -102,7 +102,7 @@ export default function ArtistRegisterPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="NO SPACES"
-              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
+              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
             />
           </div>
           <div>
