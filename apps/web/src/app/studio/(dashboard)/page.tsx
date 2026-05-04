@@ -106,14 +106,24 @@ export default async function StudioOverviewPage() {
           </div>
         </div>
 
-        <div className="bg-[#111] border border-white/5 p-6 rounded-2xl space-y-4 hover:border-white/10 transition-colors">
-          <div className="flex justify-between items-start">
+        <div className="bg-[#111] border border-white/5 p-6 rounded-2xl space-y-4 hover:border-white/10 transition-colors relative overflow-hidden group">
+          <div className="flex justify-between items-start relative z-10">
             <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Est. Revenue (Monthly)</h3>
             <DollarSign className="w-4 h-4 text-green-400" />
           </div>
-          <div>
+          <div className="relative z-10">
             <p className="text-3xl font-bold text-white">${currentRevenue.toFixed(2)}</p>
-            <p className="text-xs text-gray-500 mt-2 font-medium">Next payout in 4 days</p>
+            <div className="h-10 mt-3 flex items-end gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
+               {[40, 65, 30, 85, 45, 90, 70, 100].map((val, i) => (
+                  <div key={i} className="flex-1 bg-green-500/20 rounded-t-sm relative overflow-hidden" style={{ height: `${val}%` }}>
+                     <div className="absolute bottom-0 left-0 right-0 bg-green-400" style={{ height: `${val}%` }}></div>
+                  </div>
+               ))}
+            </div>
+            <p className="text-[9px] text-gray-500 mt-2 font-bold uppercase tracking-widest flex items-center justify-between">
+               <span>Next payout: 4 Days</span>
+               <span className="text-green-400">+14%</span>
+            </p>
           </div>
         </div>
 
