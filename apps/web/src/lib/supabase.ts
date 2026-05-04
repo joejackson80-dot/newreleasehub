@@ -6,4 +6,4 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 // Guard: only instantiate if env vars are present (avoids build-time crash)
 export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
-  : null as any;
+  : null as unknown as ReturnType<typeof createClient>;

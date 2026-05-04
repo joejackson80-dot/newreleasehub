@@ -78,8 +78,6 @@ interface RoyaltyReport {
 const POOL_A_ARTIST_SHARE    = 0.70  // 70% of subscription revenue to artists
 const POOL_C_ARTIST_SHARE    = 0.60  // 60% of ad revenue to artists
 const MIN_STREAM_SECONDS     = 30    // streams under 30s don't count
-const MIN_PAYOUT_CENTS       = 1000  // $10 minimum payout
-const FAN_MIN_WITHDRAW_CENTS = 500   // $5 minimum fan withdrawal
 
 // SUPPORTER multiplier thresholds
 const MULTIPLIER_TIERS = [
@@ -490,7 +488,7 @@ async function sendRoyaltyNotifications(
 
   if (artistNotifications.length > 0 || fanNotifications.length > 0) {
     await prisma.notification.createMany({
-      data: [...artistNotifications, ...fanNotifications] as any,
+      data: [...artistNotifications, ...fanNotifications],
     })
 
     // Also send actual emails to artists
@@ -681,11 +679,11 @@ export async function startStreamPlay(
       trackId,
       artistId,
       listenerId:       fan?.id ?? null,
-      listenerType:     (fan?.type?.toUpperCase() || 'GUEST') as any,
+      listenerType:     (fan?.type?.toUpperCase() || 'GUEST') as 'GUEST' | 'FAN' | 'ARTIST' | 'ADMIN' | 'SUPPORTER',
       startedAt:        new Date(),
       playDurationSeconds: 0,
       countedAsStream:  false,
-      poolSource:       poolSource as any,
+      poolSource:       poolSource as 'A' | 'C',
       ipAddress,
       userAgent,
       deviceId,
@@ -702,7 +700,7 @@ export async function markStreamCounted(streamPlayId: string): Promise<void> {
   await prisma.streamPlay.update({
     where: { id: streamPlayId },
     data: {
-      playDurationSeconds: 30,
+      playDurationSeconds: MIN_STREAM_SECONDS,
       countedAsStream: true,
     },
   })

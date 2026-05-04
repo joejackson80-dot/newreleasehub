@@ -35,9 +35,9 @@ export async function authorizePayout(payoutId: string) {
           description: `NRH Platform Settlement: Payout ${payout.id}`,
         });
         transferId = transfer.id;
-      } catch (stripeError: any) {
+      } catch (stripeError: unknown) {
         console.error('Stripe Transfer Error:', stripeError);
-        throw new Error(`Stripe error: ${stripeError.message}`);
+        throw new Error(`Stripe error: ${stripeError instanceof Error ? stripeError.message : 'Unknown error'}`);
       }
     } else {
       // Mock mode
@@ -58,8 +58,8 @@ export async function authorizePayout(payoutId: string) {
 
     revalidatePath('/studio/admin');
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Authorize Payout Error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: error instanceof Error ? error.message : 'An error occurred' };
   }
 }

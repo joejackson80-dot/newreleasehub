@@ -71,9 +71,9 @@ export async function proxy(request: NextRequest) {
       if (!success) {
         return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
       }
-    } catch (err) {
+    } catch (err: unknown) {
       // Fail open — log the error but never block a request due to Redis failure
-      console.warn('[NRH RATE LIMIT] Redis error, failing open:', err)
+      console.warn('[NRH RATE LIMIT] Redis error, failing open:', err instanceof Error ? err.message : err)
     }
   }
 
