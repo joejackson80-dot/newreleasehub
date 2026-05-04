@@ -1,19 +1,30 @@
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
 
 /**
  * Server-side utility to retrieve the currently authenticated artist.
- * Reads the `nrh_artist_id` cookie set during login.
- * Redirects to /studio/login if no valid session exists.
+ * Checks both NextAuth session and the legacy `nrh_artist_id` cookie.
  */
 export async function getSessionArtist(opts?: { 
   includeReleases?: boolean; 
   includeSupporters?: boolean;
   includeParticipation?: boolean;
 }) {
+  const session = await auth();
   const cookieStore = await cookies();
-  const artistId = cookieStore.get('nrh_artist_id')?.value;
+  const artistIdFromCookie = cookieStore.get('nrh_artist_id')?.value;
+
+  let artistId = artistIdFromCookie;
+
+  // Prioritize NextAuth session if it's an ARTIST
+  if (session?.user?.id && session.user.role === 'ARTIST') {
+    artistId = session.user.id;
+  } else if (session?.user?.id && session.user.role === 'FAN' && !artistIdFromCookie) {
+    // If they are logged in as a FAN but trying to access ARTIST portal, redirect to login
+    redirect('/studio/login');
+  }
 
   if (!artistId) {
     redirect('/studio/login');
@@ -47,12 +58,18 @@ export async function getSessionArtistId(): Promise<string | null> {
 
 /**
  * Server-side utility to retrieve the currently authenticated fan.
- * Reads the `nrh_user_id` cookie set during login.
- * Redirects to /fan/login if no valid session exists.
+ * Checks both NextAuth session and the legacy `nrh_user_id` cookie.
  */
 export async function getSessionFan() {
+  const session = await auth();
   const cookieStore = await cookies();
-  const userId = cookieStore.get('nrh_user_id')?.value;
+  const userIdFromCookie = cookieStore.get('nrh_user_id')?.value;
+
+  let userId = userIdFromCookie;
+
+  if (session?.user?.id && session.user.role === 'FAN') {
+    userId = session.user.id;
+  }
 
   if (!userId) {
     redirect('/fan/login');

@@ -7,7 +7,10 @@ import { sendWelcomeEmail } from '@/lib/email';
 import { signIn } from '@/auth';
 
 export async function signInWithGoogle(role: string, callbackUrl: string) {
-  await signIn('google', { redirectTo: callbackUrl });
+  await signIn('google', { 
+    redirectTo: callbackUrl,
+    authorization: { params: { role } }
+  });
 }
 
 export async function loginArtist(identifier: string, password: string) {
