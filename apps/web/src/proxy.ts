@@ -43,7 +43,12 @@ export async function proxy(request: NextRequest) {
   // ⚠  /api/auth/* and Server Actions are intentionally excluded.
   //    NextAuth OAuth handshakes and Server Actions make rapid requests
   //    that shouldn't be blocked by the general rate limiter.
-  const isAuthRoute = path.startsWith('/api/auth') || path === '/studio/login' || path === '/login'
+  const isAuthRoute = 
+    path.startsWith('/api/auth') || 
+    path.startsWith('/studio/login') || 
+    path.startsWith('/login') || 
+    path.startsWith('/forgot-password') || 
+    path.startsWith('/reset-password')
   const isServerAction = request.headers.has('next-action')
   
   if (!isAuthRoute && !isServerAction && process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
@@ -63,7 +68,7 @@ export async function proxy(request: NextRequest) {
       } else if (path.startsWith('/api/studio/earnings') || path.startsWith('/api/royalties')) {
         limiter = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, '60 s'), prefix: 'nrh:royalties' })
       } else {
-        limiter = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(100, '60 s'), prefix: 'nrh:general' })
+        limiter = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(500, '60 s'), prefix: 'nrh:general' })
       }
 
       const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1'
