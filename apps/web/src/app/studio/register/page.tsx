@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { registerArtist } from '@/app/actions/auth';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -8,7 +7,6 @@ import Link from 'next/link';
 import { signInWithGoogle } from '@/app/actions/auth';
 
 export default function ArtistRegisterPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
@@ -30,7 +28,8 @@ export default function ArtistRegisterPage() {
         setError(result.error || 'Registration failed');
         toast.error(result.error || 'Registration failed');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error('Registration error:', err);
       setError('An error occurred. Please try again.');
       toast.error('An error occurred. Please try again.');
     } finally {
@@ -38,20 +37,7 @@ export default function ArtistRegisterPage() {
     }
   };
 
-  const handleDemoLogin = async () => {
-    setIsSubmitting(true);
-    try {
-      const { loginArtist } = await import('@/app/actions/auth');
-      const result = await loginArtist('iamjoejack', 'Password123');
-      if (result.success) {
-        window.location.href = '/studio';
-      }
-    } catch (err) {
-      setError('Demo login failed');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-[var(--color-studio-base)] flex items-center justify-center p-4">

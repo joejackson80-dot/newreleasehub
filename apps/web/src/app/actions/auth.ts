@@ -78,8 +78,8 @@ export async function loginArtist(identifier: string, password: string) {
     });
 
     return { success: true };
-  } catch (error: any) {
-    console.error('Login error:', error);
+  } catch (error: unknown) {
+    console.error('Login error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }
@@ -151,8 +151,8 @@ export async function loginFan(identifier: string, password: string) {
     });
 
     return { success: true };
-  } catch (error: any) {
-    console.error('Login error:', error);
+  } catch (error: unknown) {
+    console.error('Login error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }
@@ -236,8 +236,8 @@ export async function registerArtist(data: { email: string, username: string, na
     });
 
     return { success: true };
-  } catch (error: any) {
-    console.error('Registration error:', error);
+  } catch (error: unknown) {
+    console.error('Registration error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }
@@ -294,8 +294,8 @@ export async function registerFan(data: { email: string, username: string, displ
     });
 
     return { success: true };
-  } catch (error: any) {
-    console.error('Registration error:', error);
+  } catch (error: unknown) {
+    console.error('Registration error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }
@@ -318,8 +318,8 @@ export async function resetArtistPassword(email: string, newPassword: string) {
     });
 
     return { success: true };
-  } catch (error: any) {
-    console.error('Reset password error:', error);
+  } catch (error: unknown) {
+    console.error('Reset password error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }
@@ -341,8 +341,8 @@ export async function resetFanPassword(email: string, newPassword: string) {
     });
 
     return { success: true };
-  } catch (error: any) {
-    console.error('Reset password error:', error);
+  } catch (error: unknown) {
+    console.error('Reset password error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }

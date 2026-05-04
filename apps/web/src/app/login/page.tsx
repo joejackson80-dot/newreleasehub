@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Mail, Globe, Zap, ArrowLeft, ArrowRight, Lock } from 'lucide-react';
+import { Mail, Globe, ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { signInWithGoogle } from '@/app/actions/auth';
@@ -30,7 +30,8 @@ export default function FanLoginPage() {
       } else {
         window.location.href = '/fan/me';
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error('Auth error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -1,13 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { loginArtist, signInWithGoogle } from '@/app/actions/auth';
-import { ArrowLeft, ArrowRight, Music2 } from 'lucide-react';
+import { signInWithGoogle } from '@/app/actions/auth';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ArtistLogin() {
-  const router = useRouter();
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,7 +45,8 @@ export default function ArtistLogin() {
       } else {
         window.location.href = '/studio';
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error('Login error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

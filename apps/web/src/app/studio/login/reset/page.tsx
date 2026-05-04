@@ -1,12 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { resetArtistPassword } from '@/app/actions/auth';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ArtistPasswordResetPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +23,8 @@ export default function ArtistPasswordResetPage() {
       } else {
         setError(result.error || 'Failed to reset password');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error('Reset error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -79,7 +78,7 @@ export default function ArtistPasswordResetPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ENTER EMAIL"
-              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
+              className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
             />
           </div>
           <div>

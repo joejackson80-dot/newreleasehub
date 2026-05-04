@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Mail, Globe, ArrowLeft, ArrowRight } from 'lucide-react';
-import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { registerFan, signInWithGoogle } from '@/app/actions/auth';
 import toast from 'react-hot-toast';
@@ -28,7 +27,8 @@ export default function FanRegisterPage() {
         setError(result.error || 'Registration failed');
         toast.error(result.error || 'Registration failed');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error('Registration error:', err);
       setError('An error occurred. Please try again.');
       toast.error('Network error during registration');
     } finally {
@@ -36,20 +36,7 @@ export default function FanRegisterPage() {
     }
   };
 
-  const handleDemoLogin = async () => {
-    setIsSubmitting(true);
-    try {
-      const { loginFan } = await import('@/app/actions/auth');
-      const result = await loginFan('johndoe', 'Password123');
-      if (result.success) {
-        window.location.href = '/fan/me';
-      }
-    } catch (err) {
-      setError('Demo login failed');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-10 font-sans selection:bg-white selection:text-black">
