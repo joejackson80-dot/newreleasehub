@@ -4,6 +4,11 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { sendWelcomeEmail } from '@/lib/email';
+import { signIn } from '@/auth';
+
+export async function signInWithGoogle(role: string, callbackUrl: string) {
+  await signIn('google', { redirectTo: callbackUrl });
+}
 
 export async function loginArtist(identifier: string, password: string) {
   try {

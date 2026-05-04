@@ -5,7 +5,7 @@ import { registerArtist } from '@/app/actions/auth';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signInWithGoogle } from '@/app/actions/auth';
 
 export default function ArtistRegisterPage() {
   const router = useRouter();
@@ -143,14 +143,15 @@ export default function ArtistRegisterPage() {
         </div>
 
         <div className="mt-6">
-          <button 
-            type="button" 
-            onClick={() => signIn('google', { callbackUrl: '/studio' }, { role: 'ARTIST' })}
-            className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
-          >
-            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Register with Google</span>
-          </button>
+          <form action={signInWithGoogle.bind(null, 'ARTIST', '/studio')}>
+            <button 
+              type="submit" 
+              className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+            >
+              <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Register with Google</span>
+            </button>
+          </form>
         </div>
 
         <div className="mt-8 text-center border-t border-[var(--color-studio-border)] pt-8 space-y-4">
