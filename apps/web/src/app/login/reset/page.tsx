@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { resetFanPassword } from '@/app/actions/auth';
+import { resetPasswordWithToken } from '@/app/actions/auth';
 
 export default function FanPasswordResetPage() {
   const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ export default function FanPasswordResetPage() {
     setError('');
     
     try {
-      const result = await resetFanPassword(email, newPassword);
+      const result = await resetPasswordWithToken(email, newPassword);
       if (result.success) {
         setSuccess(true);
       } else {

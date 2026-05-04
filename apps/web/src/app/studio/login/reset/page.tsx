@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { resetArtistPassword } from '@/app/actions/auth';
+import { resetPasswordWithToken } from '@/app/actions/auth';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -18,7 +18,7 @@ export default function ArtistPasswordResetPage() {
     setError('');
 
     try {
-      const result = await resetArtistPassword(email, newPassword);
+      const result = await resetPasswordWithToken(email, newPassword);
       if (result.success) {
         setSuccess(true);
       } else {
