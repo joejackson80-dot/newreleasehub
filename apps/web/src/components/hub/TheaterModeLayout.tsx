@@ -42,14 +42,14 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
   const [djPlaying, setDjPlaying] = useState(false);
   const [backgroundUrl, setBackgroundUrl] = useState('');
   const [stats, setStats] = useState({ fire: 1204, cool: 512, trash: 42 });
-  const [messages, setMessages] = useState<any[]>([]);
-  const [merch, setMerch] = useState<any[]>([]);
-  const [activeLicenses, setActiveLicenses] = useState<any[]>([]);
+  const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
+  const [merch, setMerch] = useState<{ id: string; title: string; priceCents: number }[]>([]);
+  const [activeLicenses, setActiveLicenses] = useState<{ id: string; allocatedBps: number; feeCents: number }[]>([]);
   const [isGiftTrayOpen, setIsGiftTrayOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [showDecks, setShowDecks] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [muxConfig, setMuxConfig] = useState<any>(null);
+  const [muxConfig, setMuxConfig] = useState<{ playbackId?: string; status?: string } | null>(null);
   const [liveListeners, setLiveListeners] = useState(0);
   const userId = 'session-user'; // Placeholder for session ID
 
@@ -98,10 +98,10 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
         const newState = channel.presenceState();
         setLiveListeners(Object.keys(newState).length);
       })
-      .on('presence', { event: 'join' }, ({ key, newPresences }: { key: string; newPresences: any[] }) => {
+      .on('presence', { event: 'join' }, ({ key }: { key: string; newPresences: unknown[] }) => {
         console.info(`[NETWORK_PULSE] Listener joined: ${key}`);
       })
-      .on('broadcast', { event: 'reaction' }, ({ payload }: { payload: any }) => {
+      .on('broadcast', { event: 'reaction' }, ({ payload }: { payload: { type: string } }) => {
         // Handle real-time floating reactions
         if (payload?.type === 'FIRE') setStats(prev => ({ ...prev, fire: prev.fire + 1 }));
       })
@@ -110,7 +110,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
         schema: 'public',
         table: 'ChatMessage',
         filter: `organizationId=eq.${orgId}`,
-      }, (payload: any) => {
+      }, (payload: { new: { user: string; text: string } }) => {
         setMessages((prev) => [...prev, payload.new]);
       })
       .subscribe(async (status: string) => {
@@ -191,7 +191,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                <div className="space-y-4">
                   <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Protocol & Profile</h3>
                   <p className="text-sm text-gray-400 leading-relaxed font-medium italic">
-                     "Operating on New Release Hub. Scaled through decentralized support and fan revenue shares."
+                    &quot;Operating on New Release Hub. Scaled through decentralized support and fan revenue shares.&quot;
                   </p>
                </div>
                <div className="space-y-6 pt-10 border-t border-white/5">
@@ -317,7 +317,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                   {['CHAT', 'MERCH', 'SUPPORTERS'].map(tab => (
                     <button 
                       key={tab} 
-                      onClick={() => setChatTab(tab as any)}
+                      onClick={() => setChatTab(tab as 'CHAT' | 'MERCH' | 'WAR' | 'SUPPORTERS')}
                       className={`pb-10 text-[10px] font-bold uppercase tracking-[0.2em] border-b-2 transition-all ${chatTab === tab ? 'text-[#A855F7] border-[#A855F7]' : 'text-gray-600 border-transparent hover:text-white'}`}
                     >
                        {tab}
@@ -389,7 +389,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
                               </div>
 
                               <p className="text-gray-400 text-lg leading-relaxed max-w-3xl font-medium italic relative z-10">
-                                "Become a verified SUPPORTER to support {artistName} and secure a {activeLicenses[0]?.allocatedBps / 100 || '15'}% share of all future streaming revenue from this hub."
+                                &quot;Become a verified SUPPORTER to support {artistName} and secure a {activeLicenses[0]?.allocatedBps / 100 || '15'}% share of all future streaming revenue from this hub.&quot;
                               </p>
 
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-6 relative z-10">

@@ -5,14 +5,38 @@ import Link from 'next/link';
 
 import { useSearchParams } from 'next/navigation';
 
-export default function MessagesClient({ initialMessages, org }: { initialMessages: any[], org: any }) {
+interface MessageUser {
+  id: string;
+  displayName?: string;
+  username?: string;
+  avatarUrl?: string;
+}
+
+interface Message {
+  id: string;
+  text: string;
+  senderUserId?: string | null;
+  receiverUserId?: string | null;
+  senderUser?: MessageUser;
+  receiverUser?: MessageUser;
+  createdAt: string;
+  senderOrgId?: string;
+}
+
+interface Conversation {
+  user: MessageUser;
+  lastMessage: Message;
+  messages: Message[];
+}
+
+export default function MessagesClient({ initialMessages, org }: { initialMessages: Message[], org: { id: string } }) {
   const searchParams = useSearchParams();
-  const [messages, setMessages] = useState<any[]>(initialMessages);
-  const [selectedConversation, setSelectedConversation] = useState<any>(null);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState('');
 
   // Group messages by conversation (user)
-  const conversationsMap = messages.reduce((acc: any, m: any) => {
+  const conversationsMap = messages.reduce((acc: { [key: string]: Conversation }, m: Message) => {
     const otherParty = m.senderUserId === null ? (m.receiverUserId === null ? null : m.receiverUser) : m.senderUser;
     if (!otherParty) return acc;
     const key = otherParty.id;
@@ -27,7 +51,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
     return acc;
   }, {});
 
-  const conversations = Object.values(conversationsMap).sort((a: any, b: any) => 
+  const conversations = Object.values(conversationsMap).sort((a, b) => 
     new Date(b.lastMessage.createdAt).getTime() - new Date(a.lastMessage.createdAt).getTime()
   );
 
@@ -157,7 +181,7 @@ export default function MessagesClient({ initialMessages, org }: { initialMessag
 
                  {/* Chat Body */}
                  <div className="flex-1 overflow-y-auto p-10 space-y-8 bg-[url('/backgrounds/grid.svg')] bg-repeat">
-                    {selectedConversation.messages.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()).map((m: any) => {
+                    {selectedConversation.messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()).map((m) => {
                        const isMine = m.senderOrgId === org.id;
                        return (
                           <div key={m.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>

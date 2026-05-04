@@ -18,8 +18,8 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json(bids);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 
@@ -67,9 +67,9 @@ export async function POST(req: Request) {
       bid,
       checkoutUrl: session.url
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Bid POST error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 
@@ -124,8 +124,8 @@ export async function PATCH(req: Request) {
     }
 
     return NextResponse.json(bid);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 

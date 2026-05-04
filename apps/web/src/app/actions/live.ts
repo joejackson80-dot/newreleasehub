@@ -27,9 +27,9 @@ export async function getLiveStreamConfig() {
       rtmpUrl: 'rtmp://global-live.mux.com:5222/app',
       status: stream.status
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Live Stream Config Error]', error);
-    return { success: false, error: error.message };
+    return { success: false, error: error instanceof Error ? error.message : String(error) };
   }
 }
 
@@ -41,8 +41,8 @@ export async function updateLiveStatus(isLive: boolean) {
       data: { isLive }
     });
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    return { success: false, error: error instanceof Error ? error.message : String(error) };
   }
 }
 

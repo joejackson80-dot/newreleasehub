@@ -16,31 +16,25 @@ export async function signInWithGoogle(role: string, callbackUrl: string) {
 export async function loginArtist(identifier: string, password: string) {
   try {
     // DEMO MODE FALLBACK
-    const isDemo = (identifier.toLowerCase() === 'iamjoejack' || identifier.toLowerCase() === 'joe@example.com') && password === 'Password123';
+    const isDemo = (identifier.toLowerCase() === 'iamjoejack' || identifier.toLowerCase() === 'joe@example.com' || identifier.toLowerCase() === 'joe@newreleasehub.com') && password === 'Password123';
     
     if (isDemo) {
-      const demoArtist = await prisma.organization.findFirst({
-        where: { OR: [{ username: 'iamjoejack' }, { email: 'joe@example.com' }] }
+      const cookieStore = await cookies();
+      cookieStore.set('nrh_artist_session', 'true', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
       });
-      
-      if (demoArtist) {
-        const cookieStore = await cookies();
-        cookieStore.set('nrh_artist_session', 'true', {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7
-        });
-        cookieStore.set('nrh_artist_id', demoArtist.id, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7
-        });
-        return { success: true };
-      }
+      cookieStore.set('nrh_artist_id', 'demo-artist-id', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      });
+      return { success: true };
     }
 
     const artist = await prisma.organization.findFirst({

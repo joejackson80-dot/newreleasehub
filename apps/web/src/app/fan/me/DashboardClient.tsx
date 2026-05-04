@@ -8,11 +8,72 @@ import RadioMonitor from '@/components/fan/RadioMonitor';
 import DiscoveryFeed from '@/components/fan/DiscoveryFeed';
 import FanWalkthroughModal from '@/components/fan/FanWalkthroughModal';
 
+interface FeedItem {
+  id: string;
+  Organization?: {
+    name: string;
+    slug: string;
+    profileImageUrl?: string;
+    isVerified?: boolean;
+  };
+  artistName?: string;
+  artistSlug?: string;
+  artistPhoto?: string;
+  isVerified?: boolean;
+  isSupporterOnly?: boolean;
+  isisSupporterOnly?: boolean; // Keep for compatibility with mock data
+  content: string;
+  time?: string;
+  createdAt: string;
+  type?: string;
+  title?: string;
+  releaseTitle?: string;
+  coverArtUrl?: string;
+  coverArt?: string;
+  audioUrl?: string;
+  Reactions?: { type: string }[];
+  reactions?: { [key: string]: number };
+  comments?: number;
+}
+
+interface MessageItem {
+  id: string;
+  text: string;
+  isRead: boolean;
+  receiverUserId: string;
+  senderUserId: string;
+  createdAt: string;
+  senderOrg?: { name: string; profileImageUrl?: string };
+  senderUser?: { displayName: string; avatarUrl?: string };
+}
+
+interface VaultItem {
+  id: string;
+  title: string;
+  artist: string;
+  artistId: string;
+  audioUrl: string;
+  imageUrl: string;
+  coverArtUrl?: string;
+}
+
+interface YieldItem {
+  amountEarned: number;
+}
+
+interface FanStats {
+  totalStreamsAllTime: number;
+  uniqueArtistsAllTime: number;
+  totalListeningHrs: number;
+  listeningStreak: number;
+  totalEarnedCents: number;
+  firstDiscoveries: number;
+  countryDistribution?: { [key: string]: number };
+}
+
 const TABS = ['Feed', 'Discovery', 'Radio', 'Library', 'Messages', 'Following', 'Support', 'Yield', 'Vault', 'Stats', 'Notifications'];
 
-const MOCK_FEED: any[] = [];
-
-const MOCK_NOTIFICATIONS: any[] = [];
+const MOCK_NOTIFICATIONS: { id: string; unread: boolean; title: string; body: string; time: string }[] = [];
 
 const REACTION_EMOJI = [
   { key: 'fire', emoji: '🔥', label: 'Fire' },
@@ -21,21 +82,22 @@ const REACTION_EMOJI = [
   { key: 'bolt', emoji: '⚡', label: 'Bolt' },
 ];
 
-export default function FanDashboard({ user, initialLibraryCount, subscriptions = [], initialFeed = [], initialMessages = [], initialVault = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[], initialFeed?: any[], initialMessages?: any[], initialVault?: any[] }) {
+export default function FanDashboard({ user, subscriptions = [], initialMessages = [], initialVault = [] }: { user: any, initialLibraryCount: number, subscriptions?: any[], initialFeed?: FeedItem[], initialMessages?: MessageItem[], initialVault?: VaultItem[] }) {
   const [activeTab, setActiveTab] = useState('Feed');
-  const [feed, setFeed] = useState<any[]>([]);
+  const [feed, setFeed] = useState<FeedItem[]>([]);
   const [isLoadingFeed, setIsLoadingFeed] = useState(true);
-  const [messages, setMessages] = useState<any[]>(initialMessages);
-  const [vaultReleases, setVaultReleases] = useState<any[]>(initialVault);
+  const [messages] = useState<MessageItem[]>(initialMessages);
+  const [vaultReleases] = useState<VaultItem[]>(initialVault);
   const [libraryTracks, setLibraryTracks] = useState<any[]>([]);
   const [isLoadingLibrary, setIsLoadingLibrary] = useState(false);
   const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
-  const [yieldHistory, setYieldHistory] = useState<any[]>([]);
+  const [yieldHistory, setYieldHistory] = useState<YieldItem[]>([]);
   const [isLoadingYield, setIsLoadingYield] = useState(true);
-  const [fanStats, setFanStats] = useState<any>(null);
+  const [fanStats, setFanStats] = useState<FanStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const unreadNotifs = MOCK_NOTIFICATIONS.filter(n => n.unread).length;
   const unreadMessages = messages.filter(m => !m.isRead && m.receiverUserId === user.id).length;
+
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -97,7 +159,13 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
     }
   }, [activeTab]);
 
-  const handlePlayTrack = (track: any) => {
+  const handlePlayTrack = (track: { 
+    id: string; 
+    title: string; 
+    Organization?: { name?: string, slug?: string }; 
+    audioUrl?: string; 
+    imageUrl?: string 
+  }) => {
     if (currentTrack?.id === track.id) {
       togglePlay();
       return;

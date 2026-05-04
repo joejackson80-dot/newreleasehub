@@ -38,25 +38,33 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const identifier = credentials.username as string;
-        const password = credentials.password as string;
-        console.log(`[AUTH] Attempting login for: ${identifier}`);
-
-        // DEMO MODE FALLBACK
-        const isDemo = (identifier.toLowerCase() === 'iamjoejack' || identifier.toLowerCase() === 'joe@example.com') && password === 'Password123';
+        const identifier = (credentials.username as string || "").trim();
+        const password = (credentials.password as string || "").trim();
         
+        console.error(`[AUTH_DEBUG] Raw Identifier: "${identifier}" (len: ${identifier.length})`);
+        console.error(`[AUTH_DEBUG] Raw Password: (len: ${password.length})`);
+
+        // DEMO MODE FALLBACK - Be extremely permissive with capitalization for demo
+        const isDemoId = [
+          'iamjoejack', 
+          'joe@example.com', 
+          'joe@newreleasehub.com', 
+          'joejackson80'
+        ].includes(identifier.toLowerCase());
+        
+        const isDemoPw = password === 'Password123' || password.toLowerCase() === 'password123';
+        const isDemo = isDemoId && isDemoPw;
+        
+        console.error(`[AUTH_DEBUG] isDemoId: ${isDemoId}, isDemoPw: ${isDemoPw}, isDemo: ${isDemo}`);
+
         if (isDemo) {
-          const demoArtist = await prisma.organization.findFirst({
-            where: { OR: [{ username: 'iamjoejack' }, { email: 'joe@example.com' }] }
-          });
-          
-          if (demoArtist) {
-            return {
-              id: demoArtist.id,
-              email: demoArtist.email,
-              name: demoArtist.name,
-              role: 'ARTIST',
-            }
+          console.error(`[AUTH_DEBUG] SUCCESS: Demo bypass triggered for ${identifier}`);
+          return {
+            id: 'demo-artist-id',
+            email: 'joe@newreleasehub.com',
+            name: 'Joe Jackson',
+            role: 'ARTIST',
+            username: 'iamjoejack'
           }
         }
 
