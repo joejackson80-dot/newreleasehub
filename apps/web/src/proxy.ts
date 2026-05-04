@@ -90,7 +90,9 @@ export async function proxy(request: NextRequest) {
   })
 
   if (path.startsWith('/studio') || path.startsWith('/fan/me') || path.startsWith('/admin')) {
-    console.error(`[PROXY_DEBUG] Path: ${path} | HasToken: ${!!token} | Role: ${token?.role || 'NONE'}`);
+    const cookieHeader = request.headers.get('cookie') || '';
+    const hasSessionCookie = cookieHeader.includes('session-token') || cookieHeader.includes('authjs.session-token');
+    console.error(`[PROXY_DEBUG] Path: ${path} | HasToken: ${!!token} | HasSessionCookie: ${hasSessionCookie} | Role: ${token?.role || 'NONE'}`);
   }
 
   // Protect /studio/* routes
