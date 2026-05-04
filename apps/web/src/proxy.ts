@@ -47,6 +47,7 @@ export async function proxy(request: NextRequest) {
     path.startsWith('/api/auth') || 
     path.startsWith('/studio/login') || 
     path.startsWith('/login') || 
+    path.startsWith('/admin/login') || 
     path.startsWith('/forgot-password') || 
     path.startsWith('/reset-password')
   const isServerAction = request.headers.has('next-action')
@@ -118,8 +119,10 @@ export async function proxy(request: NextRequest) {
 
   // Protect /admin/* routes
   if (path.startsWith('/admin')) {
+    if (path === '/admin/login') return NextResponse.next();
+    
     if (!token || token.role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/', request.url))
+      return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }
 
