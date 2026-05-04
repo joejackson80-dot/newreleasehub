@@ -8,18 +8,12 @@ import {
 import Link from 'next/link';
 
 export default function LabelDashboardClient({ labelOrg, roster = [], kpis }: { labelOrg: any, roster?: any[], kpis?: any }) {
-  // Fallback for demo if no real roster yet
-  const displayRoster = roster.length > 0 ? roster : [
-    { id: '1', name: 'Marcus Webb', status: 'Active', streams: '2.4M', earnings: '$14,200', equity: '84.2', growth: '+12%' },
-    { id: '2', name: 'Lena Khari', status: 'Active', streams: '1.8M', earnings: '$9,400', equity: '79.5', growth: '+5%' },
-    { id: '3', name: 'DJ Solarize', status: 'Review', streams: '840K', earnings: '$3,100', equity: '62.1', growth: '-2%' },
-  ];
-
+  const displayRoster = roster;
   const displayKpis = kpis || {
     capacity: displayRoster.length,
-    streams: '14.8M',
-    valuation: '$840k',
-    assets: 242
+    streams: '0',
+    valuation: '$0',
+    assets: 0
   };
 
   return (
@@ -92,33 +86,41 @@ export default function LabelDashboardClient({ labelOrg, roster = [], kpis }: { 
                   <th className="px-8 py-6 text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] text-right">Performance</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
-                {displayRoster.map((artist, i) => (
-                  <tr key={i} className="hover:bg-white/[0.01] transition-all group cursor-pointer">
-                    <td className="px-8 py-7">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center font-black text-xs text-emerald-500/40">
-                          {artist.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-black text-sm uppercase italic group-hover:text-emerald-400 transition-colors">{artist.name}</p>
-                          <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest">UID: #{artist.id}0xNRH</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-7 text-center">
-                      <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-[8px] font-black uppercase tracking-widest">
-                        {artist.status}
-                      </span>
-                    </td>
-                    <td className="px-8 py-7 text-right">
-                      <p className="text-sm font-black italic">{artist.earnings}</p>
-                      <p className="text-[9px] font-bold text-emerald-500 flex items-center justify-end gap-1 uppercase">
-                        {artist.growth} <TrendingUp className="w-2.5 h-2.5" />
-                      </p>
+              <tbody>
+                {displayRoster.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="px-8 py-16 text-center text-gray-500 font-bold uppercase tracking-widest text-[10px]">
+                      No artists registered to this label.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  displayRoster.map((artist: any) => (
+                    <tr key={artist.id} className="group hover:bg-white/[0.02] transition-colors border-b border-white/5 last:border-0 cursor-pointer">
+                      <td className="px-8 py-7">
+                        <div className="flex items-center gap-5">
+                          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center font-black text-xs text-emerald-500/40">
+                            {artist.name.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="font-black text-sm uppercase italic group-hover:text-emerald-400 transition-colors">{artist.name}</p>
+                            <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest">UID: #{artist.id}0xNRH</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-7 text-center">
+                        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-[8px] font-black uppercase tracking-widest">
+                          {artist.status}
+                        </span>
+                      </td>
+                      <td className="px-8 py-7 text-right">
+                        <p className="text-sm font-black italic">{artist.earnings}</p>
+                        <p className="text-[9px] font-bold text-emerald-500 flex items-center justify-end gap-1 uppercase">
+                          {artist.growth} <TrendingUp className="w-2.5 h-2.5" />
+                        </p>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

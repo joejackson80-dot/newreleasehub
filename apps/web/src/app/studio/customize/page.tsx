@@ -50,7 +50,7 @@ export default function CustomizePage() {
       <div className="w-[40%] border-r border-white/5 overflow-y-auto p-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight text-white uppercase italic">Page Customizer.</h1>
-          <a href="/marcus-webb" target="_blank"
+          <a href="#" target="_blank"
             className="flex items-center gap-1.5 text-[10px] text-[#A855F7] font-bold uppercase tracking-widest hover:text-white transition-colors">
             Live Page <ExternalLink className="w-3 h-3" />
           </a>
@@ -317,7 +317,7 @@ export default function CustomizePage() {
               </div>
 
               <div className={`space-y-4 max-w-2xl ${heroStyle === 'Fullscreen' ? 'bg-black/40 backdrop-blur-md p-8 rounded-3xl border border-white/10' : ''}`}>
-                 <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">MARCUS WEBB</h1>
+                 <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">[YOUR ARTIST NAME]</h1>
                  {moodStatus && (
                    <p className="text-sm font-medium text-gray-300 italic border-l-2 pl-3" style={{ borderColor: accentColor }}>
                      {moodStatus}

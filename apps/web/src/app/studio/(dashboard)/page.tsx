@@ -221,25 +221,11 @@ export default async function StudioOverviewPage() {
       {/* RECENT ACTIVITY */}
       <section className="space-y-6">
         <h2 className="text-lg font-bold text-white tracking-tight">Recent Network Activity</h2>
-        <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden">
-          <div className="divide-y divide-white/5">
-            {[
-              { text: "New SUPPORTER joined the 'Inner Circle' tier.", time: "2 hours ago", icon: Users, color: "text-purple-400" },
-              { text: "Your latest release 'Midnight Echo' passed 10,000 streams.", time: "1 day ago", icon: Activity, color: "text-[#A855F7]" },
-              { text: "Payout of $450.00 processed to your connected Stripe account.", time: "3 days ago", icon: DollarSign, color: "text-green-400" },
-              { text: "Opportunity 'Netflix Sync Request' is closing soon.", time: "4 days ago", icon: Briefcase, color: "text-orange-400" },
-            ].map((activity, i) => (
-              <div key={i} className="flex items-center space-x-4 p-6 hover:bg-white/5 transition-colors">
-                <div className={`w-10 h-10 rounded-full bg-white/5 flex items-center justify-center ${activity.color}`}>
-                  <activity.icon className="w-4 h-4" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-white">{activity.text}</p>
-                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                </div>
-              </div>
-            ))}
+        <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden p-12 flex flex-col items-center justify-center text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-700">
+             <Activity className="w-8 h-8" />
           </div>
+          <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">No recent activity detected.</p>
         </div>
       </section>
 
