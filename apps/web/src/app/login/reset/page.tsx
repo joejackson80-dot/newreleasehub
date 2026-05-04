@@ -23,7 +23,7 @@ export default function FanPasswordResetPage() {
       } else {
         setError(result.error || 'Failed to reset password');
       }
-    } catch (err: any) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
