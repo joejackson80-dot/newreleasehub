@@ -7,13 +7,20 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function LabelDashboardClient({ labelOrg, roster = [] }: { labelOrg: any, roster?: any[] }) {
+export default function LabelDashboardClient({ labelOrg, roster = [], kpis }: { labelOrg: any, roster?: any[], kpis?: any }) {
   // Fallback for demo if no real roster yet
   const displayRoster = roster.length > 0 ? roster : [
     { id: '1', name: 'Marcus Webb', status: 'Active', streams: '2.4M', earnings: '$14,200', equity: '84.2', growth: '+12%' },
     { id: '2', name: 'Lena Khari', status: 'Active', streams: '1.8M', earnings: '$9,400', equity: '79.5', growth: '+5%' },
     { id: '3', name: 'DJ Solarize', status: 'Review', streams: '840K', earnings: '$3,100', equity: '62.1', growth: '-2%' },
   ];
+
+  const displayKpis = kpis || {
+    capacity: displayRoster.length,
+    streams: '14.8M',
+    valuation: '$840k',
+    assets: 242
+  };
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-6 md:p-12 font-sans">
@@ -47,10 +54,10 @@ export default function LabelDashboardClient({ labelOrg, roster = [] }: { labelO
       {/* INSTITUTIONAL KPIS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         {[
-          { label: 'Roster Capacity', val: displayRoster.length, sub: '12 Slots Avail', icon: Users, color: 'text-emerald-400' },
-          { label: 'Aggregate Streams', val: '14.8M', sub: '+1.2M this month', icon: Globe, color: 'text-emerald-400' },
-          { label: 'Catalog Valuation', val: '$840k', sub: 'Projected Revenue', icon: DollarSign, color: 'text-emerald-500' },
-          { label: 'Managed Assets', val: '242', sub: 'Verified Masters', icon: Disc, color: 'text-emerald-400' },
+          { label: 'Roster Capacity', val: displayKpis.capacity, sub: 'Active Artists', icon: Users, color: 'text-emerald-400' },
+          { label: 'Aggregate Streams', val: displayKpis.streams, sub: 'Total Portfolio Streams', icon: Globe, color: 'text-emerald-400' },
+          { label: 'Catalog Valuation', val: displayKpis.valuation, sub: 'Projected Annual Revenue', icon: DollarSign, color: 'text-emerald-500' },
+          { label: 'Managed Assets', val: displayKpis.assets, sub: 'Verified Masters', icon: Disc, color: 'text-emerald-400' },
         ].map((stat, i) => (
           <div key={i} className="bg-[#0A0A0A] border border-white/5 rounded-[2rem] p-8 relative group hover:border-emerald-500/30 transition-all overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity">

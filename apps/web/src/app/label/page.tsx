@@ -9,39 +9,66 @@ export default async function LabelDashboardPage() {
   const session = await auth();
   const org = await getSessionArtist();
   
-  // Must be logged in
   if (!session) redirect('/studio/login');
 
-  // Must be an Enterprise user OR an Elite Artist
-  const isLabel = session.user?.role === 'ENTERPRISE' || session.user?.role === 'LABEL'; // supporting both just in case
+  const isLabel = session.user?.role === 'ENTERPRISE' || session.user?.role === 'LABEL';
   const isElite = org?.planTier === 'ELITE';
 
   if (!isLabel && !isElite) {
     redirect('/studio');
   }
 
-  // Fetch real roster if available
-  // In our schema, organizations can have a 'managedBy' or similar relationship.
-  // For now, let's look for organizations where this user is an admin or the email matches.
+  // Fetch real roster
   const roster = await prisma.organization.findMany({
     where: {
-      // Logic for "artists belonging to this label"
-      // Assuming for MVP: Artists with the same plan reference or manual link
       isActive: true,
-      role: 'artist'
+      role: 'artist' // In a real app, this would filter by 'managedBy: org.id'
     },
-    take: 5
+    include: {
+      _count: {
+        select: {
+          Releases: true,
+          SupporterSubscriptions: true,
+          StreamPlays: true
+        }
+      },
+      SupporterSubscriptions: {
+        select: { priceCents: true }
+      }
+    },
+    take: 10
   });
 
-  const displayRoster = roster.map(a => ({
-    id: a.id,
-    name: a.name,
-    status: a.isActive ? 'Active' : 'Inactive',
-    streams: '0',
-    earnings: '$0',
-    equity: a.nrhEquityScore.toFixed(1),
-    growth: '+0%'
-  }));
+  let totalStreams = 0;
+  let totalEarnings = 0;
+  let totalAssets = 0;
 
-  return <LabelDashboardClient labelOrg={org || { name: 'Institutional Management' }} roster={displayRoster} />;
+  const displayRoster = roster.map(a => {
+    const artistStreams = a._count.StreamPlays;
+    const artistEarningsCents = a.SupporterSubscriptions.reduce((sum, sub) => sum + sub.priceCents, 0);
+    const artistAssets = a._count.Releases;
+    
+    totalStreams += artistStreams;
+    totalEarnings += artistEarningsCents;
+    totalAssets += artistAssets;
+
+    return {
+      id: a.id.substring(0, 8),
+      name: a.name,
+      status: a.isActive ? 'Active' : 'Inactive',
+      streams: artistStreams > 1000000 ? (artistStreams / 1000000).toFixed(1) + 'M' : artistStreams > 1000 ? (artistStreams / 1000).toFixed(1) + 'K' : artistStreams.toString(),
+      earnings: '$' + (artistEarningsCents / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      equity: a.nrhEquityScore.toFixed(1),
+      growth: '+' + (Math.floor(Math.random() * 20) + 1) + '%' // Mock growth for MVP
+    };
+  });
+
+  const kpis = {
+    capacity: displayRoster.length,
+    streams: totalStreams > 1000000 ? (totalStreams / 1000000).toFixed(1) + 'M' : totalStreams > 1000 ? (totalStreams / 1000).toFixed(1) + 'K' : totalStreams.toString(),
+    valuation: '$' + ((totalEarnings / 100) * 12).toLocaleString(undefined, { maximumFractionDigits: 0 }), // Annualized mock valuation
+    assets: totalAssets
+  };
+
+  return <LabelDashboardClient labelOrg={org || { name: 'Institutional Management' }} roster={displayRoster} kpis={kpis} />;
 }
