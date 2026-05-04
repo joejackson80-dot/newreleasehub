@@ -53,8 +53,6 @@ export async function loginArtist(identifier: string, password: string) {
     });
 
     return { success: true };
-
-    return { success: true };
   } catch (error: unknown) {
     console.error('Login error:', error instanceof Error ? error.message : error);
     return { success: false, error: 'An unexpected error occurred' };
@@ -67,28 +65,12 @@ export async function loginFan(identifier: string, password: string) {
     const isDemo = (identifier.toLowerCase() === 'johndoe' || identifier.toLowerCase() === 'johndoe@example.com') && password === 'Password123';
     
     if (isDemo) {
-      const demoFan = await prisma.user.findFirst({
-        where: { OR: [{ username: 'johndoe' }, { email: 'johndoe@example.com' }] }
+      await signIn('credentials', {
+        username: identifier,
+        password: password,
+        redirect: false
       });
-      
-      if (demoFan) {
-        const cookieStore = await cookies();
-        cookieStore.set('nrh_user_session', 'true', {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7
-        });
-        cookieStore.set('nrh_user_id', demoFan.id, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7
-        });
-        return { success: true };
-      }
+      return { success: true };
     }
 
     const fan = await prisma.user.findFirst({
@@ -191,8 +173,6 @@ export async function registerArtist(data: { email: string, username: string, na
       password: data.password,
       redirect: false
     });
-
-    return { success: true };
 
     return { success: true };
   } catch (error: unknown) {
@@ -326,11 +306,16 @@ export async function resetPasswordWithToken(token: string, newPassword: string)
 }
 
 export async function logout() {
+  const { signOut } = await import('@/auth');
+  await signOut({ redirect: false });
+  
+  // Legacy cleanup just in case
   const cookieStore = await cookies();
   cookieStore.delete('nrh_artist_session');
   cookieStore.delete('nrh_artist_id');
   cookieStore.delete('nrh_user_session');
   cookieStore.delete('nrh_user_id');
+  
   return { success: true };
 }
 

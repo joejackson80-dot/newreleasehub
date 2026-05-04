@@ -68,40 +68,70 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
         }
 
-        // Find user by email or username (Case-Insensitive)
-        const user = await prisma.user.findFirst({
+        // Find user by email or username (Case-Insensitive) in BOTH tables
+        let dbUser = await prisma.user.findFirst({
           where: {
             OR: [
               { email:    { equals: identifier.toLowerCase(), mode: 'insensitive' } },
               { username: { equals: identifier, mode: 'insensitive' } }
             ]
           }
-        })
+        });
 
-        if (!user) {
-          console.warn(`[AUTH] User not found: ${identifier}`);
+        let dbOrg = null;
+        if (!dbUser) {
+          dbOrg = await prisma.organization.findFirst({
+            where: {
+              OR: [
+                { email:    { equals: identifier.toLowerCase(), mode: 'insensitive' } },
+                { username: { equals: identifier, mode: 'insensitive' } }
+              ]
+            }
+          });
+        }
+
+        if (!dbUser && !dbOrg) {
+          console.warn(`[AUTH] No user or organization found for: ${identifier}`);
           return null;
         }
 
-        if (!user.passwordHash) {
-          console.warn(`[AUTH] User has no password (likely OAuth only): ${identifier}`);
+        const target = dbUser || dbOrg;
+        if (!target?.passwordHash) {
+          console.warn(`[AUTH] Identity found but has no password: ${identifier}`);
           return null;
         }
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.passwordHash
-        )
-
+        const isValid = await bcrypt.compare(password, target.passwordHash);
         console.log(`[AUTH] Password valid: ${isValid}`);
-
         if (!isValid) return null;
 
+        // If we found them in Org but not User, we need to create a User record on the fly
+        // to satisfy the Prisma Adapter and provide a modern session.
+        if (!dbUser && dbOrg) {
+          try {
+            dbUser = await prisma.user.create({
+              data: {
+                email: dbOrg.email,
+                username: dbOrg.username,
+                name: dbOrg.name,
+                passwordHash: dbOrg.passwordHash,
+                role: 'ARTIST',
+                artistId: dbOrg.id
+              }
+            });
+            console.log(`[AUTH] Synchronized legacy organization ${dbOrg.email} to modern User table`);
+          } catch (err) {
+            console.error(`[AUTH] Failed to sync organization to user table:`, err);
+          }
+        }
+
+        if (!dbUser) return null;
+
         return {
-          id:    user.id,
-          email: user.email,
-          name:  user.name || user.displayName,
-          role:  user.role,
+          id:    dbUser.id,
+          email: dbUser.email,
+          name:  dbUser.name || dbUser.displayName,
+          role:  dbUser.role,
         }
       }
     }),
