@@ -25,16 +25,14 @@ export async function authorizePayout(payoutId: string) {
     }
 
     // Attempt to transfer funds via Stripe Connect
-    let transferId = null;
     if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'sk_test_mock') {
       try {
-        const transfer = await stripe.transfers.create({
+        await stripe.transfers.create({
           amount: payout.amountCents,
           currency: 'usd',
           destination: stripeAccountId,
           description: `NRH Platform Settlement: Payout ${payout.id}`,
         });
-        transferId = transfer.id;
       } catch (stripeError: unknown) {
         console.error('Stripe Transfer Error:', stripeError);
         throw new Error(`Stripe error: ${stripeError instanceof Error ? stripeError.message : 'Unknown error'}`);
@@ -42,7 +40,6 @@ export async function authorizePayout(payoutId: string) {
     } else {
       // Mock mode
       console.log(`[MOCK] Transferred $${(payout.amountCents / 100).toFixed(2)} to ${stripeAccountId}`);
-      transferId = `mock_tr_${Math.random().toString(36).substring(7)}`;
     }
 
     // Update database
