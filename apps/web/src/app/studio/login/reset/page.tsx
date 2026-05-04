@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { resetArtistPassword } from '@/app/actions/auth';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -63,7 +64,7 @@ export default function ArtistPasswordResetPage() {
               <span className="text-[10px] font-bold uppercase tracking-widest">Return to Login</span>
            </Link>
            <div className="flex justify-center mb-10">
-              <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><img src="/images/nrh-logo.png" alt="NRH Logo" className="w-full h-full object-contain" /></Link>
+              <Link href="/" className="w-14 h-14 rounded-2xl bg-transparent text-black flex items-center justify-center font-bold text-2xl tracking-tighter hover:scale-105 transition-transform shadow-2xl"><Image src="/images/nrh-logo.png" alt="NRH Logo" width={56} height={56} className="w-full h-full object-contain" /></Link>
            </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white uppercase italic tracking-tighter">Recover Access</h1>
           <p className="text-[#A855F7] text-[10px] font-bold mt-2 uppercase tracking-[0.3em]">Reset Command Center Password</p>
