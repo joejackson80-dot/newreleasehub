@@ -46,11 +46,11 @@ export default function StationPage({ slug }: { slug: string }) {
     const channel = supabase.channel(`radio:${slug}`, {
       config: { broadcast: { self: true } }
     })
-    .on('broadcast', { event: 'track_update' }, ({ payload }) => {
+    .on('broadcast', { event: 'track_update' }, ({ payload }: { payload: any }) => {
        if (payload.nowPlaying) setNowPlaying(payload.nowPlaying);
        if (payload.recentlyPlayed) setRecentlyPlayed(payload.recentlyPlayed);
     })
-    .on('broadcast', { event: 'reaction' }, ({ payload }) => {
+    .on('broadcast', { event: 'reaction' }, ({ payload }: { payload: any }) => {
        // Optional: show small floating emoji for others' reactions
     })
     .subscribe();

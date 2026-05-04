@@ -101,7 +101,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
         console.info(`[NETWORK_PULSE] Listener joined: ${key}`);
       })
-      .on('broadcast', { event: 'reaction' }, ({ payload }) => {
+      .on('broadcast', { event: 'reaction' }, ({ payload }: { payload: any }) => {
         // Handle real-time floating reactions
         if (payload?.type === 'FIRE') setStats(prev => ({ ...prev, fire: prev.fire + 1 }));
       })
@@ -110,7 +110,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
         schema: 'public',
         table: 'ChatMessage',
         filter: `organizationId=eq.${orgId}`,
-      }, (payload) => {
+      }, (payload: any) => {
         setMessages((prev) => [...prev, payload.new]);
       })
       .subscribe(async (status) => {

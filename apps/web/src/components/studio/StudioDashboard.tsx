@@ -76,7 +76,7 @@ export default function StudioDashboard({ slug, initialOrgData }: Props) {
           table: 'BidOffer',
           filter: `organizationId=eq.${orgId}`
         },
-        (payload) => {
+        (payload: any) => {
           if (payload.eventType === 'INSERT') {
             setBids(prev => [payload.new, ...prev]);
           } else if (payload.eventType === 'UPDATE') {

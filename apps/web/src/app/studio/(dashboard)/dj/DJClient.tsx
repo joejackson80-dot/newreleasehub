@@ -45,7 +45,7 @@ export default function DJControlRoom({ artist }: { artist: any }) {
           table: 'ChatMessage',
           filter: `organizationId=eq.${artist.id}`,
         },
-        (payload) => {
+        (payload: any) => {
           setMessages((prev) => [...prev, payload.new]);
         }
       )

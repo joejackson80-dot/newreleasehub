@@ -17,7 +17,7 @@ export default function GiftAlert({ orgId }: { orgId: string }) {
         schema: 'public', 
         table: 'ParticipationLicense',
         filter: `organizationId=eq.${orgId}`
-      }, (payload) => {
+      }, (payload: any) => {
         setAlert({ 
           user: payload.new.userId, 
           amount: payload.new.feeCents, 
