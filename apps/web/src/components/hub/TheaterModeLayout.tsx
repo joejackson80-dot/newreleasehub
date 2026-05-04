@@ -113,7 +113,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
       }, (payload: any) => {
         setMessages((prev) => [...prev, payload.new]);
       })
-      .subscribe(async (status) => {
+      .subscribe(async (status: string) => {
         if (status === 'SUBSCRIBED') {
           await channel.track({ online_at: new Date().toISOString() });
         }
