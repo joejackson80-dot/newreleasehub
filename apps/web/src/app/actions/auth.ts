@@ -13,7 +13,7 @@ export async function signInWithGoogle(role: string, callbackUrl: string) {
 export async function loginArtist(identifier: string, password: string) {
   try {
     // DEMO MODE FALLBACK
-    const isDemo = (identifier === 'iamjoejack' || identifier === 'joe@example.com') && password === 'Password123';
+    const isDemo = (identifier.toLowerCase() === 'iamjoejack' || identifier.toLowerCase() === 'joe@example.com') && password === 'Password123';
     
     if (isDemo) {
       const demoArtist = await prisma.organization.findFirst({
@@ -87,7 +87,7 @@ export async function loginArtist(identifier: string, password: string) {
 export async function loginFan(identifier: string, password: string) {
   try {
     // DEMO MODE FALLBACK
-    const isDemo = (identifier === 'johndoe' || identifier === 'johndoe@example.com') && password === 'Password123';
+    const isDemo = (identifier.toLowerCase() === 'johndoe' || identifier.toLowerCase() === 'johndoe@example.com') && password === 'Password123';
     
     if (isDemo) {
       const demoFan = await prisma.user.findFirst({
