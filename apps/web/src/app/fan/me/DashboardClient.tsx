@@ -722,13 +722,53 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
              </div>
 
              {/* Conversation View */}
-             <div className="lg:col-span-8 bg-[#111] border border-white/5 rounded-[2.5rem] flex flex-col items-center justify-center text-center p-10 space-y-6">
-                <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center text-gray-700">
-                   <Lock className="w-8 h-8" />
+             <div className="lg:col-span-8 bg-[#111] border border-white/5 rounded-[2.5rem] flex flex-col h-[600px] overflow-hidden">
+                <div className="p-8 border-b border-white/5 bg-[#151515] flex items-center justify-between">
+                   <div className="flex items-center space-x-3">
+                      <Lock className="w-4 h-4 text-emerald-500" />
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-white">Secure Thread Active</h3>
+                   </div>
+                   <span className="bg-emerald-500/10 text-emerald-500 px-3 py-1 rounded-full text-[9px] font-mono font-bold">VERIFIED E2E</span>
                 </div>
-                <div className="space-y-2">
-                   <h3 className="text-2xl font-bold uppercase tracking-tighter">Secure Communication</h3>
-                   <p className="text-gray-500 text-sm max-w-sm font-medium leading-relaxed">Select a conversation from the left to view the secure institutional-grade messaging thread.</p>
+                <div className="flex-1 p-8 space-y-6 overflow-y-auto bg-[url('/backgrounds/grid.svg')] bg-repeat opacity-90">
+                   {messages.map(m => {
+                      const isMine = m.senderUserId === user.id;
+                      return (
+                         <div key={m.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                            <div className={`max-w-[80%] space-y-1 ${isMine ? 'items-end' : 'items-start'} flex flex-col`}>
+                               <div className="flex items-center gap-2 mb-1">
+                                  <span className="text-[9px] font-bold text-gray-500 uppercase">{new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                  <span className={`text-[10px] font-bold uppercase tracking-widest ${isMine ? 'text-white' : 'text-[#A855F7]'}`}>
+                                     {isMine ? 'You' : (m.senderOrg?.name || m.senderUser?.displayName)}
+                                  </span>
+                               </div>
+                               <div className={`p-5 rounded-2xl text-sm font-medium leading-relaxed ${isMine ? 'bg-white/10 text-white rounded-tr-none' : 'bg-[#A855F7] text-white rounded-tl-none shadow-[0_0_15px_rgba(168,85,247,0.3)]'}`}>
+                                  {m.text}
+                               </div>
+                            </div>
+                         </div>
+                      );
+                   })}
+                   {messages.length === 0 && (
+                      <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                         <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-gray-700">
+                            <MessageCircle className="w-8 h-8" />
+                         </div>
+                         <p className="text-gray-500 text-sm font-medium">No messages in this thread yet.</p>
+                      </div>
+                   )}
+                </div>
+                <div className="p-6 bg-[#0a0a0a] border-t border-white/5">
+                   <div className="relative">
+                      <input 
+                         type="text" 
+                         placeholder="Type a secure response..."
+                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white focus:outline-none focus:border-emerald-500 transition-all"
+                      />
+                      <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-emerald-500 transition-colors">
+                         <ArrowRight className="w-5 h-5" />
+                      </button>
+                   </div>
                 </div>
              </div>
           </div>
