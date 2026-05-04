@@ -83,9 +83,6 @@ export async function proxy(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  const legacyArtistId = request.cookies.get('nrh_artist_id')?.value
-  const legacyUserId = request.cookies.get('nrh_user_id')?.value
-
   // Protect /studio/* routes
   if (path.startsWith('/studio')) {
     const isPublicStudio =
@@ -94,26 +91,22 @@ export async function proxy(request: NextRequest) {
       path === '/studio/welcome'
 
     if (!isPublicStudio) {
-      // If we have neither a NextAuth token nor a legacy artist ID, redirect to login
-      if (!token && !legacyArtistId) {
+      if (!token) {
         return NextResponse.redirect(new URL('/studio/login', request.url))
       }
       
-      // If we have a token, check role. If we only have a legacy cookie, we assume ARTIST role.
-      if (token) {
-        if (token.role === 'FAN') {
-          return NextResponse.redirect(new URL('/studio/error/role-mismatch', request.url))
-        }
-        if (token.role !== 'ARTIST' && token.role !== 'ADMIN') {
-          return NextResponse.redirect(new URL('/studio/login', request.url))
-        }
+      if (token.role === 'FAN') {
+        return NextResponse.redirect(new URL('/studio/error/role-mismatch', request.url))
+      }
+      if (token.role !== 'ARTIST' && token.role !== 'ADMIN') {
+        return NextResponse.redirect(new URL('/studio/login', request.url))
       }
     }
   }
 
   // Protect /fan/me routes
   if (path.startsWith('/fan/me')) {
-    if (!token && !legacyUserId) {
+    if (!token) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
   }

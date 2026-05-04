@@ -19,20 +19,10 @@ export async function loginArtist(identifier: string, password: string) {
     const isDemo = (identifier.toLowerCase() === 'iamjoejack' || identifier.toLowerCase() === 'joe@example.com' || identifier.toLowerCase() === 'joe@newreleasehub.com') && password === 'Password123';
     
     if (isDemo) {
-      const cookieStore = await cookies();
-      cookieStore.set('nrh_artist_session', 'true', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      });
-      cookieStore.set('nrh_artist_id', 'demo-artist-id', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
+      await signIn('credentials', { 
+        username: identifier, 
+        password: password,
+        redirect: false 
       });
       return { success: true };
     }
@@ -55,24 +45,14 @@ export async function loginArtist(identifier: string, password: string) {
       return { success: false, error: 'Invalid credentials' };
     }
 
-    // Set session cookie
-    const cookieStore = await cookies();
-    cookieStore.set('nrh_artist_session', 'true', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
+    // Perform modern NextAuth sign in
+    const signInResult = await signIn('credentials', {
+      username: identifier,
+      password: password,
+      redirect: false
     });
-    
-    // Also set artist ID for server-side checks
-    cookieStore.set('nrh_artist_id', artist.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7
-    });
+
+    return { success: true };
 
     return { success: true };
   } catch (error: unknown) {
@@ -129,23 +109,14 @@ export async function loginFan(identifier: string, password: string) {
       return { success: false, error: 'Invalid credentials' };
     }
 
-    // Set session cookie
-    const cookieStore = await cookies();
-    cookieStore.set('nrh_user_session', 'true', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
+    // Perform modern NextAuth sign in
+    await signIn('credentials', {
+      username: identifier,
+      password: password,
+      redirect: false
     });
-    
-    cookieStore.set('nrh_user_id', fan.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7
-    });
+
+    return { success: true };
 
     return { success: true };
   } catch (error: unknown) {
@@ -214,23 +185,14 @@ export async function registerArtist(data: { email: string, username: string, na
       sendWelcomeEmail({ to: data.email, name: data.name }).catch(console.error);
     }
 
-    // Set legacy cookies for backward compatibility if needed
-    const cookieStore = await cookies();
-    cookieStore.set('nrh_artist_session', 'true', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7
+    // Automatically sign in the new user
+    await signIn('credentials', {
+      username: data.username,
+      password: data.password,
+      redirect: false
     });
-    
-    cookieStore.set('nrh_artist_id', artist.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7
-    });
+
+    return { success: true };
 
     return { success: true };
   } catch (error: unknown) {
@@ -273,21 +235,11 @@ export async function registerFan(data: { email: string, username: string, displ
       sendWelcomeEmail({ to: data.email, name: data.displayName }).catch(console.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set('nrh_user_session', 'true', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7
-    });
-    
-    cookieStore.set('nrh_user_id', fan.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7
+    // Automatically sign in the new user
+    await signIn('credentials', {
+      username: data.username,
+      password: data.password,
+      redirect: false
     });
 
     return { success: true };
@@ -354,27 +306,13 @@ export async function logout() {
 }
 
 export async function getCurrentSession() {
-  const cookieStore = await cookies();
-  const artistId = cookieStore.get('nrh_artist_id')?.value;
-  const userId = cookieStore.get('nrh_user_id')?.value;
+  const session = await auth();
+  if (!session?.user) return null;
 
-  if (artistId) {
-    const artist = await prisma.organization.findUnique({
-      where: { id: artistId },
-      select: { id: true, name: true, username: true, slug: true, role: true }
-    });
-    if (artist) return { type: 'artist', data: artist };
-  }
-
-  if (userId) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, displayName: true, username: true, role: true }
-    });
-    if (user) return { type: 'user', data: user };
-  }
-
-  return null;
+  return { 
+    type: session.user.role?.toLowerCase() || 'user', 
+    data: session.user 
+  };
 }
 
 

@@ -14,22 +14,13 @@ export async function getSessionArtist(opts?: {
   includeParticipation?: boolean;
 }) {
   const session = await auth();
-  const cookieStore = await cookies();
-  const artistIdFromCookie = cookieStore.get('nrh_artist_id')?.value;
-
-  let artistId = artistIdFromCookie;
-
-  // Prioritize NextAuth session if it's an ARTIST
-  if (session?.user?.id && session.user.role === 'ARTIST') {
-    artistId = session.user.id;
-  } else if (session?.user?.id && session.user.role === 'FAN' && !artistIdFromCookie) {
-    // If they are logged in as a FAN but trying to access ARTIST portal, redirect to login
+  
+  // Only allow if it's an ARTIST or ADMIN
+  if (!session?.user?.id || (session.user.role !== 'ARTIST' && session.user.role !== 'ADMIN')) {
     redirect('/studio/login');
   }
 
-  if (!artistId) {
-    redirect('/studio/login');
-  }
+  const artistId = session.user.id;
 
   // Handle Demo Account Bypass
   if (artistId === 'demo-artist-id' || artistId === 'iamjoejack') {
@@ -53,7 +44,7 @@ export async function getSessionArtist(opts?: {
       username: 'iamjoejack',
       email: 'joe@newreleasehub.com',
       slug: 'iamjoejack',
-      role: 'ARTIST',
+      role: 'ADMIN',
       planTier: 'ELITE',
       isPublic: true,
       Releases: [],
@@ -87,11 +78,10 @@ export async function getSessionArtist(opts?: {
  */
 export async function getSessionArtistId(): Promise<string | null> {
   const session = await auth();
-  if (session?.user?.id && session.user.role === 'ARTIST') {
+  if (session?.user?.id && (session.user.role === 'ARTIST' || session.user.role === 'ADMIN')) {
     return session.user.id;
   }
-  const cookieStore = await cookies();
-  return cookieStore.get('nrh_artist_id')?.value || null;
+  return null;
 }
 
 /**
@@ -100,18 +90,12 @@ export async function getSessionArtistId(): Promise<string | null> {
  */
 export async function getSessionFan() {
   const session = await auth();
-  const cookieStore = await cookies();
-  const userIdFromCookie = cookieStore.get('nrh_user_id')?.value;
 
-  let userId = userIdFromCookie;
-
-  if (session?.user?.id && session.user.role === 'FAN') {
-    userId = session.user.id;
-  }
-
-  if (!userId) {
+  if (!session?.user?.id || session.user.role !== 'FAN') {
     redirect('/fan/login');
   }
+
+  const userId = session.user.id;
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -132,8 +116,7 @@ export async function getSessionFanId(): Promise<string | null> {
   if (session?.user?.id && session.user.role === 'FAN') {
     return session.user.id;
   }
-  const cookieStore = await cookies();
-  return cookieStore.get('nrh_user_id')?.value || null;
+  return null;
 }
 
 

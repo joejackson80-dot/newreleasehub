@@ -63,7 +63,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             id: 'demo-artist-id',
             email: 'joe@newreleasehub.com',
             name: 'Joe Jackson',
-            role: 'ARTIST',
+            role: 'ADMIN',
             username: 'iamjoejack'
           }
         }
