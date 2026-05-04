@@ -125,20 +125,18 @@ export default function ArtistLogin() {
         <div className="mt-6 grid grid-cols-2 gap-4">
           <button 
             type="button" 
-            onClick={() => signIn('google', { callbackUrl: '/studio?role=artist' })}
+            onClick={() => signIn('google', { callbackUrl: '/studio' }, { role: 'ARTIST' })}
             className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
             <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Google Login</span>
           </button>
-          <button 
-            type="button" 
-            onClick={() => signIn('google', { callbackUrl: '/studio?role=artist' })}
+          <Link 
+            href="/studio/register"
             className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
-            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
             <span className="text-[10px] font-bold uppercase tracking-widest">Sign Up</span>
-          </button>
+          </Link>
         </div>
 
         <div className="mt-8 text-center border-t border-[var(--color-studio-border)] pt-8 space-y-4">
