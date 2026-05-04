@@ -98,7 +98,7 @@ export default function TheaterModeLayout({ slug }: { slug: string }) {
         const newState = channel.presenceState();
         setLiveListeners(Object.keys(newState).length);
       })
-      .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+      .on('presence', { event: 'join' }, ({ key, newPresences }: { key: string; newPresences: any[] }) => {
         console.info(`[NETWORK_PULSE] Listener joined: ${key}`);
       })
       .on('broadcast', { event: 'reaction' }, ({ payload }: { payload: any }) => {
