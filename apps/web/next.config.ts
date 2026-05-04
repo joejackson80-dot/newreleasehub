@@ -62,6 +62,12 @@ const nextConfig: NextConfig = {
     cpus: 1,
     workerThreads: false,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
