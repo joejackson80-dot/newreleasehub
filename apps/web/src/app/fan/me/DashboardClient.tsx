@@ -444,11 +444,16 @@ export default function FanDashboard({ user, initialLibraryCount, subscriptions 
                    <div className="absolute inset-0 bg-gradient-to-tr from-[#A855F7]/10 to-purple-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                    <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 hover:border-white/20 transition-all relative z-10 space-y-8">
                       <div className="flex items-center justify-between">
-                         <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4">
                             <img src={sub.Organization?.profileImageUrl || '/images/default-avatar.png'} alt={sub.Organization?.name} className="w-12 h-12 rounded-2xl object-cover border border-white/10" />
                             <div>
                                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Asset Manager</p>
-                               <p className="text-lg font-bold text-white italic uppercase">{sub.Organization?.name}</p>
+                               <div className="flex items-center gap-2">
+                                  <p className="text-lg font-bold text-white italic uppercase">{sub.Organization?.name}</p>
+                                  <span className="bg-[#A855F7]/10 border border-[#A855F7]/20 text-[#A855F7] px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest">
+                                    Supporter #{sub.id.substring(0, 4)}
+                                  </span>
+                               </div>
                             </div>
                          </div>
                          <div className="bg-green-500/10 px-3 py-1 rounded-lg text-green-500 text-[9px] font-bold uppercase tracking-widest italic">{sub.status}</div>
