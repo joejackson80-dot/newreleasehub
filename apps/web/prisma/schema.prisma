@@ -43,6 +43,8 @@ model Organization {
   username               String?                @unique
   isPublic               Boolean                @default(true)
   role                   String                 @default("artist")
+  resetToken             String?
+  resetTokenExpires      DateTime?
   ArtistRoyalties        ArtistRoyalty[]
   ChatMessages           ChatMessage[]
   CollabDealsAsReceiver  CollabDeal[]           @relation("CollabDealReceiver")
@@ -174,6 +176,8 @@ model User {
   username            String?              @unique
   artistId            String?              @unique
   fanId               String?              @unique
+  resetToken          String?
+  resetTokenExpires   DateTime?
   
   accounts            Account[]            // NextAuth relation
   sessions            Session[]            // NextAuth relation

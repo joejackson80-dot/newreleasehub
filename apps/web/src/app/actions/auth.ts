@@ -249,50 +249,79 @@ export async function registerFan(data: { email: string, username: string, displ
   }
 }
 
-export async function resetArtistPassword(email: string, newPassword: string) {
+export async function requestPasswordReset(email: string) {
   try {
-    const artist = await prisma.organization.findFirst({
-      where: { email: { equals: email, mode: 'insensitive' } }
-    });
+    const user = await prisma.user.findFirst({ where: { email: { equals: email, mode: 'insensitive' } } });
+    const org = await prisma.organization.findFirst({ where: { email: { equals: email, mode: 'insensitive' } } });
 
-    if (!artist) {
-      // Return success anyway to prevent email enumeration, but for MVP testing we can be explicit
-      return { success: false, error: 'Account not found' };
+    if (!user && !org) {
+      // Return success even if not found to prevent email enumeration
+      return { success: true };
     }
 
-    const passwordHash = await bcrypt.hash(newPassword, 10);
-    await prisma.organization.update({
-      where: { id: artist.id },
-      data: { passwordHash }
+    const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hour
+
+    if (user) {
+      await prisma.user.update({ where: { id: user.id }, data: { resetToken, resetTokenExpires } });
+    }
+    if (org) {
+      await prisma.organization.update({ where: { id: org.id }, data: { resetToken, resetTokenExpires } });
+    }
+
+    // Send the email (Mocked for now if RESEND_API_KEY is missing)
+    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+    
+    const { sendEmail } = await import('@/lib/email');
+    await sendEmail({
+      to: email,
+      subject: 'Reset Your Password - New Release Hub',
+      html: `
+        <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto; background: #020202; color: white; padding: 40px; border-radius: 20px;">
+          <h2 style="color: #A855F7; text-transform: uppercase; font-style: italic;">Password Recovery</h2>
+          <p>You requested a password reset for your New Release Hub account.</p>
+          <p>Click the button below to set a new password. This link expires in 1 hour.</p>
+          <a href="${resetLink}" style="display: inline-block; background: #A855F7; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 12px; margin: 20px 0;">Reset Password</a>
+          <p style="font-size: 10px; color: #555;">If you did not request this, please ignore this email.</p>
+        </div>
+      `
     });
 
     return { success: true };
   } catch (error: unknown) {
-    console.error('Reset password error:', error instanceof Error ? error.message : error);
-    return { success: false, error: 'An unexpected error occurred' };
+    console.error('Password reset request error:', error);
+    return { success: false, error: 'Failed to process request' };
   }
 }
 
-export async function resetFanPassword(email: string, newPassword: string) {
+export async function resetPasswordWithToken(token: string, newPassword: string) {
   try {
-    const fan = await prisma.user.findFirst({
-      where: { email: { equals: email, mode: 'insensitive' } }
-    });
+    const user = await prisma.user.findFirst({ where: { resetToken: token, resetTokenExpires: { gt: new Date() } } });
+    const org = await prisma.organization.findFirst({ where: { resetToken: token, resetTokenExpires: { gt: new Date() } } });
 
-    if (!fan) {
-      return { success: false, error: 'Account not found' };
+    if (!user && !org) {
+      return { success: false, error: 'Invalid or expired reset token' };
     }
 
     const passwordHash = await bcrypt.hash(newPassword, 10);
-    await prisma.user.update({
-      where: { id: fan.id },
-      data: { passwordHash }
-    });
+
+    if (user) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { passwordHash, resetToken: null, resetTokenExpires: null }
+      });
+    }
+    if (org) {
+      await prisma.organization.update({
+        where: { id: org.id },
+        data: { passwordHash, resetToken: null, resetTokenExpires: null }
+      });
+    }
 
     return { success: true };
   } catch (error: unknown) {
-    console.error('Reset password error:', error instanceof Error ? error.message : error);
-    return { success: false, error: 'An unexpected error occurred' };
+    console.error('Reset password error:', error);
+    return { success: false, error: 'Failed to reset password' };
   }
 }
 

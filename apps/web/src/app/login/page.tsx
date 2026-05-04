@@ -72,7 +72,7 @@ export default function FanLoginPage() {
               <div className="relative">
                 <div className="flex justify-between mb-2">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] invisible">Password</label>
-                  <Link href="/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
+                  <Link href="/forgot-password" title="Recover your account credentials" className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
                 </div>
                 <input 
                   type="password" 

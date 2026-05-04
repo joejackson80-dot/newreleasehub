@@ -87,7 +87,7 @@ export default function ArtistLogin() {
           <div>
             <div className="flex justify-between mb-2">
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Secret Password</label>
-              <Link href="/studio/login/reset" className="text-[10px] font-bold text-gray-500 hover:text-[#A855F7] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
+              <Link href="/forgot-password" title="Recover your studio credentials" className="text-[10px] font-bold text-gray-500 hover:text-[#A855F7] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
             </div>
             <input 
               type="password" 
