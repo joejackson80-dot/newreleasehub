@@ -86,8 +86,12 @@ export async function proxy(request: NextRequest) {
   // ── Auth checks via JWT token OR legacy cookies ──
   const token = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   })
+
+  if (path.startsWith('/studio') || path.startsWith('/fan/me') || path.startsWith('/admin')) {
+    console.error(`[PROXY_DEBUG] Path: ${path} | HasToken: ${!!token} | Role: ${token?.role || 'NONE'}`);
+  }
 
   // Protect /studio/* routes
   if (path.startsWith('/studio')) {

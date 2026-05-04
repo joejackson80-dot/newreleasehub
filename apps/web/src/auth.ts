@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
 
   providers: [
     GoogleProvider({
@@ -39,10 +40,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         const identifier = (credentials.username as string || "").trim();
-        const password = (credentials.password as string || "").trim();
+        const password = (credentials.password as string || "");
         
-        console.error(`[AUTH_DEBUG] Raw Identifier: "${identifier}" (len: ${identifier.length})`);
-        console.error(`[AUTH_DEBUG] Raw Password: (len: ${password.length})`);
+        console.error(`[AUTH_DEBUG] Attempt: "${identifier}" | PwLen: ${password.length}`);
 
         // DEMO MODE FALLBACK - Be extremely permissive with capitalization for demo
         const isDemoId = [
@@ -102,7 +102,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         const isValid = await bcrypt.compare(password, target.passwordHash);
-        console.log(`[AUTH] Password valid: ${isValid}`);
+        console.error(`[AUTH_DEBUG] Password for ${identifier} valid: ${isValid}`);
         if (!isValid) return null;
 
         // If we found them in Org but not User, we need to create a User record on the fly
