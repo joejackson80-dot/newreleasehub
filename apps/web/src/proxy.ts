@@ -40,10 +40,13 @@ export async function proxy(request: NextRequest) {
   }
 
   // ── Rate limiting via Upstash (only when env vars present) ──
-  // ⚠  /api/auth/* is intentionally excluded — NextAuth OAuth handshakes
-  //    make 3-5 rapid internal requests which would trip any tight limiter.
-  const isAuthRoute = path.startsWith('/api/auth')
-  if (!isAuthRoute && process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
+  // ⚠  /api/auth/* and Server Actions are intentionally excluded.
+  //    NextAuth OAuth handshakes and Server Actions make rapid requests
+  //    that shouldn't be blocked by the general rate limiter.
+  const isAuthRoute = path.startsWith('/api/auth') || path === '/studio/login' || path === '/login'
+  const isServerAction = request.headers.has('next-action')
+  
+  if (!isAuthRoute && !isServerAction && process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
     try {
       // Dynamic import keeps @upstash/* out of the initial bundle
       const { Ratelimit } = await import('@upstash/ratelimit')
