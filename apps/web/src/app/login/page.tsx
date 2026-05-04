@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Mail, Globe, Zap, ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { signInWithGoogle } from '@/app/actions/auth';
 
 export default function FanLoginPage() {
   const [identifier, setIdentifier] = useState('');
@@ -107,14 +108,15 @@ export default function FanLoginPage() {
            </div>
 
              <div className="grid grid-cols-2 gap-4">
-                <button 
-                 type="button" 
-                 onClick={() => signIn('google', { callbackUrl: '/fan/me' })}
-                 className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"
-                >
-                    <Globe className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                   <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
-                </button>
+                 <form action={signInWithGoogle.bind(null, 'FAN', '/fan/me')} className="w-full">
+                    <button 
+                     type="submit" 
+                     className="w-full flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"
+                    >
+                        <Globe className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                       <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+                    </button>
+                 </form>
                 <Link
                  href="/register/fan"
                  className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"

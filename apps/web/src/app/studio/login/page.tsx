@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { loginArtist, signInWithGoogle } from '@/app/actions/auth';
 import { ArrowLeft, ArrowRight, Music2 } from 'lucide-react';
 import Link from 'next/link';
