@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
       } else {
         window.location.href = '/admin';
       }
-    } catch (err: unknown) {
+    } catch {
       setError('An error occurred during authentication');
     } finally {
       setIsSubmitting(false);
