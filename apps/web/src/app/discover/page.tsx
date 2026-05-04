@@ -2,6 +2,8 @@ import React from 'react';
 import { prisma } from '@/lib/prisma';
 import DiscoverClient from './DiscoverClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Discover New Music | New Release Hub',
   description: 'Find the best independent artists and trending releases across the New Release Hub network.',

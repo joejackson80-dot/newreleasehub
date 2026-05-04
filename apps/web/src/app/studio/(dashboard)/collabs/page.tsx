@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getSessionArtist } from '@/lib/session';
 import CollabsClient from './CollabsClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'My Collaborations | New Release Hub Studio',
   description: 'Manage your collaboration requests and active deals.',

@@ -2,6 +2,8 @@ import { getSessionFan } from '@/lib/session';
 import { prisma } from '@/lib/prisma';
 import FanLibraryClient from './LibraryClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'My Stakes | NRH Network',
   description: 'Manage your Revenue Participation Licenses and track your master stakes yield.',

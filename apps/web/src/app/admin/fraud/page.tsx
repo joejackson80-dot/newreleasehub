@@ -2,6 +2,8 @@ import React from 'react';
 import { prisma } from '@/lib/prisma';
 import FraudDashboardClient from './FraudDashboardClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Fraud Detection | NRH Admin',
   description: 'Monitor and manage streaming fraud across the network.',

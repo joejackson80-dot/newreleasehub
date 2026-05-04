@@ -3,6 +3,8 @@ import { getSessionFan } from '@/lib/session';
 import DashboardClient from './DashboardClient';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Fan Dashboard | New Release Hub',
   description: 'Manage your library, follow artists, and track your Support.',

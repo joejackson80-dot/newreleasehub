@@ -4,6 +4,8 @@ import { getSessionArtist } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import GovernanceClient from './GovernanceClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Network Governance | NRH Institutional',
   description: 'Manage platform liquidity, verify payouts, and oversee network integrity.',

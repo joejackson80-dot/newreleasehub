@@ -1,6 +1,8 @@
 import React from 'react';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
 import { Radio, Play, Users, Zap, Disc, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
 
 export const metadata = {

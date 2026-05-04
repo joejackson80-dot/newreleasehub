@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+
+export const dynamic = 'force-dynamic';
 import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap, Radio, Users } from 'lucide-react';
 
 const ARTIST_IMAGE_POOL = [

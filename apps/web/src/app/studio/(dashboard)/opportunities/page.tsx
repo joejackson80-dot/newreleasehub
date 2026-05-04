@@ -4,6 +4,8 @@ import { getSessionArtist } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import OpportunitiesManagerClient from './OpportunitiesManagerClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Manage Opportunities | Artist Studio',
   description: 'Manage your sync calls, grants, and collaboration requests.',
