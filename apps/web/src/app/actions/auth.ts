@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { sendWelcomeEmail } from '@/lib/email';
-import { signIn } from '@/auth';
+import { signIn, auth } from '@/auth';
 
 export async function signInWithGoogle(role: string, callbackUrl: string) {
   await signIn('google', { 
@@ -46,7 +46,7 @@ export async function loginArtist(identifier: string, password: string) {
     }
 
     // Perform modern NextAuth sign in
-    const signInResult = await signIn('credentials', {
+    await signIn('credentials', {
       username: identifier,
       password: password,
       redirect: false

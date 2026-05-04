@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
       } else {
         toast.error('Failed to send recovery email.');
       }
-    } catch (err) {
+    } catch {
       toast.error('An error occurred.');
     } finally {
       setIsSubmitting(false);
@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
             <BrandLogo className="w-16 h-16" />
           </div>
           <h1 className="text-4xl font-bold tracking-tighter italic uppercase text-white">Account Recovery.</h1>
-          <p className="text-gray-500 text-sm font-medium">Enter your email and we'll send a secure link to reset your password.</p>
+          <p className="text-gray-500 text-sm font-medium">Enter your email and we&apos;ll send a secure link to reset your password.</p>
         </div>
 
         {isSuccess ? (
@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-2">
               <h2 className="text-xl font-bold uppercase italic">Check your inbox</h2>
               <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                We've sent a recovery link to<br />
+                We&apos;ve sent a recovery link to<br />
                 <span className="text-white">{email}</span>
               </p>
             </div>

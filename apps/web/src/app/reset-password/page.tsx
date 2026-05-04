@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { resetPasswordWithToken } from '@/app/actions/auth';
 import { ShieldCheck, Lock, ArrowRight, AlertTriangle } from 'lucide-react';
@@ -50,7 +50,7 @@ function ResetPasswordForm() {
       } else {
         setError(res.error || 'Failed to reset password');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred');
     } finally {
       setIsSubmitting(false);
