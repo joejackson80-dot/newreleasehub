@@ -59,3 +59,6 @@ npm run dev
 NRH is built on transparency. All economic logic is documented in our [Revenue Sharing Explainer](https://newreleasehub.com/how-it-works/revenue-sharing).
 
 Built by **New Release Hub LLC** · Omaha, Nebraska.
+
+---
+*Infrastructure Verification: 2026-05-05T14:38:50-05:00*
