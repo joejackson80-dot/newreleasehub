@@ -1,6 +1,5 @@
 import { inngest } from '../client'
 import { prisma } from '@/lib/prisma'
-import { generateMilestoneCard } from '@/lib/milestones/generateCard'
 
 export const generateAICard = inngest.createFunction(
   {
@@ -14,6 +13,7 @@ export const generateAICard = inngest.createFunction(
     const { artistId, milestoneType } = event.data
 
     const imageUrl = await step.run('generate-image', async () => {
+      const { generateMilestoneCard } = await import('@/lib/milestones/generateCard')
       return generateMilestoneCard(artistId, milestoneType)
     })
 

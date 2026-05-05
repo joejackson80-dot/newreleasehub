@@ -1,15 +1,33 @@
-import { NextResponse } from 'next/server';
+import { serve } from 'inngest/next';
+import { inngest } from '@/lib/inngest/client';
+
+import { calculateMonthlyRoyalties } from '@/lib/inngest/functions/calculateRoyalties';
+import { processStreamFraudScore } from '@/lib/inngest/functions/processStreamFraud';
+import { sendEmailNotification } from '@/lib/inngest/functions/sendEmail';
+import { generateAICard } from '@/lib/inngest/functions/generateAICard';
+import {
+  foundingConversionsCron,
+  expireCollabsCron,
+  generateRadioPlaylistsCron,
+  djListenerCountCron,
+  computeWeeklyCharts,
+  presaveNotificationsCron,
+} from '@/lib/inngest/functions/cronFunctions';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  return NextResponse.json({ success: true, message: 'Inngest is temporarily disabled for build-safety' });
-}
-
-export async function POST() {
-  return NextResponse.json({ success: true });
-}
-
-export async function PUT() {
-  return NextResponse.json({ success: true });
-}
+export const { GET, POST, PUT } = serve({
+  client: inngest,
+  functions: [
+    calculateMonthlyRoyalties,
+    processStreamFraudScore,
+    sendEmailNotification,
+    generateAICard,
+    foundingConversionsCron,
+    expireCollabsCron,
+    generateRadioPlaylistsCron,
+    djListenerCountCron,
+    computeWeeklyCharts,
+    presaveNotificationsCron,
+  ],
+});
