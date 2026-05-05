@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,27 +18,26 @@ export async function POST(req: Request) {
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
+    const supabase = createAdminClient();
+
     // Find all fan listening stats where the last listening date was before yesterday
     // This means they skipped a full day, so their streak is broken.
-    const result = await prisma.fanListeningStats.updateMany({
-      where: {
-        lastListeningDate: {
-          lt: yesterday
-        },
-        listeningStreak: {
-          gt: 0
-        }
-      },
-      data: {
-        listeningStreak: 0
-      }
-    });
+    const { data, error } = await supabase
+      .from('fan_listening_stats')
+      .update({ listening_streak: 0 })
+      .lt('last_listening_date', yesterday.toISOString())
+      .gt('listening_streak', 0)
+      .select('id');
 
-    console.log(`[Cron] Reset ${result.count} broken listening streaks.`);
+    if (error) throw error;
 
-    return NextResponse.json({ success: true, resetCount: result.count });
+    const count = data?.length || 0;
+    console.log(`[Cron] Reset ${count} broken listening streaks.`);
+
+    return NextResponse.json({ success: true, resetCount: count });
   } catch (error: unknown) {
     console.error('Streak Decay Cron Error:', error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

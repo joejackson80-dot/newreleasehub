@@ -1,5 +1,5 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ArtistReleasesClient from './ArtistReleasesClient';
@@ -17,17 +17,22 @@ export async function generateMetadata(
   props: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const params = await props.params;
-  const org = await prisma.organization.findUnique({
-    where: { slug: params.slug },
-    select: { name: true, bio: true, genres: true, city: true, country: true, profileImageUrl: true, supporterCount: true, isVerified: true }
-  });
-  if (!org) return { title: 'Artist Not Found' };
+  const supabase = await createClient();
+  
+  const { data: org, error } = await supabase
+    .from('organizations')
+    .select('name, bio, genres, city, country, profile_image_url, supporter_count, is_verified')
+    .eq('slug', params.slug)
+    .maybeSingle();
 
-  const genreStr = org.genres.slice(0, 2).join(' & ');
+  if (error || !org) return { title: 'Artist Not Found' };
+
+  const genresArray = Array.isArray(org.genres) ? org.genres : [];
+  const genreStr = genresArray.slice(0, 2).join(' & ');
   const location = org.city ? `${org.city}, ${org.country}` : '';
   const desc = org.bio
     ? org.bio.slice(0, 155)
-    : `${org.name} is an independent ${genreStr} artist${location ? ` from ${location}` : ''}. ${org.supporterCount.toLocaleString()} supporters. Stream on New Release Hub.`;
+    : `${org.name} is an independent ${genreStr} artist${location ? ` from ${location}` : ''}. ${(org.supporter_count || 0).toLocaleString()} supporters. Stream on New Release Hub.`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -35,7 +40,7 @@ export async function generateMetadata(
     name: org.name,
     genre: org.genres,
     url: `https://www.newreleasehub.com/${params.slug}`,
-    image: org.profileImageUrl,
+    image: org.profile_image_url,
     description: desc,
   };
 
@@ -46,14 +51,14 @@ export async function generateMetadata(
       type: 'profile',
       title: `${org.name} | New Release Hub`,
       description: desc,
-      images: org.profileImageUrl ? [{ url: org.profileImageUrl, width: 800, height: 800 }] : [],
+      images: org.profile_image_url ? [{ url: org.profile_image_url, width: 800, height: 800 }] : [],
       url: `https://www.newreleasehub.com/${params.slug}`,
     },
     twitter: {
       card: 'summary_large_image',
       title: `${org.name} | New Release Hub`,
       description: desc,
-      images: org.profileImageUrl ? [org.profileImageUrl] : [],
+      images: org.profile_image_url ? [org.profile_image_url] : [],
     },
     other: {
       'script:ld+json': JSON.stringify(jsonLd),
@@ -66,47 +71,82 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   const params = await props.params;
   const slug = params.slug;
 
-  const org = await prisma.organization.findUnique({
-    where: { slug },
-    include: {
-      Releases: {
-        include: { Tracks: { take: 3 } },
-        orderBy: { releaseDate: 'desc' }
-      },
-      SupporterTiers: { 
-        include: { Subscriptions: true },
-        orderBy: { priceCents: 'asc' } 
-      },
-      SupporterSubscriptions: true,
-      Followers: true,
-      SessionDeck: true,
-      FoundingSlot: true,
-      FanArtistRelations: {
-        include: { fan: true },
-        orderBy: { totalPaidCents: 'desc' },
-        take: 10
-      }
-    }
-  });
+  const supabase = await createClient();
+  
+  const { data: org, error } = await supabase
+    .from('organizations')
+    .select(`
+      *,
+      releases:releases(*, tracks:tracks(*)),
+      supporter_tiers:supporter_tiers(*, subscriptions:supporter_subscriptions(*)),
+      supporter_subscriptions:supporter_subscriptions(*),
+      followers:followers(*),
+      session_decks:session_decks(*),
+      founding_slots:founding_slots(*),
+      fan_artist_relations:fan_artist_relations(*, fan:users(*))
+    `)
+    .eq('slug', slug)
+    .maybeSingle();
 
-  if (!org) notFound();
+  if (error || !org) notFound();
 
-  const isLive = org.isLive && org.liveListenerCount > 0;
-  const supporterCount = org.supporterCount;
-  const socialLinks = org.socialLinksJson ? JSON.parse(org.socialLinksJson) : {};
-  const liveReleases = org.Releases.filter(r => !r.isScheduled);
-  const scheduledReleases = org.Releases.filter(r => r.isScheduled);
-  const tierCapitalized = org.artistTier.charAt(0).toUpperCase() + org.artistTier.slice(1);
+  // Normalize data to match previous Prisma structure for UI compatibility
+  const normalizedOrg = {
+    ...org,
+    Releases: (org.releases || []).sort((a: any, b: any) => 
+      new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
+    ).map((r: any) => ({
+      ...r,
+      Tracks: r.tracks || [],
+      isScheduled: r.is_scheduled,
+      audioUrl: r.audio_url,
+      coverArtUrl: r.cover_art_url,
+      isSupporterOnly: r.is_supporter_only,
+      releaseDate: r.release_date
+    })),
+    SupporterTiers: (org.supporter_tiers || []).sort((a: any, b: any) => a.price_cents - b.price_cents).map((t: any) => ({
+      ...t,
+      Subscriptions: t.subscriptions || [],
+      priceCents: t.price_cents,
+      maxSlots: t.max_slots,
+      description: t.description,
+      revenueSharePercent: t.revenue_share_percent,
+      sortOrder: t.sort_order
+    })),
+    FanArtistRelations: (org.fan_artist_relations || []).map((rel: any) => ({
+      ...rel,
+      totalPaidCents: rel.total_paid_cents,
+      streamCount: rel.stream_count,
+      supporterNumber: rel.supporter_number,
+      fan: rel.fan
+    })),
+    isLive: org.is_live,
+    liveListenerCount: org.live_listener_count || 0,
+    supporterCount: org.supporter_count || 0,
+    totalStreams: org.total_streams || 0,
+    profileImageUrl: org.profile_image_url,
+    headerImageUrl: org.header_image_url,
+    isVerified: org.is_verified,
+    artistTier: org.artist_tier || 'standard',
+    socialLinksJson: org.social_links_json
+  };
+
+  const isLive = normalizedOrg.isLive && normalizedOrg.liveListenerCount > 0;
+  const supporterCount = normalizedOrg.supporterCount;
+  const socialLinks = normalizedOrg.socialLinksJson ? JSON.parse(normalizedOrg.socialLinksJson) : {};
+  const liveReleases = normalizedOrg.Releases.filter((r: any) => !r.isScheduled);
+  const scheduledReleases = normalizedOrg.Releases.filter((r: any) => r.isScheduled);
+  const tierCapitalized = normalizedOrg.artistTier.charAt(0).toUpperCase() + normalizedOrg.artistTier.slice(1);
 
   const tierBadgeColor =
-    org.artistTier === 'legend' ? 'border-[#f59e0b33] text-amber-400 bg-[#f59e0b1a]' :
-    org.artistTier === 'established' ? 'border-[#A855F74d] text-[#A855F7] bg-[#A855F71a]' :
+    normalizedOrg.artistTier === 'legend' ? 'border-[#f59e0b33] text-amber-400 bg-[#f59e0b1a]' :
+    normalizedOrg.artistTier === 'established' ? 'border-[#A855F74d] text-[#A855F7] bg-[#A855F71a]' :
     'border-white/20 text-gray-400 bg-white/5';
 
   return (
     <div className="min-h-screen bg-[#020202] text-white pb-32">
       
-      <ArtistProfileHeader org={org} />
+      <ArtistProfileHeader org={normalizedOrg} />
 
       {/* ── NETWORK ACTIVITY OVERLAY (SOCIAL PROOF) ── */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 -mt-12 mb-20">
@@ -143,7 +183,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               </div>
               <div>
                 <p className="text-rose-400 font-bold text-sm uppercase tracking-widest">Live Now</p>
-                <p className="text-rose-200 text-sm">{org.liveListenerCount.toLocaleString()} listeners tuned in right now</p>
+                <p className="text-rose-200 text-sm">{normalizedOrg.liveListenerCount.toLocaleString()} listeners tuned in right now</p>
               </div>
             </div>
             <Link href={`/${slug}/live`}
@@ -161,10 +201,10 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
         <div className="lg:col-span-2 space-y-20">
 
           {/* BIO */}
-          {org.bio && (
+          {normalizedOrg.bio && (
             <section className="space-y-4">
               <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500">About</h3>
-              <p className="text-gray-300 text-lg leading-relaxed font-medium">{org.bio}</p>
+              <p className="text-gray-300 text-lg leading-relaxed font-medium">{normalizedOrg.bio}</p>
             </section>
           )}
 
@@ -181,7 +221,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
             <ArtistReleasesClient 
               releases={liveReleases} 
               slug={slug} 
-              artistName={org.name} 
+              artistName={normalizedOrg.name} 
             />
             {liveReleases.length === 0 && (
               <div className="text-center py-20 border border-dashed border-white/10 rounded-2xl">
@@ -195,14 +235,14 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
         {/* RIGHT: SUPPORTER TIERS */}
         <div className="space-y-6">
           <div>
-            <h3 className="text-2xl font-bold uppercase tracking-tighter mb-1">Support {org.name}</h3>
+            <h3 className="text-2xl font-bold uppercase tracking-tighter mb-1">Support {normalizedOrg.name}</h3>
             <p className="text-xs text-gray-500 font-medium leading-relaxed">
               Fund future releases, get exclusive access, and earn a real share of streaming revenue.
             </p>
           </div>
 
           <div className="space-y-6">
-            {org.SupporterTiers.map(tier => {
+            {normalizedOrg.SupporterTiers.map((tier: any) => {
               const currentSlots = tier.Subscriptions.length;
               const isFull = tier.maxSlots !== null && currentSlots >= tier.maxSlots;
               const slotsRemaining = tier.maxSlots ? tier.maxSlots - currentSlots : null;
@@ -285,7 +325,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
               );
             })}
 
-            {org.SupporterTiers.length === 0 && (
+            {normalizedOrg.SupporterTiers.length === 0 && (
               <div className="text-center py-10 bg-white/5 rounded-xl border border-dashed border-white/10">
                 <p className="text-xs text-gray-500 font-medium">No active supporter tiers.</p>
               </div>
@@ -293,14 +333,14 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
           </div>
 
           {/* SUPPORTER LEADERBOARD */}
-          {org.FanArtistRelations && org.FanArtistRelations.length > 0 && (
+          {normalizedOrg.FanArtistRelations && normalizedOrg.FanArtistRelations.length > 0 && (
             <div className="space-y-6 pt-10 border-t border-white/5">
                <div className="flex items-center justify-between">
                   <h3 className="text-lg font-black italic uppercase tracking-tighter">Top Supporters</h3>
                   <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">All-Time</span>
                </div>
                <div className="space-y-3">
-                  {org.FanArtistRelations.filter((r: any) => r.totalPaidCents > 0).map((rel: any, i: number) => {
+                  {normalizedOrg.FanArtistRelations.filter((r: any) => r.totalPaidCents > 0).map((rel: any, i: number) => {
                     const rankColors = ['text-amber-400', 'text-gray-300', 'text-amber-700'];
                     return (
                       <div key={rel.id} className="flex items-center gap-4 group p-3 rounded-2xl hover:bg-white/[0.03] transition-all">
@@ -308,11 +348,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                            {i + 1}
                          </span>
                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black text-white uppercase">
-                           {rel.fan?.displayName?.charAt(0) || '?'}
+                           {rel.fan?.display_name?.charAt(0) || rel.fan?.displayName?.charAt(0) || '?'}
                          </div>
                          <div className="flex-1 min-w-0">
                             <p className="text-[10px] font-black text-white uppercase tracking-widest truncate group-hover:text-[#A855F7] transition-colors">
-                              {rel.fan?.displayName || 'Anonymous'}
+                              {rel.fan?.display_name || rel.fan?.displayName || 'Anonymous'}
                             </p>
                             <p className="text-[8px] font-bold text-zinc-700 uppercase tracking-widest">
                               {rel.streamCount.toLocaleString()} streams · Supporter #{rel.supporterNumber || '—'}

@@ -1,24 +1,33 @@
 export const dynamic = 'force-dynamic';
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionArtist } from '@/lib/session';
 import NewCollabClient from './NewCollabClient';
-import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: 'New Collaboration Request | New Release Hub Studio',
   description: 'Propose a new collaboration with another artist on the NRH network.',
 };
 
-export default async function NewCollabPage({ searchParams }: any) {
+export default async function NewCollabPage({ searchParams }: { searchParams: Promise<{ artist?: string }> }) {
   const { artist: artistSlug } = await searchParams;
+
+  const supabase = createAdminClient();
 
   let targetArtist = null;
   if (artistSlug) {
-    targetArtist = await prisma.organization.findUnique({
-      where: { slug: artistSlug },
-      select: { id: true, name: true, slug: true, profileImageUrl: true }
-    });
+    const { data } = await supabase
+      .from('organizations')
+      .select('id, name, slug, profile_image_url')
+      .eq('slug', artistSlug)
+      .maybeSingle();
+    
+    if (data) {
+      targetArtist = {
+        ...data,
+        profileImageUrl: data.profile_image_url
+      };
+    }
   }
 
   const currentOrg = await getSessionArtist();
@@ -30,6 +39,3 @@ export default async function NewCollabPage({ searchParams }: any) {
     />
   );
 }
-
-
-

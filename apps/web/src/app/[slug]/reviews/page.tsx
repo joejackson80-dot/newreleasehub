@@ -1,5 +1,5 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
 import { Star, ShieldCheck, Zap, MessageSquare, TrendingUp, Award, Disc, ArrowRight, CheckCircle2, AlertCircle, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
@@ -9,19 +9,25 @@ export default async function MusicReviewsPage(props: { params: Promise<{ slug: 
   const params = await props.params;
   const { slug } = params;
 
-  const org = await prisma.organization.findUnique({
-    where: { slug },
-    include: {
-      MusicReviews: { orderBy: { createdAt: 'desc' } },
-      MusicAssets: true
-    }
-  });
+  const supabase = createAdminClient();
 
-  if (!org) notFound();
+  // Fetch Org with its reviews and tracks
+  const { data: org, error } = await supabase
+    .from('organizations')
+    .select(`
+      *,
+      music_reviews (*),
+      tracks (*)
+    `)
+    .eq('slug', slug)
+    .maybeSingle();
 
-  const fanReviews = org.MusicReviews.filter(r => r.type === 'FAN');
-  const certifiedReviews = org.MusicReviews.filter(r => r.type === 'CERTIFIED');
-  const avgRating = fanReviews.length > 0 ? (fanReviews.reduce((acc, r) => acc + r.rating, 0) / fanReviews.length).toFixed(1) : '0.0';
+  if (error || !org) notFound();
+
+  const reviews = org.music_reviews || [];
+  const fanReviews = reviews.filter((r: any) => r.type === 'FAN');
+  const certifiedReviews = reviews.filter((r: any) => r.type === 'CERTIFIED');
+  const avgRating = fanReviews.length > 0 ? (fanReviews.reduce((acc: number, r: any) => acc + (r.rating || 0), 0) / fanReviews.length).toFixed(1) : '0.0';
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-white selection:text-black font-sans pb-32">
@@ -98,7 +104,7 @@ export default async function MusicReviewsPage(props: { params: Promise<{ slug: 
                <div className="space-y-12">
                   <h3 className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.5em] mb-8">Latest Certified Audits</h3>
                   <div className="space-y-6">
-                     {certifiedReviews.length > 0 ? certifiedReviews.map((review) => (
+                     {certifiedReviews.length > 0 ? certifiedReviews.map((review: any) => (
                         <div key={review.id} className="bg-black border border-orange-500/20 p-8 rounded-[2rem] space-y-4 relative overflow-hidden">
                            <div className="absolute top-0 right-0 p-4 opacity-10">
                               <ShieldCheck className="w-12 h-12 text-orange-500" />
@@ -144,7 +150,7 @@ export default async function MusicReviewsPage(props: { params: Promise<{ slug: 
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-               {fanReviews.map((review) => (
+               {fanReviews.map((review: any) => (
                   <div key={review.id} className="bg-black border border-white/5 rounded-[2.5rem] p-10 space-y-6 hover:border-white/10 transition-all">
                      <div className="flex justify-between items-center">
                         <div className="flex space-x-1">
@@ -152,11 +158,11 @@ export default async function MusicReviewsPage(props: { params: Promise<{ slug: 
                               <div key={i} className={`w-1 h-1 rounded-full ${i < review.rating ? 'bg-white' : 'bg-white/10'}`} />
                            ))}
                         </div>
-                        <span className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">{new Date(review.createdAt).toLocaleDateString()}</span>
+                        <span className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">{new Date(review.created_at).toLocaleDateString()}</span>
                      </div>
                      <p className="text-sm text-gray-400 leading-relaxed font-medium">"{review.content}"</p>
                      <div className="pt-6 border-t border-white/5">
-                        <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Fan_{review.userId.slice(0, 4)}</p>
+                        <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Fan_{review.user_id?.slice(0, 4)}</p>
                      </div>
                   </div>
                ))}

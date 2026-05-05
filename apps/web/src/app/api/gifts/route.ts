@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,22 +7,48 @@ export async function POST(req: Request) {
   try {
     const { organizationId, userId, giftType, valueCents, message } = await req.json();
 
-    const gift = await prisma.giftEvent.create({
-      data: { organizationId, userId, giftType, valueCents, message },
-      include: { Organization: true }
-    });
+    const supabase = createAdminClient();
 
-    if (giftType === 'SUPERNOVA') {
+    // 1. Create Gift Event
+    const { data: gift, error: giftError } = await supabase
+      .from('gift_events')
+      .insert({
+        organization_id: organizationId,
+        user_id: userId,
+        gift_type: giftType,
+        value_cents: valueCents,
+        message
+      })
+      .select(`
+        *,
+        organizations (*)
+      `)
+      .single();
+
+    if (giftError) throw giftError;
+
+    // 2. Award Badge if Supernova
+    if (giftType === 'SUPERNOVA' && userId && userId !== 'anonymous_fan') {
       try {
-        await prisma.badge.upsert({
-          where: { userId_type_organizationId: { userId, type: 'WHALE', organizationId } },
-          update: {},
-          create: { userId, type: 'WHALE', organizationId }
-        });
-      } catch (e) { console.error('Badge award failed:', e); }
+        await supabase
+          .from('badges')
+          .upsert({
+            user_id: userId,
+            type: 'WHALE',
+            organization_id: organizationId
+          }, {
+            onConflict: 'user_id,type,organization_id'
+          });
+      } catch (e) {
+        console.error('Badge award failed:', e);
+      }
     }
 
-    const { supabase } = await import('@/lib/supabase');
+    // 3. Real-time Broadcast
+    const { data: { session } } = await (await import('@/lib/supabase/server')).createClient().then(c => c.auth.getSession());
+    
+    // We use the admin client for DB but standard for broadcast if possible
+    // Actually, for broadcast we can use the same admin client if configured
     await supabase.channel(`org-${organizationId}`).send({
       type: 'broadcast',
       event: 'GIFT_RECEIVED',
@@ -32,13 +58,17 @@ export async function POST(req: Request) {
         giftType,
         valueCents,
         message,
-        timestamp: gift.createdAt
+        timestamp: gift.created_at
       }
     });
 
-    return NextResponse.json(gift);
+    return NextResponse.json({
+      ...gift,
+      Organization: gift.organizations
+    });
   } catch (error: unknown) {
     console.error('Gift processing error:', error);
-    return NextResponse.json({ error: 'Failed to process gift' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to process gift';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

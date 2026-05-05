@@ -1,17 +1,34 @@
 'use server';
-
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { stripe } from '@/lib/stripe';
 import { revalidatePath } from 'next/cache';
 
 export async function authorizePayout(payoutId: string) {
   try {
-    const payout = await prisma.payoutRequest.findUnique({
-      where: { id: payoutId },
-      include: { Organization: true },
-    });
+    const supabase = await createClient();
 
-    if (!payout) {
+    // Security check: Verify if current user is an admin
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    if (!authUser) throw new Error('Unauthorized');
+
+    const { data: adminOrg } = await supabase
+      .from('organizations')
+      .select('role')
+      .eq('email', authUser.email!)
+      .maybeSingle();
+
+    if (!adminOrg || adminOrg.role !== 'admin') {
+      throw new Error('Forbidden: Admin access required');
+    }
+
+    // Fetch payout request with artist organization details
+    const { data: payout, error: fetchError } = await supabase
+      .from('payout_requests')
+      .select('*, organizations(*)')
+      .eq('id', payoutId)
+      .single();
+
+    if (fetchError || !payout) {
       throw new Error('Payout request not found.');
     }
 
@@ -19,7 +36,8 @@ export async function authorizePayout(payoutId: string) {
       throw new Error('Payout is not in PENDING status.');
     }
 
-    const stripeAccountId = payout.Organization.stripeAccountId;
+    const artistOrg = payout.organizations;
+    const stripeAccountId = artistOrg?.stripe_account_id;
     if (!stripeAccountId) {
       throw new Error('Artist has no Stripe Connect account associated.');
     }
@@ -28,7 +46,7 @@ export async function authorizePayout(payoutId: string) {
     if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'sk_test_mock') {
       try {
         await stripe.transfers.create({
-          amount: payout.amountCents,
+          amount: payout.amount_cents,
           currency: 'usd',
           destination: stripeAccountId,
           description: `NRH Platform Settlement: Payout ${payout.id}`,
@@ -39,24 +57,25 @@ export async function authorizePayout(payoutId: string) {
       }
     } else {
       // Mock mode
-      console.log(`[MOCK] Transferred $${(payout.amountCents / 100).toFixed(2)} to ${stripeAccountId}`);
+      console.log(`[MOCK] Transferred $${(payout.amount_cents / 100).toFixed(2)} to ${stripeAccountId}`);
     }
 
     // Update database
-    await prisma.payoutRequest.update({
-      where: { id: payoutId },
-      data: {
+    const { error: updateError } = await supabase
+      .from('payout_requests')
+      .update({
         status: 'PROCESSED',
-        processedAt: new Date(),
-        // Note: You would normally add a stripeTransferId field to PayoutRequest
-        // For now we'll just log it
-      },
-    });
+        processed_at: new Date().toISOString(),
+      })
+      .eq('id', payoutId);
+
+    if (updateError) throw updateError;
 
     revalidatePath('/studio/admin');
     return { success: true };
   } catch (error: unknown) {
     console.error('Authorize Payout Error:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'An error occurred' };
+    const message = error instanceof Error ? error.message : 'An error occurred';
+    return { success: false, error: message };
   }
 }

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(req: Request) {
   try {
@@ -10,21 +10,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const message = await prisma.chatMessage.create({
-      data: {
-        organizationId,
+    const supabase = createAdminClient();
+
+    const { data: message, error } = await supabase
+      .from('chat_messages')
+      .insert({
+        organization_id: organizationId,
         user,
         text,
         platform: platform || 'EXTERNAL',
-        platformIconUrl,
-      }
-    });
+        platform_icon_url: platformIconUrl,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json(message);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
-

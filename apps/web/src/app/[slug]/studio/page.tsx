@@ -1,29 +1,48 @@
 import React from 'react';
 import StudioDashboard from '@/components/studio/StudioDashboard';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export default async function StudioPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const supabase = createAdminClient();
   
   // Try to find or auto-create the organization for the demo
-  let org = await prisma.organization.findUnique({
-    where: { slug }
-  });
+  let { data: org, error: fetchError } = await supabase
+    .from('organizations')
+    .select('*')
+    .eq('slug', slug)
+    .maybeSingle();
 
-  if (!org) {
+  if (fetchError || !org) {
     // For the demo, we auto-create organizations that don't exist
     const friendlyName = slug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    org = await prisma.organization.create({
-      data: {
+    const { data: newOrg, error: createError } = await supabase
+      .from('organizations')
+      .insert({
         slug,
         name: friendlyName,
         bio: `The official hub for ${friendlyName}. Master ownership retained.`,
-      }
-    });
+      })
+      .select()
+      .single();
+    
+    if (createError) {
+      console.error('Failed to auto-create org:', createError);
+    } else {
+      org = newOrg;
+    }
   }
 
-  const isConnected = !!org?.stripeAccountId;
+  const isConnected = !!org?.stripe_account_id;
   
+  // Normalize for UI
+  const normalizedOrg = org ? {
+    ...org,
+    stripeAccountId: org.stripe_account_id,
+    profileImageUrl: org.profile_image_url,
+    headerImageUrl: org.header_image_url
+  } : null;
+
   return (
     <div className="min-h-screen bg-[var(--color-studio-base)] text-gray-100 font-sans p-8 md:p-16">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -55,7 +74,7 @@ export default async function StudioPage({ params }: { params: Promise<{ slug: s
         </header>
 
         {/* The Dashboard Logic */}
-        <StudioDashboard slug={slug} initialOrgData={org} />
+        <StudioDashboard slug={slug} initialOrgData={normalizedOrg} />
 
       </div>
     </div>

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { getSessionArtist } from '@/lib/session';
 
 export async function POST(req: Request) {
@@ -14,22 +14,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'Title and description required' }, { status: 400 });
     }
 
+    const supabase = await createClient();
+
     // Organizations are linked to Artists
-    const proposal = await prisma.proposal.create({
-      data: {
+    const { data: proposal, error } = await supabase
+      .from('proposals')
+      .insert({
         title,
         description,
-        organizationId: artist.id, // Using artist ID as organization ID (they are 1:1 for most)
+        organization_id: artist.id, // Using artist ID as organization ID (they are 1:1 for most)
         status: 'ACTIVE',
         category: category || 'NETWORK_EXPANSION',
-        expiresAt: new Date(expiresAt || Date.now() + 7 * 24 * 3600 * 1000) // Default 7 days
-      }
-    });
+        expires_at: new Date(expiresAt || Date.now() + 7 * 24 * 3600 * 1000).toISOString() // Default 7 days
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, proposal });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Create proposal error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

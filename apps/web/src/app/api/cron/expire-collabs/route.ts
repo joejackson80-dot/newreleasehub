@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,24 +11,23 @@ export async function GET(req: Request) {
   }
 
   try {
-    const expiredCount = await prisma.collabRequest.updateMany({
-      where: {
-        expiresAt: { lt: new Date() },
-        status: 'PENDING'
-      },
-      data: {
-        status: 'EXPIRED'
-      }
-    });
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from('collab_requests')
+      .update({ status: 'EXPIRED' })
+      .lt('expires_at', new Date().toISOString())
+      .eq('status', 'PENDING')
+      .select('id');
+
+    if (error) throw error;
 
     return NextResponse.json({
       success: true,
-      expiredCount: expiredCount.count
+      expiredCount: data?.length || 0
     });
   } catch (error: unknown) {
     console.error('Collab expiration cron error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-

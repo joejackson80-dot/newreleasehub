@@ -1,16 +1,22 @@
 import satori from 'satori'
-import { prisma } from '@/lib/prisma'
-import { supabase } from '@/lib/supabase'
+import { createAdminClient } from '@/lib/supabase/admin'
 import fs from 'fs/promises'
 
 export async function generateMilestoneCard(artistId: string, milestoneType: string): Promise<string | null> {
   try {
+    const supabase = createAdminClient();
+
     // 1. Fetch artist data
-    const artist = await prisma.organization.findUnique({
-      where: { id: artistId },
-      select: { name: true, profileImageUrl: true }
-    })
-    if (!artist) return null
+    const { data: artist, error: fetchError } = await supabase
+      .from('organizations')
+      .select('name, profile_image_url')
+      .eq('id', artistId)
+      .single();
+
+    if (fetchError || !artist) {
+      console.error('Error fetching artist for card generation:', fetchError);
+      return null;
+    }
 
     // Load Resvg dynamically to avoid Turbopack issues
     const { Resvg } = await import('@resvg/resvg-js')
@@ -103,7 +109,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
                         {
                           type: 'img',
                           props: {
-                            src: artist.profileImageUrl || '/images/default-avatar.png',
+                            src: artist.profile_image_url || '/images/default-avatar.png',
                             style: { width: '260px', height: '260px', borderRadius: '130px', border: '8px solid #000', objectFit: 'cover', position: 'relative' }
                           }
                         }
@@ -154,7 +160,7 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
             }
           ]
         }
-      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- Satori's React-like DSL doesn't strictly match standard ReactNode types
+      } as any,
       {
         width: 1080,
         height: 1080,
@@ -176,16 +182,15 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
 
     // 5. Upload to Supabase
     const fileName = `milestone-cards/${artistId}/${milestoneType}.png`
-    const { error } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('milestones')
       .upload(fileName, pngBuffer, {
         contentType: 'image/png',
         upsert: true
       })
 
-    if (error) {
-      console.error('Error uploading milestone card:', error)
-      // If upload fails, we still return the path if we want to retry or just log
+    if (uploadError) {
+      console.error('Error uploading milestone card:', uploadError)
       return null
     }
 
@@ -195,10 +200,8 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
       .getPublicUrl(fileName)
 
     return publicUrl
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to generate milestone card:', error)
     return null
   }
 }
-
-

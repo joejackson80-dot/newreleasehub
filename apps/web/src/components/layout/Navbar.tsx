@@ -28,22 +28,40 @@ export default function Navbar() {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     
-    // Check session on mount
-    const checkSession = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+    // Check initial session
+    supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
         setSession({
           type: user.user_metadata?.role || 'fan',
           data: {
-            name: user.user_metadata?.name || user.email,
+            name: user.user_metadata?.name || user.user_metadata?.displayName || user.email,
             email: user.email
           }
         });
+      } else {
+        setSession(null);
       }
-    };
-    checkSession();
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setSession({
+          type: session.user.user_metadata?.role || 'fan',
+          data: {
+            name: session.user.user_metadata?.name || session.user.user_metadata?.displayName || session.user.email,
+            email: session.user.email
+          }
+        });
+      } else {
+        setSession(null);
+      }
+    });
     
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleLogout = async () => {

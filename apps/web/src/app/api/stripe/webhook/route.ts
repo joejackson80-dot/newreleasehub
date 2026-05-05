@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/stripe';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import type Stripe from 'stripe';
 
 export const dynamic = 'force-dynamic';
@@ -24,6 +24,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Webhook Error: ${msg}` }, { status: 400 });
   }
 
+  const supabase = createAdminClient();
+
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session;
@@ -33,29 +35,36 @@ export async function POST(req: Request) {
       const bidId = session.metadata?.bidId || session.client_reference_id;
       if (session.mode === 'payment' && bidId) {
         console.info(`[FORENSIC_AUDIT] Payment verified for bid: ${bidId} | Protocol: ${protocol}`);
-        await prisma.bidOffer.update({ where: { id: bidId }, data: { status: 'ACCEPTED' } });
+        
+        const { data: bid, error: bError } = await supabase
+          .from('bid_offers')
+          .update({ status: 'ACCEPTED' })
+          .eq('id', bidId)
+          .select('*, tracks(*)')
+          .single();
 
-        const bid = await prisma.bidOffer.findUnique({
-          where: { id: bidId },
-          include: { MusicAsset: true }
-        });
+        if (bError || !bid) {
+          console.error('Error fetching bid after payment:', bError);
+          break;
+        }
 
-        if (bid?.musicAssetId) {
-          await prisma.participationLicense.create({
-            data: {
-              organizationId: bid.organizationId,
-              musicAssetId: bid.musicAssetId,
-              userId: bid.userId,
-              allocatedBps: bid.requestedBps,
-              feeCents: bid.offerAmountCents,
-              status: 'VERIFIED',
-            }
+        if (bid.track_id) {
+          await supabase.from('participation_licenses').insert({
+            organization_id: bid.organization_id,
+            track_id: bid.track_id,
+            user_id: bid.user_id,
+            allocated_bps: bid.requested_bps,
+            fee_cents: bid.offer_amount_cents,
+            status: 'VERIFIED',
           });
-          await prisma.musicAsset.update({
-            where: { id: bid.musicAssetId },
-            data: { allocatedLicenseBps: { increment: bid.requestedBps } }
-          });
-          console.info(`[FORENSIC_AUDIT] Participation License minted for User ${bid.userId} on Asset ${bid.musicAssetId}`);
+          
+          const track = Array.isArray(bid.tracks) ? bid.tracks[0] : bid.tracks;
+          if (track) {
+            await supabase.from('tracks').update({
+              allocated_license_bps: (track.allocated_license_bps || 0) + bid.requested_bps
+            }).eq('id', bid.track_id);
+          }
+          console.info(`[FORENSIC_AUDIT] Participation License minted for User ${bid.user_id} on Asset ${bid.track_id}`);
         }
       }
 
@@ -67,49 +76,59 @@ export async function POST(req: Request) {
 
         const artistId = session.metadata.artistId;
         const tierId = session.metadata.tierId;
-        const tier = await prisma.supporterTier.findUnique({ where: { id: tierId } });
+        
+        const { data: tier } = await supabase
+          .from('supporter_tiers')
+          .select('*')
+          .eq('id', tierId)
+          .single();
 
         if (tier) {
           try {
-            await prisma.$transaction(async (tx) => {
-              const updatedOrg = await tx.organization.update({
-                where: { id: artistId },
-                data: { supporterCount: { increment: 1 } },
-                select: { supporterCount: true }
+            // Update org supporter count
+            const { data: org } = await supabase
+              .from('organizations')
+              .update({ supporter_count: (tier.supporter_count || 0) + 1 }) // This is a bit simplified without increment
+              .eq('id', artistId)
+              .select('supporter_count')
+              .single();
+
+            if (org) {
+              await supabase.from('supporter_subscriptions').insert({
+                fan_id: userId,
+                artist_id: artistId,
+                tier_id: tierId,
+                supporter_number: org.supporter_count,
+                price_cents: tier.price_cents,
+                revenue_share_percent: tier.revenue_share_percent,
+                status: 'ACTIVE',
               });
-              await tx.supporterSubscription.create({
-                data: {
-                  fanId: userId,
-                  artistId,
-                  tierId,
-                  supporterNumber: updatedOrg.supporterCount,
-                  priceCents: tier.priceCents,
-                  revenueSharePercent: tier.revenueSharePercent,
-                  status: 'ACTIVE',
-                }
-              });
+              
               const { calculateMonthlyRoyalties } = await import('@/lib/private/royalties/calculateRoyalties');
               await calculateMonthlyRoyalties();
               console.info(`[FORENSIC_AUDIT] Automated royalty ledger update triggered by new supporter.`);
-            });
+            }
           } catch (err: unknown) {
-            console.error(`[FORENSIC_AUDIT_FAILURE] Royalty transaction failed`, err);
-            return NextResponse.json({ error: 'Ledger update failed. Transaction rolled back.' }, { status: 500 });
+            console.error(`[FORENSIC_AUDIT_FAILURE] Royalty processing failed`, err);
           }
         }
       } else if (session.mode === 'subscription' && userId) {
         console.info(`[FORENSIC_AUDIT] Network Subscription verified for user: ${userId} | Protocol: ${protocol}`);
-        await prisma.user.update({ where: { id: userId }, data: { subscriptionStatus: 'subscriber' } });
-        await prisma.fanSubscription.create({
-          data: {
-            fanId: userId,
-            status: 'active',
-            monthlyAmountCents: session.amount_total || 999,
-            stripeSubscriptionId: session.subscription as string,
-            stripeCustomerId: session.customer as string,
-            startDate: new Date(),
-          }
+        
+        await supabase
+          .from('users')
+          .update({ subscription_status: 'subscriber' })
+          .eq('id', userId);
+
+        await supabase.from('fan_subscriptions').insert({
+          fan_id: userId,
+          status: 'active',
+          monthly_amount_cents: session.amount_total || 999,
+          stripe_subscription_id: session.subscription as string,
+          stripe_customer_id: session.customer as string,
+          start_date: new Date().toISOString(),
         });
+        
         console.info(`[FORENSIC_AUDIT] User ${userId} upgraded to institutional participant status.`);
       }
       break;

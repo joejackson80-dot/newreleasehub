@@ -1,5 +1,5 @@
 import { inngest } from '../client'
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { computeWeeklyCharts as originalComputeCharts } from '@/lib/private/charts/computeCharts'
 
 // ── Founding conversions (daily 9am Central) ─────────────────
@@ -25,13 +25,12 @@ export const expireCollabsCron = inngest.createFunction(
   },
   async ({ step }) => {
     await step.run('expire-collabs', async () => {
-      await prisma.collabRequest.updateMany({
-        where: {
-          status: 'PENDING',
-          expiresAt: { lte: new Date() }
-        },
-        data: { status: 'EXPIRED' }
-      })
+      const supabase = createAdminClient();
+      await supabase
+        .from('collab_requests')
+        .update({ status: 'EXPIRED' })
+        .eq('status', 'PENDING')
+        .lte('expires_at', new Date().toISOString());
     })
   }
 )
@@ -63,9 +62,6 @@ export const djListenerCountCron = inngest.createFunction(
   }
 )
 
-// We already export computeWeeklyCharts from computeCharts.ts. We'll just export it here as well
-// or we can remove the one here and export from route.ts directly. The prompt has it inside cronFunctions.ts.
-// Let's just create a wrapper or ignore it.
 export const computeWeeklyCharts = originalComputeCharts;
 
 // ── Pre-save notifications (every hour) ───────────────────────
@@ -89,13 +85,15 @@ export const weeklyFanStatsResetCron = inngest.createFunction(
     triggers: [{ cron: '0 0 * * 1' }],
   },
   async ({ step }) => {
+    const supabase = createAdminClient();
     await step.run('reset-7d-stats', async () => {
-      await prisma.fanArtistRelation.updateMany({
-        data: { streamCount7d: 0 }
-      });
-      await prisma.fanListeningStats.updateMany({
-        data: { totalStreams7d: 0 }
-      });
+      await supabase
+        .from('fan_artist_relations')
+        .update({ stream_count_7d: 0 });
+      
+      await supabase
+        .from('fan_listening_stats')
+        .update({ total_streams_7d: 0 });
     });
   }
 );
@@ -108,13 +106,15 @@ export const monthlyFanStatsResetCron = inngest.createFunction(
     triggers: [{ cron: '0 0 1 * *' }],
   },
   async ({ step }) => {
+    const supabase = createAdminClient();
     await step.run('reset-30d-stats', async () => {
-      await prisma.fanArtistRelation.updateMany({
-        data: { streamCount30d: 0 }
-      });
-      await prisma.fanListeningStats.updateMany({
-        data: { totalStreams30d: 0 }
-      });
+      await supabase
+        .from('fan_artist_relations')
+        .update({ stream_count_30d: 0 });
+      
+      await supabase
+        .from('fan_listening_stats')
+        .update({ total_streams_30d: 0 });
     });
   }
 );
@@ -127,15 +127,15 @@ export const dailyFanStreakCron = inngest.createFunction(
     triggers: [{ cron: '0 0 * * *' }],
   },
   async ({ step }) => {
+    const supabase = createAdminClient();
     await step.run('update-streaks', async () => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       
-      // Reset streaks for those who didn't listen yesterday
-      await prisma.fanListeningStats.updateMany({
-        where: { updatedAt: { lt: yesterday } },
-        data: { listeningStreak: 0 }
-      });
+      await supabase
+        .from('fan_listening_stats')
+        .update({ listening_streak: 0 })
+        .lt('updated_at', yesterday.toISOString());
     });
   }
 );
@@ -148,37 +148,30 @@ export const generateFanLeaderboardsCron = inngest.createFunction(
     triggers: [{ cron: '0 3 * * 1' }],
   },
   async ({ step }) => {
+    const supabase = createAdminClient();
     const artists = await step.run('get-artists', async () => {
-      return prisma.organization.findMany({
-        select: { id: true }
-      });
+      const { data } = await supabase.from('organizations').select('id');
+      return data || [];
     });
 
     for (const artist of artists) {
       await step.run(`process-artist-${artist.id}`, async () => {
-        const topFans = await prisma.fanArtistRelation.findMany({
-          where: { artistId: artist.id },
-          orderBy: { streamCount30d: 'desc' },
-          take: 10,
-          include: { fan: { select: { id: true, displayName: true, avatarUrl: true } } }
-        });
+        const { data: topFans } = await supabase
+          .from('fan_artist_relations')
+          .select('*, fan:users(id, display_name, avatar_url)')
+          .eq('artist_id', artist.id)
+          .order('stream_count_30d', { ascending: false })
+          .limit(10);
 
-        await prisma.artistSupporterLeaderboard.upsert({
-          where: { artistId: artist.id },
-          update: {
-            leaderboardData: JSON.stringify(topFans),
-            week: new Date(),
-            updatedAt: new Date()
-          },
-          create: {
-            artistId: artist.id,
-            leaderboardData: JSON.stringify(topFans),
-            week: new Date()
-          }
-        });
+        await supabase
+          .from('artist_supporter_leaderboards')
+          .upsert({
+            artist_id: artist.id,
+            leaderboard_data: JSON.stringify(topFans),
+            week: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'artist_id' });
       });
     }
   }
 );
-
-

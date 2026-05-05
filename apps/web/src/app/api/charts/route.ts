@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: Request) {
   try {
@@ -8,100 +8,127 @@ export async function GET(req: Request) {
     const genre = searchParams.get('genre') || 'Top Artists';
     const limit = 20;
 
-    let ranking = [];
+    const supabase = await createClient();
+    let ranking: any[] = [];
 
     if (genre === 'Top Artists') {
-      const orgs = await prisma.organization.findMany({
-        where: { isPublic: true },
-        orderBy: [
-          { supporterCount: 'desc' },
-          { totalStreams: 'desc' }
-        ],
-        take: limit,
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          profileImageUrl: true,
-          supporterCount: true,
-          totalStreams: true,
-          genres: true,
-          city: true,
-          isVerified: true
-        }
-      });
+      const { data: orgs, error } = await supabase
+        .from('organizations')
+        .select(`
+          id,
+          name,
+          slug,
+          profile_image_url,
+          supporter_count,
+          total_streams,
+          genres,
+          city,
+          is_verified,
+          is_public
+        `)
+        .eq('is_public', true)
+        .order('supporter_count', { ascending: false })
+        .order('total_streams', { ascending: false })
+        .limit(limit);
 
-      ranking = orgs.map(org => ({
+      if (error) throw error;
+
+      ranking = (orgs || []).map(org => ({
         ...org,
-        verifiedScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
+        profileImageUrl: org.profile_image_url,
+        supporterCount: org.supporter_count,
+        totalStreams: org.total_streams,
+        isVerified: org.is_verified,
+        verifiedScore: Math.min(99, 70 + Math.floor((org.supporter_count || 0) / 10) + Math.min(20, Math.floor((org.total_streams || 0) / 10000)))
       }));
     } else if (genre === 'Rising') {
-      const orgs = await prisma.organization.findMany({
-        where: { isPublic: true },
-        orderBy: { createdAt: 'desc' },
-        take: limit,
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          profileImageUrl: true,
-          supporterCount: true,
-          totalStreams: true,
-          genres: true,
-          city: true,
-          isVerified: true
-        }
-      });
+      const { data: orgs, error } = await supabase
+        .from('organizations')
+        .select(`
+          id,
+          name,
+          slug,
+          profile_image_url,
+          supporter_count,
+          total_streams,
+          genres,
+          city,
+          is_verified,
+          is_public,
+          created_at
+        `)
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(limit);
 
-      ranking = orgs.map(org => ({
+      if (error) throw error;
+
+      ranking = (orgs || []).map(org => ({
         ...org,
-        verifiedScore: Math.min(99, 65 + Math.floor(org.supporterCount / 5) + Math.min(15, Math.floor(org.totalStreams / 5000)))
+        profileImageUrl: org.profile_image_url,
+        supporterCount: org.supporter_count,
+        totalStreams: org.total_streams,
+        isVerified: org.is_verified,
+        verifiedScore: Math.min(99, 65 + Math.floor((org.supporter_count || 0) / 5) + Math.min(15, Math.floor((org.total_streams || 0) / 5000)))
       }));
     } else if (genre === 'Top Fans') {
-      ranking = await prisma.user.findMany({
-        where: { role: 'FAN' },
-        orderBy: [
-          { fanLevel: 'desc' },
-          { fanXP: 'desc' }
-        ],
-        take: limit,
-        select: {
-          id: true,
-          displayName: true,
-          username: true,
-          avatarUrl: true,
-          fanLevel: true,
-          fanXP: true,
-          badges: true,
-        }
-      });
-    } else {
-      const orgs = await prisma.organization.findMany({
-        where: {
-          isPublic: true,
-          genres: { has: genre }
-        },
-        orderBy: [
-          { supporterCount: 'desc' },
-          { totalStreams: 'desc' }
-        ],
-        take: limit,
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          profileImageUrl: true,
-          supporterCount: true,
-          totalStreams: true,
-          genres: true,
-          city: true,
-          isVerified: true
-        }
-      });
+      const { data: fans, error } = await supabase
+        .from('users')
+        .select(`
+          id,
+          display_name,
+          username,
+          avatar_url,
+          fan_level,
+          fan_xp,
+          badges
+        `)
+        .eq('role', 'FAN')
+        .order('fan_level', { ascending: false })
+        .order('fan_xp', { ascending: false })
+        .limit(limit);
 
-      ranking = orgs.map(org => ({
+      if (error) throw error;
+
+      ranking = (fans || []).map(fan => ({
+        ...fan,
+        displayName: fan.display_name,
+        avatarUrl: fan.avatar_url,
+        fanLevel: fan.fan_level,
+        fanXP: fan.fan_xp,
+      }));
+    } else {
+      // In Supabase, filtering by an array containing a value uses .contains() or .filter
+      // We'll use cs (contains) for the genres array
+      const { data: orgs, error } = await supabase
+        .from('organizations')
+        .select(`
+          id,
+          name,
+          slug,
+          profile_image_url,
+          supporter_count,
+          total_streams,
+          genres,
+          city,
+          is_verified,
+          is_public
+        `)
+        .eq('is_public', true)
+        .contains('genres', [genre])
+        .order('supporter_count', { ascending: false })
+        .order('total_streams', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+
+      ranking = (orgs || []).map(org => ({
         ...org,
-        verifiedScore: Math.min(99, 70 + Math.floor(org.supporterCount / 10) + Math.min(20, Math.floor(org.totalStreams / 10000)))
+        profileImageUrl: org.profile_image_url,
+        supporterCount: org.supporter_count,
+        totalStreams: org.total_streams,
+        isVerified: org.is_verified,
+        verifiedScore: Math.min(99, 70 + Math.floor((org.supporter_count || 0) / 10) + Math.min(20, Math.floor((org.total_streams || 0) / 10000)))
       }));
     }
 
@@ -111,4 +138,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-

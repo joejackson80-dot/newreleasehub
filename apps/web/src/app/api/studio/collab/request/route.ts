@@ -1,8 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { sanitizeResponse } from '@/lib/private/sanitize';
-import { safeError } from '@/lib/api/errors';
 
 export async function POST(req: Request) {
   try {
@@ -22,37 +21,39 @@ export async function POST(req: Request) {
     } = body;
 
     if (!targetArtistId || !requesterId) {
-      return NextResponse.json(safeError('Missing IDs', 400), { status: 400 });
+      return NextResponse.json({ error: 'Missing IDs' }, { status: 400 });
     }
 
+    const supabase = createAdminClient();
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + 72);
 
-    const request = await prisma.collabRequest.create({
-      data: {
-        requesterId,
-        receiverId: targetArtistId,
-        collabType,
-        dealType,
-        requesterSplitPercent: requesterSplit,
-        receiverSplitPercent: receiverSplit,
-        feeAmountCents: feeAmount * 100,
-        projectTitle,
+    const { data: request, error } = await supabase
+      .from('collab_requests')
+      .insert({
+        requester_id: requesterId,
+        receiver_id: targetArtistId,
+        collab_type: collabType,
+        deal_type: dealType,
+        requester_split_percent: requesterSplit || 0,
+        receiver_split_percent: receiverSplit || 0,
+        fee_amount_cents: (feeAmount || 0) * 100,
+        project_title: projectTitle,
         message,
-        demoUrl,
-        proposedDeadline: proposedDeadline ? new Date(proposedDeadline) : null,
-        expiresAt,
+        demo_url: demoUrl,
+        proposed_deadline: proposedDeadline ? new Date(proposedDeadline).toISOString() : null,
+        expires_at: expiresAt.toISOString(),
         status: 'PENDING'
-      }
-    });
+      })
+      .select()
+      .single();
 
-    // In a real app, send notifications here
-    
+    if (error) throw error;
+
+    // Normalize for response if needed, though sanitizeResponse handles most
     return NextResponse.json(sanitizeResponse(request));
-  } catch (error) {
-    return NextResponse.json(safeError(error), { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
-

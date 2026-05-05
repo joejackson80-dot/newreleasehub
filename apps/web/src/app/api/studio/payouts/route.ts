@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { getSessionArtist } from '@/lib/session';
 
 export async function GET() {
@@ -8,14 +8,21 @@ export async function GET() {
     const artist = await getSessionArtist();
     if (!artist) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
-    const payoutRequests = await prisma.payoutRequest.findMany({
-      where: { artistId: artist.id },
-      orderBy: { createdAt: 'desc' }
-    });
+    const supabase = await createClient();
+
+    const { data: payoutRequests, error } = await supabase
+      .from('payout_requests')
+      .select('*')
+      .eq('organization_id', artist.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, payoutRequests });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    console.error('Payouts GET error:', error);
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
 
@@ -30,36 +37,52 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'Invalid amount' }, { status: 400 });
     }
 
-    // Check balance (mock balance in organization model)
-    const org = await prisma.organization.findUnique({
-      where: { id: artist.id },
-      select: { balanceCents: true }
-    });
+    const supabase = await createClient();
 
-    if (!org || org.balanceCents < amountCents) {
+    // Check balance
+    const { data: org, error: orgError } = await supabase
+      .from('organizations')
+      .select('balance_cents')
+      .eq('id', artist.id)
+      .maybeSingle();
+
+    if (orgError || !org) throw orgError || new Error("Organization not found");
+
+    if (org.balance_cents < amountCents) {
       return NextResponse.json({ success: false, error: 'Insufficient balance' }, { status: 400 });
     }
 
-    // Create request and deduct balance
-    const [request] = await prisma.$transaction([
-      prisma.payoutRequest.create({
-        data: {
-          artistId: artist.id,
-          amountCents,
-          method,
-          destination,
-          status: 'PENDING'
-        }
-      }),
-      prisma.organization.update({
-        where: { id: artist.id },
-        data: { balanceCents: { decrement: amountCents } }
+    // Create request and deduct balance (Supabase doesn't have multi-table transactions in the client, but we can do them sequentially or via RPC)
+    // For this migration, we'll do them sequentially as consistent with other parts of the app
+    const { data: request, error: pError } = await supabase
+      .from('payout_requests')
+      .insert({
+        organization_id: artist.id,
+        amount_cents: amountCents,
+        method,
+        destination,
+        status: 'PENDING'
       })
-    ]);
+      .select()
+      .single();
+
+    if (pError) throw pError;
+
+    const { error: uError } = await supabase
+      .from('organizations')
+      .update({ balance_cents: org.balance_cents - amountCents })
+      .eq('id', artist.id);
+
+    if (uError) {
+      // Manual rollback attempt if update fails (very basic)
+      await supabase.from('payout_requests').delete().eq('id', request.id);
+      throw uError;
+    }
 
     return NextResponse.json({ success: true, request });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    console.error('Payouts POST error:', error);
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

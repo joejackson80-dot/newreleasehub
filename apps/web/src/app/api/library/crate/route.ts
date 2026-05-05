@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(req: Request) {
   try {
@@ -11,27 +11,37 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing userId or trackId' }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
+    const supabase = createAdminClient();
+
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('crate')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (userError || !user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    let updatedCrate = [...user.crate];
+    let updatedCrate = Array.isArray(user.crate) ? [...user.crate] : [];
     if (updatedCrate.includes(trackId)) {
       updatedCrate = updatedCrate.filter(id => id !== trackId);
     } else {
       updatedCrate.push(trackId);
     }
 
-    await prisma.user.update({
-      where: { id: userId },
-      data: { crate: updatedCrate }
-    });
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ crate: updatedCrate })
+      .eq('id', userId);
+
+    if (updateError) throw updateError;
 
     return NextResponse.json({ success: true, isLiked: updatedCrate.includes(trackId) });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Crate update error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -44,16 +54,17 @@ export async function GET(req: Request) {
   }
   
   try {
-     const user = await prisma.user.findUnique({ 
-       where: { id: userId }, 
-       select: { crate: true } 
-     });
+     const supabase = createAdminClient();
+     const { data: user, error } = await supabase
+       .from('users')
+       .select('crate')
+       .eq('id', userId)
+       .maybeSingle();
+
+     if (error) throw error;
      return NextResponse.json({ crate: user?.crate || [] });
-  } catch (error) {
+  } catch (error: unknown) {
      console.error('Crate fetch error:', error);
      return NextResponse.json({ crate: [] });
   }
 }
-
-
-

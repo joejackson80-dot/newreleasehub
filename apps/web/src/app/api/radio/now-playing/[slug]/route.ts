@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function GET(
   req: NextRequest,
@@ -8,56 +8,73 @@ export async function GET(
   const { slug } = await params;
 
   try {
-    const station = await prisma.station.findUnique({
-      where: { slug },
-      include: {
-        NowPlaying: {
-          include: {
-            Organization: true,
-          }
-        },
-        PlayHistory: {
-          include: {
-            Asset: {
-              include: { Organization: true }
-            }
-          },
-          orderBy: { playedAt: 'desc' },
-          take: 10
-        }
-      }
-    });
+    const supabase = createAdminClient();
 
-    if (!station) {
+    // 1. Fetch Station with NowPlaying track and its Organization
+    const { data: station, error: stationError } = await supabase
+      .from('stations')
+      .select(`
+        *,
+        now_playing:tracks!now_playing_id (
+          *,
+          organizations (*)
+        )
+      `)
+      .eq('slug', slug)
+      .maybeSingle();
+
+    if (stationError || !station) {
       return NextResponse.json({ error: 'Station not found' }, { status: 404 });
     }
 
-    // In a real app, we might also fetch recently played tracks here or via another endpoint
-    // For now, let's just return the current station state
+    // 2. Fetch Play History (last 10 tracks)
+    const { data: history, error: historyError } = await supabase
+      .from('play_history')
+      .select(`
+        *,
+        tracks (
+          *,
+          organizations (*)
+        )
+      `)
+      .eq('station_id', station.id)
+      .order('played_at', { ascending: false })
+      .limit(10);
+
+    if (historyError) throw historyError;
+
+    const nowPlayingTrack = station.now_playing;
+    const nowPlayingOrg = nowPlayingTrack?.organizations;
+
     return NextResponse.json({
-      isLive: station.isLive,
-      playbackId: station.playbackId || (station.NowPlaying?.Organization.livePlaybackId),
-      nowPlaying: station.NowPlaying ? {
-        id: station.NowPlaying.id,
-        title: station.NowPlaying.title,
-        artist: station.NowPlaying.Organization.name,
-        artistSlug: station.NowPlaying.Organization.slug,
-        artistId: station.NowPlaying.Organization.id,
-        imageUrl: station.NowPlaying.imageUrl || station.NowPlaying.Organization.profileImageUrl,
-        audioUrl: station.NowPlaying.audioUrl,
+      isLive: station.is_live,
+      playbackId: station.playback_id || nowPlayingOrg?.live_playback_id,
+      nowPlaying: nowPlayingTrack ? {
+        id: nowPlayingTrack.id,
+        title: nowPlayingTrack.title,
+        artist: nowPlayingOrg?.name,
+        artistSlug: nowPlayingOrg?.slug,
+        artistId: nowPlayingOrg?.id,
+        imageUrl: nowPlayingTrack.image_url || nowPlayingOrg?.profile_image_url,
+        audioUrl: nowPlayingTrack.audio_url,
       } : null,
-      recentlyPlayed: station.PlayHistory.map(ph => ({
-        id: ph.Asset.id,
-        title: ph.Asset.title,
-        artist: ph.Asset.Organization.name,
-        artistSlug: ph.Asset.Organization.slug,
-        imageUrl: ph.Asset.imageUrl || ph.Asset.Organization.profileImageUrl,
-        playedAt: ph.playedAt
-      })),
-      updatedAt: station.updatedAt,
+      recentlyPlayed: (history || []).map((ph: any) => {
+        const t = ph.tracks;
+        const o = t?.organizations;
+        return {
+          id: t?.id,
+          title: t?.title,
+          artist: o?.name,
+          artistSlug: o?.slug,
+          imageUrl: t?.image_url || o?.profile_image_url,
+          playedAt: ph.played_at
+        };
+      }),
+      updatedAt: station.updated_at,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Radio API Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

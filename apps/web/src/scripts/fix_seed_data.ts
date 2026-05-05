@@ -1,119 +1,128 @@
-import { PrismaClient } from '@prisma/client';
-import { Pool } from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
+import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
-import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-// Load .env from apps/web root
-dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const DB_URL = process.env.DATABASE_URL;
-if (!DB_URL) {
-  throw new Error("DATABASE_URL must be defined");
+// Load environment variables from the web app directory
+dotenv.config({ path: join(__dirname, '../../.env.local') });
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be defined");
 }
-const pool = new Pool({ connectionString: DB_URL });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 async function main() {
-  console.log('--- STARTING FORENSIC DATA CORRECTION ---');
+  console.log('--- STARTING FORENSIC DATA CORRECTION (SUPABASE) ---');
 
   // 2.1 — Marcus Webb Profile
   console.log('Updating Marcus Webb...');
-  const marcus = await prisma.organization.update({
-    where: { slug: 'marcus-webb' },
-    data: {
-      supporterCount: 2140,
+  const { data: marcus } = await supabase
+    .from('organizations')
+    .update({ supporter_count: 2140 })
+    .eq('slug', 'marcus-webb')
+    .select()
+    .single();
+
+  if (marcus) {
+    const { data: marcusReleases } = await supabase
+      .from('releases')
+      .select('id')
+      .eq('organization_id', marcus.id)
+      .order('created_at', { ascending: true });
+
+    if (marcusReleases && marcusReleases[0]) {
+      await supabase.from('releases').update({ title: 'Midnight in Atlanta', type: 'album' }).eq('id', marcusReleases[0].id);
     }
-  });
-
-  const marcusReleases = await prisma.release.findMany({
-    where: { organizationId: marcus.id },
-    orderBy: { createdAt: 'asc' }
-  });
-
-  if (marcusReleases[0]) {
-    await prisma.release.update({ where: { id: marcusReleases[0].id }, data: { title: 'Midnight in Atlanta', type: 'album' } });
-  }
-  if (marcusReleases[1]) {
-    await prisma.release.update({ where: { id: marcusReleases[1].id }, data: { title: 'Worth It (feat. Nova Rae)', type: 'single' } });
-  }
-  if (marcusReleases[2]) {
-    await prisma.release.update({ where: { id: marcusReleases[2].id }, data: { title: 'The Comeback EP', type: 'ep' } });
+    if (marcusReleases && marcusReleases[1]) {
+      await supabase.from('releases').update({ title: 'Worth It (feat. Nova Rae)', type: 'single' }).eq('id', marcusReleases[1].id);
+    }
+    if (marcusReleases && marcusReleases[2]) {
+      await supabase.from('releases').update({ title: 'The Comeback EP', type: 'ep' }).eq('id', marcusReleases[2].id);
+    }
   }
   console.log('✓ Marcus Webb updated');
 
   // 2.2 — Joe Jack Profile
   console.log('Updating Joe Jack...');
-  const joejack = await prisma.organization.update({
-    where: { slug: 'iamjoejack' },
-    data: {
+  const { data: joejack } = await supabase
+    .from('organizations')
+    .update({
       name: 'I Am Joe Jack',
       genres: ['Hip-Hop', 'Soul'],
       city: 'Omaha',
       country: 'US',
       bio: `Independent Hip-Hop artist from Omaha, Nebraska.\nOwner of Game Spittin Entertainment.\nMaking real music for real people.`
-    }
-  });
+    })
+    .eq('slug', 'iamjoejack')
+    .select()
+    .single();
 
-  const joeReleases = await prisma.release.findMany({ where: { organizationId: joejack.id } });
+  if (joejack) {
+    const { data: joeReleases } = await supabase
+      .from('releases')
+      .select('*')
+      .eq('organization_id', joejack.id);
 
-  for (const r of joeReleases) {
-    if (r.title.toLowerCase().includes('demo') || r.title.toLowerCase().includes('demo set')) {
-      await prisma.release.update({ where: { id: r.id }, data: { title: 'Game Spittin Vol. 1', type: 'ep' } });
-    }
-  }
-
-  if (joeReleases.length < 3) {
-    await prisma.release.create({
-      data: {
-        organizationId: joejack.id,
-        title: 'Worth It (feat. Nova Rae)',
-        type: 'single',
-        coverArtUrl: '/images/default-cover.png',
+    for (const r of (joeReleases || [])) {
+      if (r.title.toLowerCase().includes('demo') || r.title.toLowerCase().includes('demo set')) {
+        await supabase.from('releases').update({ title: 'Game Spittin Vol. 1', type: 'ep' }).eq('id', r.id);
       }
-    });
-    await prisma.release.create({
-      data: {
-        organizationId: joejack.id,
-        title: 'The Comeback EP',
-        type: 'ep',
-        coverArtUrl: '/images/default-cover.png',
-      }
-    });
+    }
+
+    if ((joeReleases || []).length < 3) {
+      await supabase.from('releases').insert([
+        {
+          organization_id: joejack.id,
+          title: 'Worth It (feat. Nova Rae)',
+          type: 'single',
+          cover_art_url: '/images/default-cover.png',
+        },
+        {
+          organization_id: joejack.id,
+          title: 'The Comeback EP',
+          type: 'ep',
+          cover_art_url: '/images/default-cover.png',
+        }
+      ]);
+    }
   }
   console.log('✓ Joe Jack updated');
 
   // 2.3 — Hellz Flame Profile
   console.log('Updating Hellz Flame...');
-  await prisma.organization.update({
-    where: { slug: 'hellz-flame' },
-    data: { city: 'Omaha', country: 'US' }
-  });
+  await supabase
+    .from('organizations')
+    .update({ city: 'Omaha', country: 'US' })
+    .eq('slug', 'hellz-flame');
   console.log('✓ Hellz Flame updated');
 
   // 2.4 — Hide placeholder artists
   console.log('Hiding placeholder artists...');
-  const result = await prisma.organization.updateMany({
-    where: { name: { startsWith: 'Founding Artist' } },
-    data: { isPublic: false }
-  });
-  console.log(`✓ Hid ${result.count} placeholder artists`);
+  const { error: hideError } = await supabase
+    .from('organizations')
+    .update({ is_public: false })
+    .ilike('name', 'Founding Artist%');
+  
+  if (hideError) console.error('Error hiding artists:', hideError);
+  console.log(`✓ Hid placeholder artists`);
 
   // Group 3 — Opportunity Board Poster Names
   console.log('Updating Opportunity Board posters...');
-  await prisma.opportunity.updateMany({ where: { title: { contains: 'Commercial Spot' } }, data: { posterName: 'Meridian Films' } });
-  await prisma.opportunity.updateMany({ where: { title: { contains: 'R&B Vocalist' } }, data: { posterName: 'DJ Solarize' } });
-  await prisma.opportunity.updateMany({ where: { title: { contains: 'Creator Fund' } }, data: { posterName: 'Black Music Foundation' } });
-  await prisma.opportunity.updateMany({ where: { title: { contains: 'Opening Act' } }, data: { posterName: 'The Hollow Venue' } });
-  await prisma.opportunity.updateMany({ where: { title: { contains: 'Netflix' } }, data: { posterName: 'Resonance Gaming Studios' } });
+  await supabase.from('opportunities').update({ poster_name: 'Meridian Films' }).ilike('title', '%Commercial Spot%');
+  await supabase.from('opportunities').update({ poster_name: 'DJ Solarize' }).ilike('title', '%R&B Vocalist%');
+  await supabase.from('opportunities').update({ poster_name: 'Black Music Foundation' }).ilike('title', '%Creator Fund%');
+  await supabase.from('opportunities').update({ poster_name: 'The Hollow Venue' }).ilike('title', '%Opening Act%');
+  await supabase.from('opportunities').update({ poster_name: 'Resonance Gaming Studios' }).ilike('title', '%Netflix%');
   console.log('✓ Opportunity board updated');
 
   console.log('--- FORENSIC DATA CORRECTION COMPLETE ---');
 }
 
-main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(async () => { await prisma.$disconnect(); await pool.end(); });
-
-
+main().catch((e) => { console.error(e); process.exit(1); });

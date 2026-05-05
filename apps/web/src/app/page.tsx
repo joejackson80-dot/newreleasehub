@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap, Radio, Users } from 'lucide-react';
@@ -19,15 +19,19 @@ import HeroVisual from '@/components/home/HeroVisual';
 
 
 export default async function HomePage() {
-  const hubs = await prisma.organization.findMany({
-    where: { isPublic: true },
-    orderBy: { totalStreams: 'desc' },
-    take: 6,
-    include: {
-      ParticipationLicenses: true,
-      SessionDeck: true
-    }
-  });
+  const supabase = await createClient();
+  const { data: hubs, error } = await supabase
+    .from('organizations')
+    .select('*, participation_licenses(*), session_decks(*)')
+    .eq('isPublic', true)
+    .order('totalStreams', { ascending: false })
+    .limit(6);
+
+  if (error) {
+    console.error('Error fetching hubs:', error);
+    throw error;
+  }
+
 
   const validHubs = hubs.filter(
     hub => hub?.name && hub?.slug && hub.name.toLowerCase() !== 'undefined' && hub.slug.toLowerCase() !== 'undefined'
@@ -111,9 +115,9 @@ export default async function HomePage() {
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
-                  {validHubs.map((hub, index) => {
+                  {validHubs?.map((hub: any, index: number) => {
                     const imageUrl = hub.profileImageUrl || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
-                    const isLive = hub.SessionDeck?.isPlaying;
+                    const isLive = hub.session_decks?.[0]?.isPlaying;
 
                     return (
                        <Link 
@@ -121,6 +125,7 @@ export default async function HomePage() {
                          key={hub.id} 
                          className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#A855F74d] transition-all duration-500 hover:-translate-y-2 shadow-2xl"
                        >
+
                          <div className="aspect-[0.8] relative overflow-hidden">
                            <img 
                              src={imageUrl} 

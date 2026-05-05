@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function GET(req: Request) {
   try {
@@ -11,17 +11,29 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'orgId is required' }, { status: 400 });
     }
 
-    const licenses = await prisma.participationLicense.findMany({
-      where: { organizationId: orgId },
-      orderBy: { createdAt: 'desc' },
-      include: { MusicAsset: true }
-    });
+    const supabase = createAdminClient();
 
-    return NextResponse.json(licenses);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const { data: licenses, error } = await supabase
+      .from('participation_licenses')
+      .select(`
+        *,
+        tracks (*)
+      `)
+      .eq('organization_id', orgId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    // Normalize for response
+    const normalized = (licenses || []).map(lic => ({
+      ...lic,
+      MusicAsset: lic.tracks
+    }));
+
+    return NextResponse.json(normalized);
+  } catch (error: unknown) {
+    console.error('Licenses API error:', error);
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
-

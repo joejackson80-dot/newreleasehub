@@ -16,8 +16,8 @@ New Release Hub is a high-fidelity SaaS platform that empowers independent artis
 ## 🛠 Tech Stack
 
 - **Framework**: Next.js 15 (App Router, Turbopack)
-- **Database**: PostgreSQL (Prisma ORM)
-- **Real-time**: Pusher / Supabase Realtime
+- **Database & Auth**: Supabase (PostgreSQL, Realtime, Auth)
+- **Client**: Supabase JS Client & SSR
 - **Payments**: Stripe Connect (Escrow & Revenue Splits)
 - **Styling**: Tailwind CSS (Premium Dark Studio Aesthetic)
 - **Deployment**: Vercel
@@ -26,7 +26,7 @@ New Release Hub is a high-fidelity SaaS platform that empowers independent artis
 
 ### 1. Prerequisites
 - Node.js 18+
-- PostgreSQL instance
+- Supabase Project
 - Stripe Account (for payouts)
 
 ### 2. Installation
@@ -37,16 +37,17 @@ npm install
 ### 3. Environment Setup
 Create a `.env.local` with the following:
 ```env
-DATABASE_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
-NEXT_PUBLIC_PUSHER_APP_ID=
 ```
 
-### 4. Database Initialization
+### 4. Database Maintenance
 ```bash
-npx prisma db push
-npm run seed
+# Run forensic data correction
+npx ts-node src/scripts/fix_seed_data.ts
 ```
 
 ### 5. Development

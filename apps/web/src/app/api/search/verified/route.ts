@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: Request) {
   try {
@@ -9,57 +9,70 @@ export async function GET(req: Request) {
     const genre = searchParams.get('genre');
     const minSupporters = parseInt(searchParams.get('minSupporters') || '0');
     const minStreams = parseInt(searchParams.get('minStreams') || '0');
-    const sortBy = searchParams.get('sortBy') || 'relevance'; // relevance, growth, equity, streams
+    const sortBy = searchParams.get('sortBy') || 'relevance';
 
-    const where: any = {
-      isPublic: true,
-      name: { contains: query, mode: 'insensitive' },
-      supporterCount: { gte: minSupporters },
-      totalStreams: { gte: minStreams }
-    };
+    const supabase = await createClient();
+
+    let queryBuilder = supabase
+      .from('organizations')
+      .select(`
+        id,
+        name,
+        slug,
+        profile_image_url,
+        genres,
+        city,
+        supporter_count,
+        total_streams,
+        is_verified
+      `)
+      .eq('is_public', true)
+      .ilike('name', `%${query}%`)
+      .gte('supporter_count', minSupporters)
+      .gte('total_streams', minStreams);
 
     if (genre && genre !== 'All') {
-      where.genres = { has: genre };
+      queryBuilder = queryBuilder.contains('genres', [genre]);
     }
 
-    let orderBy: any = {};
-    if (sortBy === 'growth') {
-      orderBy = { supporterCount: 'desc' }; // Simplified growth logic
-    } else if (sortBy === 'equity') {
-      orderBy = { totalStreams: 'desc' };
-    } else if (sortBy === 'streams') {
-      orderBy = { totalStreams: 'desc' };
+    if (sortBy === 'growth' || sortBy === 'relevance') {
+      queryBuilder = queryBuilder.order('supporter_count', { ascending: false });
+    } else if (sortBy === 'equity' || sortBy === 'streams') {
+      queryBuilder = queryBuilder.order('total_streams', { ascending: false });
     } else {
-      orderBy = { supporterCount: 'desc' };
+      queryBuilder = queryBuilder.order('supporter_count', { ascending: false });
     }
 
-    const artists = await prisma.organization.findMany({
-      where,
-      orderBy,
-      take: 50,
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        profileImageUrl: true,
-        genres: true,
-        city: true,
-        supporterCount: true,
-        totalStreams: true,
-        isVerified: true
-      }
-    });
+    const { data: artists, error } = await queryBuilder.limit(50);
 
-    // Add mock "Verified Score" for professional feel
-    const enrichedArtists = artists.map(a => ({
+    if (error) throw error;
+
+    interface SupabaseArtist {
+      id: string;
+      name: string;
+      slug: string;
+      profile_image_url?: string;
+      genres?: string[];
+      city?: string;
+      supporter_count?: number;
+      total_streams?: number;
+      is_verified?: boolean;
+    }
+
+    // Add mock "Verified Score" for professional feel and normalize for UI
+    const enrichedArtists = (artists || []).map((a: SupabaseArtist) => ({
       ...a,
+      profileImageUrl: a.profile_image_url,
+      supporterCount: a.supporter_count,
+      totalStreams: a.total_streams,
+      isVerified: a.is_verified,
       verifiedScore: Math.floor(Math.random() * 20) + 80, // 80-99
       retentionRate: Math.floor(Math.random() * 15) + 85 // 85-99%
     }));
 
     return NextResponse.json({ success: true, artists: enrichedArtists });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

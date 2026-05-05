@@ -1,14 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-export function createAdminClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!url || !key || url === 'your-project-url') {
-    return {
-      auth: { admin: { createUser: async () => ({ data: { user: null }, error: null }) } }
-    } as any;
-  }
-
-  return createClient(url, key)
+export const createAdminClient = () => {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    }
+  )
 }

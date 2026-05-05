@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionFanId } from '@/lib/session';
 
 export async function GET(req: Request) {
@@ -10,34 +10,46 @@ export async function GET(req: Request) {
   if (!orgId) return NextResponse.json({ error: 'Org ID required' }, { status: 400 });
 
   const fanId = await getSessionFanId().catch(() => null);
+  const supabase = createAdminClient();
+
   let fan: any = null;
   if (fanId) {
-    fan = await prisma.user.findUnique({
-      where: { id: fanId },
-      include: {
-        SupporterSubscriptions: {
-          where: { artistId: orgId, status: 'ACTIVE' }
-        }
-      }
-    });
+    const { data: userData } = await supabase
+      .from('users')
+      .select(`
+        *,
+        supporter_subscriptions (*)
+      `)
+      .eq('id', fanId)
+      .eq('supporter_subscriptions.artist_id', orgId)
+      .eq('supporter_subscriptions.status', 'ACTIVE')
+      .maybeSingle();
+    fan = userData;
   }
 
-  const merch = await prisma.merch.findMany({
-    where: { organizationId: orgId },
-    orderBy: { isLiveDrop: 'desc' }
-  });
+  const { data: merch, error: merchError } = await supabase
+    .from('merch')
+    .select('*')
+    .eq('organization_id', orgId)
+    .order('is_live_drop', { ascending: false });
+
+  if (merchError) {
+    return NextResponse.json({ error: merchError.message }, { status: 500 });
+  }
 
   // Calculate locking logic
-  const enrichedMerch = merch.map(m => {
+  const enrichedMerch = (merch || []).map(m => {
     let isLocked = false;
     let lockReason = "";
 
-    if (m.isSupporterOnly && (!fan || fan.SupporterSubscriptions.length === 0)) {
+    const activeSubs = fan?.supporter_subscriptions || [];
+
+    if (m.is_supporter_only && (!fan || activeSubs.length === 0)) {
       isLocked = true;
       lockReason = "SUPPORTER ONLY";
-    } else if (m.minFanLevel > (fan?.fanLevel || 0)) {
+    } else if (m.min_fan_level > (fan?.fan_level || 0)) {
       isLocked = true;
-      lockReason = `FAN LEVEL ${m.minFanLevel} REQUIRED`;
+      lockReason = `FAN LEVEL ${m.min_fan_level} REQUIRED`;
     }
 
     return {
@@ -58,23 +70,30 @@ export async function POST(req: Request) {
       isSupporterOnly, minFanLevel 
     } = await req.json();
     
-    const product = await prisma.merch.create({
-      data: {
-        organizationId,
+    const supabase = createAdminClient();
+
+    const { data: product, error } = await supabase
+      .from('merch')
+      .insert({
+        organization_id: organizationId,
         title,
-        priceCents,
+        price_cents: priceCents,
         description,
-        imageUrl,
-        stockCount,
-        isLiveDrop,
-        isSupporterOnly: isSupporterOnly || false,
-        minFanLevel: minFanLevel || 1
-      }
-    });
+        image_url: imageUrl,
+        stock_count: stockCount,
+        is_live_drop: isLiveDrop,
+        is_supporter_only: isSupporterOnly || false,
+        min_fan_level: minFanLevel || 1
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json(product);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('Merch API POST error:', error);
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

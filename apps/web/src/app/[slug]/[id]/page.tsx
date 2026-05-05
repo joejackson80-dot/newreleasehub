@@ -1,5 +1,5 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import ReleaseDetailClient from './ReleaseDetailClient';
 
 export default async function ReleaseDetailPage({ params }: { params: Promise<{ slug: string, id: string }> }) {
@@ -7,23 +7,28 @@ export default async function ReleaseDetailPage({ params }: { params: Promise<{ 
   const { slug, id } = resolvedParams;
   const artistName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-  const release = await prisma.release.findUnique({
-    where: { id }
-  });
+  const supabase = createAdminClient();
 
-  if (!release) {
+  const { data: release, error } = await supabase
+    .from('releases')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle();
+
+  if (error || !release) {
     return <div className="min-h-screen bg-[#020202] text-white flex items-center justify-center">Release not found</div>;
   }
 
-  // Fetch tracklist if any (mock for now since schema might not have it)
-  // Or just pass the release to the client component.
+  // Normalize for UI
   const releaseData = {
     ...release,
+    title: release.title,
+    type: release.type,
+    coverArtUrl: release.cover_art_url,
+    releaseDate: release.release_date,
     artistName,
     slug,
   };
 
   return <ReleaseDetailClient release={releaseData} />;
 }
-
-

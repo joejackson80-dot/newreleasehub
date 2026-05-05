@@ -1,8 +1,7 @@
 'use server';
-
-import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { createClient } from '@/lib/supabase/server';
 import { getSessionArtist } from '@/lib/session';
+import { revalidatePath } from 'next/cache';
 
 export async function applyForOpportunity(data: {
   opportunityId: string,
@@ -12,35 +11,50 @@ export async function applyForOpportunity(data: {
     const artist = await getSessionArtist();
     if (!artist) return { success: false, error: 'Artist session required' };
 
+    const supabase = await createClient();
+
     // Check if already applied
-    const existing = await prisma.opportunityApplication.findFirst({
-      where: {
-        opportunityId: data.opportunityId,
-        artistId: artist.id
-      }
-    });
+    const { data: existing } = await supabase
+      .from('opportunity_applications')
+      .select('id')
+      .eq('opportunity_id', data.opportunityId)
+      .eq('artist_id', artist.id)
+      .maybeSingle();
 
     if (existing) return { success: false, error: 'Application already submitted for this initiative.' };
 
-    const application = await prisma.opportunityApplication.create({
-      data: {
-        opportunityId: data.opportunityId,
-        artistId: artist.id,
+    const { data: application, error: createError } = await supabase
+      .from('opportunity_applications')
+      .insert({
+        opportunity_id: data.opportunityId,
+        artist_id: artist.id,
         pitch: data.pitch
-      }
-    });
+      })
+      .select()
+      .single();
 
-    // Increment applicant count
-    await prisma.opportunity.update({
-      where: { id: data.opportunityId },
-      data: { applicantCount: { increment: 1 } }
-    });
+    if (createError) throw createError;
+
+    // Increment applicant count - sequential update
+    const { data: opp } = await supabase
+      .from('opportunities')
+      .select('applicant_count')
+      .eq('id', data.opportunityId)
+      .single();
+    
+    if (opp) {
+      await supabase
+        .from('opportunities')
+        .update({ applicant_count: (opp.applicant_count || 0) + 1 })
+        .eq('id', data.opportunityId);
+    }
 
     revalidatePath('/network/board');
     return { success: true, application };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Apply for opportunity error:', error);
-    return { success: false, error: error.message };
+    const message = error instanceof Error ? error.message : 'Database error';
+    return { success: false, error: message };
   }
 }
 
@@ -53,33 +67,46 @@ export async function voteOnProposal(data: {
       const artist = await getSessionArtist();
       if (!artist) return { success: false, error: 'Artist session required for governance participation.' };
 
-      // Check if already voted
-      const existing = await prisma.opportunityApplication.findFirst({
-        where: {
-          opportunityId: data.oppId,
-          artistId: artist.id
-        }
-      });
+      const supabase = await createClient();
+
+      // Check if already voted (using opportunity_applications as the ledger)
+      const { data: existing } = await supabase
+        .from('opportunity_applications')
+        .select('id')
+        .eq('opportunity_id', data.oppId)
+        .eq('artist_id', artist.id)
+        .maybeSingle();
 
       if (existing) return { success: false, error: 'Vote already recorded in protocol ledger.' };
 
-      const application = await prisma.opportunityApplication.create({
-         data: {
-            opportunityId: data.oppId,
-            artistId: artist.id,
+      const { error: createError } = await supabase
+         .from('opportunity_applications')
+         .insert({
+            opportunity_id: data.oppId,
+            artist_id: artist.id,
             pitch: `VOTE:${data.voteType}|COMMENT:${data.comment || ''}`
-         }
-      });
+         });
 
-      await prisma.opportunity.update({
-         where: { id: data.oppId },
-         data: { applicantCount: { increment: 1 } }
-      });
+      if (createError) throw createError;
+
+      const { data: opp } = await supabase
+         .from('opportunities')
+         .select('applicant_count')
+         .eq('id', data.oppId)
+         .single();
+      
+      if (opp) {
+        await supabase
+           .from('opportunities')
+           .update({ applicant_count: (opp.applicant_count || 0) + 1 })
+           .eq('id', data.oppId);
+      }
 
       revalidatePath('/network/board');
       return { success: true };
-   } catch (error: any) {
+   } catch (error: unknown) {
       console.error('Vote error:', error);
-      return { success: false, error: error.message };
+      const message = error instanceof Error ? error.message : 'Database error';
+      return { success: false, error: message };
    }
 }

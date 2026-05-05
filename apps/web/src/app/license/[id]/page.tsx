@@ -1,6 +1,6 @@
 import React from 'react';
 export const dynamic = 'force-dynamic';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { Award, ShieldCheck, FileText, Download, Share2, Music } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -9,12 +9,34 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+async function getLicenseData(id: string) {
+  const supabase = createAdminClient();
+  const { data: license } = await supabase
+    .from('participation_licenses')
+    .select(`
+      *,
+      tracks (
+        *,
+        organizations (*)
+      )
+    `)
+    .eq('id', id)
+    .maybeSingle();
+  
+  if (!license) return null;
+
+  return {
+    ...license,
+    MusicAsset: {
+      ...license.tracks,
+      Organization: license.tracks.organizations
+    }
+  };
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const license = await prisma.participationLicense.findUnique({
-    where: { id },
-    include: { MusicAsset: { include: { Organization: true } } }
-  });
+  const license = await getLicenseData(id);
 
   if (!license) return { title: 'License Not Found | NRH' };
 
@@ -27,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      images: [license.MusicAsset?.Organization?.profileImageUrl || '/images/og-license.jpg'],
+      images: [license.MusicAsset?.Organization?.profile_image_url || '/images/og-license.jpg'],
       type: 'article',
     }
   };
@@ -35,20 +57,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LicensePage(props: Props) {
   const params = await props.params;
-  const license = await prisma.participationLicense.findUnique({
-    where: { id: params.id },
-    include: { 
-      MusicAsset: {
-        include: { Organization: true }
-      }
-    }
-  });
+  const license = await getLicenseData(params.id);
 
   if (!license) notFound();
 
-  const percentage = (license.allocatedBps / 100).toFixed(2);
+  const percentage = (license.allocated_bps / 100).toFixed(2);
   const artistName = license.MusicAsset?.Organization?.name || "Unknown Artist";
-  const dateStr = license.createdAt.toLocaleDateString('en-US', {
+  const dateStr = new Date(license.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -82,7 +97,7 @@ export default async function LicensePage(props: Props) {
           <div className="space-y-6 max-w-2xl">
              <p className="text-xl leading-relaxed">
                This document serves as formal confirmation that <br/>
-               <span className="font-bold underline decoration-1 underline-offset-4">{license.userId}</span> <br/>
+               <span className="font-bold underline decoration-1 underline-offset-4">{license.user_id}</span> <br/>
                has acquired a commercial participation interest in:
              </p>
              <p className="text-3xl font-bold tracking-tight">"{license.MusicAsset?.title || 'Untitled Master'}"</p>
@@ -95,7 +110,7 @@ export default async function LicensePage(props: Props) {
              </div>
              <div className="space-y-1">
                 <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-gray-400">Consideration Paid</p>
-                <p className="text-4xl font-bold">${(license.feeCents / 100).toLocaleString()}</p>
+                <p className="text-4xl font-bold">${(license.fee_cents / 100).toLocaleString()}</p>
              </div>
           </div>
 

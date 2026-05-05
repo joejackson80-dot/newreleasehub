@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import BoardClient from './BoardClient';
 
 export const dynamic = 'force-dynamic';
@@ -13,11 +13,11 @@ export const metadata = {
 };
 
 export default async function OpportunityBoardPage() {
-  const opportunities = await prisma.opportunity.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
+  const supabase = await createClient();
+  const { data: opportunities } = await supabase
+    .from('opportunities')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-  return <BoardClient initialOpportunities={opportunities} />;
+  return <BoardClient initialOpportunities={opportunities || []} />;
 }
-
-

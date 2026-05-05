@@ -1,17 +1,28 @@
-import { prisma } from './prisma';
+import { createAdminClient } from './supabase/admin';
 
-export async function createNotification(userId: string, userType: 'FAN' | 'ARTIST', type: string, title: string, body: string, link?: string) {
-  return await prisma.notification.create({
-    data: {
-      userId,
-      userType,
+export async function createNotification(
+  userId: string, 
+  userType: 'FAN' | 'ARTIST', 
+  type: string, 
+  title: string, 
+  body: string, 
+  link?: string
+) {
+  const supabase = createAdminClient();
+  return await supabase
+    .from('notifications')
+    .insert({
+      user_id: userId,
+      user_type: userType.toLowerCase(),
       type,
       title,
       body,
       link,
-      isRead: false
-    }
-  });
+      is_read: false,
+      created_at: new Date().toISOString()
+    })
+    .select()
+    .single();
 }
 
 export async function notifyArtistMilestone(artistId: string, milestoneType: string, cardImageUrl: string | null) {
@@ -25,5 +36,3 @@ export async function notifyArtistMilestone(artistId: string, milestoneType: str
     '/studio/milestones'
   );
 }
-
-

@@ -1,16 +1,15 @@
 /**
- * NRH ROYALTY CALCULATION ENGINE
- * ================================
+ * NRH ROYALTY CALCULATION ENGINE (Supabase-Only)
+ * ==============================================
  * Dual-pool streaming income system — Model A + C
  * 
  * Model A: Paid subscriber streams → 70% of subscription revenue
  * Model C: Free listener streams  → 60% of ad revenue
  *
  * Run this on the 1st of every month via cron job.
- * Drop this file into: /src/lib/royalties/calculateRoyalties.ts
  */
 
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { sendEmail } from '@/lib/email';
 import { checkAndAwardMilestones } from '@/lib/milestones/detectMilestone';
 
@@ -100,9 +99,9 @@ function getsupporterMultiplier(supporterCount: number): number {
   return 1.0
 }
 
-function getMonthBounds(month: number, year: number): { start: Date; end: Date } {
-  const start = new Date(year, month - 1, 1, 0, 0, 0, 0)
-  const end   = new Date(year, month, 1, 0, 0, 0, 0) 
+function getMonthBounds(month: number, year: number): { start: string; end: string } {
+  const start = new Date(year, month - 1, 1, 0, 0, 0, 0).toISOString();
+  const end   = new Date(year, month, 1, 0, 0, 0, 0).toISOString();
   return { start, end }
 }
 
@@ -131,62 +130,57 @@ async function calculatePoolTotals(
   year: number
 ): Promise<PoolTotals> {
   const { start, end } = getMonthBounds(month, year)
+  const supabase = createAdminClient();
 
-  const subscriptions = await prisma.fanSubscription.findMany({
-    where: {
-      status: 'active',
-      startDate: { lte: end },
-      OR: [
-        { cancelledAt: null },
-        { cancelledAt: { gte: start } },
-      ],
-    },
-    select: { monthlyAmountCents: true },
-  })
+  const { data: subscriptions } = await supabase
+    .from('fan_subscriptions')
+    .select('monthly_amount_cents')
+    .eq('status', 'active')
+    .lte('start_date', end)
+    .or(`cancelled_at.is.null,cancelled_at.gte.${start}`);
 
-  const poolAGross = subscriptions.reduce(
-    (sum, sub) => sum + sub.monthlyAmountCents,
+  const poolAGross = (subscriptions || []).reduce(
+    (sum, sub) => sum + sub.monthly_amount_cents,
     0
   )
   const premiumPoolTotal = roundCents(poolAGross * POOL_A_ARTIST_SHARE)
 
-  const adImpressions = await prisma.adImpression.findMany({
-    where: {
-      timestamp: { gte: start, lt: end },
-      completed: true,
-    },
-    select: { estimatedRevenueCents: true },
-  })
+  const { data: adImpressions } = await supabase
+    .from('ad_impressions')
+    .select('estimated_revenue_cents')
+    .gte('timestamp', start)
+    .lt('timestamp', end)
+    .eq('completed', true);
 
-  const poolCGross = adImpressions.reduce(
-    (sum, ad) => sum + ad.estimatedRevenueCents,
+  const poolCGross = (adImpressions || []).reduce(
+    (sum, ad) => sum + ad.estimated_revenue_cents,
     0
   )
   const networkPoolTotal = roundCents(poolCGross * POOL_C_ARTIST_SHARE)
 
-  const premiumStreamCount = await prisma.streamPlay.count({
-    where: {
-      startedAt: { gte: start, lt: end },
-      countedAsStream: true,
-      isExcludedFromPool: false,
-      poolSource: 'A',
-    },
-  })
+  const { count: premiumStreamCount } = await supabase
+    .from('stream_plays')
+    .select('*', { count: 'exact', head: true })
+    .gte('started_at', start)
+    .lt('started_at', end)
+    .eq('counted_as_stream', true)
+    .eq('is_excluded_from_pool', false)
+    .eq('pool_source', 'A');
 
-  const networkStreamCount = await prisma.streamPlay.count({
-    where: {
-      startedAt: { gte: start, lt: end },
-      countedAsStream: true,
-      isExcludedFromPool: false,
-      poolSource: 'C',
-    },
-  })
+  const { count: networkStreamCount } = await supabase
+    .from('stream_plays')
+    .select('*', { count: 'exact', head: true })
+    .gte('started_at', start)
+    .lt('started_at', end)
+    .eq('counted_as_stream', true)
+    .eq('is_excluded_from_pool', false)
+    .eq('pool_source', 'C');
 
   return {
     premiumPoolTotal,
     networkPoolTotal,
-    totalPremiumStreams: premiumStreamCount,
-    totalNetworkStreams: networkStreamCount,
+    totalPremiumStreams: premiumStreamCount || 0,
+    totalNetworkStreams: networkStreamCount || 0,
     month,
     year,
   }
@@ -201,54 +195,47 @@ async function getArtistStreamData(
   year: number
 ): Promise<ArtistStreamData[]> {
   const { start, end } = getMonthBounds(month, year)
+  const supabase = createAdminClient();
 
-  const streamGroups = await prisma.streamPlay.groupBy({
-    by: ['artistId', 'poolSource'],
-    where: {
-      startedAt: { gte: start, lt: end },
-      countedAsStream: true,
-      isExcludedFromPool: false,
-    },
-    _count: { id: true },
-  })
+  // Supabase doesn't have a direct groupBy with count in the JS client like Prisma.
+  // We'll fetch all counted plays for the month and aggregate in JS.
+  // For a large production DB, this would be an RPC.
+  const { data: streams } = await supabase
+    .from('stream_plays')
+    .select('artist_id, pool_source')
+    .gte('started_at', start)
+    .lt('started_at', end)
+    .eq('counted_as_stream', true)
+    .eq('is_excluded_from_pool', false);
 
-  const artistIds = [...new Set(streamGroups.map((g) => g.artistId))]
+  const artistIds = [...new Set((streams || []).map((s) => s.artist_id))];
 
-  const organizations = await prisma.organization.findMany({
-    where: { id: { in: artistIds } },
-    select: {
-      id: true,
-      _count: {
-        select: {
-          SupporterSubscriptions: {
-            where: { status: 'ACTIVE' },
-          },
-        },
-      },
-    },
-  })
+  const { data: organizations } = await supabase
+    .from('organizations')
+    .select('id, supporter_count')
+    .in('id', artistIds);
 
   const supporterCountMap = new Map(
-    organizations.map((o) => [o.id, o._count.SupporterSubscriptions])
+    (organizations || []).map((o) => [o.id, o.supporter_count || 0])
   )
 
   const artistDataMap = new Map<string, ArtistStreamData>()
 
-  for (const group of streamGroups) {
-    const existing = artistDataMap.get(group.artistId) ?? {
-      artistId:       group.artistId,
+  for (const stream of (streams || [])) {
+    const existing = artistDataMap.get(stream.artist_id) ?? {
+      artistId:       stream.artist_id,
       premiumStreams:  0,
       networkStreams:  0,
-      supporterCount:    supporterCountMap.get(group.artistId) ?? 0,
+      supporterCount:    supporterCountMap.get(stream.artist_id) ?? 0,
     }
 
-    if (group.poolSource === 'A') {
-      existing.premiumStreams += group._count.id
-    } else if (group.poolSource === 'C') {
-      existing.networkStreams += group._count.id
+    if (stream.pool_source === 'A') {
+      existing.premiumStreams += 1
+    } else if (stream.pool_source === 'C') {
+      existing.networkStreams += 1
     }
 
-    artistDataMap.set(group.artistId, existing)
+    artistDataMap.set(stream.artist_id, existing)
   }
 
   return Array.from(artistDataMap.values())
@@ -298,6 +285,7 @@ async function calculateSUPPORTERShares(
 }> {
   const SUPPORTERShares: SUPPORTERShareEntry[]  = []
   const artistNetPayouts = new Map<string, { distributed: number; net: number }>()
+  const supabase = createAdminClient();
 
   for (const artist of artistEarnings) {
     if (artist.totalEarnings === 0) {
@@ -305,30 +293,24 @@ async function calculateSUPPORTERShares(
       continue
     }
 
-    const Support = await prisma.supporterSubscription.findMany({
-      where: {
-        artistId: artist.artistId,
-        status:   'ACTIVE',
-      },
-      select: {
-        id:                   true,
-        fanId:                true,
-        revenueSharePercent:  true,
-      },
-    })
+    const { data: supports } = await supabase
+      .from('supporter_subscriptions')
+      .select('id, fan_id, revenue_share_percent')
+      .eq('artist_id', artist.artistId)
+      .eq('status', 'ACTIVE');
 
     let totalDistributed = 0
 
-    for (const support of Support) {
-      const shareDecimal = support.revenueSharePercent / 100
+    for (const support of (supports || [])) {
+      const shareDecimal = support.revenue_share_percent / 100
       const amountEarned = roundCents(artist.totalEarnings * shareDecimal)
 
       if (amountEarned > 0) {
         SUPPORTERShares.push({
-          fanId:               support.fanId,
+          fanId:               support.fan_id,
           artistId:            artist.artistId,
-          supportId:         support.id,
-          revenueSharePercent: support.revenueSharePercent,
+          supportId:           support.id,
+          revenueSharePercent: support.revenue_share_percent,
           amountEarned,
         })
         totalDistributed += amountEarned
@@ -357,87 +339,72 @@ async function persistRoyalties(
   fullArtistEarnings: ArtistEarnings[],
   SUPPORTERShares: SUPPORTERShareEntry[]
 ): Promise<void> {
-  await prisma.$transaction(async (tx) => {
+  const supabase = createAdminClient();
 
-    await tx.monthlyPool.upsert({
-      where:  { month_year: { month, year } },
-      create: {
-        month,
-        year,
-        poolATotal:          pools.premiumPoolTotal,
-        poolCTotal:          pools.networkPoolTotal,
-        totalPaidStreams:    pools.totalPremiumStreams,
-        totalFreeStreams:    pools.totalNetworkStreams,
-        status:              'CALCULATED',
-        calculatedAt:        new Date(),
-      },
-      update: {
-        poolATotal:          pools.premiumPoolTotal,
-        poolCTotal:          pools.networkPoolTotal,
-        totalPaidStreams:    pools.totalPremiumStreams,
-        totalFreeStreams:    pools.totalNetworkStreams,
-        status:              'CALCULATED',
-        calculatedAt:        new Date(),
-      },
-    })
+  // Handle pool upsert
+  await supabase
+    .from('monthly_pools')
+    .upsert({
+      month,
+      year,
+      pool_a_total:          pools.premiumPoolTotal,
+      pool_c_total:          pools.networkPoolTotal,
+      total_paid_streams:    pools.totalPremiumStreams,
+      total_free_streams:    pools.totalNetworkStreams,
+      status:                'CALCULATED',
+      calculated_at:        new Date().toISOString(),
+    }, { onConflict: 'month,year' });
 
-    for (const earnings of fullArtistEarnings) {
-      await tx.artistRoyalty.create({
-        data: {
-          artistId:               earnings.artistId,
-          month,
-          year,
-          poolAStreams:            earnings.premiumStreams,
-          poolAEarnings:           earnings.premiumEarnings,
-          poolCStreams:            earnings.networkStreams,
-          poolCEarnings:           earnings.networkEarnings,
-          supporterMultiplier:        earnings.supporterMultiplier,
-          totalEarnings:           earnings.totalEarnings,
-          supporterShareDistributed:  earnings.supporterShareDistributed,
-          netPayout:               earnings.netPayout,
-          status:                  'PAID',
-        },
-      })
+  for (const earnings of fullArtistEarnings) {
+    await supabase.from('artist_royalties').insert({
+      artist_id:               earnings.artistId,
+      month,
+      year,
+      pool_a_streams:            earnings.premiumStreams,
+      pool_a_earnings:           earnings.premiumEarnings,
+      pool_c_streams:            earnings.networkStreams,
+      pool_c_earnings:           earnings.networkEarnings,
+      supporter_multiplier:        earnings.supporterMultiplier,
+      total_earnings:           earnings.totalEarnings,
+      supporter_share_distributed:  earnings.supporterShareDistributed,
+      net_payout:               earnings.netPayout,
+      status:                  'PAID',
+    });
 
-      if (earnings.netPayout > 0) {
-        await tx.organization.update({
-          where: { id: earnings.artistId },
-          data: {
-            balanceCents: {
-              increment: earnings.netPayout,
-            },
-          },
-        })
-        await checkAndAwardMilestones(earnings.artistId, 'earnings', tx)
+    if (earnings.netPayout > 0) {
+      // Update artist balance
+      const { data: org } = await supabase.from('organizations').select('balance_cents').eq('id', earnings.artistId).single();
+      if (org) {
+        await supabase.from('organizations').update({
+          balance_cents: (org.balance_cents || 0) + earnings.netPayout
+        }).eq('id', earnings.artistId);
+      }
+      await checkAndAwardMilestones(earnings.artistId, 'earnings');
+    }
+  }
+
+  for (const share of SUPPORTERShares) {
+    await supabase.from('fan_royalty_shares').insert({
+      fan_id:               share.fanId,
+      artist_id:            share.artistId,
+      support_id:           share.supportId,
+      month,
+      year,
+      revenue_share_percent: share.revenue_share_percent,
+      amount_earned:        share.amountEarned,
+      status:              'CREDITED',
+    });
+
+    if (share.amountEarned > 0) {
+      // Update fan balance
+      const { data: user } = await supabase.from('users').select('balance_cents').eq('id', share.fanId).single();
+      if (user) {
+        await supabase.from('users').update({
+          balance_cents: (user.balance_cents || 0) + share.amountEarned
+        }).eq('id', share.fanId);
       }
     }
-
-    for (const share of SUPPORTERShares) {
-      await tx.fanRoyaltyShare.create({
-        data: {
-          fanId:               share.fanId,
-          artistId:            share.artistId,
-          supportId:         share.supportId,
-          month,
-          year,
-          revenueSharePercent: share.revenueSharePercent,
-          amountEarned:        share.amountEarned,
-          status:              'CREDITED',
-        },
-      })
-
-      if (share.amountEarned > 0) {
-        await tx.user.update({
-          where: { id: share.fanId },
-          data: {
-            balanceCents: {
-              increment: share.amountEarned,
-            },
-          },
-        })
-      }
-    }
-  })
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -450,22 +417,23 @@ async function sendRoyaltyNotifications(
   fullArtistEarnings: ArtistEarnings[],
   SUPPORTERShares: SUPPORTERShareEntry[]
 ): Promise<void> {
+  const supabase = createAdminClient();
   const monthName = new Date(year, month - 1, 1)
     .toLocaleString('en-US', { month: 'long', year: 'numeric' })
 
   const artistNotifications = fullArtistEarnings
     .filter((e) => e.netPayout > 0)
     .map((earnings) => ({
-      userId:    earnings.artistId,
-      userType:  'artist',
+      user_id:    earnings.artistId,
+      user_type:  'artist',
       type:      'new_royalty',
       title:     `Your streaming earnings for ${monthName} are ready`,
       body:      `You earned $${(earnings.netPayout / 100).toFixed(2)} from ${
                    (earnings.premiumStreams + earnings.networkStreams).toLocaleString()
                  } streams this month.`,
       link:      '/studio/earnings',
-      isRead:    false,
-      createdAt: new Date(),
+      is_read:    false,
+      created_at: new Date().toISOString(),
     }))
 
   const fanEarnings = new Map<string, number>()
@@ -476,28 +444,27 @@ async function sendRoyaltyNotifications(
   const fanNotifications = Array.from(fanEarnings.entries())
     .filter(([, amount]) => amount > 0)
     .map(([fanId, totalEarned]) => ({
-      userId:    fanId,
-      userType:  'fan',
+      user_id:    fanId,
+      user_type:  'fan',
       type:      'revenue_share_credited',
       title:     `You earned money from music you support`,
       body:      `$${(totalEarned / 100).toFixed(2)} from your SUPPORTER revenue shares in ${monthName} has been credited to your balance.`,
       link:      '/fan/me',
-      isRead:    false,
-      createdAt: new Date(),
+      is_read:    false,
+      created_at: new Date().toISOString(),
     }))
 
   if (artistNotifications.length > 0 || fanNotifications.length > 0) {
-    await prisma.notification.createMany({
-      data: [...artistNotifications, ...fanNotifications],
-    })
+    await supabase.from('notifications').insert([...artistNotifications, ...fanNotifications]);
 
     // Also send actual emails to artists
     for (const earnings of fullArtistEarnings.filter((e) => e.netPayout > 0)) {
       try {
-        const org = await prisma.organization.findUnique({
-          where: { id: earnings.artistId },
-          select: { email: true, name: true }
-        })
+        const { data: org } = await supabase
+          .from('organizations')
+          .select('email, name')
+          .eq('id', earnings.artistId)
+          .single();
         
         if (org?.email) {
           await sendEmail({
@@ -524,10 +491,11 @@ async function sendRoyaltyNotifications(
     // Also send emails to fans who earned revenue share
     for (const [fanId, totalEarned] of Array.from(fanEarnings.entries()).filter(([, amount]) => amount > 0)) {
       try {
-        const fan = await prisma.user.findUnique({
-          where: { id: fanId },
-          select: { email: true, displayName: true }
-        })
+        const { data: fan } = await supabase
+          .from('users')
+          .select('email, display_name')
+          .eq('id', fanId)
+          .single();
         
         if (fan?.email) {
           await sendEmail({
@@ -536,7 +504,7 @@ async function sendRoyaltyNotifications(
             html: `
               <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
                 <h2>NRH Supporter Yield</h2>
-                <p>Hello ${fan.displayName},</p>
+                <p>Hello ${fan.display_name},</p>
                 <p>Your Supporter revenue shares for ${monthName} have generated yield!</p>
                 <p><strong>Yield Added to Balance:</strong> $${(totalEarned / 100).toFixed(2)}</p>
                 <br/>
@@ -567,7 +535,7 @@ export async function calculateMonthlyRoyalties(
     : getPreviousMonth()
 
   // Build-time safety guard
-  if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.NODE_ENV === 'production' && !process.env.CRON_SECRET) {
+  if (process.env.NEXT_PHASE === 'phase-production-build' || (process.env.NODE_ENV === 'production' && !process.env.CRON_SECRET)) {
     console.log('[NRH Royalties] Skipping calculation during build/unauthorized phase');
     return {
       month, year,
@@ -670,6 +638,7 @@ export async function startStreamPlay(
   fan: { id?: string; type: string } | null,
   metadata?: { ip: string; userAgent: string; deviceId: string }
 ): Promise<string> {
+  const supabase = createAdminClient();
   const poolSource = (fan?.type === 'subscriber' || fan?.type === 'SUPPORTER') ? 'A' : 'C'
   
   // Anti-fraud checks
@@ -682,57 +651,62 @@ export async function startStreamPlay(
   // Basic stream farm check: Check streams from this IP today
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const streamsFromIpToday = await prisma.streamPlay.count({
-    where: {
-      ipAddress,
-      startedAt: { gte: today }
-    }
-  });
+  const { count: streamsFromIpToday } = await supabase
+    .from('stream_plays')
+    .select('*', { count: 'exact', head: true })
+    .eq('ip_address', ipAddress)
+    .gte('started_at', today.toISOString());
   
-  const isStreamFarm = streamsFromIpToday >= 50;
+  const isStreamFarm = (streamsFromIpToday || 0) >= 50;
   const isExcluded = isBot || isStreamFarm;
   const flagReason = isBot ? 'BOT_DETECTED' : isStreamFarm ? 'STREAM_FARM_DETECTED' : null;
 
-  const play = await prisma.streamPlay.create({
-    data: {
-      trackId,
-      artistId,
-      listenerId:       fan?.id ?? null,
-      listenerType:     (fan?.type?.toUpperCase() || 'GUEST') as 'GUEST' | 'FAN' | 'ARTIST' | 'ADMIN' | 'SUPPORTER',
-      startedAt:        new Date(),
-      playDurationSeconds: 0,
-      countedAsStream:  false,
-      poolSource:       poolSource as 'A' | 'C',
-      ipAddress,
-      userAgent,
-      deviceId,
-      isExcludedFromPool: isExcluded,
-      flagReason,
-      fraudScore: isExcluded ? 0 : 1
-    },
-  })
+  const { data: play, error } = await supabase
+    .from('stream_plays')
+    .insert({
+      track_id:         trackId,
+      artist_id:        artistId,
+      listener_id:      fan?.id ?? null,
+      listener_type:    (fan?.type?.toUpperCase() || 'GUEST') as any,
+      started_at:       new Date().toISOString(),
+      play_duration_seconds: 0,
+      counted_as_stream:  false,
+      pool_source:       poolSource as any,
+      ip_address:        ipAddress,
+      user_agent:        userAgent,
+      device_id:         deviceId,
+      is_excluded_from_pool: isExcluded,
+      flag_reason:      flagReason,
+      fraud_score:      isExcluded ? 0 : 1
+    })
+    .select('id')
+    .single();
+
+  if (error || !play) throw new Error('Failed to start stream play');
 
   return play.id
 }
 
 export async function markStreamCounted(streamPlayId: string): Promise<void> {
-  await prisma.streamPlay.update({
-    where: { id: streamPlayId },
-    data: {
-      playDurationSeconds: MIN_STREAM_SECONDS,
-      countedAsStream: true,
-    },
-  })
+  const supabase = createAdminClient();
+  await supabase
+    .from('stream_plays')
+    .update({
+      play_duration_seconds: MIN_STREAM_SECONDS,
+      counted_as_stream: true,
+    })
+    .eq('id', streamPlayId);
 }
 
 export async function finalizeStreamPlay(
   streamPlayId:    string,
   durationSeconds: number
 ): Promise<void> {
-  await prisma.streamPlay.update({
-    where: { id: streamPlayId },
-    data:  { playDurationSeconds: durationSeconds },
-  })
+  const supabase = createAdminClient();
+  await supabase
+    .from('stream_plays')
+    .update({ play_duration_seconds: durationSeconds })
+    .eq('id', streamPlayId);
 }
 
 // ─────────────────────────────────────────────
@@ -748,40 +722,49 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
   networkPoolRate:    number  // cents per stream (estimated)
   vsSpotifyRate:      number  // how much more per stream vs Spotify avg
 }> {
+  const supabase = createAdminClient();
   const now   = new Date()
   const month = now.getMonth() + 1
   const year  = now.getFullYear()
   const { start } = getMonthBounds(month, year)
 
-  const streams = await prisma.streamPlay.groupBy({
-    by:    ['poolSource'],
-    where: {
-      artistId,
-      startedAt:       { gte: start, lt: now },
-      countedAsStream: true,
-    },
-    _count: { id: true },
-  })
+  const { data: streams } = await supabase
+    .from('stream_plays')
+    .select('pool_source')
+    .eq('artist_id', artistId)
+    .gte('started_at', start)
+    .lt('started_at', now.toISOString())
+    .eq('counted_as_stream', true);
 
-  const premiumStreams = streams.find((s) => s.poolSource === 'A')?._count.id ?? 0
-  const networkStreams = streams.find((s) => s.poolSource === 'C')?._count.id ?? 0
+  const premiumStreams = (streams || []).filter((s) => s.pool_source === 'A').length
+  const networkStreams = (streams || []).filter((s) => s.pool_source === 'C').length
 
-  const supporterCount = await prisma.supporterSubscription.count({
-    where: { artistId: artistId, status: 'ACTIVE' },
-  })
-  const supporterMultiplier = getsupporterMultiplier(supporterCount)
+  const { count: supporterCount } = await supabase
+    .from('supporter_subscriptions')
+    .select('*', { count: 'exact', head: true })
+    .eq('artist_id', artistId)
+    .eq('status', 'ACTIVE');
 
-  const subscriberCount = await prisma.fanSubscription.count({
-    where: { status: 'active', startDate: { lte: now } },
-  })
-  const estimatedPoolA = subscriberCount * 999 * POOL_A_ARTIST_SHARE
+  const supporterMultiplier = getsupporterMultiplier(supporterCount || 0)
 
-  const totalPremiumStreamsThisMonth = await prisma.streamPlay.count({
-    where: { startedAt: { gte: start, lt: now }, countedAsStream: true, poolSource: 'A' },
-  })
+  const { count: subscriberCount } = await supabase
+    .from('fan_subscriptions')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'active')
+    .lte('start_date', now.toISOString());
 
-  const premiumPoolRate = totalPremiumStreamsThisMonth > 0
-    ? safeDivide(estimatedPoolA, totalPremiumStreamsThisMonth)
+  const estimatedPoolA = (subscriberCount || 0) * 999 * POOL_A_ARTIST_SHARE
+
+  const { count: totalPremiumStreamsThisMonth } = await supabase
+    .from('stream_plays')
+    .select('*', { count: 'exact', head: true })
+    .gte('started_at', start)
+    .lt('started_at', now.toISOString())
+    .eq('counted_as_stream', true)
+    .eq('pool_source', 'A');
+
+  const premiumPoolRate = (totalPremiumStreamsThisMonth || 0) > 0
+    ? safeDivide(estimatedPoolA, totalPremiumStreamsThisMonth || 0)
     : 0
 
   const networkPoolRate = 8 * 0.60 / 10 
@@ -791,7 +774,7 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
   const estimatedEarnings = roundCents((premiumEarnings + networkEarnings) * supporterMultiplier)
 
   const spotifyRatePerStream = 0.4
-  const nrhRatePerStream = totalPremiumStreamsThisMonth > 0
+  const nrhRatePerStream = (totalPremiumStreamsThisMonth || 0) > 0
     ? (premiumPoolRate + networkPoolRate) / 2
     : networkPoolRate
   const vsSpotifyRate = nrhRatePerStream / spotifyRatePerStream
@@ -801,10 +784,8 @@ export async function getArtistRoyaltyPreview(artistId: string): Promise<{
     premiumStreams,
     networkStreams,
     supporterMultiplier,
-    premiumPoolRate:  roundCents(premiumPoolRate),
-    networkPoolRate:  roundCents(networkPoolRate),
-    vsSpotifyRate: Math.round(vsSpotifyRate * 10) / 10,
+    premiumPoolRate,
+    networkPoolRate,
+    vsSpotifyRate,
   }
 }
-
-

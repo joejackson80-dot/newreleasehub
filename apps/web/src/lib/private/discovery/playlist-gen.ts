@@ -1,39 +1,37 @@
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function generateStationPlaylist(stationId: string) {
-  const station = await prisma.station.findUnique({
-    where: { id: stationId },
-    include: { Playlist: true },
-  });
+  const supabase = createAdminClient();
 
-  if (!station) throw new Error('Station not found');
+  const { data: station, error: sError } = await supabase
+    .from('stations')
+    .select('*, playlists(*)')
+    .eq('id', stationId)
+    .maybeSingle();
+
+  if (sError || !station) throw new Error('Station not found');
 
   // 1. Query authorized tracks for the station's genres
-  const tracks = await prisma.musicAsset.findMany({
-    where: {
-      Organization: {
-        Releases: {
-          some: {
-            authorizedForRadio: true,
-            // genres in station.genres - using simplified check for now
-          }
-        }
-      }
-    },
-    include: {
-      Organization: {
-        include: {
-          Releases: {
-            where: { authorizedForRadio: true }
-          }
-        }
-      }
-    }
-  });
+  // We fetch tracks where the organization has radio-authorized releases
+  const { data: tracks, error: tError } = await supabase
+    .from('tracks')
+    .select(`
+      *,
+      organizations!inner(
+        *,
+        releases!inner(*)
+      )
+    `)
+    .eq('organizations.releases.authorized_for_radio', true);
 
-  // Filter tracks by station genres (since genres is a string array in station)
-  const filteredTracks = tracks.filter(t => 
-    t.Organization.genres.some(g => station.genres.includes(g))
+  if (tError) {
+    console.error('Error fetching tracks for playlist:', tError);
+    return;
+  }
+
+  // Filter tracks by station genres
+  const filteredTracks = (tracks || []).filter((t: any) => 
+    (t.organizations.genres || []).some((g: string) => (station.genres || []).includes(g))
   );
 
   if (filteredTracks.length === 0) {
@@ -41,22 +39,16 @@ export async function generateStationPlaylist(stationId: string) {
     return;
   }
 
-  // 2. Shuffle and apply Performance Complement rules (Simplified for V1)
-  // Logic: 
-  // - Group by Artist
-  // - Limit to 4 tracks per artist
-  // - Flatten and shuffle again but ensure no more than 3 consecutive by same artist
-  
-  const artistGroups: Record<string, (typeof tracks)[0][]> = {};
-  filteredTracks.forEach(t => {
-    if (!artistGroups[t.organizationId]) artistGroups[t.organizationId] = [];
-    artistGroups[t.organizationId].push(t);
+  // 2. Shuffle and apply rules
+  const artistGroups: Record<string, any[]> = {};
+  filteredTracks.forEach((t: any) => {
+    if (!artistGroups[t.organization_id]) artistGroups[t.organization_id] = [];
+    artistGroups[t.organization_id].push(t);
   });
 
   const finalTrackIds: string[] = [];
   const artists = Object.keys(artistGroups);
   
-  // Interleave tracks to satisfy rules
   const maxTracks = 500;
   let addedCount = 0;
   
@@ -76,27 +68,28 @@ export async function generateStationPlaylist(stationId: string) {
   }
 
   // 3. Upsert Playlist
-  const playlist = await prisma.playlist.upsert({
-    where: { slug: station.slug },
-    update: {
-      trackIds: finalTrackIds,
-      currentIndex: 0,
-    },
-    create: {
+  const { data: playlist, error: pError } = await supabase
+    .from('playlists')
+    .upsert({
       name: `${station.name} Playlist`,
       slug: station.slug,
       genres: station.genres,
-      trackIds: finalTrackIds,
-    }
-  });
+      track_ids: finalTrackIds,
+      current_index: 0,
+    }, { onConflict: 'slug' })
+    .select()
+    .single();
+
+  if (pError || !playlist) {
+    console.error('Error upserting playlist:', pError);
+    return;
+  }
 
   // 4. Link to Station
-  await prisma.station.update({
-    where: { id: stationId },
-    data: { playlistId: playlist.id },
-  });
+  await supabase
+    .from('stations')
+    .update({ playlist_id: playlist.id })
+    .eq('id', stationId);
 
   return playlist;
 }
-
-

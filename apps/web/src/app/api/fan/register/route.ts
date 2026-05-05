@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(req: Request) {
@@ -17,41 +16,49 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'Password must be at least 6 characters.' }, { status: 400 });
     }
 
-    // Check if email or username already taken
-    const existing = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: { equals: email, mode: 'insensitive' } },
-          { username: { equals: username, mode: 'insensitive' } }
-        ]
+    const supabase = createAdminClient();
+
+    // 1. Create Auth User in Supabase
+    const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: {
+        username,
+        role: 'fan',
+        name: username
       }
     });
 
-    if (existing) {
-      return NextResponse.json({ success: false, error: 'An account with this email or username already exists.' }, { status: 409 });
+    if (authError) {
+      return NextResponse.json({ success: false, error: authError.message }, { status: 400 });
     }
 
-    const passwordHash = await bcrypt.hash(password, 12);
-
-    await prisma.user.create({
-      data: {
+    // 2. Create Public Profile in public.users
+    const { error: dbError } = await supabase
+      .from('users')
+      .insert({
+        id: authUser.user.id,
         username,
         email,
-        passwordHash,
-        displayName: username,
-        crate: [],
-      }
-    });
+        display_name: username,
+        fan_level: 1,
+        fan_xp: 0
+      });
 
-    // Send welcome email (async, don't wait to block response)
+    if (dbError) {
+      // Rollback Auth User if DB creation fails
+      await supabase.auth.admin.deleteUser(authUser.user.id);
+      throw dbError;
+    }
+
+    // 3. Send welcome email (async)
     sendWelcomeEmail({ to: email, name: username }).catch(err => console.error('Failed to send welcome email:', err));
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Fan Registration Error]', error);
-    return NextResponse.json({ success: false, error: 'Registration failed. Please try again.' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Registration failed';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-
-
-

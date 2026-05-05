@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { sanitizeResponse, safeError } from '@/lib/private/sanitize';
 
 export const runtime = 'nodejs';
@@ -11,16 +11,29 @@ export async function GET(req: Request) {
     const slug = searchParams.get('slug');
     if (!slug) throw new Error("slug is required");
 
-    const org = await prisma.organization.findUnique({
-      where: { slug }
-    });
+    const supabase = await createClient();
+    const { data: org, error } = await supabase
+      .from('organizations')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
 
-    if (!org) {
+    if (error || !org) {
       return NextResponse.json({ error: 'Organization not found' }, { status: 404 });
     }
 
-    return NextResponse.json(sanitizeResponse(org));
-  } catch (error: any) {
+    // Normalize for UI
+    const normalized = {
+      ...org,
+      profileImageUrl: org.profile_image_url,
+      headerImageUrl: org.header_image_url,
+      isVerified: org.is_verified,
+      supporterCount: org.supporter_count,
+      totalStreams: org.total_streams
+    };
+
+    return NextResponse.json(sanitizeResponse(normalized));
+  } catch (error: unknown) {
     return NextResponse.json(safeError(error), { status: 500 });
   }
 }
@@ -30,21 +43,28 @@ export async function PATCH(req: Request) {
     const { slug, name, bio, profileImageUrl } = await req.json();
     if (!slug) throw new Error("slug is required");
 
-    const org = await prisma.organization.update({
-      where: { slug },
-      data: {
+    const supabase = await createClient();
+    const { data: org, error } = await supabase
+      .from('organizations')
+      .update({
         ...(name && { name }),
         ...(bio && { bio }),
-        ...(profileImageUrl && { profileImageUrl })
-      }
-    });
+        ...(profileImageUrl && { profile_image_url: profileImageUrl })
+      })
+      .eq('slug', slug)
+      .select()
+      .single();
 
-    return NextResponse.json(sanitizeResponse(org));
-  } catch (error: any) {
+    if (error) throw error;
+
+    // Normalize for UI
+    const normalized = {
+      ...org,
+      profileImageUrl: org.profile_image_url
+    };
+
+    return NextResponse.json(sanitizeResponse(normalized));
+  } catch (error: unknown) {
     return NextResponse.json(safeError(error), { status: 500 });
   }
 }
-
-
-
-

@@ -1,5 +1,5 @@
 import { inngest } from '../client'
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const processStreamFraudScore = inngest.createFunction(
   {
@@ -17,36 +17,36 @@ export const processStreamFraudScore = inngest.createFunction(
     } = event.data
 
     const fraudScore = await step.run('calculate-score', async () => {
+      const supabase = createAdminClient();
       let score = 1.0
       if (ipIsDatacenter)                              score *= 0.3
       if (!hadMouseMovement && !hadKeyboardInput)      score *= 0.2
       else if (!hadMouseMovement || !hadKeyboardInput) score *= 0.6
       if (wasAudioMuted)                               score *= 0.5
 
-      const recentCount = await prisma.streamPlay.count({
-        where: {
-          deviceId,
-          startedAt: { gte: new Date(Date.now() - 60 * 60 * 1000) }
-        }
-      })
-      if (recentCount > 30) score *= 0.1
+      const { count: recentCount } = await supabase
+        .from('stream_plays')
+        .select('*', { count: 'exact', head: true })
+        .eq('device_id', deviceId)
+        .gte('started_at', new Date(Date.now() - 60 * 60 * 1000).toISOString());
+
+      if (recentCount && recentCount > 30) score *= 0.1
 
       return score
     })
 
     await step.run('update-stream', async () => {
-      await prisma.streamPlay.update({
-        where: { id: streamPlayId },
-        data: {
-          fraudScore,
-          isExcludedFromPool: fraudScore < 0.3,
-          flagReason: fraudScore < 0.3 ? 'Low fraud score' : null,
-        }
-      })
+      const supabase = createAdminClient();
+      await supabase
+        .from('stream_plays')
+        .update({
+          fraud_score: fraudScore,
+          is_excluded_from_pool: fraudScore < 0.3,
+          flag_reason: fraudScore < 0.3 ? 'Low fraud score' : null,
+        })
+        .eq('id', streamPlayId);
     })
 
     return { streamPlayId, fraudScore }
   }
 )
-
-

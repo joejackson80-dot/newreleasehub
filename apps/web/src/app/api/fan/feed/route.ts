@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionFanId } from '@/lib/session';
 
 export async function GET(req: Request) {
@@ -8,52 +8,54 @@ export async function GET(req: Request) {
     const fanId = await getSessionFanId();
     if (!fanId) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
-    // Fetch followed artists
-    const follows = await prisma.follower.findMany({
-      where: { userId: fanId },
-      select: { organizationId: true }
-    });
+    const supabase = createAdminClient();
 
-    const orgIds = follows.map(f => f.organizationId);
+    // 1. Fetch followed artists
+    const { data: follows } = await supabase
+      .from('followers')
+      .select('organization_id')
+      .eq('user_id', fanId);
 
-    // Fetch releases and posts from followed artists
-    const releases = await prisma.release.findMany({
-      where: {
-        organizationId: { in: orgIds },
-        isScheduled: false
-      },
-      include: {
-        Organization: {
-          select: { name: true, slug: true, profileImageUrl: true, isVerified: true }
-        },
-        Tracks: {
-          take: 1,
-          select: { audioUrl: true }
-        }
-      },
-      orderBy: { releaseDate: 'desc' },
-      take: 10
-    });
+    const orgIds = (follows || []).map(f => f.organization_id);
+
+    if (orgIds.length === 0) {
+      return NextResponse.json({ success: true, feed: [] });
+    }
+
+    // 2. Fetch releases and posts from followed artists
+    const { data: releases, error: relError } = await supabase
+      .from('releases')
+      .select(`
+        *,
+        organizations (name, slug, profile_image_url, is_verified),
+        tracks (audio_url)
+      `)
+      .in('organization_id', orgIds)
+      .eq('is_scheduled', false)
+      .order('release_date', { ascending: false })
+      .limit(10);
+
+    if (relError) throw relError;
 
     // Transform into feed items
-    const feedItems = releases.map(r => ({
+    const feedItems = (releases || []).map(r => ({
       id: r.id,
       type: 'release',
       title: r.title,
       content: `New ${r.type} just dropped — "${r.title}" is out now.`,
-      coverArtUrl: r.coverArtUrl,
-      audioUrl: r.Tracks?.[0]?.audioUrl || '',
-      createdAt: r.releaseDate,
-      Organization: r.Organization,
+      coverArtUrl: r.cover_art_url,
+      audioUrl: (r.tracks || []).find((t: any) => t.audio_url)?.audio_url || '',
+      createdAt: r.release_date,
+      Organization: r.organizations,
       isSupporterOnly: false,
       reactions: { fire: 0, heart: 0, crown: 0, bolt: 0 },
       comments: 0
     }));
 
     return NextResponse.json({ success: true, feed: feedItems });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fan Feed API error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

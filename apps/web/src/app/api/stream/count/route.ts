@@ -1,17 +1,20 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { safeError } from '@/lib/api/errors'
 
 export async function POST(req: NextRequest) {
   try {
     const { streamPlayId, interactionSignals } = await req.json()
+    const supabase = createAdminClient();
     
-    const streamPlay = await prisma.streamPlay.findUnique({
-      where: { id: streamPlayId }
-    })
+    const { data: streamPlay, error: sError } = await supabase
+      .from('stream_plays')
+      .select('*')
+      .eq('id', streamPlayId)
+      .maybeSingle();
     
-    if (!streamPlay) {
+    if (sError || !streamPlay) {
       return NextResponse.json(safeError('Stream play not found', 404), { status: 404 })
     }
     
@@ -21,7 +24,7 @@ export async function POST(req: NextRequest) {
     let isExcluded = false
     
     // Rule 1: If IP is datacenter, reduce score
-    if (streamPlay.ipIsDatacenter) {
+    if (streamPlay.ip_is_datacenter) {
       fraudScore *= 0.3
       flagReason = 'Datacenter IP detected'
     }
@@ -47,15 +50,14 @@ export async function POST(req: NextRequest) {
     }
     
     // Rule 4: Check device volume this hour
-    const oneHourAgo = new Date(Date.now() - 3600000)
-    const recentStreamsFromDevice = await prisma.streamPlay.count({
-      where: {
-        deviceId: streamPlay.deviceId,
-        startedAt: { gte: oneHourAgo }
-      }
-    })
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
+    const { count: recentStreamsFromDevice } = await supabase
+      .from('stream_plays')
+      .select('*', { count: 'exact', head: true })
+      .eq('device_id', streamPlay.device_id)
+      .gte('started_at', oneHourAgo);
     
-    if (recentStreamsFromDevice > 30) {
+    if ((recentStreamsFromDevice || 0) > 30) {
       fraudScore *= 0.1
       flagReason = (flagReason ? flagReason + ' + ' : '') + 'Device rate limit exceeded'
     }
@@ -66,79 +68,109 @@ export async function POST(req: NextRequest) {
     }
     
     // Update stream play record
-    const updated = await prisma.streamPlay.update({
-      where: { id: streamPlayId },
-      data: {
-        countedAsStream: !isExcluded,
-        fraudScore,
-        isExcludedFromPool: isExcluded,
-        flagReason,
-        hadMouseMovement: interactionSignals.hadMouseMovement,
-        hadKeyboardInput: interactionSignals.hadKeyboardInput,
-        wasTabVisible: interactionSignals.wasTabVisible,
-        wasAudioMuted: interactionSignals.wasAudioMuted,
-      },
-      include: {
-        MusicAsset: true,
-      }
-    })
+    const { data: updated, error: uError } = await supabase
+      .from('stream_plays')
+      .update({
+        counted_as_stream: !isExcluded,
+        fraud_score: fraudScore,
+        is_excluded_from_pool: isExcluded,
+        flag_reason: flagReason,
+        had_mouse_movement: interactionSignals.hadMouseMovement,
+        had_keyboard_input: interactionSignals.hadKeyboardInput,
+        was_tab_visible: interactionSignals.wasTabVisible,
+        was_audio_muted: interactionSignals.wasAudioMuted,
+      })
+      .eq('id', streamPlayId)
+      .select('*, tracks(*)')
+      .single();
+
+    if (uError) {
+      console.error('Error updating stream play:', uError);
+    }
 
     // --- FAN CHART TRACKING SYSTEM ---
-    if (!isExcluded && streamPlay.listenerId) {
-      const fanId = streamPlay.listenerId;
-      const artistId = streamPlay.artistId;
-      const trackDurationSecs = updated.MusicAsset?.duration || 0;
+    if (!isExcluded && streamPlay.listener_id) {
+      const fanId = streamPlay.listener_id;
+      const artistId = streamPlay.artist_id;
+      const track = Array.isArray(updated?.tracks) ? updated.tracks[0] : updated?.tracks;
+      const trackDurationSecs = track?.duration || 0;
 
-      // 1. Update FanArtistRelation
-      await prisma.fanArtistRelation.upsert({
-        where: { fanId_artistId: { fanId, artistId } },
-        update: {
-          streamCount:   { increment: 1 },
-          streamCount7d: { increment: 1 },
-          streamCount30d: { increment: 1 },
-          lastStreamAt:   new Date(),
-        },
-        create: {
-          fanId,
-          artistId,
-          streamCount:   1,
-          streamCount7d: 1,
-          streamCount30d: 1,
-          firstStreamAt: new Date(),
-          lastStreamAt:  new Date(),
-        }
-      });
+      // 1. Update fan_artist_relations
+      const { data: rel } = await supabase
+        .from('fan_artist_relations')
+        .select('*')
+        .eq('fan_id', fanId)
+        .eq('artist_id', artistId)
+        .maybeSingle();
 
-      // 2. Update FanListeningStats
-      await prisma.fanListeningStats.upsert({
-        where: { fanId },
-        update: {
-          totalStreamsAllTime: { increment: 1 },
-          totalStreams7d:      { increment: 1 },
-          totalStreams30d:     { increment: 1 },
-          totalListeningHrs:   { increment: trackDurationSecs / 3600 },
-          updatedAt:           new Date(),
-        },
-        create: {
-          fanId,
-          totalStreamsAllTime: 1,
-          totalStreams7d:      1,
-          totalStreams30d:     1,
-          totalListeningHrs:   trackDurationSecs / 3600,
-        }
-      });
+      if (rel) {
+        await supabase
+          .from('fan_artist_relations')
+          .update({
+            stream_count: (rel.stream_count || 0) + 1,
+            stream_count_7d: (rel.stream_count_7d || 0) + 1,
+            stream_count_30d: (rel.stream_count_30d || 0) + 1,
+            last_stream_at: new Date().toISOString(),
+          })
+          .eq('id', rel.id);
+      } else {
+        await supabase
+          .from('fan_artist_relations')
+          .insert({
+            fan_id: fanId,
+            artist_id: artistId,
+            stream_count: 1,
+            stream_count_7d: 1,
+            stream_count_30d: 1,
+            first_stream_at: new Date().toISOString(),
+            last_stream_at: new Date().toISOString(),
+          });
+      }
+
+      // 2. Update fan_listening_stats
+      const { data: stats } = await supabase
+        .from('fan_listening_stats')
+        .select('*')
+        .eq('fan_id', fanId)
+        .maybeSingle();
+
+      if (stats) {
+        await supabase
+          .from('fan_listening_stats')
+          .update({
+            total_streams_all_time: (stats.total_streams_all_time || 0) + 1,
+            total_streams_7d:      (stats.total_streams_7d || 0) + 1,
+            total_streams_30d:     (stats.total_streams_30d || 0) + 1,
+            total_listening_hrs:   (stats.total_listening_hrs || 0) + (trackDurationSecs / 3600),
+            updated_at:           new Date().toISOString(),
+          })
+          .eq('id', stats.id);
+      } else {
+        await supabase
+          .from('fan_listening_stats')
+          .insert({
+            fan_id: fanId,
+            total_streams_all_time: 1,
+            total_streams_7d:      1,
+            total_streams_30d:     1,
+            total_listening_hrs:   trackDurationSecs / 3600,
+          });
+      }
 
       // 3. First Discovery Tracking
-      const artist = await prisma.organization.findUnique({
-        where: { id: artistId },
-        select: { chartPositionGenre: true, chartPositionGlobal: true }
-      });
+      const { data: artist } = await supabase
+        .from('organizations')
+        .select('chart_position_genre, chart_position_global')
+        .eq('id', artistId)
+        .maybeSingle();
 
-      if (artist && !artist.chartPositionGenre && !artist.chartPositionGlobal) {
-        await prisma.fanListeningStats.update({
-          where: { fanId },
-          data: { firstDiscoveries: { increment: 1 } }
-        });
+      if (artist && !artist.chart_position_genre && !artist.chart_position_global) {
+        if (stats) {
+          await supabase
+            .from('fan_listening_stats')
+            .update({ first_discoveries: (stats.first_discoveries || 0) + 1 })
+            .eq('id', stats.id);
+        }
       }
     }
     
@@ -148,6 +180,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(safeError(error), { status: 500 })
   }
 }
-
-
-

@@ -1,40 +1,46 @@
 'use server';
-
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { getSessionFan } from '@/lib/session';
 import { getSessionArtist } from '@/lib/session';
 
 export async function sendChatMessage(orgId: string, text: string) {
   try {
     let userDisplayName = 'Anonymous';
+    let badge = null;
     
     // Try to get fan session first
-    try {
-      const fan = await getSessionFan();
+    const fan = await getSessionFan();
+    if (fan) {
       userDisplayName = fan.displayName || fan.username || 'Anonymous Fan';
-    } catch (e) {
+      badge = fan.fanLevel ? `Level ${fan.fanLevel}` : null;
+    } else {
       // If not fan, try artist
-      try {
-        const artist = await getSessionArtist();
+      const artist = await getSessionArtist();
+      if (artist) {
         userDisplayName = artist.name;
-      } catch (e2) {
-        // Fallback to anonymous
+        badge = 'ARTIST';
       }
     }
 
-    const message = await prisma.chatMessage.create({
-      data: {
-        organizationId: orgId,
+    const supabase = await createClient();
+    const { data: message, error } = await supabase
+      .from('chat_messages')
+      .insert({
+        organization_id: orgId,
         user: userDisplayName,
         text,
-        platform: 'NRH'
-      }
-    });
+        platform: 'NRH',
+        badge: badge
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return { success: true, message };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    console.error('Send chat message error:', error);
+    const message = error instanceof Error ? error.message : 'Failed to send message';
+    return { success: false, error: message };
   }
 }
-
-

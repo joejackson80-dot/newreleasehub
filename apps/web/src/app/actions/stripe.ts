@@ -2,22 +2,26 @@
 
 import { getSessionArtist } from '@/lib/session';
 import { createConnectAccount, createAccountLink, stripe } from '@/lib/stripe';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
 export async function createStripeOnboardingLink() {
   const artist = await getSessionArtist();
+  if (!artist) throw new Error("Unauthorized");
   
-  let accountId = artist.stripeAccountId;
+  let accountId = artist.stripe_account_id;
 
   if (!accountId) {
     const account = await createConnectAccount(artist.email || `${artist.slug}@newreleasehub.com`);
     accountId = account.id;
     
-    await prisma.organization.update({
-      where: { id: artist.id },
-      data: { stripeAccountId: accountId }
-    });
+    const supabase = await createClient();
+    const { error } = await supabase
+      .from('organizations')
+      .update({ stripe_account_id: accountId })
+      .eq('id', artist.id);
+    
+    if (error) throw error;
   }
 
   const accountLink = await createAccountLink(accountId);
@@ -27,18 +31,17 @@ export async function createStripeOnboardingLink() {
 export async function getStripeAccountStatus() {
   try {
     const artist = await getSessionArtist();
-    if (!artist.stripeAccountId) return { connected: false };
+    if (!artist || !artist.stripe_account_id) return { connected: false };
 
-    const account = await stripe.accounts.retrieve(artist.stripeAccountId);
+    const account = await stripe.accounts.retrieve(artist.stripe_account_id);
     return {
       connected: account.details_submitted,
       charges_enabled: account.charges_enabled,
       payouts_enabled: account.payouts_enabled,
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error fetching Stripe status:', error);
-    return { connected: false, error: 'Failed to retrieve account status' };
+    const message = error instanceof Error ? error.message : 'Failed to retrieve account status';
+    return { connected: false, error: message };
   }
 }
-
-

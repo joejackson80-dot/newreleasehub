@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(req: Request) {
   try {
@@ -10,20 +10,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Organization ID is required' }, { status: 400 });
     }
 
-    const org = await prisma.organization.update({
-      where: { id: organizationId },
-      data: {
-        youtubeStreamKey,
-        twitterStreamKey,
-        twitchStreamKey
-      }
-    });
+    const supabase = createAdminClient();
+
+    const { data: org, error } = await supabase
+      .from('organizations')
+      .update({
+        youtube_stream_key: youtubeStreamKey,
+        twitter_stream_key: twitterStreamKey,
+        twitch_stream_key: twitchStreamKey
+      })
+      .eq('id', organizationId)
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json(org);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('Broadcast API POST error:', error);
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
-

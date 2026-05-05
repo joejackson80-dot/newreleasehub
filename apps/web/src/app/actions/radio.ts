@@ -1,11 +1,8 @@
 'use client';
-// This is a client-side mock for now, but in a real app it would be a server action
-import { prisma } from '@/lib/prisma';
+// This is a client-side utility for now. 
+// Server-side updates should be handled via server actions or API routes.
 
 export async function updateReleaseRadioAuth(releaseId: string, authorized: boolean) {
-  // Logic to update DB
-  // This would typically be in a server-side file
+  // Logic to update DB via API if needed
   console.log(`Updating release ${releaseId} radio auth to ${authorized}`);
 }
-
-

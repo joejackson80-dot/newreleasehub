@@ -1,73 +1,76 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const limit = parseInt(searchParams.get('limit') || '20');
+    const supabase = await createClient();
 
-    // Fetch Milestones
-    const milestones = await prisma.artistMilestone.findMany({
-      take: limit,
-      orderBy: { achievedAt: 'desc' },
-      include: {
-        artist: {
-          select: { name: true, slug: true, profileImageUrl: true }
-        }
-      }
-    });
-
-    // Fetch New Releases
-    const releases = await prisma.musicAsset.findMany({
-      where: { isLive: true },
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        Organization: {
-          select: { name: true, slug: true, profileImageUrl: true }
-        }
-      }
-    });
-
-    // Fetch Active Collabs
-    const collabs = await prisma.collabRequest.findMany({
-      where: { status: 'ACCEPTED' },
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        requester: { select: { name: true, profileImageUrl: true } },
-        receiver: { select: { name: true, profileImageUrl: true } }
-      }
-    });
+    // Fetch Milestones, Releases (Tracks), and Collabs in parallel
+    const [
+      { data: milestonesData },
+      { data: releasesData },
+      { data: collabsData }
+    ] = await Promise.all([
+      supabase
+        .from('artist_milestones')
+        .select('*, organizations!artist_id(name, slug, profile_image_url)')
+        .order('achieved_at', { ascending: false })
+        .limit(limit),
+      supabase
+        .from('tracks')
+        .select('*, organizations(*)')
+        .eq('is_live', true)
+        .order('created_at', { ascending: false })
+        .limit(limit),
+      supabase
+        .from('collab_requests')
+        .select('*, requester:organizations!requester_id(name, profile_image_url), receiver:organizations!receiver_id(name, profile_image_url)')
+        .eq('status', 'ACCEPTED')
+        .order('created_at', { ascending: false })
+        .limit(limit)
+    ]);
 
     // Unified Feed Items
-    const feedItems = [
-      ...milestones.map(m => ({
+    const feedItems: any[] = [
+      ...(milestonesData || []).map(m => ({
         id: `milestone-${m.id}`,
         type: 'MILESTONE',
-        title: `${m.artist.name} achieved ${m.type.replace('_', ' ')}`,
+        title: `${m.organizations?.name} achieved ${m.type.replace('_', ' ')}`,
         description: `New institutional milestone verified: ${m.type.replace('_', ' ')} protocol.`,
-        timestamp: m.achievedAt,
-        artist: m.artist,
+        timestamp: m.achieved_at,
+        artist: {
+          name: m.organizations?.name,
+          slug: m.organizations?.slug,
+          profileImageUrl: m.organizations?.profile_image_url
+        },
         metadata: { type: m.type, icon: '🏆' }
       })),
-      ...releases.map(r => ({
+      ...(releasesData || []).map(r => ({
         id: `release-${r.id}`,
         type: 'RELEASE',
         title: `New Release: ${r.title}`,
-        description: `${r.Organization.name} just dropped a new track.`,
-        timestamp: r.createdAt,
-        artist: r.Organization,
+        description: `${r.organizations?.name} just dropped a new track.`,
+        timestamp: r.created_at,
+        artist: {
+          name: r.organizations?.name,
+          slug: r.organizations?.slug,
+          profileImageUrl: r.organizations?.profile_image_url
+        },
         metadata: { assetId: r.id, icon: '🎵' }
       })),
-      ...collabs.map(c => ({
+      ...(collabsData || []).map(c => ({
         id: `collab-${c.id}`,
         type: 'COLLAB',
-        title: `${c.requester.name} x ${c.receiver.name}`,
-        description: `New collaboration protocol established: ${c.projectTitle}`,
-        timestamp: c.createdAt,
-        artist: c.requester,
+        title: `${c.requester?.name} x ${c.receiver?.name}`,
+        description: `New collaboration protocol established: ${c.project_title}`,
+        timestamp: c.created_at,
+        artist: {
+          name: c.requester?.name,
+          profileImageUrl: c.requester?.profile_image_url
+        },
         metadata: { icon: '🤝' }
       }))
     ];
@@ -79,9 +82,9 @@ export async function GET(req: Request) {
       success: true, 
       feed: feedItems.slice(0, limit) 
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Network Feed API error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

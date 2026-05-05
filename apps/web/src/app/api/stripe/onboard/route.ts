@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionArtistId } from '@/lib/session';
 import { stripe } from '@/lib/stripe';
 
@@ -12,16 +12,19 @@ export async function POST() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const artist = await prisma.organization.findUnique({
-      where: { id: artistId },
-      select: { stripeAccountId: true, email: true, name: true }
-    });
+    const supabase = createAdminClient();
 
-    if (!artist) {
+    const { data: artist, error: fetchError } = await supabase
+      .from('organizations')
+      .select('stripe_account_id, email, name')
+      .eq('id', artistId)
+      .maybeSingle();
+
+    if (fetchError || !artist) {
       return NextResponse.json({ error: 'Artist not found' }, { status: 404 });
     }
 
-    let stripeAccountId = artist.stripeAccountId;
+    let stripeAccountId = artist.stripe_account_id;
 
     if (!stripeAccountId) {
       const account = await stripe.accounts.create({
@@ -36,10 +39,12 @@ export async function POST() {
       });
       stripeAccountId = account.id;
 
-      await prisma.organization.update({
-        where: { id: artistId },
-        data: { stripeAccountId }
-      });
+      const { error: updateError } = await supabase
+        .from('organizations')
+        .update({ stripe_account_id: stripeAccountId })
+        .eq('id', artistId);
+      
+      if (updateError) throw updateError;
     }
 
     const accountLink = await stripe.accountLinks.create({
@@ -52,6 +57,7 @@ export async function POST() {
     return NextResponse.json({ url: accountLink.url });
   } catch (error: unknown) {
     console.error('Stripe Onboarding Error:', error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Stripe onboarding error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

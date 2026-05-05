@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function detectStreamingRings(
   period: { start: Date, end: Date }
@@ -9,25 +9,28 @@ export async function detectStreamingRings(
     confidence: number
   }>
 }> {
+  const supabase = createAdminClient();
+
   // Build adjacency matrix: Artist A → Artist B stream count
-  const allStreams = await prisma.streamPlay.findMany({
-    where: {
-      startedAt: { gte: period.start, lt: period.end },
-      listenerType: 'artist', // Only streams from artist accounts
-      isExcludedFromPool: false
-    },
-    select: {
-      listenerId: true,  // The artist doing the listening
-      artistId: true,     // The artist being listened to
-    }
-  })
+  const { data: allStreams, error } = await supabase
+    .from('stream_plays')
+    .select('listener_id, artist_id')
+    .gte('started_at', period.start.toISOString())
+    .lt('started_at', period.end.toISOString())
+    .eq('listener_type', 'artist') // Only streams from artist accounts
+    .eq('is_excluded_from_pool', false);
+
+  if (error) {
+    console.error('Failed to fetch streams for fraud analysis:', error);
+    return { suspectedRings: [] };
+  }
   
   // Count edges: [listener artist, target artist] → count
   const edges = new Map<string, number>()
   
-  for (const stream of allStreams) {
-    if (!stream.listenerId || stream.listenerId === stream.artistId) continue 
-    const key = `${stream.listenerId}->${stream.artistId}`
+  for (const stream of (allStreams || [])) {
+    if (!stream.listener_id || stream.listener_id === stream.artist_id) continue 
+    const key = `${stream.listener_id}->${stream.artist_id}`
     edges.set(key, (edges.get(key) || 0) + 1)
   }
   
@@ -61,5 +64,3 @@ export async function detectStreamingRings(
   
   return { suspectedRings }
 }
-
-

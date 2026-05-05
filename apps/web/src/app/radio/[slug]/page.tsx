@@ -1,5 +1,5 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import RadioClient from './RadioClient';
 import { Metadata } from 'next';
 
@@ -9,10 +9,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const supabase = createAdminClient();
   
-  const org = await prisma.organization.findUnique({
-    where: { slug }
-  });
+  const { data: org } = await supabase
+    .from('organizations')
+    .select('name, profile_image_url')
+    .eq('slug', slug)
+    .maybeSingle();
 
   if (!org) return { title: 'Station Not Found | NRH' };
 
@@ -26,14 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      images: [org.profileImageUrl || '/images/og-station.jpg'],
+      images: [org.profile_image_url || '/images/og-station.jpg'],
       type: 'music.radio_station',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [org.profileImageUrl || '/images/og-station.jpg'],
+      images: [org.profile_image_url || '/images/og-station.jpg'],
     }
   };
 }

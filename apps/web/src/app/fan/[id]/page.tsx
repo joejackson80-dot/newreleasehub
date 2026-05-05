@@ -1,6 +1,6 @@
 import React from 'react';
 export const dynamic = 'force-dynamic';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { Award, Music, ShieldCheck, Globe, Star, TrendingUp, Grid, List, Zap, Radio, ArrowRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -9,19 +9,28 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
   const params = await props.params;
   const fanId = params.id;
 
-  const licenses = await prisma.participationLicense.findMany({
-    where: { userId: fanId },
-    include: {
-      MusicAsset: {
-        include: { Organization: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  const supabase = createAdminClient();
 
-  const totalSpent = licenses.reduce((acc, lic) => acc + lic.feeCents, 0) / 100;
-  const totalStake = licenses.reduce((acc, lic) => acc + (lic.allocatedBps / 100), 0).toFixed(2);
-  const uniqueArtists = new Set(licenses.map(lic => lic.MusicAsset?.Organization?.id).filter(Boolean)).size;
+  const { data: licenses, error } = await supabase
+    .from('participation_licenses')
+    .select(`
+      *,
+      tracks (
+        *,
+        organizations (*)
+      )
+    `)
+    .eq('user_id', fanId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to fetch fan portfolio:', error);
+  }
+
+  const portfolio = licenses || [];
+  const totalSpent = portfolio.reduce((acc: number, lic: any) => acc + (lic.fee_cents || 0), 0) / 100;
+  const totalStake = portfolio.reduce((acc: number, lic: any) => acc + ((lic.allocated_bps || 0) / 100), 0).toFixed(2);
+  const uniqueArtists = new Set(portfolio.map((lic: any) => lic.tracks?.organizations?.id).filter(Boolean)).size;
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-white selection:text-black">
@@ -64,7 +73,7 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
       </div>
 
       <main className="max-w-6xl mx-auto px-8 py-12">
-         {/* PORTFOLIO STATS (IMPROVEMENT) */}
+         {/* PORTFOLIO STATS */}
          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
             {[
               { label: 'Unclaimed Yield', val: `$${(totalSpent * 0.08).toFixed(2)}`, color: 'text-green-500', icon: TrendingUp },
@@ -96,19 +105,17 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
                   </div>
                </div>
 
-               {licenses.length > 0 ? (
+               {portfolio.length > 0 ? (
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                   {licenses.map((lic) => (
+                   {portfolio.map((lic: any) => (
                      <Link 
                        key={lic.id} 
                        href={`/license/${lic.id}`}
                        className="group relative"
                      >
-                       {/* HOLOGRAPHIC BACKGROUND GLOW */}
                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 via-purple-500/10 to-orange-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                        
                        <div className="bg-[#080808] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-white/20 transition-all hover:translate-y-[-8px] shadow-2xl relative z-10">
-                          {/* HOLOGRAPHIC SCANNING BAR */}
                           <div className="absolute left-0 right-0 h-[1px] bg-white/20 blur-sm z-20 pointer-events-none top-0" />
                           
                           <div className="aspect-[4/5] p-10 flex flex-col justify-between relative overflow-hidden">
@@ -117,7 +124,7 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
                              <div className="relative z-10 flex justify-between items-start">
                                 <div className="space-y-1">
                                    <p className="text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em]">Asset Profile</p>
-                                   <p className="text-sm font-bold text-white tracking-tight italic uppercase">{lic.MusicAsset?.Organization?.name || 'Unknown Artist'}</p>
+                                   <p className="text-sm font-bold text-white tracking-tight italic uppercase">{lic.tracks?.organizations?.name || 'Unknown Artist'}</p>
                                 </div>
                                 <div className="flex flex-col items-end space-y-2">
                                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
@@ -129,11 +136,11 @@ export default async function FanProfilePage(props: { params: Promise<{ id: stri
       
                              <div className="relative z-10 space-y-6">
                                 <div className="w-16 h-[1px] bg-white/10"></div>
-                                <h3 className="text-3xl font-bold tracking-tighter leading-tight italic">"{lic.MusicAsset?.title || 'Untitled Asset'}"</h3>
+                                <h3 className="text-3xl font-bold tracking-tighter leading-tight italic">"{lic.tracks?.title || 'Untitled Asset'}"</h3>
                                 <div className="flex items-center space-x-8">
                                    <div>
                                       <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Master Stake</p>
-                                      <p className="text-xl font-bold text-white">{(lic.allocatedBps / 100).toFixed(2)}%</p>
+                                      <p className="text-xl font-bold text-white">{((lic.allocated_bps || 0) / 100).toFixed(2)}%</p>
                                    </div>
                                    <div>
                                       <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">Contract Type</p>

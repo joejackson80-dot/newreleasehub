@@ -1,29 +1,34 @@
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function detectSelfStreaming(artistId: string): Promise<{
   isSuspicious: boolean
   reason: string | null
   suspiciousDeviceIds: string[]
 }> {
+  const supabase = createAdminClient();
+
   // Get artist's login deviceIds and IPs (from their studio sessions)
-  const artistSessions = await prisma.deviceSession.findMany({
-    where: { userId: artistId },
-    select: { deviceId: true, ipAddress: true },
-    distinct: ['deviceId']
-  })
+  const { data: artistSessions } = await supabase
+    .from('device_sessions')
+    .select('device_id, ip_address')
+    .eq('user_id', artistId);
   
-  const artistDeviceIds = artistSessions.map(s => s.deviceId).filter(Boolean) as string[]
-  const artistIPs = artistSessions.map(s => s.ipAddress).filter(Boolean) as string[]
+  const artistDeviceIds = Array.from(new Set((artistSessions || []).map(s => s.device_id).filter(Boolean))) as string[];
+  const artistIPs = Array.from(new Set((artistSessions || []).map(s => s.ip_address).filter(Boolean))) as string[];
   
+  if (artistDeviceIds.length === 0 && artistIPs.length === 0) {
+    return { isSuspicious: false, reason: null, suspiciousDeviceIds: [] };
+  }
+
   // Check if any of those deviceIds appear in streams of this artist's music
-  const matchingStreams = await prisma.streamPlay.findMany({
-    where: {
-      artistId,
-      deviceId: { in: artistDeviceIds }
-    }
-  })
+  const { data: matchingStreams } = await supabase
+    .from('stream_plays')
+    .select('id')
+    .eq('artist_id', artistId)
+    .in('device_id', artistDeviceIds)
+    .limit(11);
   
-  if (matchingStreams.length > 10) {
+  if (matchingStreams && matchingStreams.length > 10) {
     // Artist's device has streamed their own music >10 times
     return {
       isSuspicious: true,
@@ -33,14 +38,13 @@ export async function detectSelfStreaming(artistId: string): Promise<{
   }
   
   // Check for IP overlap
-  const streamsFromArtistIPs = await prisma.streamPlay.count({
-    where: {
-      artistId,
-      ipAddress: { in: artistIPs }
-    }
-  })
+  const { count: streamsFromArtistIPs } = await supabase
+    .from('stream_plays')
+    .select('*', { count: 'exact', head: true })
+    .eq('artist_id', artistId)
+    .in('ip_address', artistIPs);
   
-  if (streamsFromArtistIPs > 50) {
+  if (streamsFromArtistIPs && streamsFromArtistIPs > 50) {
     return {
       isSuspicious: true,
       reason: 'High volume of streams from artist IP addresses',
@@ -50,5 +54,3 @@ export async function detectSelfStreaming(artistId: string): Promise<{
   
   return { isSuspicious: false, reason: null, suspiciousDeviceIds: [] }
 }
-
-

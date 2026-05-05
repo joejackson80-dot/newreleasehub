@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronLeft, Disc, Filter, Search, Grid, List as ListIcon } from 'lucide-react';
 import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import ArtistReleasesClient from '../ArtistReleasesClient';
 
 export default async function DiscographyPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -9,10 +9,21 @@ export default async function DiscographyPage({ params }: { params: Promise<{ sl
   const slug = resolvedParams.slug;
   const artistName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-  const releases = await prisma.release.findMany({
-    where: { Organization: { slug } },
-    orderBy: { releaseDate: 'desc' }
-  });
+  const supabase = await createClient();
+  const { data: releases, error } = await supabase
+    .from('releases')
+    .select('*, organizations!inner(slug)')
+    .eq('organizations.slug', slug)
+    .order('release_date', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching discography:', error);
+  }
+
+  const normalizedReleases = (releases || []).map((r: any) => ({
+    ...r,
+    releaseDate: r.release_date
+  }));
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-[#A855F7] selection:text-white pt-32 pb-32 px-6 sm:px-10 lg:px-20">
@@ -27,7 +38,7 @@ export default async function DiscographyPage({ params }: { params: Promise<{ sl
                </Link>
                <div className="space-y-2">
                   <h1 className="text-5xl md:text-[clamp(2.25rem,8vw,4.5rem)] font-black tracking-tighter italic uppercase leading-[0.8]">Full<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-600">Discography.</span></h1>
-                  <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">Total of {releases.length} Verified Assets on the Network</p>
+                  <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">Total of {normalizedReleases.length} Verified Assets on the Network</p>
                </div>
             </div>
 
@@ -56,14 +67,14 @@ export default async function DiscographyPage({ params }: { params: Promise<{ sl
          {/* RELEASES GRID */}
          <div className="pt-8 border-t border-white/5">
             <ArtistReleasesClient 
-              releases={releases} 
-              slug={slug} 
-              artistName={artistName} 
+               releases={normalizedReleases} 
+               slug={slug} 
+               artistName={artistName} 
             />
          </div>
 
          {/* EMPTY STATE (IF ANY) */}
-         {releases.length === 0 && (
+         {normalizedReleases.length === 0 && (
            <div className="py-40 text-center space-y-6">
               <Disc className="w-16 h-16 text-zinc-800 mx-auto animate-spin-slow" />
               <p className="text-zinc-600 font-bold uppercase tracking-widest text-xs">No assets found in this catalog.</p>

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionArtistId } from '@/lib/session';
 
 export async function GET(req: Request) {
@@ -10,15 +10,19 @@ export async function GET(req: Request) {
       return NextResponse.json({ count: 0 });
     }
 
-    const count = await prisma.artistMilestone.count({
-      where: { artistId, isViewed: false }
-    });
+    const supabase = createAdminClient();
 
-    return NextResponse.json({ count });
-  } catch (error: any) {
+    const { count, error } = await supabase
+      .from('artist_milestones')
+      .select('*', { count: 'exact', head: true })
+      .eq('artist_id', artistId)
+      .eq('is_viewed', false);
+
+    if (error) throw error;
+
+    return NextResponse.json({ count: count || 0 });
+  } catch (error: unknown) {
+    console.error('Milestones count error:', error);
     return NextResponse.json({ count: 0 });
   }
 }
-
-
-

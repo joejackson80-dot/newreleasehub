@@ -1,11 +1,12 @@
 import { inngest } from '../client'
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 // Stub helper
 const chunk = <T>(arr: T[], size: number): T[][] =>
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
     arr.slice(i * size, i * size + size)
   );
+
 const processArtistRoyalties = async (id: string, tier: string) => {
   // Logic to be implemented or called here
   console.log(`Processing royalties for artist ${id} on tier ${tier}`);
@@ -23,10 +24,14 @@ export const calculateMonthlyRoyalties = inngest.createFunction(
   },
   async ({ step }) => {
     const artists = await step.run('get-all-artists', async () => {
-      return prisma.organization.findMany({
-        where: { isActive: true },
-        select: { id: true, subscriptionTier: true }
-      })
+      const supabase = createAdminClient();
+      const { data: orgs, error } = await supabase
+        .from('organizations')
+        .select('id, plan_tier')
+        .eq('is_active', true);
+      
+      if (error) throw error;
+      return orgs || [];
     })
 
     const batches = chunk(artists, 50)
@@ -34,7 +39,7 @@ export const calculateMonthlyRoyalties = inngest.createFunction(
     for (const [i, batch] of batches.entries()) {
       await step.run(`process-batch-${i}`, async () => {
         for (const artist of batch) {
-          await processArtistRoyalties(artist.id, artist.subscriptionTier)
+          await processArtistRoyalties(artist.id, artist.plan_tier || 'standard')
         }
       })
     }
@@ -47,5 +52,3 @@ export const calculateMonthlyRoyalties = inngest.createFunction(
     return { processed: artists.length }
   }
 )
-
-

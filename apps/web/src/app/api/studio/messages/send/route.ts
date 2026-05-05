@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionArtist } from '@/lib/session';
 
 export async function POST(req: Request) {
@@ -14,26 +14,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
 
-    const message = await prisma.directMessage.create({
-      data: {
+    const supabase = createAdminClient();
+
+    const { data: message, error } = await supabase
+      .from('direct_messages')
+      .insert({
         text,
-        senderOrgId: artist.id,
-        receiverUserId,
-      },
-      include: {
-        senderOrg: {
-          select: { name: true, profileImageUrl: true }
-        },
-        receiverUser: {
-          select: { displayName: true, avatarUrl: true }
-        }
-      }
-    });
+        sender_org_id: artist.id,
+        receiver_user_id: receiverUserId,
+      })
+      .select(`
+        *,
+        senderOrg:organizations!sender_org_id (name, profile_image_url),
+        receiverUser:users!receiver_user_id (display_name, avatar_url)
+      `)
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, message });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Send Message API error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

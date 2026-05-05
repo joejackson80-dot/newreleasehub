@@ -1,7 +1,8 @@
 import React from 'react';
 import { getSessionFan } from '@/lib/session';
 import DashboardClient from './DashboardClient';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { getFanFeed, getMessages, getVaultContent } from '@/app/actions/fan';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,26 +11,27 @@ export const metadata = {
   description: 'Manage your library, follow artists, and track your Support.',
 };
 
-import { getFanFeed, getMessages, getVaultContent } from '@/app/actions/fan';
-
 export default async function FanDashboardPage() {
   const user = await getSessionFan();
+  const supabase = createAdminClient();
 
-  // Fetch initial library count or other server-side data if needed
-  const libraryCount = await prisma.user.findUnique({
-    where: { id: user.id },
-    select: { _count: { select: { ParticipationLicenses: true } } }
-  });
+  // Fetch initial library count (ParticipationLicenses)
+  const { count: licenseCount } = await supabase
+    .from('participation_licenses')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id);
 
   // Fetch real Support Stakes (Subscriptions)
-  const subscriptions = await prisma.supporterSubscription.findMany({
-    where: { fanId: user.id, status: 'ACTIVE' },
-    include: {
-      Organization: true,
-      Tier: true
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  const { data: subscriptions } = await supabase
+    .from('supporter_subscriptions')
+    .select(`
+      *,
+      organizations (*),
+      tiers (*)
+    `)
+    .eq('fan_id', user.id)
+    .eq('status', 'ACTIVE')
+    .order('created_at', { ascending: false });
 
   // Fetch Feed, Messages, and Vault
   const [feedResult, messagesResult, vaultResult] = await Promise.all([
@@ -38,16 +40,22 @@ export default async function FanDashboardPage() {
     getVaultContent(user.id)
   ]);
 
+  // Normalize for UI
+  const normalizedSubs = (subscriptions || []).map(s => ({
+    ...s,
+    createdAt: s.created_at,
+    Organization: s.organizations,
+    Tier: s.tiers
+  }));
+
   return (
     <DashboardClient 
       user={user} 
-      initialLibraryCount={libraryCount?._count.ParticipationLicenses || 0}
-      subscriptions={subscriptions}
+      initialLibraryCount={licenseCount || 0}
+      subscriptions={normalizedSubs}
       initialFeed={feedResult.success ? feedResult.feed : []}
       initialMessages={messagesResult.success ? messagesResult.messages : []}
       initialVault={vaultResult.success ? vaultResult.releases : []}
     />
   );
 }
-
-

@@ -1,5 +1,5 @@
 'use server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { getSessionArtist } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 
@@ -14,33 +14,42 @@ export async function createRelease(formData: {
     const org = await getSessionArtist();
     if (!org) return { success: false, error: 'Unauthorized' };
 
-    const release = await prisma.release.create({
-      data: {
-        organizationId: org.id,
+    const supabase = await createClient();
+
+    const { data: release, error: releaseError } = await supabase
+      .from('releases')
+      .insert({
+        organization_id: org.id,
         title: formData.title,
         type: formData.type.toLowerCase(),
-        coverArtUrl: formData.coverArtUrl || '/images/default-cover.png',
-        authorizedForRadio: formData.authorizedForRadio,
-        trackCount: 1, // Default for single
-      }
-    });
+        cover_art_url: formData.coverArtUrl || '/images/default-cover.png',
+        authorized_for_radio: formData.authorizedForRadio,
+        track_count: 1, // Default for single
+      })
+      .select()
+      .single();
 
-    // Create a corresponding MusicAsset (the master track)
-    await prisma.musicAsset.create({
-      data: {
-        organizationId: org.id,
-        releaseId: release.id,
+    if (releaseError) throw releaseError;
+
+    // Create a corresponding Track (the master track)
+    const { error: trackError } = await supabase
+      .from('tracks')
+      .insert({
+        organization_id: org.id,
+        release_id: release.id,
         title: formData.title,
-        imageUrl: formData.coverArtUrl || '/images/default-cover.png',
-        isLive: true,
-      }
-    });
+        image_url: formData.coverArtUrl || '/images/default-cover.png',
+        is_live: true,
+      });
+
+    if (trackError) throw trackError;
 
     revalidatePath('/studio/releases');
     return { success: true, release };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to create release', error);
-    return { success: false, error: 'Database error' };
+    const message = error instanceof Error ? error.message : 'Database error';
+    return { success: false, error: message };
   }
 }
 
@@ -55,22 +64,29 @@ export async function updateArtistProfile(data: {
     const org = await getSessionArtist();
     if (!org) return { success: false, error: 'Unauthorized' };
 
-    await prisma.organization.update({
-      where: { id: org.id },
-      data: {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+      .from('organizations')
+      .update({
         name: data.name,
         bio: data.bio,
         city: data.city,
         country: data.country,
-        profileImageUrl: data.profileImageUrl
-      }
-    });
+        profile_image_url: data.profileImageUrl
+      })
+      .eq('id', org.id);
+
+    if (error) throw error;
 
     revalidatePath('/studio/settings');
-    revalidatePath(`/${org.slug}`);
+    if (org.slug) {
+      revalidatePath(`/${org.slug}`);
+    }
     return { success: true };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to update artist profile', error);
-    return { success: false, error: 'Database error' };
+    const message = error instanceof Error ? error.message : 'Database error';
+    return { success: false, error: message };
   }
 }

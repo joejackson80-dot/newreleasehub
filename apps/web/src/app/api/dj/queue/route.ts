@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(req: Request) {
   try {
@@ -10,26 +10,48 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Get max position
-    const maxPos = await prisma.queueItem.aggregate({
-      where: { deckId: sessionDeckId },
-      _max: { position: true }
-    });
+    const supabase = createAdminClient();
 
-    const nextPos = (maxPos._max?.position ?? -1) + 1;
+    // 1. Get max position
+    const { data: maxPosData, error: maxError } = await supabase
+      .from('deck_queue_items')
+      .select('position')
+      .eq('deck_id', sessionDeckId)
+      .order('position', { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-    const queueItem = await prisma.queueItem.create({
-      data: {
-        deckId: sessionDeckId,
-        musicAssetId,
+    if (maxError) throw maxError;
+
+    const nextPos = (maxPosData?.position ?? -1) + 1;
+
+    // 2. Create Queue Item
+    const { data: queueItem, error: createError } = await supabase
+      .from('deck_queue_items')
+      .insert({
+        deck_id: sessionDeckId,
+        track_id: musicAssetId,
         position: nextPos
-      },
-      include: { MusicAsset: true }
-    });
+      })
+      .select(`
+        *,
+        tracks (*)
+      `)
+      .single();
 
-    return NextResponse.json(queueItem);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (createError) throw createError;
+
+    // Normalize for response
+    const normalized = {
+      ...queueItem,
+      MusicAsset: queueItem.tracks
+    };
+
+    return NextResponse.json(normalized);
+  } catch (error: unknown) {
+    console.error('DJ Queue POST error:', error);
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -40,15 +62,18 @@ export async function DELETE(req: Request) {
     
     if (!id) throw new Error("ID is required");
 
-    await prisma.queueItem.delete({
-      where: { id }
-    });
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from('deck_queue_items')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('DJ Queue DELETE error:', error);
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
-

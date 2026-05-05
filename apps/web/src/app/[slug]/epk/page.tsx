@@ -1,5 +1,5 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
 import { ShieldCheck, TrendingUp, Award, Globe, Video, Disc, Activity, FileText, Download, Share2, Briefcase, BarChart3, Radio, Music, User } from 'lucide-react';
 import Link from 'next/link';
@@ -10,26 +10,59 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
   const params = await props.params;
   const { slug } = params;
 
-  const org = await prisma.organization.findUnique({
-    where: { slug },
-    include: {
-      MusicAssets: { take: 10, orderBy: { createdAt: 'desc' } },
-      Followers: true,
-      ParticipationLicenses: true,
-      SessionArchives: { take: 5, orderBy: { createdAt: 'desc' } }
-    }
-  });
+  const supabase = createAdminClient();
 
-  if (!org) notFound();
+  // Fetch Org with all its nested data
+  const { data: org, error } = await supabase
+    .from('organizations')
+    .select(`
+      *,
+      tracks (*),
+      followers (*),
+      participation_licenses (*),
+      session_archives (*)
+    `)
+    .eq('slug', slug)
+    .maybeSingle();
 
-  // Financial Metrics Simulation
-  const totalFunding = org.ParticipationLicenses.reduce((acc, lic) => acc + lic.feeCents, 0) / 100;
-  const activeStakes = org.ParticipationLicenses.length;
-  const avgYieldBps = 142; // Simulated network average
+  if (error || !org) notFound();
+
+  // Normalize for UI
+  const tracks = (org.tracks || []).sort((a: any, b: any) => 
+    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  ).slice(0, 10);
+  
+  const archives = (org.session_archives || []).sort((a: any, b: any) => 
+    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  ).slice(0, 5);
+
+  const licenses = org.participation_licenses || [];
+  const totalFunding = licenses.reduce((acc: number, lic: any) => acc + (lic.fee_cents || 0), 0) / 100;
+  const activeStakes = licenses.length;
+
+  const normalizedOrg = {
+    ...org,
+    MusicAssets: tracks.map((t: any) => ({
+      ...t,
+      allocatedLicenseBps: t.allocated_license_bps
+    })),
+    Followers: org.followers,
+    ParticipationLicenses: licenses.map((l: any) => ({
+      ...l,
+      feeCents: l.fee_cents,
+      allocatedBps: l.allocated_bps
+    })),
+    SessionArchives: archives.map((a: any) => ({
+      ...a,
+      totalFundingCents: a.total_funding_cents
+    })),
+    profileImageUrl: org.profile_image_url,
+    officialBio: org.official_bio
+  };
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-white selection:text-black font-sans pb-32">
-      <EPKClient org={org} />
+      <EPKClient org={normalizedOrg} />
       
       {/* INSTITUTIONAL HEADER */}
       <header className="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-6 border-b border-white/5 bg-black/40 backdrop-blur-3xl flex justify-between items-center">
@@ -59,7 +92,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                        <ShieldCheck className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#A855F7]" />
                        <span className="text-[7px] md:text-[8px] font-bold text-[#A855F7] uppercase tracking-widest">Verified Artist Hub</span>
                     </div>
-                    {org.ParticipationLicenses.length > 0 && (
+                    {licenses.length > 0 && (
                       <div className="inline-flex items-center space-x-2 bg-orange-500/10 border border-orange-500/20 px-4 py-1.5 rounded-full">
                          <Briefcase className="w-3 h-3 md:w-3.5 md:h-3.5 text-orange-500" />
                          <span className="text-[7px] md:text-[8px] font-bold text-orange-500 uppercase tracking-widest">Revenue Participation Available</span>
@@ -69,7 +102,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                   <h1 className="text-4xl md:text-7xl font-bold tracking-tighter italic uppercase leading-[0.9]">{org.name}</h1>
                   <p className="text-base md:text-xl text-gray-500 font-medium leading-relaxed max-w-xl">
                      Independent Artist & Master Rights Holder. Scaled through decentralized supporterage and fan revenue shares.
-                     {org.ParticipationLicenses.length > 0 && ` Currently offering ${org.ParticipationLicenses[0].allocatedBps / 100}% stake starting at $${org.ParticipationLicenses[0].feeCents / 100}.`}
+                     {licenses.length > 0 && ` Currently offering ${licenses[0].allocated_bps / 100}% stake starting at $${licenses[0].fee_cents / 100}.`}
                   </p>
                </div>
             </div>
@@ -78,8 +111,8 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
          <FadeIn direction="left" delay={0.2}>
             <div className="relative aspect-square bg-zinc-900/40 rounded-3xl md:rounded-[4rem] border border-white/5 overflow-hidden group shadow-2xl">
                <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-transparent z-10"></div>
-               {org.profileImageUrl ? (
-                 <img src={org.profileImageUrl} className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000" />
+               {org.profile_image_url ? (
+                 <img src={org.profile_image_url} className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000" />
                ) : (
                  <div className="w-full h-full flex items-center justify-center text-zinc-800"><User className="w-20 md:w-32 h-20 md:h-32" /></div>
                )}
@@ -108,7 +141,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-               {org.MusicAssets.map((asset) => (
+               {normalizedOrg.MusicAssets.map((asset: any) => (
                   <div key={asset.id} className="group bg-black border border-white/5 rounded-[2.5rem] p-10 space-y-8 hover:border-white/10 transition-all">
                      <div className="flex justify-between items-start">
                         <div className="w-14 h-14 rounded-2xl bg-zinc-900 flex items-center justify-center border border-white/5 text-gray-700 group-hover:text-white transition-colors">
@@ -167,14 +200,14 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
                <div className="flex-1 space-y-6">
                   <h4 className="text-2xl font-bold italic tracking-tighter uppercase">Professional<br />Credentials.</h4>
                   <p className="text-sm text-gray-500 leading-relaxed">
-                     {org.officialBio || "Independent artist operating on a decentralized supporterage model. Secured master ownership and collective funding milestones reached across 14 release cycles."}
+                     {org.official_bio || "Independent artist operating on a decentralized supporterage model. Secured master ownership and collective funding milestones reached across 14 release cycles."}
                   </p>
                </div>
                <div className="grid grid-cols-1 gap-4 w-full md:w-64">
                   {[
                     { label: 'Global Rank', val: '#1,204', icon: Globe },
                     { label: 'Session Time', val: '142h', icon: Radio },
-                    { label: 'Archives', val: org.SessionArchives.length.toString(), icon: Video }
+                    { label: 'Archives', val: normalizedOrg.SessionArchives.length.toString(), icon: Video }
                   ].map((stat, i) => (
                     <div key={i} className="p-4 bg-black border border-white/5 rounded-2xl flex items-center space-x-4">
                        <stat.icon className="w-4 h-4 text-gray-700" />
@@ -188,7 +221,7 @@ export default async function ElectronicPressKitPage(props: { params: Promise<{ 
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               {org.SessionArchives.map((archive) => (
+               {normalizedOrg.SessionArchives.map((archive: any) => (
                   <div key={archive.id} className="bg-zinc-900/40 border border-white/5 rounded-3xl p-8 flex items-center space-x-6 group hover:border-white/10 transition-all">
                      <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center text-gray-800 group-hover:text-red-500 transition-colors">
                         <Video className="w-6 h-6" />

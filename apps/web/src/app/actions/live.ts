@@ -2,23 +2,28 @@
 
 import { getSessionArtist } from '@/lib/session';
 import { createStationStream } from '@/lib/private/discovery/mux';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 
 export async function getLiveStreamConfig() {
   try {
     const artist = await getSessionArtist();
+    if (!artist) throw new Error("Unauthorized");
     
     // Use artist slug as the external_id for Mux
     const stream = await createStationStream(`artist-${artist.slug}`);
     
+    const supabase = await createClient();
+
     // Update artist status and playback ID in DB
-    await prisma.organization.update({
-      where: { id: artist.id },
-      data: { 
-        isLive: stream.status === 'active',
-        livePlaybackId: stream.playback_ids?.[0]?.id
-      }
-    });
+    const { error } = await supabase
+      .from('organizations')
+      .update({ 
+        is_live: stream.status === 'active',
+        live_playback_id: stream.playback_ids?.[0]?.id
+      })
+      .eq('id', artist.id);
+
+    if (error) throw error;
 
     return {
       success: true,
@@ -36,14 +41,19 @@ export async function getLiveStreamConfig() {
 export async function updateLiveStatus(isLive: boolean) {
   try {
     const artist = await getSessionArtist();
-    await prisma.organization.update({
-      where: { id: artist.id },
-      data: { isLive }
-    });
+    if (!artist) throw new Error("Unauthorized");
+
+    const supabase = await createClient();
+
+    const { error } = await supabase
+      .from('organizations')
+      .update({ is_live: isLive })
+      .eq('id', artist.id);
+
+    if (error) throw error;
+
     return { success: true };
   } catch (error: unknown) {
     return { success: false, error: error instanceof Error ? error.message : String(error) };
   }
 }
-
-

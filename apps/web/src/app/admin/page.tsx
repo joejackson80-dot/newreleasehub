@@ -1,8 +1,17 @@
 import React from 'react';
-import { Gavel, ShieldAlert, DollarSign, Users, BarChart3, Settings, ArrowRight } from 'lucide-react';
+import { Gavel, ShieldAlert, DollarSign, Users, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AdminOverviewPage() {
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
+
+export default async function AdminOverviewPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user || user.user_metadata?.role !== 'admin') {
+    redirect('/login');
+  }
   return (
     <div className="min-h-screen bg-[#020202] text-white p-8 md:p-20 space-y-16">
       <header className="space-y-4">
@@ -51,7 +60,7 @@ export default function AdminOverviewPage() {
          </Link>
 
          {/* USER MANAGEMENT */}
-         <div className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-purple-500/40 transition-all cursor-pointer">
+         <Link href="/admin/users" className="group p-10 bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] space-y-8 hover:border-purple-500/40 transition-all cursor-pointer">
             <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all">
                <Users className="w-7 h-7" />
             </div>
@@ -65,7 +74,7 @@ export default function AdminOverviewPage() {
                <span>Account Matrix</span>
                <ArrowRight className="w-4 h-4" />
             </div>
-         </div>
+         </Link>
 
       </div>
 

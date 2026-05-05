@@ -1,5 +1,5 @@
 import { inngest } from '../client'
-import { prisma } from '@/lib/prisma'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const generateAICard = inngest.createFunction(
   {
@@ -18,9 +18,14 @@ export const generateAICard = inngest.createFunction(
     })
 
     await step.run('save-milestone', async () => {
-      await prisma.artistMilestone.create({
-        data: { artistId, type: milestoneType, cardImageUrl: imageUrl }
-      })
+      const supabase = createAdminClient();
+      await supabase
+        .from('artist_milestones')
+        .insert({ 
+          artist_id: artistId, 
+          type: milestoneType, 
+          card_image_url: imageUrl 
+        });
     })
 
     await step.sendEvent('notify-artist', {
@@ -36,5 +41,3 @@ export const generateAICard = inngest.createFunction(
     return { artistId, milestoneType, imageUrl }
   }
 )
-
-

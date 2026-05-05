@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSessionFanId } from '@/lib/session';
 
 export async function GET(req: Request) {
@@ -8,29 +8,33 @@ export async function GET(req: Request) {
     const fanId = await getSessionFanId();
     if (!fanId) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
-    const stats = await prisma.fanListeningStats.findUnique({
-      where: { fanId }
-    });
+    const supabase = createAdminClient();
 
-    // Calculate first discoveries (simplified: subscriptions made within 7 days of artist profile creation)
-    const discoveries = await prisma.supporterSubscription.count({
-      where: {
-        fanId,
-        status: 'ACTIVE',
-        // In a real app, we'd join with Organization and check dates
-      }
-    });
+    const { data: stats, error: statsError } = await supabase
+      .from('fan_listening_stats')
+      .select('*')
+      .eq('fan_id', fanId)
+      .maybeSingle();
+
+    if (statsError) throw statsError;
+
+    // Calculate first discoveries (simplified: active supporter subscriptions)
+    const { count: discoveries } = await supabase
+      .from('supporter_subscriptions')
+      .select('*', { count: 'exact', head: true })
+      .eq('fan_id', fanId)
+      .eq('status', 'ACTIVE');
 
     return NextResponse.json({ 
       success: true, 
       stats: {
-        ...stats,
-        firstDiscoveries: [] // Pending true real-time date logic implementation
+        ...(stats || {}),
+        firstDiscoveriesCount: discoveries || 0
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fan Stats API error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Database error';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
-

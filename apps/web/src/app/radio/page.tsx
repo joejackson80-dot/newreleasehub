@@ -1,5 +1,5 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -11,9 +11,17 @@ export const metadata = {
 };
 
 export default async function RadioDiscoveryPage() {
-  const stations = await prisma.station.findMany({
-    orderBy: { name: 'asc' }
-  });
+  const supabase = await createClient();
+  const { data: stations, error } = await supabase
+    .from('stations')
+    .select('*')
+    .order('name', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching stations:', error);
+  }
+
+  const safeStations = stations || [];
 
   return (
     <div className="min-h-screen bg-[#020202] text-white pt-32 pb-40 px-8">
@@ -37,9 +45,9 @@ export default async function RadioDiscoveryPage() {
         </section>
 
         {/* FEATURED / MAIN STATION */}
-        {stations.find(s => s.slug === 'nrh-radio') && (
+        {safeStations.find(s => s.slug === 'nrh-radio') && (
           <section>
-             {stations.filter(s => s.slug === 'nrh-radio').map(main => (
+             {safeStations.filter(s => s.slug === 'nrh-radio').map(main => (
                <Link 
                  key={main.id} 
                  href={`/radio/${main.slug}`}
@@ -92,7 +100,7 @@ export default async function RadioDiscoveryPage() {
               <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em]">Institutional Grade Rotation</p>
            </div>
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {stations.filter(s => s.slug !== 'nrh-radio').map((station, i) => (
+              {safeStations.filter(s => s.slug !== 'nrh-radio').map((station, i) => (
                 <Link 
                   key={station.id} 
                   href={`/radio/${station.slug}`}
@@ -116,7 +124,7 @@ export default async function RadioDiscoveryPage() {
 
                    <div className="pt-6 border-t border-white/5 flex items-center justify-between relative z-10">
                       <div className="flex items-center gap-2">
-                         {station.genres.slice(0, 2).map(g => (
+                         {(station.genres || []).slice(0, 2).map((g: string) => (
                             <span key={g} className="text-[8px] font-bold text-gray-600 uppercase tracking-widest px-2 py-1 bg-white/5 rounded-lg">{g}</span>
                          ))}
                       </div>

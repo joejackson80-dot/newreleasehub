@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -11,28 +11,38 @@ export async function GET(req: Request) {
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { crate: true }
-    });
+    const supabase = createAdminClient();
 
-    if (!user || !user.crate || user.crate.length === 0) {
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('crate')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (userError || !user || !user.crate || user.crate.length === 0) {
       return NextResponse.json({ tracks: [] });
     }
 
-    const tracks = await prisma.musicAsset.findMany({
-      where: { id: { in: user.crate } },
-      include: {
-        Organization: { select: { id: true, name: true, slug: true } }
-      }
-    });
+    const { data: tracks, error: trackError } = await supabase
+      .from('tracks')
+      .select(`
+        *,
+        organizations (id, name, slug)
+      `)
+      .in('id', user.crate);
 
-    return NextResponse.json({ tracks });
-  } catch (error) {
+    if (trackError) throw trackError;
+
+    // Normalize for response
+    const normalized = (tracks || []).map(t => ({
+      ...t,
+      Organization: t.organizations
+    }));
+
+    return NextResponse.json({ tracks: normalized });
+  } catch (error: unknown) {
     console.error('Error fetching library tracks:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
-
