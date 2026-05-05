@@ -37,8 +37,8 @@ export async function POST(req: Request) {
     console.log(`[Cron] Reset ${result.count} broken listening streaks.`);
 
     return NextResponse.json({ success: true, resetCount: result.count });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Streak Decay Cron Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 });
   }
 }

@@ -14,14 +14,14 @@ if (!isReady) {
   console.warn('[Prisma] Missing or placeholder database URL. Using Proxy mock for build safety.');
   // Recursive proxy that returns itself or a mock function to prevent build-time crashes
   const createMock = () => {
-    const mock: any = new Proxy(() => {}, {
+    const mock: unknown = new Proxy(() => {}, {
       get: (target, prop) => {
         if (prop === 'then') return undefined; // Handle promises
         return mock;
       },
       apply: () => Promise.resolve(null)
     });
-    return mock;
+    return mock as PrismaClient;
   };
   prismaInstance = createMock();
 } else {

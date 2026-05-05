@@ -7,14 +7,14 @@ const isReady = supabaseUrl && supabaseAnonKey && supabaseUrl !== 'your-project-
 
 // Build-safe singleton client using Proxy
 const createMock = () => {
-  const mock: any = new Proxy(() => {}, {
+  const mock: unknown = new Proxy(() => {}, {
     get: (target, prop) => {
       if (prop === 'then') return undefined;
       return mock;
     },
     apply: () => Promise.resolve({ data: null, error: null })
   });
-  return mock;
+  return mock as any;
 };
 
 export const supabase = isReady 
