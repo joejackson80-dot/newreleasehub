@@ -1,122 +1,63 @@
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
-import { Organization } from '@prisma/client';
 
-/**
- * Server-side utility to retrieve the currently authenticated artist.
- * Checks both NextAuth session and the legacy `nrh_artist_id` cookie.
- */
-export async function getSessionArtist(opts?: { 
-  includeReleases?: boolean; 
-  includeSupporters?: boolean;
-  includeParticipation?: boolean;
-}) {
-  const session = await auth();
-  
-  // Only allow if it's an ARTIST or ADMIN
-  if (!session?.user?.id || (session.user.role !== 'ARTIST' && session.user.role !== 'ADMIN')) {
-    redirect('/studio/login');
-  }
+export async function getSessionArtist(options: { includeReleases?: boolean; includeSupporters?: boolean } = {}) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  const artistId = session.user.id;
+  if (!user) return null;
 
-  // Handle Demo Account Bypass
-  if (artistId === 'demo-artist-id' || artistId === 'iamjoejack') {
-    const org = await prisma.organization.findUnique({
-      where: { id: artistId === 'demo-artist-id' ? 'demo-artist-id' : artistId },
-      include: {
-        Releases: opts?.includeReleases ? { orderBy: { createdAt: 'desc' } } : false,
-        SupporterSubscriptions: opts?.includeSupporters ? { where: { status: 'ACTIVE' } } : false,
-        SupporterTiers: opts?.includeSupporters ? { orderBy: { priceCents: 'asc' } } : false,
-        ParticipationLicenses: opts?.includeParticipation ? { orderBy: { createdAt: 'desc' } } : false,
-        DeviceSessions: true,
-      }
-    });
+  const legacyOrgId = user.user_metadata?.legacy_org_id;
 
-    if (org) return org;
-
-    // Hardcoded fallback if DB record is missing
-    return {
-      id: 'demo-artist-id',
-      name: 'Joe Jackson',
-      username: 'iamjoejack',
-      email: 'joe@newreleasehub.com',
-      slug: 'iamjoejack',
-      role: 'ADMIN',
-      planTier: 'ELITE',
-      isPublic: true,
-      Releases: [],
-      SupporterSubscriptions: [],
-      SupporterTiers: [],
-      ParticipationLicenses: [],
-      DeviceSessions: []
-    } as unknown as Organization;
-  }
-
-  const org = await prisma.organization.findUnique({
-    where: { id: artistId },
+  const org = await prisma.organization.findFirst({
+    where: {
+      OR: [
+        { id: legacyOrgId || undefined },
+        { email: user.email || undefined }
+      ]
+    },
     include: {
-      Releases: opts?.includeReleases ? { orderBy: { createdAt: 'desc' } } : false,
-      SupporterSubscriptions: opts?.includeSupporters ? { where: { status: 'ACTIVE' } } : false,
-      SupporterTiers: opts?.includeSupporters ? { orderBy: { priceCents: 'asc' } } : false,
-      ParticipationLicenses: opts?.includeParticipation ? { orderBy: { createdAt: 'desc' } } : false,
-      DeviceSessions: true,
+      Releases: options.includeReleases || false,
+      Supporters: options.includeSupporters || false,
+      _count: true
     }
   });
-
-  if (!org) {
-    redirect('/studio/login');
-  }
 
   return org;
 }
 
-/**
- * Lightweight check — just returns the artist ID or null.
- */
-export async function getSessionArtistId(): Promise<string | null> {
-  const session = await auth();
-  if (session?.user?.id && (session.user.role === 'ARTIST' || session.user.role === 'ADMIN')) {
-    return session.user.id;
-  }
-  return null;
-}
-
-/**
- * Server-side utility to retrieve the currently authenticated fan.
- * Checks both NextAuth session and the legacy `nrh_user_id` cookie.
- */
 export async function getSessionFan() {
-  const session = await auth();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session?.user?.id || session.user.role !== 'FAN') {
-    redirect('/fan/login');
-  }
+  if (!user) return null;
 
-  const userId = session.user.id;
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
+  const fan = await prisma.user.findUnique({
+    where: { email: user.email! }
   });
 
-  if (!user) {
-    redirect('/fan/login');
-  }
-
-  return user;
+  return fan;
 }
 
-/**
- * Lightweight check — just returns the fan user ID or null.
- */
-export async function getSessionFanId(): Promise<string | null> {
-  const session = await auth();
-  if (session?.user?.id && session.user.role === 'FAN') {
-    return session.user.id;
-  }
-  return null;
+export async function getSessionArtistId() {
+  const org = await getSessionArtist();
+  return org?.id || null;
 }
 
+export async function getSessionFanId() {
+  const fan = await getSessionFan();
+  return fan?.id || null;
+}
 
+export async function getSessionUser() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const dbUser = await prisma.user.findUnique({
+    where: { email: user.email! }
+  });
+
+  return dbUser;
+}

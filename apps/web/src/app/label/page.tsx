@@ -1,19 +1,25 @@
-import React from 'react';
-import { getSessionArtist } from '@/lib/session';
+import { createClient } from '@/lib/supabase/server';
+import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import LabelDashboardClient from './LabelDashboardClient';
-import { prisma } from '@/lib/prisma';
-import { auth } from '@/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function LabelDashboardPage() {
-  const session = await auth();
-  const org = await getSessionArtist();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
   
-  if (!session) redirect('/studio/login');
+  if (!user) redirect('/studio/login');
 
-  const isLabel = session.user?.role === 'ENTERPRISE' || session.user?.role === 'LABEL';
+  const role = user.user_metadata?.role;
+  const legacyOrgId = user.user_metadata?.legacy_org_id;
+
+  // Fetch the organization based on the legacy ID or email
+  const org = legacyOrgId 
+    ? await prisma.organization.findUnique({ where: { id: legacyOrgId } })
+    : await prisma.organization.findFirst({ where: { email: user.email } });
+
+  const isLabel = role === 'admin' || role === 'artist'; // For MVP, labels are artists with higher tiers
   const isElite = org?.planTier === 'ELITE';
 
   if (!isLabel && !isElite) {

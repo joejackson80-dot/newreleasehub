@@ -2,38 +2,32 @@
 import React, { useState } from 'react';
 import { ShieldAlert, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { createClient } from '@/lib/supabase/client';
 import BrandLogo from '@/components/layout/BrandLogo';
 
 export default function AdminLoginPage() {
-  const [identifier, setIdentifier] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
     
-    try {
-      const result = await signIn('credentials', {
-        username: identifier,
-        password: password,
-        role: 'ADMIN',
-        callbackUrl: '/admin',
-        redirect: false,
-      });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (result?.error) {
-        setError('Unauthorized: Administrative credentials required');
-      } else {
-        window.location.href = '/admin';
-      }
-    } catch {
-      setError('An error occurred during authentication');
-    } finally {
+    if (error) {
+      setError(error.message);
       setIsSubmitting(false);
+    } else {
+      window.location.href = '/admin';
     }
   };
 
@@ -71,11 +65,11 @@ export default function AdminLoginPage() {
               <label className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-2">Operator Identity</label>
               <div className="relative">
                 <input 
-                  type="text" 
+                  type="email" 
                   required
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="USERNAME / EMAIL"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="OPERATOR EMAIL"
                   className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-5 text-sm font-bold text-white placeholder-gray-800 focus:outline-none focus:border-[#A855F7]/30 transition-all"
                 />
               </div>
@@ -97,7 +91,7 @@ export default function AdminLoginPage() {
             </div>
 
             {error && (
-              <div className="p-4 bg-red-900/20 border border-red-900/40 rounded-xl text-red-500 text-[10px] font-bold uppercase tracking-widest text-center animate-shake">
+              <div className="p-4 bg-red-900/20 border border-red-900/40 rounded-xl text-red-500 text-[10px] font-bold uppercase tracking-widest text-center">
                 {error}
               </div>
             )}
@@ -105,7 +99,7 @@ export default function AdminLoginPage() {
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className="w-full py-5 rounded-2xl bg-[#A855F7] text-white font-black text-[11px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-[0_10px_40px_rgba(168,85,247,0.2)] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center space-x-3"
+              className="w-full py-5 rounded-2xl bg-[#A855F7] text-white font-black text-[11px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-[0_10px_40px_rgba(168,85,247,0.2)] active:scale-[0.98] flex items-center justify-center space-x-3"
             >
               <span>{isSubmitting ? 'Decrypting...' : 'Initialize Access'}</span>
               <ArrowRight className="w-4 h-4" />

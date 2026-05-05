@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import MerchManagerClient from './MerchManagerClient';
@@ -11,3 +12,4 @@ export default async function StudioMerchPage() {
   const org = await getSessionArtist();
   return <MerchManagerClient org={org} />;
 }
+

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getSessionArtist } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import AnalyticsClient from './AnalyticsClient';
@@ -8,3 +9,4 @@ export default async function AnalyticsPage() {
 
   return <AnalyticsClient artist={artist} />;
 }
+

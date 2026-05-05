@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { redirect } from 'next/navigation';
@@ -9,3 +10,4 @@ export default async function ArtistSettingsPage() {
 
   return <ArtistSettingsClient org={org} />;
 }
+

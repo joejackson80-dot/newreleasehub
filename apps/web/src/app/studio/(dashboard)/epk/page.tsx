@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import EPKStudioClient from './EPKStudioClient';
@@ -10,3 +11,4 @@ export default async function StudioEPKPage() {
 
   return <EPKStudioClient artist={artist} />;
 }
+

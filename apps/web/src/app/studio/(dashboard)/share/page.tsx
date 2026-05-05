@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import ShareClient from './ShareClient';
@@ -7,3 +8,4 @@ export default async function SocialSharePage() {
 
   return <ShareClient org={org} />;
 }
+

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getSessionArtist } from '@/lib/session';
 import DJControlRoom from './DJClient';
 
@@ -10,5 +11,6 @@ export default async function DJPage() {
   const artist = await getSessionArtist();
   return <DJControlRoom artist={artist} />;
 }
+
 
 

@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Menu, X, Award, Zap, Radio, DollarSign, TrendingUp, Users, Info, LogOut, User as UserIcon } from 'lucide-react';
 import BrandLogo from './BrandLogo';
-import { getCurrentSession, logout } from '@/app/actions/auth';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const NAV_ITEMS = [
   { label: 'Discover', href: '/discover', icon: Zap },
@@ -16,9 +17,12 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [session, setSession] = useState<any>(null);
+  
+  const supabase = createClient();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -26,8 +30,16 @@ export default function Navbar() {
     
     // Check session on mount
     const checkSession = async () => {
-      const s = await getCurrentSession();
-      setSession(s);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setSession({
+          type: user.user_metadata?.role || 'fan',
+          data: {
+            name: user.user_metadata?.name || user.email,
+            email: user.email
+          }
+        });
+      }
     };
     checkSession();
     
@@ -35,8 +47,9 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    await logout();
-    window.location.reload();
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
   };
 
   return (

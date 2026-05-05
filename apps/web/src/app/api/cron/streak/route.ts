@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 // Secret to verify cron caller
 const CRON_SECRET = process.env.CRON_SECRET || 'dev_cron_secret_123';
 

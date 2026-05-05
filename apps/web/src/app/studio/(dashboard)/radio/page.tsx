@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { Radio, Zap, BarChart3, ShieldCheck, CheckCircle2, XCircle } from 'lucide-react';
@@ -8,5 +9,6 @@ export default async function ArtistRadioDashboard() {
 
   return <RadioManagerClient org={org} />;
 }
+
 
 

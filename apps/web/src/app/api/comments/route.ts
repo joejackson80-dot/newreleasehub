@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { safeError, sanitizeResponse } from '@/lib/private/sanitize';
 
@@ -26,5 +27,6 @@ export async function POST(req: Request) {
     return NextResponse.json(safeError(error, 'comments-api'), { status: 500 });
   }
 }
+
 
 

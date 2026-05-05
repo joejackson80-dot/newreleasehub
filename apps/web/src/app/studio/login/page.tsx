@@ -1,62 +1,47 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { signIn } from 'next-auth/react';
-import { signInWithGoogle } from '@/app/actions/auth';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
 
-export default function ArtistLogin() {
-  const [identifier, setIdentifier] = useState('');
+export default function ArtistLoginPage() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
+    
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    try {
-      const result = await signIn('credentials', {
-        username: identifier,
-        password: password,
-        role: 'artist',
-        callbackUrl: '/studio',
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError('Invalid credentials');
-        return;
-      }
-
-      // We need to check the session to verify the role
-      // Since NextAuth signIn with redirect: false doesn't return the user object easily here,
-      // we'll fetch the session or just rely on the callbackUrl if we're sure.
-      // However, the instructions say to check role.
-      
-      const res = await fetch('/api/auth/session');
-      const session = await res.json();
-      
-      if (session?.user?.role === 'FAN') {
-        setError('This is the artist portal. Fan login is at newreleasehub.com/login');
-        // Sign out if they shouldn't be here
-        await fetch('/api/auth/signout', { method: 'POST' });
-      } else {
-        window.location.href = '/studio';
-      }
-    } catch (err: unknown) {
-      console.error('Login error:', err);
-      setError('An error occurred. Please try again.');
-    } finally {
+    if (error) {
+      setError(error.message);
       setIsSubmitting(false);
+    } else {
+      window.location.href = '/studio';
     }
+  };
+
+  const handleOAuth = async (provider: 'google' | 'spotify') => {
+    await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
   };
 
   return (
     <div className="min-h-screen bg-[var(--color-studio-base)] flex items-center justify-center p-4">
-      {/* Aesthetic Background Effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[var(--color-accent-primary)]/10 via-[var(--color-studio-base)] to-[var(--color-studio-base)] pointer-events-none"></div>
 
       <div className="w-full max-w-md bg-[var(--color-studio-surface)] border border-[var(--color-studio-border)] rounded-2xl p-6 sm:p-8 relative z-10 shadow-2xl">
@@ -74,12 +59,12 @@ export default function ArtistLogin() {
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">Username or email</label>
+            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">Email Address</label>
             <input 
-              type="text" 
+              type="email" 
               required
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="ENTER CREDENTIALS"
               className="w-full bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-lg px-4 py-4 text-xs font-bold tracking-widest text-white focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
             />
@@ -87,7 +72,7 @@ export default function ArtistLogin() {
           <div>
             <div className="flex justify-between mb-2">
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Secret Password</label>
-              <Link href="/forgot-password" title="Recover your studio credentials" className="text-[10px] font-bold text-gray-500 hover:text-[#A855F7] transition-colors uppercase tracking-[0.2em]">Forgot Password?</Link>
+              <Link href="/forgot-password?portal=artist" className="text-[10px] font-bold text-gray-500 hover:text-[#A855F7] transition-colors uppercase tracking-[0.2em]">Recovery</Link>
             </div>
             <input 
               type="password" 
@@ -119,34 +104,33 @@ export default function ArtistLogin() {
 
         <div className="mt-8 flex items-center space-x-4">
           <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
-          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">or continue with</span>
+          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">or</span>
           <div className="flex-1 h-px bg-[var(--color-studio-border)]"></div>
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <form action={signInWithGoogle.bind(null, 'ARTIST', '/studio')}>
-            <button 
-              type="submit" 
-              className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
-            >
-              <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
-              <span className="text-[10px] font-bold uppercase tracking-widest">Google Login</span>
-            </button>
-          </form>
-          <Link 
-            href="/studio/register"
-            className="flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+          <button 
+            type="button"
+            onClick={() => handleOAuth('google')}
+            className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest">Sign Up</span>
-          </Link>
+            <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black group-hover:bg-white group-hover:text-black transition-colors">G</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+          </button>
+          <button 
+            type="button"
+            onClick={() => handleOAuth('spotify')}
+            className="w-full flex items-center justify-center space-x-3 bg-[var(--color-studio-elevated)] border border-[var(--color-studio-border)] rounded-xl py-4 hover:bg-white/5 transition-all group"
+          >
+            <div className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center text-[10px] font-black text-emerald-500 group-hover:bg-emerald-500 group-hover:text-black transition-colors">S</div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Spotify</span>
+          </button>
         </div>
 
         <div className="mt-8 text-center border-t border-[var(--color-studio-border)] pt-8 space-y-4">
-           <Link href="/login" className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-[0.2em] block">Switch to Fan Access Portal</Link>
+           <Link href="/studio/register" className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-[0.2em] block">Apply for Artist Account</Link>
         </div>
       </div>
     </div>
   );
 }
-
-

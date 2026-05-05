@@ -15,9 +15,19 @@ export async function generateMilestoneCard(artistId: string, milestoneType: str
     // Load Resvg dynamically to avoid Turbopack issues
     const { Resvg } = await import('@resvg/resvg-js')
 
-    // 2. Load font (using system Arial on Windows)
-    const fontPath = 'C:\\Windows\\Fonts\\arial.ttf'
-    const fontData = await fs.readFile(fontPath)
+    // 2. Load font (handle platform differences and build-time missing files)
+    let fontData: Buffer;
+    try {
+      const fontPath = process.platform === 'win32' 
+        ? 'C:\\Windows\\Fonts\\arial.ttf' 
+        : '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf';
+      fontData = await fs.readFile(fontPath);
+    } catch (e) {
+      console.warn('[Milestone] Font not found, using empty buffer for build-safety');
+      fontData = Buffer.alloc(0);
+    }
+
+    if (fontData.length === 0) return null;
 
     // 3. Define the card design (SVG via Satori)
     const milestoneLabel = milestoneType.replace(/_/g, ' ')

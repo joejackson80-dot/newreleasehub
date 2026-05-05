@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { Users, Plus, ShieldCheck, CheckCircle2 } from 'lucide-react';
@@ -57,5 +58,6 @@ export default async function SupporterTiersManagerPage() {
     </div>
   );
 }
+
 
 

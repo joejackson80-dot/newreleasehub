@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getProposals } from '@/app/actions/governance';
 import { getSessionFan } from '@/lib/session';
 import GovernanceClient from './GovernanceClient';
@@ -11,3 +12,4 @@ export default async function GovernancePage() {
 
   return <GovernanceClient initialProposals={proposals} user={user} />;
 }
+

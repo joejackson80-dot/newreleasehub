@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sanitizeResponse, safeError } from '@/lib/private/sanitize';
@@ -43,6 +44,7 @@ export async function PATCH(req: Request) {
     return NextResponse.json(safeError(error), { status: 500 });
   }
 }
+
 
 
 

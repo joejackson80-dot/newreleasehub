@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
@@ -6,5 +7,6 @@ export async function GET(request: NextRequest) {
   console.error(`[HONEYPOT HIT] IP: ${ip} UA: ${ua} Path: ${request.nextUrl.pathname}`)
   return NextResponse.json({ error: 'Not found.' }, { status: 404 })
 }
+
 
 

@@ -54,7 +54,6 @@ import MainLayoutWrapper from "@/components/layout/MainLayoutWrapper";
 import GlobalAudioPlayer from "@/components/layout/GlobalAudioPlayer";
 import { AudioProvider } from "@/context/AudioContext";
 import CookieConsent from "@/components/layout/CookieConsent";
-import AuthSessionProvider from "@/components/providers/SessionProvider";
 
 export default function RootLayout({
   children,
@@ -68,7 +67,6 @@ export default function RootLayout({
       data-deployment-id="v2-stable-layout"
     >
       <body className="min-h-full flex flex-col bg-[#020202] font-sans selection:bg-[#A855F7] selection:text-white">
-        <AuthSessionProvider>
           <Toaster
             position="bottom-center"
             toastOptions={{
@@ -86,7 +84,6 @@ export default function RootLayout({
             <GlobalAudioPlayer />
             <CookieConsent />
           </AudioProvider>
-        </AuthSessionProvider>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { safeError } from '@/lib/api/errors'
@@ -147,5 +148,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(safeError(error), { status: 500 })
   }
 }
+
 
 

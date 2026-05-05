@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { getMessages } from '@/app/actions/fan';
@@ -9,3 +10,4 @@ export default async function ArtistMessagesPage() {
 
   return <MessagesClient initialMessages={(res.success && res.messages) ? (res.messages as any[]) : []} org={org} />;
 }
+

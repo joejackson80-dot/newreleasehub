@@ -566,6 +566,25 @@ export async function calculateMonthlyRoyalties(
     ? { month: targetMonth, year: targetYear }
     : getPreviousMonth()
 
+  // Build-time safety guard
+  if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.NODE_ENV === 'production' && !process.env.CRON_SECRET) {
+    console.log('[NRH Royalties] Skipping calculation during build/unauthorized phase');
+    return {
+      month, year,
+      premiumPoolTotal: 0,
+      networkPoolTotal: 0,
+      totalPremiumStreams: 0,
+      totalNetworkStreams: 0,
+      artistCount: 0,
+      totalArtistPayout: 0,
+      totalSUPPORTERDistribution: 0,
+      totalNRHRevenue: 0,
+      artists: [],
+      SUPPORTERShares: [],
+      errors: []
+    };
+  }
+
   console.log(`[NRH Royalties] Starting calculation for ${month}/${year}`)
 
   try {

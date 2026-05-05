@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionArtist } from '@/lib/session';
 import { Users, DollarSign, Disc, TrendingUp, Radio, Upload, Plus, Briefcase, Activity, Star, Award, MessageCircle, FileText } from 'lucide-react';
@@ -235,5 +236,6 @@ export default async function StudioOverviewPage() {
     </div>
   );
 }
+
 
 

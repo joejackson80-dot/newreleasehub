@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getSessionFan } from '@/lib/session';
 import SettingsClient from './SettingsClient';
@@ -12,5 +13,6 @@ export default async function FanSettingsPage() {
 
   return <SettingsClient user={user} />;
 }
+
 
 

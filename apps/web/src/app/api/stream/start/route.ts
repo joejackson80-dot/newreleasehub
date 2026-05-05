@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
 import { checkIPReputation } from '@/lib/fraud/ipCheck'
 import { prisma } from '@/lib/prisma'
@@ -54,5 +55,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(safeError(error), { status: 500 })
   }
 }
+
 
 
