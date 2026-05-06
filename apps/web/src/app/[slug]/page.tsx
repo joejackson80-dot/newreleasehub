@@ -67,6 +67,35 @@ export async function generateMetadata(
 }
 
 
+interface Release {
+  id: string;
+  release_date: string;
+  is_scheduled: boolean;
+  audio_url: string;
+  cover_art_url: string;
+  is_supporter_only: boolean;
+  tracks: any[];
+}
+
+interface SupporterTier {
+  id: string;
+  price_cents: number;
+  max_slots: number | null;
+  description: string;
+  revenue_share_percent: number;
+  sort_order: number;
+  name: string;
+  subscriptions: any[];
+}
+
+interface FanArtistRelation {
+  id: string;
+  total_paid_cents: number;
+  stream_count: number;
+  supporter_number: number;
+  fan: any;
+}
+
 export default async function ArtistProfilePage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const slug = params.slug;
@@ -93,9 +122,9 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   // Normalize data to match previous Prisma structure for UI compatibility
   const normalizedOrg = {
     ...org,
-    Releases: (org.releases || []).sort((a: any, b: any) => 
+    Releases: (org.releases || []).sort((a: Release, b: Release) => 
       new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
-    ).map((r: any) => ({
+    ).map((r: Release) => ({
       ...r,
       Tracks: r.tracks || [],
       isScheduled: r.is_scheduled,
@@ -104,7 +133,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       isSupporterOnly: r.is_supporter_only,
       releaseDate: r.release_date
     })),
-    SupporterTiers: (org.supporter_tiers || []).sort((a: any, b: any) => a.price_cents - b.price_cents).map((t: any) => ({
+    SupporterTiers: (org.supporter_tiers || []).sort((a: SupporterTier, b: SupporterTier) => a.price_cents - b.price_cents).map((t: SupporterTier) => ({
       ...t,
       Subscriptions: t.subscriptions || [],
       priceCents: t.price_cents,
@@ -113,7 +142,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
       revenueSharePercent: t.revenue_share_percent,
       sortOrder: t.sort_order
     })),
-    FanArtistRelations: (org.fan_artist_relations || []).map((rel: any) => ({
+    FanArtistRelations: (org.fan_artist_relations || []).map((rel: FanArtistRelation) => ({
       ...rel,
       totalPaidCents: rel.total_paid_cents,
       streamCount: rel.stream_count,
@@ -134,8 +163,8 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   const isLive = normalizedOrg.isLive && normalizedOrg.liveListenerCount > 0;
   const supporterCount = normalizedOrg.supporterCount;
   const socialLinks = normalizedOrg.socialLinksJson ? JSON.parse(normalizedOrg.socialLinksJson) : {};
-  const liveReleases = normalizedOrg.Releases.filter((r: any) => !r.isScheduled);
-  const scheduledReleases = normalizedOrg.Releases.filter((r: any) => r.isScheduled);
+  const liveReleases = normalizedOrg.Releases.filter((r: { isScheduled: boolean }) => !r.isScheduled);
+  const scheduledReleases = normalizedOrg.Releases.filter((r: { isScheduled: boolean }) => r.isScheduled);
   const tierCapitalized = normalizedOrg.artistTier.charAt(0).toUpperCase() + normalizedOrg.artistTier.slice(1);
 
   const tierBadgeColor =
