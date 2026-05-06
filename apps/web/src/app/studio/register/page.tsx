@@ -51,20 +51,21 @@ export default function ArtistRegisterPage() {
   };
 
   const handleOAuth = async (provider: 'google' | 'spotify') => {
-    await supabase.auth.signInWithOAuth({
+    if (!supabase.auth) {
+      setError('Authentication is not configured. Please contact support.');
+      return;
+    }
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback?role=artist`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
         },
-        data: {
-          role: 'artist',
-          is_artist: true
-        }
       },
     });
+    if (oauthError) setError(oauthError.message);
   };
 
 
