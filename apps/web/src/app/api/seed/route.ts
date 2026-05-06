@@ -20,7 +20,7 @@ export async function GET() {
       }
     ];
 
-    const results = [];
+    const results: { org: unknown; track: unknown }[] = [];
 
     for (const artist of artists) {
       const { data: org } = await supabase
@@ -119,7 +119,7 @@ export async function GET() {
       if (tracks && tracks[0]) {
         // Create a cluster of suspicious streams
         const fakeIP = '45.12.34.88';
-        const streams = [];
+        const streams: { track_id: string; artist_id: string; ip_address: string; device_id: string; fraud_score: number; is_excluded_from_pool: boolean; flag_reason: string }[] = [];
         for (let i = 0; i < 20; i++) {
           streams.push({
             track_id: tracks[0].id,

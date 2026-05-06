@@ -25,12 +25,14 @@ async function migrateOrganizations() {
       console.log(`🔄 Migrating: ${org.email}...`)
       
       // Check if auth user already exists for this email
-      const { data: existingUser } = await supabase.auth.admin.getUserByEmail(org.email)
+      const { data: { users }, error: listError } = await supabase.auth.admin.listUsers()
+      if (listError) throw listError
+      const existingUser = users.find(u => u.email === org.email)
       
       let authUser;
-      if (existingUser?.user) {
+      if (existingUser) {
         console.log(`ℹ️ Auth user already exists for ${org.email}, linking...`)
-        authUser = existingUser.user
+        authUser = existingUser
       } else {
         const { data: newAuthUser, error: createError } = await supabase.auth.admin.createUser({
           email: org.email,

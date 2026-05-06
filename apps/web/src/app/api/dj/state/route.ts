@@ -131,7 +131,7 @@ export async function GET(req: Request) {
     const deck = await getOrSeedDeckBySlug(slug);
     
     // Also fetch Mux config for the viewer
-    let muxConfig = null;
+    let muxConfig: { playbackId: string | undefined; status: string } | null = null;
     try {
       const stream = await createStationStream(`artist-${slug}`);
       muxConfig = {

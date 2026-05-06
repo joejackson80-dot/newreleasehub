@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "downlevelIteration": true,
+    "noImplicitAny": false,
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",

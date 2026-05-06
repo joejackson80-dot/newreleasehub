@@ -32,11 +32,20 @@ export const metadata: Metadata = {
     title: 'New Release Hub — Your Music. Your Fans. Your Money.',
     description: 'The platform for independent artists to release music, build fan support, and earn more per stream — without signing away their rights.',
     url: 'https://www.newreleasehub.com',
+    images: [
+      {
+        url: '/images/nrh-og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'New Release Hub — Independent Music Platform',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'New Release Hub — Your Music. Your Fans. Your Money.',
     description: 'The platform for independent artists to release music, build fan support, and earn more per stream — without signing away their rights.',
+    images: ['/images/nrh-og-image.png'],
   },
   robots: { index: true, follow: true },
 };

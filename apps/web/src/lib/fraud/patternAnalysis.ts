@@ -28,7 +28,7 @@ export async function analyzeListeningPattern(
     return acc
   }, {} as Record<string, number>)
   
-  const maxSingleTrackPlays = Math.max(...Object.values(trackCounts))
+  const maxSingleTrackPlays = Math.max(...(Object.values(trackCounts) as number[]))
   if (maxSingleTrackPlays > 20) {
     humanScore *= 0.3
     flags.push('Looped single track >20 times')
@@ -47,7 +47,7 @@ export async function analyzeListeningPattern(
   
   // Check 3: Perfect timing intervals (bot signature)
   if (streams.length > 20) {
-    const intervals = []
+    const intervals: number[] = []
     for (let i = 1; i < streams.length; i++) {
       const diff = new Date(streams[i].started_at).getTime() - new Date(streams[i-1].started_at).getTime()
       intervals.push(diff)

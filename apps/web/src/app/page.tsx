@@ -4,6 +4,19 @@ import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 import { Play, TrendingUp, Award, Disc, Search, ArrowRight, Globe, ShieldCheck, Upload, Heart, BarChart3, Zap, Radio, Users } from 'lucide-react';
+import Image from 'next/image';
+
+interface Hub {
+  id: string;
+  name: string;
+  slug: string;
+  city?: string;
+  country?: string;
+  profile_image_url?: string;
+  supporter_count?: number;
+  total_streams?: number;
+  session_decks?: { isPlaying: boolean }[];
+}
 
 const ARTIST_IMAGE_POOL = [
   '/images/default-avatar.png',
@@ -23,17 +36,15 @@ export default async function HomePage() {
   const { data: hubs, error } = await supabase
     .from('organizations')
     .select('*, participation_licenses(*), session_decks(*)')
-    .eq('isPublic', true)
-    .order('totalStreams', { ascending: false })
+    .eq('is_public', true)
+    .order('total_streams', { ascending: false })
     .limit(6);
 
   if (error) {
     console.error('Error fetching hubs:', error);
-    throw error;
   }
 
-
-  const validHubs = hubs.filter(
+  const validHubs = (hubs || []).filter(
     hub => hub?.name && hub?.slug && hub.name.toLowerCase() !== 'undefined' && hub.slug.toLowerCase() !== 'undefined'
   );
 
@@ -43,10 +54,12 @@ export default async function HomePage() {
       {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center bg-black overflow-hidden px-4 sm:px-8 lg:px-16 py-20 sm:py-24 lg:py-32">
          <div className="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-[3000ms]">
-            <img
+            <Image
               src="/images/default-avatar.png"
-              className="w-full h-full object-cover scale-110"
+              fill
+              className="object-cover scale-110"
               alt="Independent artist performing"
+              priority
             />
          </div>
          <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-[#02020299] to-transparent"></div>
@@ -64,7 +77,7 @@ export default async function HomePage() {
                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600 text-glow">Your Fans.</span>
                   </h1>
                   <p className="text-gray-500 text-[clamp(1rem,2.5vw,1.35rem)] font-medium max-w-lg leading-relaxed italic">
-                      "Institutional-grade tools for independent artists who own their masters and control their destiny."
+                      &quot;Institutional-grade tools for independent artists who own their masters and control their destiny.&quot;
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">
@@ -115,57 +128,58 @@ export default async function HomePage() {
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
-                  {validHubs?.map((hub: any, index: number) => {
-                    const imageUrl = hub.profileImageUrl || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
-                    const isLive = hub.session_decks?.[0]?.isPlaying;
-
-                    return (
-                       <Link 
-                         href={`/fan/${hub.slug}`} 
-                         key={hub.id} 
-                         className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#A855F74d] transition-all duration-500 hover:-translate-y-2 shadow-2xl"
-                       >
-
-                         <div className="aspect-[0.8] relative overflow-hidden">
-                           <img 
-                             src={imageUrl} 
-                             alt={hub.name} 
-                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
-                           />
-                           <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-60"></div>
-                           
-                           {isLive && (
-                             <div className="absolute top-6 left-6 flex items-center space-x-2 bg-red-600 text-white text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full animate-pulse">
-                               <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                               <span>Live Session</span>
-                             </div>
-                           )}
-                        </div>
-                        
-                        <div className="p-8 space-y-6">
-                           <div className="flex justify-between items-start">
-                              <div>
-                                 <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-white">{hub.name}</h3>
-                                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
-                              </div>
-                              <div className="flex flex-col items-end">
-                                 <p className="text-[#A855F7] text-lg font-bold italic tracking-tighter">{(hub.supporterCount || 0).toLocaleString()}</p>
-                                 <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
-                              </div>
-                           </div>
-                           <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                              <div className="flex items-center space-x-2">
-                                 <Play className="w-3.5 h-3.5 text-gray-500" />
-                                 <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{(hub.totalStreams || 0).toLocaleString()} streams</span>
-                              </div>
-                              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#A855F7] transition-colors">
-                                 View Hub
-                              </div>
-                           </div>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                      {validHubs?.map((hub: Hub, index: number) => {
+                        const imageUrl = hub.profile_image_url || ARTIST_IMAGE_POOL[index % ARTIST_IMAGE_POOL.length];
+                        const isLive = hub.session_decks?.[0]?.isPlaying;
+    
+                        return (
+                           <Link 
+                             href={`/fan/${hub.slug}`} 
+                             key={hub.id} 
+                             className="group relative bg-[#111111] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#A855F74d] transition-all duration-500 hover:-translate-y-2 shadow-2xl"
+                           >
+    
+                             <div className="aspect-[0.8] relative overflow-hidden">
+                               <Image 
+                                 src={imageUrl} 
+                                 alt={hub.name} 
+                                 fill
+                                 className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+                               />
+                               <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-60"></div>
+                               
+                               {isLive && (
+                                 <div className="absolute top-6 left-6 flex items-center space-x-2 bg-red-600 text-white text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full animate-pulse">
+                                   <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                                   <span>Live Session</span>
+                                 </div>
+                               )}
+                            </div>
+                            
+                            <div className="p-8 space-y-6">
+                               <div className="flex justify-between items-start">
+                                  <div>
+                                     <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-white">{hub.name}</h3>
+                                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{hub.city}, {hub.country}</p>
+                                  </div>
+                                  <div className="flex flex-col items-end">
+                                     <p className="text-[#A855F7] text-lg font-bold italic tracking-tighter">{(hub.supporter_count || 0).toLocaleString()}</p>
+                                     <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-none">SUPPORTERs</p>
+                                  </div>
+                               </div>
+                               <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                                  <div className="flex items-center space-x-2">
+                                     <Play className="w-3.5 h-3.5 text-gray-500" />
+                                     <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{(hub.total_streams || 0).toLocaleString()} streams</span>
+                                  </div>
+                                  <div className="px-4 py-2 rounded-full bg-white/5 text-white text-[9px] font-bold uppercase tracking-widest group-hover:bg-[#A855F7] transition-colors">
+                                     View Hub
+                                  </div>
+                               </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
                </div>
             </div>
 
@@ -198,7 +212,7 @@ export default async function HomePage() {
                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Radio.</span>
                   </h2>
                   <p className="text-gray-500 text-xl font-medium max-w-lg leading-relaxed italic">
-                     "The first internet radio network built on 100% master rights retention. Listen to the future of music, verified and live."
+                     &quot;The first internet radio network built on 100% master rights retention. Listen to the future of music, verified and live.&quot;
                   </p>
                </div>
                <div className="flex flex-col sm:flex-row gap-6">

@@ -200,7 +200,7 @@ export async function getMessages(params: {
     
     let query = supabase.from('direct_messages').select('*, sender_user:users!sender_user_id(*), sender_org:organizations!sender_org_id(*), receiver_user:users!receiver_user_id(*), receiver_org:organizations!receiver_org_id(*)');
     
-    const orConditions = [];
+    const orConditions: string[] = [];
     if (params.userId) {
       orConditions.push(`sender_user_id.eq.${params.userId}`, `receiver_user_id.eq.${params.userId}`);
     }

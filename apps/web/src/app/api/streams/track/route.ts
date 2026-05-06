@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '127.0.0.1';
     const userAgent = req.headers.get('user-agent') || 'unknown';
 
-    let fanData = null;
+    let fanData: { id: string; type: string } | null = null;
 
     if (userId) {
       const { data: user } = await supabase

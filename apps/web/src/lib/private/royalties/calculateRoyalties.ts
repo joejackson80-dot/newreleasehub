@@ -390,7 +390,7 @@ async function persistRoyalties(
       support_id:           share.supportId,
       month,
       year,
-      revenue_share_percent: share.revenue_share_percent,
+      revenue_share_percent: share.revenueSharePercent,
       amount_earned:        share.amountEarned,
       status:              'CREDITED',
     });

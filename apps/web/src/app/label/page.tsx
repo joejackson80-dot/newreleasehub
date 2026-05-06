@@ -17,7 +17,7 @@ export default async function LabelDashboardPage() {
   const adminSupabase = createAdminClient();
 
   // Fetch the organization based on the legacy ID or email
-  let orgData = null;
+  let orgData: Record<string, unknown> | null = null;
   if (legacyOrgId) {
     const { data } = await adminSupabase
       .from('organizations')

@@ -318,9 +318,9 @@ export default function FanDashboard({ user, subscriptions = [], initialMessages
                                  if (post.type === 'release') {
                                    playTrack({
                                      id: post.id,
-                                     title: post.title,
-                                     artist: post.Organization?.name,
-                                     artistId: post.Organization?.slug,
+                                     title: post.title || post.releaseTitle || '',
+                                     artist: post.Organization?.name || post.artistName || '',
+                                     artistId: post.Organization?.slug || post.artistSlug || '',
                                      audioUrl: post.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
                                      imageUrl: post.coverArtUrl
                                    });
@@ -873,7 +873,7 @@ export default function FanDashboard({ user, subscriptions = [], initialMessages
                           </div>
                           <div className="space-y-1">
                              <h4 className="font-bold text-white truncate">{release.title}</h4>
-                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{release.Organization.name}</p>
+                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{release.artist}</p>
                           </div>
                        </div>
                     ))}

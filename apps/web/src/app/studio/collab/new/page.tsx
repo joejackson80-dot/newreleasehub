@@ -14,7 +14,7 @@ export default async function NewCollabPage({ searchParams }: { searchParams: Pr
 
   const supabase = createAdminClient();
 
-  let targetArtist = null;
+  let targetArtist: { id: string; name: string; slug: string; profile_image_url: string | null; profileImageUrl: string | null } | null = null;
   if (artistSlug) {
     const { data } = await supabase
       .from('organizations')

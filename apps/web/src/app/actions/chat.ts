@@ -6,7 +6,7 @@ import { getSessionArtist } from '@/lib/session';
 export async function sendChatMessage(orgId: string, text: string) {
   try {
     let userDisplayName = 'Anonymous';
-    let badge = null;
+    let badge: string | null = null;
     
     // Try to get fan session first
     const fan = await getSessionFan();

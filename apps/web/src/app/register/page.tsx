@@ -11,7 +11,6 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   
   const supabase = createClient();
 
@@ -46,7 +45,7 @@ export default function RegisterPage() {
           window.location.href = '/fan/me';
         }
       }
-    } catch (err) {
+    } catch {
       setError('A network error occurred. Please try again.');
       setIsSubmitting(false);
     }
@@ -61,27 +60,6 @@ export default function RegisterPage() {
     });
   };
 
-  if (success) {
-    return (
-      <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-10 font-sans">
-        <div className="w-full max-w-md space-y-8 text-center">
-          <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-8">
-            <ShieldCheck className="w-10 h-10 text-green-400" />
-          </div>
-          <h1 className="text-3xl font-bold tracking-tighter uppercase italic">Verification Sent.</h1>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            We&apos;ve sent a secure initialization link to <span className="text-white font-bold">{email}</span>. 
-            Please check your inbox to activate your credentials.
-          </p>
-          <div className="pt-8">
-            <Link href="/login" className="text-xs font-bold text-gray-500 hover:text-white transition-colors uppercase tracking-[0.3em]">
-              Return to Login
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-6 font-sans selection:bg-white selection:text-black">

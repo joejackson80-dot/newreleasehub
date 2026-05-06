@@ -11,7 +11,6 @@ export default function ArtistRegisterPage() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   
   const supabase = createClient();
 
@@ -20,52 +19,54 @@ export default function ArtistRegisterPage() {
     setIsSubmitting(true);
     setError('');
     
-    // For Artists, we sign them up and set the role to 'artist'
-    const { error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name: artistName,
-          role: 'artist',
-          is_artist: true,
-          onboarding_step: 1
-        },
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    try {
+      const response = await fetch('/api/artist/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, artistName, password }),
+      });
 
-    if (signUpError) {
-      setError(signUpError.message);
-      setIsSubmitting(false);
-    } else {
-      setSuccess(true);
+      const result = await response.json();
+
+      if (!result.success) {
+        setError(result.error || 'Registration failed');
+        setIsSubmitting(false);
+      } else {
+        // Success! Auto sign-in
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (signInError) {
+          window.location.href = '/studio/login?registered=true';
+        } else {
+          window.location.href = '/studio';
+        }
+      }
+    } catch {
+      setError('A network error occurred. Please try again.');
       setIsSubmitting(false);
     }
   };
 
-  if (success) {
-    return (
-      <div className="min-h-screen bg-[var(--color-studio-base)] text-white flex flex-col items-center justify-center p-10 font-sans">
-        <div className="w-full max-w-md space-y-8 text-center bg-[var(--color-studio-surface)] border border-[var(--color-studio-border)] rounded-[2rem] p-12 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#A855F7] to-transparent opacity-50"></div>
-          <div className="w-20 h-20 rounded-2xl bg-[#A855F7]/10 border border-[#A855F7]/20 flex items-center justify-center mx-auto mb-8 animate-pulse">
-            <Zap className="w-10 h-10 text-[#A855F7]" />
-          </div>
-          <h1 className="text-3xl font-black tracking-tighter uppercase italic">Studio Access Pending.</h1>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            Your artist credentials for <span className="text-white font-bold">{artistName}</span> have been initialized. 
-            Check <span className="text-[#A855F7] font-bold">{email}</span> to verify your identity and enter the command center.
-          </p>
-          <div className="pt-8">
-            <Link href="/studio/login" className="text-xs font-bold text-gray-500 hover:text-white transition-colors uppercase tracking-[0.4em]">
-              Return to Studio login
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleOAuth = async (provider: 'google' | 'spotify') => {
+    await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+        data: {
+          role: 'artist',
+          is_artist: true
+        }
+      },
+    });
+  };
+
 
   return (
     <div className="min-h-screen bg-[var(--color-studio-base)] text-white flex flex-col items-center justify-center p-6 font-sans selection:bg-[#A855F7] selection:text-white">
@@ -97,6 +98,21 @@ export default function ArtistRegisterPage() {
         </div>
 
         <div className="bg-[var(--color-studio-surface)] border border-[var(--color-studio-border)] rounded-[2rem] p-8 sm:p-10 shadow-2xl backdrop-blur-xl relative">
+          <div className="grid grid-cols-1 gap-4 mb-8">
+            <button 
+              type="button"
+              onClick={() => handleOAuth('google')}
+              className="flex items-center justify-center space-x-3 bg-white/5 border border-white/5 rounded-2xl py-4 hover:bg-white/10 transition-all group"
+            >
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Continue with Google</span>
+            </button>
+          </div>
+
+          <div className="relative py-4 mb-4">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5"></div></div>
+            <div className="relative flex justify-center text-[9px] font-black uppercase tracking-[0.4em]"><span className="bg-[var(--color-studio-surface)] px-4 text-gray-700">Studio Intake</span></div>
+          </div>
+
           <form onSubmit={handleRegister} className="space-y-6">
              <div className="space-y-5">
                 <div>
