@@ -5,9 +5,9 @@ import Link from 'next/link';
 import ArtistReleasesClient from './ArtistReleasesClient';
 import type { Metadata } from 'next';
 import {
-  Play, MapPin, Users, Disc, ShieldCheck, CheckCircle2, ArrowRight,
-  Heart, Radio, Camera, MessageCircle, MonitorPlay, Globe, Star,
-  ExternalLink, Music, Zap, Activity, Clock
+  CheckCircle2, ArrowRight,
+  Radio, Star,
+  Music, Zap, Activity
 } from 'lucide-react';
 import ArtistProfileHeader from '@/components/artist/ArtistProfileHeader';
 
@@ -161,16 +161,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
   };
 
   const isLive = normalizedOrg.isLive && normalizedOrg.liveListenerCount > 0;
-  const supporterCount = normalizedOrg.supporterCount;
-  const socialLinks = normalizedOrg.socialLinksJson ? JSON.parse(normalizedOrg.socialLinksJson) : {};
   const liveReleases = normalizedOrg.Releases.filter((r: { isScheduled: boolean }) => !r.isScheduled);
-  const scheduledReleases = normalizedOrg.Releases.filter((r: { isScheduled: boolean }) => r.isScheduled);
-  const tierCapitalized = normalizedOrg.artistTier.charAt(0).toUpperCase() + normalizedOrg.artistTier.slice(1);
-
-  const tierBadgeColor =
-    normalizedOrg.artistTier === 'legend' ? 'border-[#f59e0b33] text-amber-400 bg-[#f59e0b1a]' :
-    normalizedOrg.artistTier === 'established' ? 'border-[#A855F74d] text-[#A855F7] bg-[#A855F71a]' :
-    'border-white/20 text-gray-400 bg-white/5';
 
   return (
     <div className="min-h-screen bg-[#020202] text-white pb-32">
@@ -271,12 +262,10 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
           </div>
 
           <div className="space-y-6">
-            {normalizedOrg.SupporterTiers.map((tier: any) => {
-              const currentSlots = tier.Subscriptions.length;
-              const isFull = tier.maxSlots !== null && currentSlots >= tier.maxSlots;
-              const slotsRemaining = tier.maxSlots ? tier.maxSlots - currentSlots : null;
-              const isAlmostFull = slotsRemaining !== null && slotsRemaining <= 10;
-              const isPopular = tier.sortOrder === 2;
+            {normalizedOrg.SupporterTiers.map((tier: SupporterTier) => {
+              const currentSlots = tier.subscriptions.length;
+              const isFull = tier.max_slots !== null && currentSlots >= tier.max_slots;
+              const isPopular = tier.sort_order === 2;
 
               return (
                  <div key={tier.id}
@@ -292,7 +281,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                        {isPopular && <Star className="w-5 h-5 text-amber-500 fill-current" />}
                     </div>
                     <p className="text-[#A855F7] font-black italic text-4xl tracking-tighter">
-                      ${(tier.priceCents / 100).toFixed(2)}
+                      ${(tier.price_cents / 100).toFixed(2)}
                       <span className="text-[10px] text-zinc-600 font-black uppercase tracking-widest ml-2">Monthly Subscription</span>
                     </p>
                   </div>
@@ -302,11 +291,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                   </p>
 
                   <ul className="space-y-4 mb-10">
-                    {tier.revenueSharePercent > 0 && (
+                    {tier.revenue_share_percent > 0 && (
                       <li className="flex items-center gap-4 bg-[#A855F7]/5 border border-[#A855F7]/10 p-4 rounded-2xl">
                         <Zap className="w-5 h-5 text-[#A855F7]" />
                         <div>
-                           <p className="text-xs font-black text-white uppercase tracking-widest">{tier.revenueSharePercent}% Royalty Stake</p>
+                           <p className="text-xs font-black text-white uppercase tracking-widest">{tier.revenue_share_percent}% Royalty Stake</p>
                            <p className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">Calculated on gross platform revenue</p>
                         </div>
                       </li>
@@ -321,16 +310,16 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                     </li>
                   </ul>
 
-                  {tier.maxSlots && (
+                  {tier.max_slots && (
                     <div className="mb-8 space-y-3">
                       <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em]">
                         <span className="text-zinc-600">Institutional Capacity</span>
-                        <span className={isFull ? 'text-rose-500' : 'text-white'}>{currentSlots} / {tier.maxSlots}</span>
+                        <span className={isFull ? 'text-rose-500' : 'text-white'}>{currentSlots} / {tier.max_slots}</span>
                       </div>
                       <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all duration-1000 ${isFull ? 'bg-rose-500' : 'bg-[#A855F7]'}`}
-                          style={{ width: `${Math.min((currentSlots / tier.maxSlots) * 100, 100)}%` }}
+                          style={{ width: `${Math.min((currentSlots / tier.max_slots) * 100, 100)}%` }}
                         />
                       </div>
                     </div>
@@ -369,7 +358,7 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                   <span className="text-[8px] font-black text-zinc-700 uppercase tracking-widest">All-Time</span>
                </div>
                <div className="space-y-3">
-                  {normalizedOrg.FanArtistRelations.filter((r: any) => r.totalPaidCents > 0).map((rel: any, i: number) => {
+                  {normalizedOrg.FanArtistRelations.filter((r: FanArtistRelation) => r.total_paid_cents > 0).map((rel: FanArtistRelation, i: number) => {
                     const rankColors = ['text-amber-400', 'text-gray-300', 'text-amber-700'];
                     return (
                       <div key={rel.id} className="flex items-center gap-4 group p-3 rounded-2xl hover:bg-white/[0.03] transition-all">
@@ -384,11 +373,11 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
                               {rel.fan?.display_name || rel.fan?.displayName || 'Anonymous'}
                             </p>
                             <p className="text-[8px] font-bold text-zinc-700 uppercase tracking-widest">
-                              {rel.streamCount.toLocaleString()} streams · Supporter #{rel.supporterNumber || '—'}
+                              {rel.stream_count.toLocaleString()} streams · Supporter #{rel.supporter_number || '—'}
                             </p>
                          </div>
                          <div className="text-right">
-                            <p className="text-[10px] font-black text-emerald-500 italic">${(rel.totalPaidCents / 100).toFixed(0)}</p>
+                            <p className="text-[10px] font-black text-emerald-500 italic">${(rel.total_paid_cents / 100).toFixed(0)}</p>
                          </div>
                       </div>
                     );
@@ -405,9 +394,9 @@ export default async function ArtistProfilePage(props: { params: Promise<{ slug:
              </div>
              <div className="space-y-6">
                 {[
-                  { user: 'fan_293', action: 'Authorized Supporter Stake', time: '2m ago' },
-                  { user: 'Treasury', action: 'Yield Settlement Processed', time: '14m ago' },
-                  { user: 'Artist', action: 'New Master Authenticated', time: '1h ago' }
+                   { user: 'fan_293', action: 'Authorized Supporter Stake', time: '2m ago' },
+                   { user: 'Treasury', action: 'Yield Settlement Processed', time: '14m ago' },
+                   { user: 'Artist', action: 'New Master Authenticated', time: '1h ago' }
                 ].map((log, i) => (
                   <div key={i} className="flex justify-between items-start group cursor-pointer">
                      <div className="space-y-1">
