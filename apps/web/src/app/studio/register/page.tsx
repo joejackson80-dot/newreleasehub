@@ -58,7 +58,7 @@ export default function ArtistRegisterPage() {
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?role=artist`,
+        redirectTo: `${window.location.origin}/auth/callback-artist`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
